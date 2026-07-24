@@ -49,16 +49,16 @@ Het visuele contract en de state-naar-posemapping staan in
 Speel een bestaand invoerscript zichtbaar af:
 
 ```sh
-make replayrun NATIVE_REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt
+make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 ```
 
 Voor een deterministische native C2-run:
 
 ```sh
 make headlessrun \
-  NATIVE_REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt \
-  NATIVE_REPLAY_FRAMES=13935 \
-  NATIVE_EXTRA_ARGS='--ram-dump=/tmp/c2-bird-investigation.bin'
+  REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt \
+  REPLAY_FRAMES=13935 \
+  REPLAY_EXTRA_ARGS='--ram-dump=/tmp/c2-bird-investigation.bin'
 ```
 
 Vergelijk die dump met de JPhoenix-referentiedump via de bestaande
@@ -71,8 +71,8 @@ referentiedump voor replay en vergelijking in één keer:
 
 ```sh
 make native-compare \
-  NATIVE_REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt \
-  NATIVE_REPLAY_FRAMES=13935 \
+  REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt \
+  REPLAY_FRAMES=13935 \
   NATIVE_REFERENCE_DUMP=/tmp/ref_bird-investigation.bin
 ```
 

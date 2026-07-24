@@ -141,12 +141,13 @@ java \
 Speel een opname of handgeschreven script deterministisch af met:
 
 ```sh
-java \
-  -Dphoenix.inputscript=context/input-scripts/my_session.txt \
-  -Dphoenix.ramdump=ramdump.bin \
-  -Dphoenix.ramdump.frames=15000 \
-  -cp build/classes PhoenixDesktop
+make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 ```
+
+`context/...` is de gedeelde scriptlocatie van alle implementaties.
+`make replayrun` lost dit op naar de contextmap van C-Phoenix en start de
+desktopemulator met lockstep-compatibele inputpolling. Gebruik `make demorun`
+als je ook een RAM-dump met vaste lengte en de zelfstandige visual tracer wilt.
 
 De framenummers zijn compatibel met `c-phoenix --record-input=` en
 `--input-script=`. Een opgenomen event wordt na iedere regel geflusht, zodat een
@@ -159,7 +160,7 @@ vblank-interrupts:
 ```sh
 java \
   -Dphoenix.inputclock=poll \
-  -Dphoenix.inputscript=context/input-scripts/my_session.txt \
+  -Dphoenix.inputscript=../c-phoenix/context/input-scripts/my_session.txt \
   -cp build/classes PhoenixDesktop
 ```
 

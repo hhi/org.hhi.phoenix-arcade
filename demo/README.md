@@ -62,6 +62,15 @@ shown at their current position without a persistent trail. The first command
 requires GCC and SDL2, the second also builds the C2 renderer, and the third
 requires a JDK and the assembled ROM set.
 
+To watch that same session play visibly instead, use the same command shape
+for each implementation:
+
+```sh
+make -C c-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C c2-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C jphoenix-emulator-port replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+```
+
 ## Make Execution Visible
 
 Design diagrams describe routes that source code and the ROM *can* contain.
@@ -181,11 +190,12 @@ replay, lockstep, and trace checks.
 
 ## Demonstration Path
 
-For visible C-Phoenix playback:
+For visible playback in each implementation:
 
 ```sh
-make
-make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C c-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C c2-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C jphoenix-emulator-port replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 ```
 
 For a full comparison and visual tracer, after building the sibling JPhoenix

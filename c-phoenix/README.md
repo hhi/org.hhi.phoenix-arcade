@@ -93,6 +93,7 @@ Examples
 ./c-phoenix --run-frames=1200 --input-script=context/input-scripts/basic_playthrough.txt
 
 make replayrun
+make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 make headlessrun
 make recordrun
 make comparerun

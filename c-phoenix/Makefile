@@ -32,17 +32,25 @@ RUNTIME_OBJS = $(SRCS:%.c=build/runtime/%.o)
 RUNTIME_SCENARIO ?=
 RUNTIME_FRAMES ?= 0
 RUNTIME_OUTPUT_DIR ?= $(CURDIR)/context/runtimegraphs/$(RUNTIME_SCENARIO)
-REPLAY_SCRIPT ?= context/input-scripts/basic_playthrough.txt
+# Shared input scripts are addressed as context/... from every implementation.
+# In this directory the shared context lives locally; sibling implementations
+# override CONTEXT_ROOT with ../c-phoenix/context.
+CONTEXT_ROOT ?= context
+resolve_context_path = $(if $(filter context/%,$(1)),$(CONTEXT_ROOT)/$(patsubst context/%,%,$(1)),$(1))
+REPLAY_SCRIPT ?= $(CONTEXT_ROOT)/input-scripts/basic_playthrough.txt
 REPLAY_FRAMES ?= 1200
 REPLAY_RAM_DUMP ?=
 REPLAY_COVERAGE_DUMP ?=
 REPLAY_EXTRA_ARGS ?=
 HEADLESS_ENV ?= SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy
 OPEN ?= open
-DEMO_SCRIPT ?= context/input-scripts/bird-investigation.txt
+DEMO_SCRIPT ?= $(CONTEXT_ROOT)/input-scripts/bird-investigation.txt
 DEMO_FRAMES ?= 13935
 DEMO_NAME ?= bird-investigation
-DEMO_RAM_DUMP ?= /tmp/c-phoenix-$(DEMO_NAME).bin
+# DEMO_DUMP is shared with C2-Phoenix and JPhoenix. Keep the older
+# DEMO_RAM_DUMP spelling as a compatibility alias for existing commands.
+DEMO_RAM_DUMP ?=
+DEMO_DUMP ?= $(if $(DEMO_RAM_DUMP),$(DEMO_RAM_DUMP),/tmp/c-phoenix-$(DEMO_NAME).bin)
 DEMO_TRACE_OUTPUT ?= /tmp/c-phoenix-$(DEMO_NAME)-tracer.html
 DEMO_TRACE_KIND ?= all
 DEMO_TRACE_PLAYER ?= all
@@ -132,15 +140,15 @@ recordtracerun: recordrun
 	$(MAKE) tracerun COMPARE_SCRIPT=$(RECORD_SCRIPT) COMPARE_FRAMES=$$frames COMPARE_NAME=$(RECORD_NAME) COMPARE_STOP_AFTER=$(RECORD_TRACE_STOP_AFTER)
 
 replayrun: $(TARGET)
-	./$(TARGET) --input-script=$(REPLAY_SCRIPT) $(REPLAY_EXTRA_ARGS)
+	./$(TARGET) --input-script=$(call resolve_context_path,$(REPLAY_SCRIPT)) $(REPLAY_EXTRA_ARGS)
 
 headlessrun: $(TARGET)
-	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(REPLAY_FRAMES) --input-script=$(REPLAY_SCRIPT) --no-render $(if $(REPLAY_RAM_DUMP),--ram-dump=$(REPLAY_RAM_DUMP),) $(if $(REPLAY_COVERAGE_DUMP),--coverage-dump=$(REPLAY_COVERAGE_DUMP),) $(REPLAY_EXTRA_ARGS)
+	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(REPLAY_FRAMES) --input-script=$(call resolve_context_path,$(REPLAY_SCRIPT)) --no-render $(if $(REPLAY_RAM_DUMP),--ram-dump=$(REPLAY_RAM_DUMP),) $(if $(REPLAY_COVERAGE_DUMP),--coverage-dump=$(REPLAY_COVERAGE_DUMP),) $(REPLAY_EXTRA_ARGS)
 
 # Standalone C-Phoenix object tracer: no JPhoenix dump or comparison needed.
 demorun: $(TARGET)
-	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(DEMO_SCRIPT) --no-render --ram-dump=$(DEMO_RAM_DUMP) $(DEMO_EXTRA_ARGS)
-	$(PYTHON) tools/view_sprite_trace.py $(DEMO_RAM_DUMP) --reference-label c-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
+	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(call resolve_context_path,$(DEMO_SCRIPT)) --no-render --ram-dump=$(DEMO_DUMP) $(DEMO_EXTRA_ARGS)
+	$(PYTHON) tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label c-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
 	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
 	@echo "Opened C-Phoenix object tracer: $(DEMO_TRACE_OUTPUT)"
 
@@ -199,6 +207,7 @@ help:
 	@echo "  RECORD_TRACE_STOP_AFTER=$(RECORD_TRACE_STOP_AFTER)"
 	@echo ""
 	@echo "replay and headlessrun defaults"
+	@echo "  CONTEXT_ROOT=$(CONTEXT_ROOT)"
 	@echo "  REPLAY_SCRIPT=$(REPLAY_SCRIPT)"
 	@echo "  REPLAY_FRAMES=$(REPLAY_FRAMES) (headlessrun only)"
 	@echo "  REPLAY_RAM_DUMP=$(if $(REPLAY_RAM_DUMP),$(REPLAY_RAM_DUMP),(disabled))"
@@ -210,7 +219,8 @@ help:
 	@echo "  DEMO_SCRIPT=$(DEMO_SCRIPT)"
 	@echo "  DEMO_FRAMES=$(DEMO_FRAMES)"
 	@echo "  DEMO_NAME=$(DEMO_NAME)"
-	@echo "  DEMO_RAM_DUMP=$(DEMO_RAM_DUMP)"
+	@echo "  DEMO_DUMP=$(DEMO_DUMP)"
+	@echo "  DEMO_RAM_DUMP is supported as a legacy alias"
 	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
 	@echo "  DEMO_TRACE_KIND=$(DEMO_TRACE_KIND)"
 	@echo "  DEMO_TRACE_PLAYER=$(DEMO_TRACE_PLAYER)"

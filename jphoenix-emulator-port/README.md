@@ -141,12 +141,13 @@ java \
 Play back a recording or a handwritten script deterministically with:
 
 ```sh
-java \
-  -Dphoenix.inputscript=context/input-scripts/my_session.txt \
-  -Dphoenix.ramdump=ramdump.bin \
-  -Dphoenix.ramdump.frames=15000 \
-  -cp build/classes PhoenixDesktop
+make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 ```
+
+`context/...` is the shared script location used by every implementation.
+`make replayrun` resolves it to C-Phoenix's context directory and runs the
+desktop emulator with lockstep-compatible input polling. Use `make demorun`
+when you also want a fixed-length RAM dump and the standalone visual tracer.
 
 The frame numbers are compatible with `c-phoenix --record-input=` and
 `--input-script=`. A recorded event is flushed after every line, so a
@@ -159,7 +160,7 @@ vblank interrupts:
 ```sh
 java \
   -Dphoenix.inputclock=poll \
-  -Dphoenix.inputscript=context/input-scripts/my_session.txt \
+  -Dphoenix.inputscript=../c-phoenix/context/input-scripts/my_session.txt \
   -cp build/classes PhoenixDesktop
 ```
 

@@ -12,15 +12,18 @@ PORT_TRACE ?= /tmp/port_$(SCENARIO)-semantic.json
 SUMMARY_ARGS ?=
 C2_VARIANT ?=
 NATIVE_TARGET ?= build/native$(if $(C2_VARIANT),/$(C2_VARIANT))/c2-phoenix
-# Keep replay controls aligned with c-phoenix.  The NATIVE_* spellings
-# remain supported for scripts that already use them.
-REPLAY_SCRIPT ?= ../c-phoenix/context/input-scripts/basic_playthrough.txt
+# Keep replay controls aligned with c-phoenix. Input scripts are always
+# addressed as context/... by users; this prefix resolves that location from
+# the C2 directory. The NATIVE_* spellings remain supported for existing use.
+CONTEXT_ROOT ?= ../c-phoenix/context
+resolve_context_path = $(if $(filter context/%,$(1)),$(CONTEXT_ROOT)/$(patsubst context/%,%,$(1)),$(1))
+REPLAY_SCRIPT ?= $(CONTEXT_ROOT)/input-scripts/basic_playthrough.txt
 REPLAY_FRAMES ?= 1200
 REPLAY_EXTRA_ARGS ?=
 NATIVE_REPLAY_SCRIPT ?= $(REPLAY_SCRIPT)
 NATIVE_REPLAY_FRAMES ?= $(REPLAY_FRAMES)
 NATIVE_EXTRA_ARGS ?= $(REPLAY_EXTRA_ARGS)
-DEMO_SCRIPT ?= ../c-phoenix/context/input-scripts/bird-investigation.txt
+DEMO_SCRIPT ?= $(CONTEXT_ROOT)/input-scripts/bird-investigation.txt
 DEMO_FRAMES ?= 13935
 DEMO_NAME ?= bird-investigation
 DEMO_DUMP ?= /tmp/c2-phoenix-$(DEMO_NAME).bin
@@ -56,6 +59,7 @@ help:
 	@echo "  demo/compare/summary: Python 3 and the relevant RAM dumps"
 	@echo ""
 	@echo "replay defaults"
+	@echo "  CONTEXT_ROOT=$(CONTEXT_ROOT)"
 	@echo "  REPLAY_SCRIPT=$(REPLAY_SCRIPT)"
 	@echo "  REPLAY_FRAMES=$(REPLAY_FRAMES) (headlessrun and native-compare only)"
 	@echo "  REPLAY_EXTRA_ARGS=$(if $(REPLAY_EXTRA_ARGS),$(REPLAY_EXTRA_ARGS),(none))"
@@ -73,8 +77,8 @@ help:
 	@echo ""
 	@echo "examples"
 	@echo "  make run"
-	@echo "  make replayrun REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt"
-	@echo "  make headlessrun REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt REPLAY_FRAMES=13935"
+	@echo "  make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt"
+	@echo "  make headlessrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt REPLAY_FRAMES=13935"
 	@echo "  make demorun"
 	@echo "  make native C2_VARIANT=hires2"
 	@echo "  make native-compare NATIVE_REFERENCE_DUMP=/tmp/ref_bird-investigation.bin REPLAY_FRAMES=13935"
@@ -112,14 +116,14 @@ run: native
 	./$(NATIVE_TARGET) $(NATIVE_EXTRA_ARGS)
 
 replayrun: native
-	./$(NATIVE_TARGET) --input-script=$(NATIVE_REPLAY_SCRIPT) $(NATIVE_EXTRA_ARGS)
+	./$(NATIVE_TARGET) --input-script=$(call resolve_context_path,$(NATIVE_REPLAY_SCRIPT)) $(NATIVE_EXTRA_ARGS)
 
 headlessrun: native
-	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(NATIVE_REPLAY_FRAMES) --input-script=$(NATIVE_REPLAY_SCRIPT) --no-render $(NATIVE_EXTRA_ARGS)
+	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(NATIVE_REPLAY_FRAMES) --input-script=$(call resolve_context_path,$(NATIVE_REPLAY_SCRIPT)) --no-render $(NATIVE_EXTRA_ARGS)
 
 # Standalone C2 object tracer: no JPhoenix dump or comparison needed.
 demorun: native
-	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(DEMO_SCRIPT) --no-render --ram-dump=$(DEMO_DUMP) $(DEMO_EXTRA_ARGS)
+	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(call resolve_context_path,$(DEMO_SCRIPT)) --no-render --ram-dump=$(DEMO_DUMP) $(DEMO_EXTRA_ARGS)
 	$(PYTHON) ../c-phoenix/tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label c2-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C2-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
 	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
 	@echo "Opened C2-Phoenix object tracer: $(DEMO_TRACE_OUTPUT)"
@@ -133,7 +137,7 @@ native-check: native
 native-compare: native
 	@test -n "$(NATIVE_REFERENCE_DUMP)" || { echo "Set NATIVE_REFERENCE_DUMP=/path/to/jphoenix.bin"; exit 2; }
 	@test -f "$(NATIVE_REFERENCE_DUMP)" || { echo "Reference dump not found: $(NATIVE_REFERENCE_DUMP)"; exit 2; }
-	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(NATIVE_REPLAY_FRAMES) --input-script=$(NATIVE_REPLAY_SCRIPT) --no-render --ram-dump=$(NATIVE_DUMP) $(NATIVE_EXTRA_ARGS)
+	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(NATIVE_REPLAY_FRAMES) --input-script=$(call resolve_context_path,$(NATIVE_REPLAY_SCRIPT)) --no-render --ram-dump=$(NATIVE_DUMP) $(NATIVE_EXTRA_ARGS)
 	python3 ../c-phoenix/tools/compare_ram_dumps.py $(NATIVE_REFERENCE_DUMP) $(NATIVE_DUMP) --align-c98 --regions $(NATIVE_COMPARE_REGIONS) --stop-after $(NATIVE_COMPARE_STOP_AFTER)
 
 native-clean:

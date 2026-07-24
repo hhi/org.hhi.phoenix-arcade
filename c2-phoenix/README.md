@@ -47,16 +47,16 @@ The visual contract and state-to-pose mapping are documented in
 Replay an existing input script visibly:
 
 ```sh
-make replayrun NATIVE_REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt
+make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 ```
 
 For a deterministic native C2 run:
 
 ```sh
 make headlessrun \
-  NATIVE_REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt \
-  NATIVE_REPLAY_FRAMES=13935 \
-  NATIVE_EXTRA_ARGS='--ram-dump=/tmp/c2-bird-investigation.bin'
+  REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt \
+  REPLAY_FRAMES=13935 \
+  REPLAY_EXTRA_ARGS='--ram-dump=/tmp/c2-bird-investigation.bin'
 ```
 
 Compare that dump to the JPhoenix reference dump with C-Phoenix's existing
@@ -69,8 +69,8 @@ command after creating a reference dump, use:
 
 ```sh
 make native-compare \
-  NATIVE_REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt \
-  NATIVE_REPLAY_FRAMES=13935 \
+  REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt \
+  REPLAY_FRAMES=13935 \
   NATIVE_REFERENCE_DUMP=/tmp/ref_bird-investigation.bin
 ```
 

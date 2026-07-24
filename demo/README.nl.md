@@ -81,6 +81,15 @@ alleen op hun actuele positie, zonder blijvend spoor. De eerste opdracht
 vereist GCC en SDL2, de tweede bouwt ook de C2-renderer, en de derde vereist
 een JDK en de geassembleerde ROM-set.
 
+Gebruik voor het zichtbaar afspelen van dezelfde sessie bij iedere
+implementatie dezelfde opdrachtnotatie:
+
+```sh
+make -C c-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C c2-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C jphoenix-emulator-port replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+```
+
 ### Uitvoering zichtbaar maken
 
 Ontwerpdiagrammen vertellen welke routes de broncode en ROM *kunnen* bevatten.
@@ -207,11 +216,12 @@ onder dezelfde replay-, lockstep- en tracecontrole vallen.
 
 ## Demonstratiepad
 
-Voor een korte zichtbare demonstratie in C-Phoenix:
+Voor een zichtbare demonstratie in iedere implementatie:
 
 ```sh
-make
-make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C c-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C c2-phoenix replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
+make -C jphoenix-emulator-port replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 ```
 
 Voor een volledige vergelijking en visual tracer, nadat het siblingproject
