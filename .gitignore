@@ -22,6 +22,3 @@ c2-phoenix/*.html
 .DS_Store
 .vscode/
 .idea/
-
-# Rechtgetrokken later in het deploy proces; niet in main opnemen.
-c-phoenix/phoenix_tables.c
