@@ -1,6 +1,7 @@
-.PHONY: help test demo compare summary native run replayrun headlessrun native-check native-compare native-clean
+.PHONY: help test demo compare summary native run replayrun headlessrun demorun native-check native-compare native-clean
 
 PYTHON ?= python3
+OPEN ?= open
 SCENARIO ?= bird-investigation
 TRACE ?= /tmp/$(SCENARIO)-semantic.json
 VIEWER ?= /tmp/$(SCENARIO)-c2.html
@@ -19,6 +20,14 @@ REPLAY_EXTRA_ARGS ?=
 NATIVE_REPLAY_SCRIPT ?= $(REPLAY_SCRIPT)
 NATIVE_REPLAY_FRAMES ?= $(REPLAY_FRAMES)
 NATIVE_EXTRA_ARGS ?= $(REPLAY_EXTRA_ARGS)
+DEMO_SCRIPT ?= ../c-phoenix/context/input-scripts/bird-investigation.txt
+DEMO_FRAMES ?= 13935
+DEMO_NAME ?= bird-investigation
+DEMO_DUMP ?= /tmp/c2-phoenix-$(DEMO_NAME).bin
+DEMO_TRACE_OUTPUT ?= /tmp/c2-phoenix-$(DEMO_NAME)-tracer.html
+DEMO_TRACE_KIND ?= all
+DEMO_TRACE_PLAYER ?= all
+DEMO_EXTRA_ARGS ?=
 NATIVE_REFERENCE_DUMP ?=
 NATIVE_DUMP ?= /tmp/c2-$(SCENARIO).bin
 NATIVE_COMPARE_REGIONS ?= 4340-47FF,4B40-4BE5
@@ -31,6 +40,7 @@ help:
 	@echo "  make run             Build and run C2 interactively"
 	@echo "  make replayrun       Visibly replay an input script"
 	@echo "  make headlessrun     Run a deterministic, headless replay"
+	@echo "  make demorun         Run the default demo and create a standalone C2 tracer"
 	@echo "  make native-compare  Compare a native C2 replay against a JPhoenix dump"
 	@echo "  make native-check    Verify that the C2 binary contains no graphics/PROM symbols"
 	@echo "  make native-clean    Remove generated native C2 build artefacts"
@@ -51,10 +61,21 @@ help:
 	@echo "  REPLAY_EXTRA_ARGS=$(if $(REPLAY_EXTRA_ARGS),$(REPLAY_EXTRA_ARGS),(none))"
 	@echo "  NATIVE_REPLAY_SCRIPT/NATIVE_REPLAY_FRAMES/NATIVE_EXTRA_ARGS remain supported aliases"
 	@echo ""
+	@echo "demorun defaults"
+	@echo "  DEMO_SCRIPT=$(DEMO_SCRIPT)"
+	@echo "  DEMO_FRAMES=$(DEMO_FRAMES)"
+	@echo "  DEMO_NAME=$(DEMO_NAME)"
+	@echo "  DEMO_DUMP=$(DEMO_DUMP)"
+	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
+	@echo "  DEMO_TRACE_KIND=$(DEMO_TRACE_KIND)"
+	@echo "  DEMO_TRACE_PLAYER=$(DEMO_TRACE_PLAYER)"
+	@echo "  DEMO_EXTRA_ARGS=$(if $(DEMO_EXTRA_ARGS),$(DEMO_EXTRA_ARGS),(none))"
+	@echo ""
 	@echo "examples"
 	@echo "  make run"
 	@echo "  make replayrun REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt"
 	@echo "  make headlessrun REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt REPLAY_FRAMES=13935"
+	@echo "  make demorun"
 	@echo "  make native C2_VARIANT=hires2"
 	@echo "  make native-compare NATIVE_REFERENCE_DUMP=/tmp/ref_bird-investigation.bin REPLAY_FRAMES=13935"
 
@@ -95,6 +116,13 @@ replayrun: native
 
 headlessrun: native
 	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(NATIVE_REPLAY_FRAMES) --input-script=$(NATIVE_REPLAY_SCRIPT) --no-render $(NATIVE_EXTRA_ARGS)
+
+# Standalone C2 object tracer: no JPhoenix dump or comparison needed.
+demorun: native
+	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(DEMO_SCRIPT) --no-render --ram-dump=$(DEMO_DUMP) $(DEMO_EXTRA_ARGS)
+	$(PYTHON) ../c-phoenix/tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label c2-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C2-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
+	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
+	@echo "Opened C2-Phoenix object tracer: $(DEMO_TRACE_OUTPUT)"
 
 native-check: native
 	@if nm "$(NATIVE_TARGET)" | grep -E 'gfx_mem|palette_prom|init_phoenix_palette|get_phoenix_color' >/dev/null; then \

@@ -43,6 +43,25 @@ The visual tracer turns RAM dumps into standalone HTML: a physical Phoenix
 grid, frame controls, slot structures, object trails, level transitions,
 tooltips, and object-level JPhoenix/C-Phoenix differences.
 
+## Try It on macOS
+
+From the repository root, each implementation can run the recorded
+`bird-investigation` session and open its own standalone object tracer in your
+default browser:
+
+```sh
+make -C c-phoenix demorun
+make -C c2-phoenix demorun
+make -C jphoenix-emulator-port demorun
+```
+
+Each command runs the same 13,935-frame input script headlessly, records the
+game RAM, creates an HTML tracer, and opens it with macOS `open`. The tracer
+shows object slots, positions, state metadata, and movement paths; bullets are
+shown at their current position without a persistent trail. The first command
+requires GCC and SDL2, the second also builds the C2 renderer, and the third
+requires a JDK and the assembled ROM set.
+
 ## Make Execution Visible
 
 Design diagrams describe routes that source code and the ROM *can* contain.

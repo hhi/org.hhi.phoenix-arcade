@@ -62,6 +62,25 @@ toont een fysiek Phoenix-grid, framebediening, slotstructuren, objectsporen,
 levelovergangen, tooltips en objectniveauverschillen tussen JPhoenix en
 C-Phoenix.
 
+## Probeer het op macOS
+
+Vanuit de hoofdmap van de repository kan iedere implementatie de opgenomen
+sessie `bird-investigation` afspelen en zijn eigen zelfstandige objecttracer in
+je standaardbrowser openen:
+
+```sh
+make -C c-phoenix demorun
+make -C c2-phoenix demorun
+make -C jphoenix-emulator-port demorun
+```
+
+Elke opdracht speelt hetzelfde 13.935-frame-inputscript headless af, bewaart de
+spel-RAM, maakt een HTML-tracer en opent die met macOS `open`. De tracer toont
+objectslots, posities, statusmetadata en bewegingspaden; kogels verschijnen
+alleen op hun actuele positie, zonder blijvend spoor. De eerste opdracht
+vereist GCC en SDL2, de tweede bouwt ook de C2-renderer, en de derde vereist
+een JDK en de geassembleerde ROM-set.
+
 ### Uitvoering zichtbaar maken
 
 Ontwerpdiagrammen vertellen welke routes de broncode en ROM *kunnen* bevatten.

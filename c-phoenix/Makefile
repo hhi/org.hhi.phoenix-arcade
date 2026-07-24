@@ -38,6 +38,15 @@ REPLAY_RAM_DUMP ?=
 REPLAY_COVERAGE_DUMP ?=
 REPLAY_EXTRA_ARGS ?=
 HEADLESS_ENV ?= SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy
+OPEN ?= open
+DEMO_SCRIPT ?= context/input-scripts/bird-investigation.txt
+DEMO_FRAMES ?= 13935
+DEMO_NAME ?= bird-investigation
+DEMO_RAM_DUMP ?= /tmp/c-phoenix-$(DEMO_NAME).bin
+DEMO_TRACE_OUTPUT ?= /tmp/c-phoenix-$(DEMO_NAME)-tracer.html
+DEMO_TRACE_KIND ?= all
+DEMO_TRACE_PLAYER ?= all
+DEMO_EXTRA_ARGS ?=
 RECORD_NAME ?= c-phoenix-session-$(shell date +%Y%m%d-%H%M%S)
 RECORD_SCRIPT ?= /tmp/$(RECORD_NAME).txt
 RECORD_EXTRA_ARGS ?=
@@ -57,7 +66,7 @@ VISUAL_TRACE_PLAYER ?= 1
 VISUAL_TRACE_KIND ?= auto
 VISUAL_TRACE_EXTRA_ARGS ?=
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun comparerun tracerun runtimegraph c2 c2-clean verify-rom-free docs help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun comparerun tracerun runtimegraph c2 c2-clean verify-rom-free docs help
 
 all: $(TARGET) verify-rom-free
 
@@ -128,6 +137,13 @@ replayrun: $(TARGET)
 headlessrun: $(TARGET)
 	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(REPLAY_FRAMES) --input-script=$(REPLAY_SCRIPT) --no-render $(if $(REPLAY_RAM_DUMP),--ram-dump=$(REPLAY_RAM_DUMP),) $(if $(REPLAY_COVERAGE_DUMP),--coverage-dump=$(REPLAY_COVERAGE_DUMP),) $(REPLAY_EXTRA_ARGS)
 
+# Standalone C-Phoenix object tracer: no JPhoenix dump or comparison needed.
+demorun: $(TARGET)
+	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(DEMO_SCRIPT) --no-render --ram-dump=$(DEMO_RAM_DUMP) $(DEMO_EXTRA_ARGS)
+	$(PYTHON) tools/view_sprite_trace.py $(DEMO_RAM_DUMP) --reference-label c-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
+	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
+	@echo "Opened C-Phoenix object tracer: $(DEMO_TRACE_OUTPUT)"
+
 comparerun: $(TARGET)
 	REF_DUMP=$(COMPARE_REF_DUMP) PORT_DUMP=$(COMPARE_PORT_DUMP) tools/lockstep/dump_pair.sh $(COMPARE_SCRIPT) $(COMPARE_FRAMES) $(COMPARE_NAME)
 	python3 tools/compare_ram_dumps.py $(COMPARE_REF_DUMP) $(COMPARE_PORT_DUMP) --align-c98 --regions $(COMPARE_REGIONS) --stop-after $(COMPARE_STOP_AFTER) $(COMPARE_EXTRA_ARGS)
@@ -153,6 +169,7 @@ help:
 	@echo "  make recordtracerun   Record an interactive session, then compare and trace it"
 	@echo "  make replayrun        Build and visibly replay an input script"
 	@echo "  make headlessrun      Build and run a headless replay; optionally dump RAM"
+	@echo "  make demorun          Run the default demo and create a standalone C-Phoenix tracer"
 	@echo "  make comparerun       Run replay through jphoenix and c-phoenix, then compare RAM"
 	@echo "  make tracerun         Run comparerun and generate an interactive visual tracer"
 	@echo "  make runtimegraph     Generate an executed C-function call graph"
@@ -189,6 +206,16 @@ help:
 	@echo "  HEADLESS_ENV=$(HEADLESS_ENV)"
 	@echo "  REPLAY_EXTRA_ARGS=$(if $(REPLAY_EXTRA_ARGS),$(REPLAY_EXTRA_ARGS),(none))"
 	@echo ""
+	@echo "demorun defaults"
+	@echo "  DEMO_SCRIPT=$(DEMO_SCRIPT)"
+	@echo "  DEMO_FRAMES=$(DEMO_FRAMES)"
+	@echo "  DEMO_NAME=$(DEMO_NAME)"
+	@echo "  DEMO_RAM_DUMP=$(DEMO_RAM_DUMP)"
+	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
+	@echo "  DEMO_TRACE_KIND=$(DEMO_TRACE_KIND)"
+	@echo "  DEMO_TRACE_PLAYER=$(DEMO_TRACE_PLAYER)"
+	@echo "  DEMO_EXTRA_ARGS=$(if $(DEMO_EXTRA_ARGS),$(DEMO_EXTRA_ARGS),(none))"
+	@echo ""
 	@echo "comparerun defaults"
 	@echo "  COMPARE_SCRIPT=$(COMPARE_SCRIPT)"
 	@echo "  COMPARE_FRAMES=$(COMPARE_FRAMES)"
@@ -211,6 +238,8 @@ help:
 	@echo "  make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt"
 	@echo "  make headlessrun REPLAY_FRAMES=4000 REPLAY_RAM_DUMP=/tmp/trace.bin"
 	@echo "  make headlessrun REPLAY_SCRIPT=context/input-scripts/two_player_last_grown_bird.txt REPLAY_FRAMES=9000"
+	@echo "  make demorun"
+	@echo "  make demorun DEMO_SCRIPT=context/input-scripts/bird-investigation.txt DEMO_FRAMES=13935 DEMO_NAME=bird-investigation"
 	@echo "  make comparerun COMPARE_SCRIPT=/tmp/c-phoenix-session.txt COMPARE_FRAMES=9000 COMPARE_NAME=session"
 	@echo "  make tracerun COMPARE_SCRIPT=context/input-scripts/two_player_last_grown_bird.txt COMPARE_FRAMES=9000 COMPARE_NAME=last-grown-bird COMPARE_STOP_AFTER=999999"
 	@echo "  make recordtracerun RECORD_NAME=bird-investigation"

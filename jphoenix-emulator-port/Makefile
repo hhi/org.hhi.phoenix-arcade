@@ -1,5 +1,6 @@
 JAVAC ?= javac
 JAVA ?= java
+OPEN ?= open
 
 BUILD_DIR := build
 RUNTIME_CLASSES := $(BUILD_DIR)/classes
@@ -35,8 +36,16 @@ RUNTIME_OUTPUT_DIR ?= $(CURDIR)/context/runtimegraphs/$(RUNTIME_SCENARIO)
 RUNTIME_PC_COVERAGE_DIR ?= $(RUNTIME_OUTPUT_DIR)/pc-coverage
 RUNTIME_LABELS ?= ../c-phoenix/context/code-annotated.asm
 ROM_DIR ?= ../roms/assembled
+DEMO_SCRIPT ?= ../c-phoenix/context/input-scripts/bird-investigation.txt
+DEMO_FRAMES ?= 13935
+DEMO_NAME ?= bird-investigation
+DEMO_DUMP ?= /tmp/jphoenix-$(DEMO_NAME).bin
+DEMO_COVERAGE_DIR ?= /tmp/jphoenix-$(DEMO_NAME)-coverage
+DEMO_TRACE_OUTPUT ?= /tmp/jphoenix-$(DEMO_NAME)-tracer.html
+DEMO_TRACE_KIND ?= all
+DEMO_TRACE_PLAYER ?= all
 
-.PHONY: all compile run runtimegraph libgdx run-libgdx verify verify-libgdx artifacts clean
+.PHONY: all compile run demorun runtimegraph libgdx run-libgdx verify verify-libgdx artifacts clean help
 
 all: compile
 
@@ -46,6 +55,15 @@ compile:
 
 run: compile
 	$(JAVA) -cp $(RUNTIME_CLASSES) PhoenixDesktop $(if $(ROM_DIR),--rom-dir=$(ROM_DIR))
+
+# Standalone JPhoenix object tracer: runs an input script, records RAM, and
+# renders the same HTML tracer used by the C implementations.
+demorun: compile
+	mkdir -p $(DEMO_COVERAGE_DIR)
+	$(JAVA) -Dphoenix.inputclock=poll -Dphoenix.romdir=$(ROM_DIR) -Dphoenix.ramdump=$(DEMO_DUMP) -Dphoenix.ramdump.frames=$(DEMO_FRAMES) -cp $(RUNTIME_CLASSES) PhoenixCoverageRunner $(DEMO_SCRIPT) $(DEMO_COVERAGE_DIR) $(DEMO_FRAMES)
+	python3 ../c-phoenix/tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label jphoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "JPhoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
+	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
+	@echo "Opened JPhoenix object tracer: $(DEMO_TRACE_OUTPUT)"
 
 runtimegraph: compile
 	@test -n "$(RUNTIME_SCENARIO)" || { echo "Usage: make runtimegraph RUNTIME_SCENARIO=<input-script-without-.txt> RUNTIME_FRAMES=<frames>"; exit 2; }
@@ -91,3 +109,22 @@ artifacts: verify
 clean:
 	rm -rf $(BUILD_DIR) sound-renders
 	rm -f *.class
+
+help:
+	@echo "jphoenix-emulator-port make targets"
+	@echo ""
+	@echo "  make compile    Compile JPhoenix"
+	@echo "  make run        Build and run the desktop emulator"
+	@echo "  make demorun    Run the default demo and create a standalone JPhoenix tracer"
+	@echo "  make verify     Run the Java verification suite"
+	@echo "  make help       Show this help"
+	@echo ""
+	@echo "demorun defaults"
+	@echo "  DEMO_SCRIPT=$(DEMO_SCRIPT)"
+	@echo "  DEMO_FRAMES=$(DEMO_FRAMES)"
+	@echo "  DEMO_NAME=$(DEMO_NAME)"
+	@echo "  DEMO_DUMP=$(DEMO_DUMP)"
+	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
+	@echo ""
+	@echo "example"
+	@echo "  make demorun"
