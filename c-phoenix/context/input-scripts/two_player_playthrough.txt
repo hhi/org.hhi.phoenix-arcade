@@ -1,0 +1,14 @@
+# Front: bank switching / 2-player verification. Two coins (a 2-player
+# game costs 2 credits -- with only 1, PromptForStartGame's start-button
+# mask only checks start1, per the real arcade's economics), then start2
+# to begin a 2-player game, then hold fire and don't move so the active
+# player dies repeatedly, exercising the player-turn switch
+# (copy_memory_bank / bank_swap_to) each time.
+20 coin press
+25 coin release
+30 coin press
+35 coin release
+50 start2 press
+110 start2 release
+160 fire press
+9000 fire release

@@ -1,0 +1,75 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    runtimeOnly "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
+def emulatorCoreSources = [
+    'I8080.java',
+    'MameLofiResampler.java',
+    'PcmSink.java',
+    'PcCoverage.java',
+    'Phoenix.java',
+    'PhoenixCoverageRunner.java',
+    'PhoenixFrameBuffer.java',
+    'PhoenixGraphicsDecoder.java',
+    'PhoenixPalette.java',
+    'PhoenixInputScript.java',
+    'PhoenixSaveState.java',
+    'PhoenixStateHotkeys.java',
+    'PhoenixVideoRenderer.java',
+    'RomLoader.java',
+    'Sound.java',
+    'SoundControlMapping.java',
+    'TMS36XX.java'
+]
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['.']
+            include emulatorCoreSources
+            include 'libgdx/src/main/java/*.java'
+        }
+    }
+    test {
+        java {
+            srcDirs = ['libgdx/src/test/java', 'tests']
+            include 'LibGdxFrontendTest.java'
+            include 'PhoenixGraphicsDecoderTest.java'
+        }
+    }
+}
+
+application {
+    mainClass = 'PhoenixLibGdxLauncher'
+}
+
+tasks.named('run') {
+    workingDir = rootProject.projectDir
+    jvmArgs '--enable-native-access=ALL-UNNAMED'
+    if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+        jvmArgs '-XstartOnFirstThread'
+    }
+}
+
+tasks.register('verifyLibgdx', JavaExec) {
+    dependsOn testClasses
+    dependsOn verifyGraphicsDecoder
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'LibGdxFrontendTest'
+}
+
+tasks.register('verifyGraphicsDecoder', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'PhoenixGraphicsDecoderTest'
+}

@@ -1,0 +1,7 @@
+digraph StubHunterGraph {
+  node [shape=box, style=filled, fillcolor=white, fontname="Helvetica", fontsize=12];
+  edge [color=red, penwidth=2.0];
+  rankdir=LR;
+  splines=true;
+  overlap=false;
+}

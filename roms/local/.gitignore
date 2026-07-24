@@ -1,0 +1,5 @@
+# Chip dumps live here locally only (copyrighted ROM content); see roms/README.md.
+*
+!.gitignore
+!README.md
+!README.nl.md

@@ -1,0 +1,47 @@
+# Java and JVM build output
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+*.nar
+*.log
+hs_err_pid*
+replay_pid*
+build/
+out/
+target/
+.gradle/
+
+# Generated sound comparison artifacts
+/sound-renders/
+/cfg/
+/snap/
+/context/runtimegraphs/
+
+# Local runtime state
+/hiscore.sav
+/jphoenix.state
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+tools/__pycache__/

@@ -1,0 +1,9 @@
+# Front 3: coin-in, start, then hold fire and do not move -- lets aliens
+# dive into a stationary ship to exercise player death, lives-loss down
+# to zero, and the game-over/attract-mode-return transition.
+20 coin press
+25 coin release
+40 start1 press
+100 start1 release
+150 fire press
+5900 fire release

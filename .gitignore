@@ -1,0 +1,27 @@
+# Shared generated output
+c2-phoenix/native/c2_legacy_sprite_assets.h
+c2-phoenix/native/c2_hires_sprite_assets.h
+**/build/
+**/__pycache__/
+*.pyc
+*.o
+*.class
+
+# Generated traces and RAM dumps. The curated gzip fixtures below are exceptions.
+*.bin
+*.html
+c2-phoenix/*.json
+c2-phoenix/*.html
+!c-phoenix/context/traces/two_player_last_grown_bird_compare/last-grown-bird-diff.html.zip
+!c-phoenix/context/traces/two_player_last_grown_bird_compare/*.bin.gz
+!demo/c2-hires-variants-comparison.html
+
+# Local runtime state and tooling
+*.log
+.gradle/
+.DS_Store
+.vscode/
+.idea/
+
+# Rechtgetrokken later in het deploy proces; niet in main opnemen.
+c-phoenix/phoenix_tables.c

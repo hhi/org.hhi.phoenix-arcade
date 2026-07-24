@@ -1,0 +1,26 @@
+# Front 3 input script: coin-in, start 1-player, then basic movement/fire
+# to exercise real gameplay for lockstep verification.
+#
+# Button holds are deliberately long (tens of frames), not single-frame
+# pulses: clear_fore_and_background() (L0140) calls wait_vblank_coin()
+# twice internally on top of the outer per-frame call, so frame_counter
+# does not advance 1:1 with the outer dispatch loop that reads input in
+# every code path. A short pulse can land entirely between the frames
+# the game actually samples IN0. A real player's press also lasts many
+# frames, so this matches authentic input timing anyway.
+20 coin press
+25 coin release
+40 start1 press
+100 start1 release
+250 fire press
+251 fire release
+270 fire press
+271 fire release
+300 right press
+330 right release
+350 fire press
+351 fire release
+370 fire press
+371 fire release
+400 left press
+430 left release

@@ -1,0 +1,6 @@
+file,duration_seconds,peak,rms,clipped_samples
+effect2_bird_hit.wav,2.000000,5736,2641.621837,0
+effect1_shield_explosion.wav,2.000000,5988,2786.267601,0
+effect1_filtered.wav,2.000000,3415,638.382486,0
+noise_control.wav,2.000000,13107,7633.154206,0
+music_tune.wav,4.000000,6855,2995.459099,0

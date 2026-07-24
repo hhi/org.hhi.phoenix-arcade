@@ -1,0 +1,317 @@
+{
+  "frames": {
+    "first": 1,
+    "last": 25999,
+    "total": 25999
+  },
+  "game_states": {
+    "0": {
+      "first_frame": 1,
+      "hits": 3054
+    },
+    "1": {
+      "first_frame": 46,
+      "hits": 1295
+    },
+    "2": {
+      "first_frame": 174,
+      "hits": 35
+    },
+    "3": {
+      "first_frame": 175,
+      "hits": 19771
+    },
+    "4": {
+      "first_frame": 3447,
+      "hits": 1056
+    },
+    "5": {
+      "first_frame": 12528,
+      "hits": 788
+    },
+    "6": {
+      "first_frame": 0,
+      "hits": 0
+    },
+    "7": {
+      "first_frame": 0,
+      "hits": 0
+    }
+  },
+  "hits": {
+    "alien_hit_player": {
+      "first_frame": 14463,
+      "hits": 3,
+      "last_frame": 25253
+    },
+    "alien_killed_with_score": {
+      "first_frame": 446,
+      "hits": 67,
+      "last_frame": 25253
+    },
+    "alien_with_player_collision_scan": {
+      "first_frame": 431,
+      "hits": 3836,
+      "last_frame": 25253
+    },
+    "check_enemy_bullet_to_player_collision": {
+      "first_frame": 431,
+      "hits": 13702,
+      "last_frame": 25253
+    },
+    "collision_detection_for_birds": {
+      "first_frame": 4224,
+      "hits": 8744,
+      "last_frame": 25999
+    },
+    "enemy_bullet_hit_player": {
+      "first_frame": 3446,
+      "hits": 8,
+      "last_frame": 23221
+    },
+    "enemy_bullet_movement": {
+      "first_frame": 432,
+      "hits": 44470,
+      "last_frame": 25999
+    },
+    "game_state_machine": {
+      "first_frame": 45,
+      "hits": 22948,
+      "last_frame": 25999
+    },
+    "l2000_alien_wave_main_loop": {
+      "first_frame": 431,
+      "hits": 13702,
+      "last_frame": 25253
+    },
+    "large_bird_or_egg_hit": {
+      "first_frame": 4648,
+      "hits": 4,
+      "last_frame": 6284
+    },
+    "level_0_and_2_aliens_fade_in": {
+      "first_frame": 175,
+      "hits": 1324,
+      "last_frame": 24831
+    },
+    "level_1_3_B_player_alive_aliens": {
+      "first_frame": 431,
+      "hits": 13702,
+      "last_frame": 25253
+    },
+    "level_4_6_8_spiral_fill": {
+      "first_frame": 4168,
+      "hits": 440,
+      "last_frame": 25508
+    },
+    "level_5_7_birds_fade_in": {
+      "first_frame": 4224,
+      "hits": 4087,
+      "last_frame": 25999
+    },
+    "level_9_mothership_fade_in": {
+      "first_frame": 6896,
+      "hits": 216,
+      "last_frame": 21218
+    },
+    "level_A_mothership_and_aliens_fade_in": {
+      "first_frame": 6969,
+      "hits": 147,
+      "last_frame": 21268
+    },
+    "mothership_animation": {
+      "first_frame": 7019,
+      "hits": 9091,
+      "last_frame": 23221
+    },
+    "mothership_core_gate_not_70_seen": {
+      "first_frame": 10991,
+      "hits": 13,
+      "last_frame": 12259
+    },
+    "mothership_core_window_seen": {
+      "first_frame": 10991,
+      "hits": 13,
+      "last_frame": 12259
+    },
+    "mothership_tile_4c_hit": {
+      "first_frame": 7052,
+      "hits": 227,
+      "last_frame": 23209
+    },
+    "mothership_tile_60_hit": {
+      "first_frame": 7771,
+      "hits": 69,
+      "last_frame": 12287
+    },
+    "mothership_tile_hit": {
+      "first_frame": 7052,
+      "hits": 296,
+      "last_frame": 23209
+    },
+    "move_player": {
+      "first_frame": 431,
+      "hits": 17789,
+      "last_frame": 25999
+    },
+    "no_birds_left": {
+      "first_frame": 5515,
+      "hits": 383,
+      "last_frame": 6838
+    },
+    "player_bullet_collision_scan": {
+      "first_frame": 431,
+      "hits": 27404,
+      "last_frame": 25253
+    },
+    "player_killed": {
+      "first_frame": 3446,
+      "hits": 11,
+      "last_frame": 25253
+    },
+    "player_shield_pressed": {
+      "first_frame": 4440,
+      "hits": 6,
+      "last_frame": 25880
+    },
+    "player_update": {
+      "first_frame": 431,
+      "hits": 17789,
+      "last_frame": 25999
+    },
+    "process_birds": {
+      "first_frame": 4224,
+      "hits": 4087,
+      "last_frame": 25999
+    },
+    "process_enemy_bombs": {
+      "first_frame": 432,
+      "hits": 8894,
+      "last_frame": 25999
+    },
+    "small_bird_hit": {
+      "first_frame": 4366,
+      "hits": 25,
+      "last_frame": 25924
+    },
+    "spawn_player_bullet": {
+      "first_frame": 431,
+      "hits": 585,
+      "last_frame": 25977
+    },
+    "state_0_new_game_start": {
+      "first_frame": 45,
+      "hits": 7,
+      "last_frame": 24447
+    },
+    "state_1_flashing_score": {
+      "first_frame": 46,
+      "hits": 1295,
+      "last_frame": 25452
+    },
+    "state_2_init_game_and_level_data": {
+      "first_frame": 174,
+      "hits": 35,
+      "last_frame": 25509
+    },
+    "state_3_normal_game_play": {
+      "first_frame": 175,
+      "hits": 19772,
+      "last_frame": 25999
+    },
+    "state_4_player_ship_explosion": {
+      "first_frame": 3447,
+      "hits": 1056,
+      "last_frame": 25349
+    },
+    "state_5_game_over_text": {
+      "first_frame": 12528,
+      "hits": 783,
+      "last_frame": 25400
+    }
+  },
+  "levels": {
+    "0": {
+      "first_frame": 1,
+      "hits": 4581
+    },
+    "1": {
+      "first_frame": 430,
+      "hits": 3779
+    },
+    "2": {
+      "first_frame": 2499,
+      "hits": 161
+    },
+    "3": {
+      "first_frame": 2660,
+      "hits": 1507
+    },
+    "4": {
+      "first_frame": 4167,
+      "hits": 377
+    },
+    "5": {
+      "first_frame": 4223,
+      "hits": 3680
+    },
+    "6": {
+      "first_frame": 5706,
+      "hits": 56
+    },
+    "7": {
+      "first_frame": 5762,
+      "hits": 1077
+    },
+    "8": {
+      "first_frame": 6839,
+      "hits": 414
+    },
+    "9": {
+      "first_frame": 6895,
+      "hits": 219
+    },
+    "A": {
+      "first_frame": 6968,
+      "hits": 150
+    },
+    "B": {
+      "first_frame": 7018,
+      "hits": 9998
+    },
+    "C": {
+      "first_frame": 0,
+      "hits": 0
+    },
+    "D": {
+      "first_frame": 0,
+      "hits": 0
+    },
+    "E": {
+      "first_frame": 0,
+      "hits": 0
+    },
+    "F": {
+      "first_frame": 0,
+      "hits": 0
+    }
+  },
+  "summary": {
+    "attract_frames": 13384,
+    "bird_wave_frames": 4757,
+    "bird_wave_gameplay_frames": 2560,
+    "enemy_bullet_active_frames": 10621,
+    "game_overs": 8,
+    "gameplay_frames": 12615,
+    "intro_splash_frames": 3043,
+    "level_transitions": 31,
+    "max_gameplay_level_and_round": 11,
+    "max_level_and_round": 11,
+    "mothership_frames": 10367,
+    "mothership_gameplay_frames": 5761,
+    "player1_frames": 22956,
+    "player2_frames": 0,
+    "player_bullet_active_frames": 8783,
+    "player_deaths": 11
+  }
+}
