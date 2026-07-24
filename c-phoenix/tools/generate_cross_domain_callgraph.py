@@ -7,7 +7,7 @@ def main():
     dir_path = os.path.abspath(os.path.join(script_dir, ".."))
 
     categories = {
-        "Core_Architecture": ["platform_sdl.c", "hw_video_audio.c", "rom_data.c"],
+        "Core_Architecture": ["platform_sdl.c", "hw_video_audio.c", "phoenix_render_assets.h"],
         "Game_State": ["game_state_machine.c", "state_init.c", "state_play.c", "state_endings.c", "attract_mode.c"],
         "Audio": ["sound.c", "sound_discrete.c", "tms36xx.c", "mame_lofi_resampler.c"],
         "Entity_Logic": ["player_logic.c", "player_explosion.c", "bird_logic.c", "birds_vertical_movement.c", "bird_wave_behavior.c", "alien_logic.c", "alien_wave.c", "mothership_logic.c", "mothership_impl.c"],

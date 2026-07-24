@@ -14,7 +14,8 @@ zijn ze scherper en beter leesbaar op een modern scherm.
 ## Buildatlas, Geen Runtime-ROM
 
 `make c2` voert [generate_hires_sprite_assets.py](tools/generate_hires_sprite_assets.py)
-uit wanneer de brondata verandert. Het script leest lokaal `c-phoenix/rom_data.c`
+uit wanneer de brondata verandert. Het script leest de samengestelde
+`graphics.rom`- en `proms.rom`-images en
 en genereert `native/c2_hires_sprite_assets.h` met:
 
 - afzonderlijke 16x16 C2-hi-resglyphs voor ieder oorspronkelijk foreground- en backgroundkarakter;

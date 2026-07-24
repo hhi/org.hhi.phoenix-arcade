@@ -37,13 +37,10 @@ en lockstep-dumphooks. De C2-renderer vervangt uitsluitend de oorspronkelijke
 pixelroute via `graphics.rom` en kleur-PROMs door eigen tekeningen van speler,
 projectielen, aliens, vogels, ontploffingen, schild en grid.
 
-De gedeelde C-gamecore heeft voor het grootste deel nog steeds `prg_mem` nodig:
-een ingesloten programmadatatabel voor bewegings-, golf-, botsings-, level- en
-teksttabellen. De verticale scroll- en daalsnelheidstabellen van de vogels zijn
-al benoemde C-data in `c-phoenix/phoenix_tables.c`; de overige tabellen worden
-per geverifieerde ROM-regio geëxtraheerd. Deze native stand laadt geen externe
-ROM-bestanden, maar is nog geen zelfstandige gamecore waarin al die tabellen
-semantisch zijn herschreven.
+De gedeelde C-gamecore gebruikt benoemde tabellen in
+`c-phoenix/phoenix_tables.c` voor bewegingen, golven, botsingen, levels en
+tekst. De native runtime heeft geen program-ROM-leespad; samengestelde
+ROM-images zijn alleen build-time-invoer.
 
 Het visuele contract en de state-naar-posemapping staan in
 [NATIVE-ART.nl.md](NATIVE-ART.nl.md). De Engelse versie is

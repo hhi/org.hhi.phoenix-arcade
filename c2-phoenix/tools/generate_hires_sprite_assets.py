@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Generate the ROM-derived, runtime-independent C2 hi-res glyph atlases."""
+"""Generate runtime-independent C2 hi-res glyph atlases from ROM images."""
 
 import argparse
-import re
 from pathlib import Path
 
+GRAPHICS_SIZE = 0x2000
+PROMS_SIZE = 0x200
+PROM_HALF = 0x100
 
-ARRAY_PATTERN = r"const uint8_t {name}\[[^]]+\] = \{{(.*?)\}};"
 
-
-def read_array(source, name):
-    match = re.search(ARRAY_PATTERN.format(name=name), source, re.DOTALL)
-    if not match:
-        raise ValueError(f"Could not find {name} in rom_data.c")
-    return [int(value, 0) for value in re.findall(r"0x[0-9A-Fa-f]+|\d+", match.group(1))]
+def read_exact(path, size, label):
+    data = path.read_bytes()
+    if len(data) != size:
+        raise ValueError(f"{label}: {path} is {len(data)} bytes, expected {size}")
+    return data
 
 
 def compute_channel(inputs):
@@ -151,16 +151,18 @@ def render_header(background_tiles, foreground_tiles, palette):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--rom-data", type=Path, required=True)
+    parser.add_argument("--graphics", type=Path, required=True,
+                        help="Path to graphics.rom (8192 bytes)")
+    parser.add_argument("--proms", type=Path, required=True,
+                        help="Path to proms.rom (512 bytes)")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    source = args.rom_data.read_text(encoding="ascii")
-    gfx = read_array(source, "gfx_mem")
-    prom_a = read_array(source, "palette_prom_a")
-    prom_b = read_array(source, "palette_prom_b")
-    if len(gfx) != 0x2000 or len(prom_a) < 128 or len(prom_b) < 128:
-        raise ValueError("Unexpected graphics or colour-PROM data length")
+    gfx = read_exact(args.graphics, GRAPHICS_SIZE, "graphics ROM")
+    proms = read_exact(args.proms, PROMS_SIZE, "colour PROM ROM")
+    # proms.rom stores the low colour bits first, then the high bits.
+    prom_b = proms[:PROM_HALF]
+    prom_a = proms[PROM_HALF:]
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(render_header(decode_tiles(gfx, 0x0000),

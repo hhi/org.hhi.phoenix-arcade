@@ -8,7 +8,7 @@
 #include "phoenix_hw.h"
 #include "phoenix_state.h"
 #ifndef C2_RENDERER
-#include "rom_data.h"
+#include "phoenix_render_assets.h"
 #else
 #include "c2_renderer.h"
 #endif
@@ -192,66 +192,11 @@ static int game_thread_func(void* ptr) {
 // bit-identical to jphoenix's bitswap7(pen) result, so no extra
 // permutation step is needed here; only the color math was simplified
 // before.
-static int compute_channel(int inputs) {
-    double conductance = 1.0 / 100.0 + 1.0 / 270.0;
-    double current = 5.0 / 100.0;
-    if ((inputs & 0x01) == 0) {
-        conductance += 1.0 / 270.0;
-        current += 0.05 / 270.0;
-    }
-    if ((inputs & 0x02) == 0) {
-        conductance += 1.0;
-        current += 0.05;
-    }
-    double voltage = current / conductance;
-    return (int)(voltage * 255.0 / 5.0 + 0.4);
-}
-
-static int clamp_byte(int value) {
-    if (value < 0) return 0;
-    if (value > 255) return 255;
-    return value;
-}
-
-static uint8_t g_palette_r[128];
-static uint8_t g_palette_g[128];
-static uint8_t g_palette_b[128];
-static bool g_palette_ready = false;
-
-static void init_phoenix_palette(void) {
-    int raw_r[128], raw_g[128], raw_b[128], lum[128];
-    for (int addr = 0; addr < 128; addr++) {
-        uint8_t low = palette_prom_b[addr];  // ic40
-        uint8_t high = palette_prom_a[addr]; // ic41
-        raw_r[addr] = compute_channel((low & 0x01) | ((high & 0x01) << 1));
-        raw_g[addr] = compute_channel(((low >> 2) & 0x01) | (((high >> 2) & 0x01) << 1));
-        raw_b[addr] = compute_channel(((low >> 1) & 0x01) | (((high >> 1) & 0x01) << 1));
-    }
-
-    int min_lum = 1000 * 255;
-    int max_lum = 0;
-    for (int i = 0; i < 128; i++) {
-        lum[i] = 299 * raw_r[i] + 587 * raw_g[i] + 114 * raw_b[i];
-        if (lum[i] < min_lum) min_lum = lum[i];
-        if (lum[i] > max_lum) max_lum = lum[i];
-    }
-    for (int i = 0; i < 128; i++) {
-        int u = (raw_b[i] - lum[i] / 1000) * 492 / 1000;
-        int v = (raw_r[i] - lum[i] / 1000) * 877 / 1000;
-        int target = ((lum[i] - min_lum) * 256) / (max_lum - min_lum);
-        g_palette_r[i] = (uint8_t)clamp_byte(target + 1140 * v / 1000);
-        g_palette_g[i] = (uint8_t)clamp_byte(target - 395 * u / 1000 - 581 * v / 1000);
-        g_palette_b[i] = (uint8_t)clamp_byte(target + 2032 * u / 1000);
-    }
-    g_palette_ready = true;
-}
-
 static void get_phoenix_color(uint8_t prom_idx, uint8_t *r, uint8_t *g, uint8_t *b) {
-    if (!g_palette_ready) init_phoenix_palette();
-    prom_idx &= 0x7F;
-    *r = g_palette_r[prom_idx];
-    *g = g_palette_g[prom_idx];
-    *b = g_palette_b[prom_idx];
+    PhoenixRgb colour = phoenix_palette_rgb[prom_idx & 0x7F];
+    *r = colour.red;
+    *g = colour.green;
+    *b = colour.blue;
 }
 #endif
 
@@ -795,14 +740,9 @@ int main(int argc, char* argv[]) {
             int screen_x = (25 - grid_x) * 8;
             int screen_y = grid_y * 8;
             
-            uint16_t tile_base = 0x0000 + (tile_idx * 8); 
             for (int ty = 0; ty < 8; ty++) {
-                uint8_t b0 = gfx_mem[tile_base + ty + 0x800]; 
-                uint8_t b1 = gfx_mem[tile_base + ty];         
-                
                 for (int tx = 0; tx < 8; tx++) {
-                    int bit = 7 - tx;
-                    int color_idx = (((b0 >> bit) & 1) << 1) | ((b1 >> bit) & 1);
+                    int color_idx = phoenix_background_tiles[tile_idx][ty * 8 + tx];
                     
                     // Background uses is_fg = 0
                     uint8_t prom_idx = ((g_palette_bank & 1) << 6) | (0x00) | (color_idx << 3) | ((tile_idx >> 5) & 0x07);
@@ -840,14 +780,9 @@ int main(int argc, char* argv[]) {
             int screen_x = (25 - grid_x) * 8;
             int screen_y = grid_y * 8;
             
-            uint16_t tile_base = 0x1000 + (tile_idx * 8); 
             for (int ty = 0; ty < 8; ty++) {
-                uint8_t b0 = gfx_mem[tile_base + ty + 0x800]; 
-                uint8_t b1 = gfx_mem[tile_base + ty];         
-                
                 for (int tx = 0; tx < 8; tx++) {
-                    int bit = 7 - tx;
-                    int color_idx = (((b0 >> bit) & 1) << 1) | ((b1 >> bit) & 1);
+                    int color_idx = phoenix_foreground_tiles[tile_idx][ty * 8 + tx];
                     
                     if (color_idx > 0) { 
                         // Foreground uses is_fg = 1 (0x20)

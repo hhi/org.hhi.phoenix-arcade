@@ -13,7 +13,8 @@ Phoenix while becoming sharper and more legible on a modern display.
 ## Build Atlas, Not Runtime ROM
 
 `make c2` runs [generate_hires_sprite_assets.py](tools/generate_hires_sprite_assets.py)
-when its source data changes. The script reads local `c-phoenix/rom_data.c` and
+when its source data changes. The script reads the assembled `graphics.rom` and
+`proms.rom` images and
 generates `native/c2_hires_sprite_assets.h` containing:
 
 - dedicated 16x16 C2 hi-res glyphs for each original foreground and background character;

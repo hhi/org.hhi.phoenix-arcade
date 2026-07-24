@@ -36,13 +36,9 @@ and lockstep dump hooks. The C2 renderer replaces only the original
 `graphics.rom`/colour-PROM pixel route with its own player, projectile, alien,
 bird, explosion, shield, and grid drawings.
 
-The shared C gamecore still mostly requires `prg_mem`: an embedded program-data
-table used for movement, wave, collision, level, and text tables. The bird
-vertical scroll and descent tables are already named C data in
-`c-phoenix/phoenix_tables.c`; the remaining tables are being extracted one
-verified region at a time. This native mode does not load external ROM files,
-but it is not yet an independent gamecore with all those tables semantically
-rewritten.
+The shared C gamecore uses named tables in `c-phoenix/phoenix_tables.c` for
+movement, waves, collisions, levels, and text. The native runtime has no
+program-ROM read path; assembled ROM images are build-time inputs only.
 
 The visual contract and state-to-pose mapping are documented in
 [NATIVE-ART.md](NATIVE-ART.md). The Dutch version is

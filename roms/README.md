@@ -47,12 +47,14 @@ make romprepare
 
 It also prepares two C source files:
 
-- `c-phoenix/rom_data.c` is a generated C version of the three assembled ROM
-  files: their bytes are stored as C arrays. The classic C-Phoenix renderer
-  uses those arrays for the original graphics and colours.
+- The assembled ROM files are retained as reproducible build and byte-level
+  test inputs. The classic C-Phoenix renderer uses generated decoded tile
+  pixels and RGB colours, so it does not link raw ROM arrays.
 - `c-phoenix/phoenix_tables.c` contains named game-data tables for the shared
   game core. This lets C-Phoenix and C2-Phoenix use the game rules and timing
   without searching the program ROM directly while playing.
+- C2-Phoenix generates its hi-res sprite atlas directly from `graphics.rom`
+  and `proms.rom`; that build-time step does not read `program.rom`.
 
 The assembled files are then used by the projects:
 

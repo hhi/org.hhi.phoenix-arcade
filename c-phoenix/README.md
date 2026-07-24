@@ -228,7 +228,7 @@ Project Structure
 - `platform_sdl.c` - SDL2 platform layer for windowing, rendering, input,
   threading, and command-line options.
 - `phoenix_hw.h` / `hw_video_audio.c` - hardware I/O emulation.
-- `rom_data.c` - original ROM bytes.
+- `phoenix_render_assets.h` - generated decoded tile pixels and RGB palette.
 - `context/` - ASM reference, mappings, callgraphs, and input scripts.
 - `tools/compare_ram_dumps.py` - lockstep comparison.
 - `tools/lockstep/` - scripted batch lockstep verification tools.

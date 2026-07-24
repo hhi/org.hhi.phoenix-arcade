@@ -215,8 +215,8 @@ void slow_print_score_average_table(void) {
 
     // Z80 explicitly loads D from hl_val and E from hl_val + 1
     // D is the high byte, E is the low byte
-    // 01B3: LD D,(HL) -> D = prg_mem[hl_val]
-    // 01B5: LD E,(HL+1) -> E = prg_mem[hl_val+1]
+    // 01B3: LD D,(HL) -> D = original ROM byte at hl_val
+    // 01B5: LD E,(HL+1) -> E = original ROM byte at hl_val+1
     uint16_t de = (phoenix_score_average_text_page[hl_val - 0x1860] << 8)
                 | phoenix_score_average_text_page[hl_val + 1 - 0x1860];
     
@@ -593,11 +593,10 @@ void l1ee0(void) {
         c--;
     } while (c != 0);
 
-    // After 26 column steps DE has walked past the screen into ROM
-    // ($3FFD); the original anti-piracy checksum deliberately reads that
-    // ROM byte so the total sums to 0 for an unmodified copyright line.
-    // mem_read already routes <$4000 to prg_mem, matching that.
-    uint8_t a = mem_read(de);
+    // After 26 column steps DE is $3FFD. The original anti-piracy checksum
+    // deliberately reads that byte so the total sums to 0 for an unmodified
+    // copyright line. $3FFD is offset 0x7D in the extracted $3F80-$3FFF page.
+    uint8_t a = phoenix_bird_data_alt_page[0x7D];
     a += b;
     a += 0x27;
     mem_write(0x4389, mem_read(0x4389) + a);

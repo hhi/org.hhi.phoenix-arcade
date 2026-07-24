@@ -8,7 +8,6 @@
       "output": "program.rom",
       "size": 16384,
       "sha256": "261cddb2f0ef45248f976d56f810e3b6a5e71284ba57dbeade31aae562728e2e",
-      "c_symbol": "prg_mem",
       "chips": [
         { "file": "ic45", "offset": 0, "size": 2048, "sha256": "af3a7ed46febf3aab47199bd5f952e828ebafe1e71d8341340a43306c8989474" },
         { "file": "ic46", "offset": 2048, "size": 2048, "sha256": "a22ca116f5684900ce1f3f79f85246bf5da599bcb5740912c5a36fcc363c9cab" },
@@ -25,7 +24,6 @@
       "output": "graphics.rom",
       "size": 8192,
       "sha256": "e11168866950870074e7a5f9bcb749dedd2c89f8c8643c174710b73d21a96545",
-      "c_symbol": "gfx_mem",
       "chips": [
         { "file": "b1-ic39.3b", "offset": 0, "size": 2048, "sha256": "f3829c37813bd900aded57376075dca2003b93f17b18aee5cf4c91f6a1f5a1a4", "role": "foreground graphics bitplane 0" },
         { "file": "b2-ic40.4b", "offset": 2048, "size": 2048, "sha256": "fd650a7c7bfecb6c7ea21b82733fc3468a5a2481b4df8d51c3574eb8fce2dbbb", "role": "foreground graphics bitplane 1" },
@@ -39,8 +37,8 @@
       "size": 512,
       "sha256": "4dc21d169eb6f344e1af22ecb2cfe6423fd5e14b4a5f2df2e2e188d26a062b37",
       "chips": [
-        { "file": "mmi6301.ic40", "offset": 0, "size": 256, "sha256": "a562286665950882048a03994f78ab5b6f472e9405a8302f1833f3655877ea1e", "role": "low colour bits", "c_symbol": "palette_prom_b" },
-        { "file": "mmi6301.ic41", "offset": 256, "size": 256, "sha256": "88e0c79c0c59e1724d8de46833422938ee630a34150418f02f28e15482bc4c3d", "role": "high colour bits", "c_symbol": "palette_prom_a" }
+        { "file": "mmi6301.ic40", "offset": 0, "size": 256, "sha256": "a562286665950882048a03994f78ab5b6f472e9405a8302f1833f3655877ea1e", "role": "low colour bits" },
+        { "file": "mmi6301.ic41", "offset": 256, "size": 256, "sha256": "88e0c79c0c59e1724d8de46833422938ee630a34150418f02f28e15482bc4c3d", "role": "high colour bits" }
       ]
     }
   ]

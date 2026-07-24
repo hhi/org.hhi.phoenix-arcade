@@ -37,9 +37,9 @@ bug today, but an unmerged duplicate that could silently diverge later.
 **A follow-up full audit of all 163 `mem_read()` call sites in the codebase
 (same date) found a second, previously invisible ROM-read path.**
 `mem_read()` ([z80_core.h](../z80_core.h)) is the central Z80 address
-decoder and falls through to `prg_mem` transparently for any address
-`< 0x4000` -- code reading ROM through it never appears in a `prg_mem[`
-grep. Of the 163 sites, all but one function turned out to operate purely
+decoder previously fell through to program ROM for any address `< 0x4000` --
+code reading ROM through it never appeared in a `prg_mem[` grep. Of the 163
+sites, all but one function turned out to operate purely
 on RAM addresses (struct offsets, screen positions, all `>= 0x4000` by
 construction); the one exception is `utilities.c:print_text_lines()`
 (and its `draw_row()` helper), called from 6 files with fixed literal ROM
@@ -48,6 +48,11 @@ addresses (`0x1800`, `0x1960`, `0x19C0`, `0x1A00`, `0x1BA0`) -- exactly
 (`0x1960`/`0x19C0`/`0x1A00`) that happen to fall inside the already-
 extracted `score-average-scroll-text-page`'s byte range without that
 reader actually using the array.
+
+The remaining deliberate `$3FFD` anti-piracy checksum read in
+`attract_mode.c:l1ee0` was subsequently rewired to the already-extracted
+`phoenix_bird_data_alt_page[0x7D]`. `mem_read()` now reports the address and
+aborts on any attempted program-ROM read; no program-ROM C source remains.
 
 This audit also **solved `stars_scroll_down`'s previously-unresolved RAM
 pointer** (`M43B2:M43B3`, documented in `RAMUse.md` as targeting "T1C00 or
@@ -410,7 +415,7 @@ of it for history.
 
 Move one region at a time into a named `const` array in `phoenix_tables.c`,
 declare it from `phoenix_tables.h`, retain its ASM range, add a byte-for-byte
-test against `rom_data.c`, then run a deterministic lockstep replay. The JSON
+test against `roms/assembled/program.rom`, then run a deterministic lockstep replay. The JSON
 catalog is updated in the same change.
 
 Both `phoenix_tables.c` and `phoenix_tables.h` are kept sorted by ASM start

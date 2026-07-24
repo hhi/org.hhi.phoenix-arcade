@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ROM_DATA = ROOT / "rom_data.c"
+PROGRAM_ROM = list((ROOT.parent / "roms" / "assembled" / "program.rom").read_bytes())
 TABLES = ROOT / "phoenix_tables.c"
 
 
@@ -19,7 +19,7 @@ def array_values(source: str, name: str) -> list[int]:
 
 class PhoenixTableTests(unittest.TestCase):
     def test_bird_vertical_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -30,7 +30,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_bullet_pixel_mask_table_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -38,7 +38,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_round_and_explosion_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -49,7 +49,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_bird_hitmask_page_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -57,7 +57,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_alien_control_init_table_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -66,7 +66,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_alien_layout_pointer_table_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -76,7 +76,7 @@ class PhoenixTableTests(unittest.TestCase):
     def test_bird_shape_and_formation_tables_match_the_annotated_rom_regions(
         self,
     ) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -90,7 +90,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_bird_behaviour_scripts_match_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -98,7 +98,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_alien_closed_loop_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -116,7 +116,7 @@ class PhoenixTableTests(unittest.TestCase):
     def test_alien_shape_offset_and_direction_tables_match_the_annotated_rom_regions(
         self,
     ) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -129,7 +129,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_explosion_particle_page_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -138,7 +138,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_egg_dive_and_sound_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -156,7 +156,7 @@ class PhoenixTableTests(unittest.TestCase):
     def test_bird_erase_selector_and_mothership_pointers_match_the_annotated_rom_regions(
         self,
     ) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         match = re.search(
@@ -174,7 +174,7 @@ class PhoenixTableTests(unittest.TestCase):
     def test_alien_movement_pattern_clusters_match_the_annotated_rom_regions(
         self,
     ) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -189,7 +189,7 @@ class PhoenixTableTests(unittest.TestCase):
     def test_alien_position_layout_tables_match_the_annotated_rom_regions(
         self,
     ) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -202,7 +202,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_formation_hit_window_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -211,7 +211,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_attract_mode_fixed_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -226,7 +226,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_score_average_text_page_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -235,7 +235,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_print_text_lines_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -246,7 +246,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_centralized_local_tables_match_the_annotated_rom_regions(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -258,7 +258,7 @@ class PhoenixTableTests(unittest.TestCase):
         )
 
     def test_bird_shape_data_page_matches_the_annotated_rom_region(self) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(
@@ -268,7 +268,7 @@ class PhoenixTableTests(unittest.TestCase):
     def test_generic_rom_copy_helper_tables_match_the_annotated_rom_regions(
         self,
     ) -> None:
-        rom = array_values(ROM_DATA.read_text(encoding="ascii"), "prg_mem")
+        rom = PROGRAM_ROM
         tables = TABLES.read_text(encoding="ascii")
 
         self.assertEqual(

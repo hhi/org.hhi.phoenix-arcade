@@ -9,7 +9,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 GENERATOR = ROOT / "c2-phoenix" / "tools" / "generate_hires_sprite_assets.py"
-ROM_DATA = ROOT / "c-phoenix" / "rom_data.c"
+GRAPHICS_ROM = ROOT / "roms" / "assembled" / "graphics.rom"
+PROMS_ROM = ROOT / "roms" / "assembled" / "proms.rom"
 
 
 class HiresSpriteAssetTests(unittest.TestCase):
@@ -17,7 +18,8 @@ class HiresSpriteAssetTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "c2_hires_sprite_assets.h"
             subprocess.run(
-                [sys.executable, str(GENERATOR), "--rom-data", str(ROM_DATA),
+                [sys.executable, str(GENERATOR), "--graphics", str(GRAPHICS_ROM),
+                 "--proms", str(PROMS_ROM),
                  "--output", str(output)],
                 check=True,
             )

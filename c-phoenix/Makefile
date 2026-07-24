@@ -1,14 +1,15 @@
 CC = gcc
 PYTHON ?= python3
-CFLAGS = -Wall -Wextra -g -O0 $(shell pkg-config --cflags sdl2 || sdl2-config --cflags)
+CFLAGS = -Wall -Wextra -g -O0 -fdata-sections $(shell pkg-config --cflags sdl2 || sdl2-config --cflags)
 LDFLAGS = $(shell pkg-config --libs sdl2 || sdl2-config --libs)
 
 # If on macOS, we might need some specific threading flags or frameworks
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
-    LDFLAGS += -framework OpenGL
+    LDFLAGS += -framework OpenGL -Wl,-dead_strip
     C2_LINKER_GC = -Wl,-dead_strip
 else
+    LDFLAGS += -Wl,--gc-sections
     C2_LINKER_GC = -Wl,--gc-sections
 endif
 
@@ -22,6 +23,7 @@ C2_TARGET ?= $(C2_BUILD_DIR)/c2-phoenix
 C2_GAME_OBJS = $(patsubst %.c,$(C2_BUILD_DIR)/%.o,$(SRCS))
 C2_RENDERER_OBJ = $(C2_BUILD_DIR)/c2_renderer.o
 C2_ASSET_HEADER = $(C2_ROOT)/native/c2_hires_sprite_assets.h
+CLASSIC_ASSET_HEADER = phoenix_render_assets.h
 C2_VARIANT_CFLAGS = $(if $(C2_VARIANT),-DC2_VARIANT_$(shell echo $(C2_VARIANT) | tr a-z A-Z)=1)
 C2_CFLAGS = $(CFLAGS) -DC2_RENDERER $(C2_VARIANT_CFLAGS) -I. -I$(C2_ROOT)/native -ffunction-sections -fdata-sections
 C2_LDFLAGS = $(LDFLAGS) $(C2_LINKER_GC)
@@ -55,12 +57,22 @@ VISUAL_TRACE_PLAYER ?= 1
 VISUAL_TRACE_KIND ?= auto
 VISUAL_TRACE_EXTRA_ARGS ?=
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun comparerun tracerun runtimegraph c2 c2-clean docs help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun comparerun tracerun runtimegraph c2 c2-clean verify-rom-free docs help
 
-all: $(TARGET)
+all: $(TARGET) verify-rom-free
+
+$(CLASSIC_ASSET_HEADER): tools/generate_classic_render_assets.py ../roms/assembled/graphics.rom ../roms/assembled/proms.rom
+	$(PYTHON) tools/generate_classic_render_assets.py --graphics ../roms/assembled/graphics.rom --proms ../roms/assembled/proms.rom --output $@
+
+platform_sdl.o build/runtime/platform_sdl.o: $(CLASSIC_ASSET_HEADER)
 
 $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+
+verify-rom-free: $(TARGET)
+	@if nm $(TARGET) | grep -Eq '(^|_)prg_mem$$|(^|_)gfx_mem$$|(^|_)palette_prom_[ab]$$'; then \
+		echo "raw ROM data leaked into $(TARGET)"; exit 1; \
+	fi
 
 c2: $(C2_TARGET)
 
@@ -72,8 +84,8 @@ $(C2_BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(C2_CFLAGS) -c $< -o $@
 
-$(C2_ASSET_HEADER): $(C2_ROOT)/tools/generate_hires_sprite_assets.py rom_data.c
-	$(PYTHON) $(C2_ROOT)/tools/generate_hires_sprite_assets.py --rom-data rom_data.c --output $@
+$(C2_ASSET_HEADER): $(C2_ROOT)/tools/generate_hires_sprite_assets.py ../roms/assembled/graphics.rom ../roms/assembled/proms.rom
+	$(PYTHON) $(C2_ROOT)/tools/generate_hires_sprite_assets.py --graphics ../roms/assembled/graphics.rom --proms ../roms/assembled/proms.rom --output $@
 
 $(C2_RENDERER_OBJ): $(C2_ROOT)/native/c2_renderer.c $(C2_ROOT)/native/c2_renderer.h $(C2_ASSET_HEADER)
 	@mkdir -p $(dir $@)

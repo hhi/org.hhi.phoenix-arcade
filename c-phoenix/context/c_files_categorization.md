@@ -7,7 +7,8 @@ Files that form the bridge between the original arcade hardware and the modern O
 
 - [`platform_sdl.c`](../platform_sdl.c) - Modern system bindings: SDL2 event loop, input handling, and final screen rendering.
 - [`hw_video_audio.c`](../hw_video_audio.c) - Arcade hardware abstraction: Video RAM mapping, palette setup, and I/O writes.
-- [`rom_data.c`](../rom_data.c) - The raw bytes of the original Z80 ROM.
+- [`phoenix_tables.c`](../phoenix_tables.c) - Named game-data tables derived
+  from the original program ROM.
 - `phoenix_state.h` - Defines the monolithic `PhoenixState` struct, representing the 4KB RAM and hardware registers.
 - `phoenix_hw.h` / `z80_core.h` - Hardware definitions, constants, and `mem_read`/`mem_write` abstractions.
 

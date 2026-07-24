@@ -216,8 +216,8 @@ extern const uint8_t phoenix_attract_text_page[0x60];
 /*
  * [ASM: 1860-1B5F] Full page backing slow_print_score_average_table()'s
  * two dynamic reads (attract_mode.c): a scrolling-text character lookup
- * (prg_mem[hl_val + e]) and a screen-address pointer pair
- * (prg_mem[hl_val]/prg_mem[hl_val+1]), where hl_val = 0x1860 +
+ * (original ROM byte at hl_val + e) and a screen-address pointer pair
+ * (original ROM bytes at hl_val/hl_val+1), where hl_val = 0x1860 +
  * ((Counter98[0] << 8) | (Counter98[1] & 0xE0)) and e = Counter98[1] &
  * 0x1F (>= 6, else the function returns early). Counter98 is a
  * free-running 16-bit counter, so this index is not mathematically

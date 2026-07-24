@@ -40,8 +40,8 @@ ongemerkt kan uiteenlopen.
 **Een vervolgende, volledige audit van alle 163 `mem_read()`-aanroepen in
 de codebase (zelfde datum) vond een tweede, tot dan toe onzichtbaar
 ROM-leespad.** `mem_read()` ([z80_core.h](../z80_core.h)) is de centrale
-Z80-adresdecoder en valt voor elk adres `< 0x4000` transparant terug op
-`prg_mem` -- code die daar ROM via leest duikt nooit op in een
+Z80-adresdecoder en viel voor elk adres `< 0x4000` transparant terug op
+program-ROM -- code die daar ROM via leest dook nooit op in een
 `prg_mem[`-grep. Van de 163 aanroepplekken bleken alle op één functie na
 puur op RAM-adressen te werken (struct-offsets, schermposities, allemaal
 `>= 0x4000` door constructie); de ene uitzondering is
@@ -52,6 +52,12 @@ aangeroepen vanuit 6 bestanden met vaste letterlijke ROM-adressen
 `0x1A00`) die toevallig binnen het al geëxtraheerde
 `score-average-scroll-text-page`-bereik vallen zonder dat deze lezer die
 array daadwerkelijk gebruikt.
+
+De overblijvende, bewuste `$3FFD`-anti-piracy-checksumread in
+`attract_mode.c:l1ee0` is daarna omgezet naar de al geëxtraheerde
+`phoenix_bird_data_alt_page[0x7D]`. `mem_read()` meldt nu het adres en stopt
+bij elke poging tot een program-ROM-read; er bestaat geen program-ROM-C-bron
+meer.
 
 Deze audit **loste ook `stars_scroll_down`'s eerder onopgeloste
 RAM-pointer op** (`M43B2:M43B3`, in `RAMUse.md` gedocumenteerd als doel
@@ -443,7 +449,7 @@ een `resolved`-record van voor de geschiedenis.
 
 Verplaats een regio tegelijk naar een benoemde `const`-array in
 `phoenix_tables.c`, declareer hem in `phoenix_tables.h`, behoud het ASM-bereik,
-voeg een byte-voor-byte test tegen `rom_data.c` toe en draai vervolgens een
+voeg een byte-voor-byte test tegen `roms/assembled/program.rom` toe en draai vervolgens een
 deterministische lockstep-replay. Werk de JSON-catalogus in dezelfde wijziging
 bij.
 

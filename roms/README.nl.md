@@ -47,14 +47,16 @@ make romprepare
 
 Daaruit worden ook twee C-bestanden voorbereid:
 
-- `c-phoenix/rom_data.c` is een gegenereerde C-versie van de drie
-  samengestelde ROM-bestanden: hun bytes staan daarin als C-arrays. De
-  klassieke C-Phoenix-renderer gebruikt die arrays voor de oorspronkelijke
-  graphics en kleuren.
+- De samengestelde ROM-bestanden blijven bewaard als reproduceerbare build- en
+  byte-niveau-testinvoer. De klassieke C-Phoenix-renderer gebruikt
+  gegenereerde gedecodeerde tilepixels en RGB-kleuren, en linkt geen ruwe
+  ROM-arrays.
 - `c-phoenix/phoenix_tables.c` bevat benoemde speldata-tabellen voor de
   gedeelde gamecore. Daardoor kunnen C-Phoenix en C2-Phoenix de spelregels en
   timing gebruiken zonder tijdens het spelen direct in de programma-ROM te
   zoeken.
+- C2-Phoenix genereert zijn hi-res-spriteatlas rechtstreeks uit `graphics.rom`
+  en `proms.rom`; deze buildstap leest geen `program.rom`.
 
 De samengestelde bestanden worden daarna door de projecten gebruikt:
 

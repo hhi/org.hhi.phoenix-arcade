@@ -1,6 +1,6 @@
 <svg width="100%" viewBox="0 0 680 320" role="img" xmlns="http://www.w3.org/2000/svg">
 <title>Welke binary heeft welk bronbestand nodig</title>
-<desc>c-phoenix bevat zowel rom_data.c als phoenix_tables.c in de gecompileerde binary. c2-phoenix bevat phoenix_tables.c ook volledig, maar leest rom_data.c alleen tijdens het bouwen om de hires-atlas te bakken; het staat niet in de uiteindelijke c2-binary.</desc>
+<desc>Beide renderers lezen de samengestelde graphics- en palette-ROMs alleen tijdens het bouwen om runtime-assets te genereren. Hun binaries bevatten phoenix_tables.c en gegenereerde assets, maar geen ruwe ROM-arrays.</desc>
 <style>
   :root {
     --box-fill: #eef1f4; --box-stroke: #94a3b8;
@@ -35,20 +35,20 @@
 <text class="th" x="500" y="52" text-anchor="middle" dominant-baseline="central">c2-phoenix</text>
 <text class="ts" x="500" y="70" text-anchor="middle" dominant-baseline="central">hires-renderer build</text>
 <rect class="box-blue" x="60" y="90" width="240" height="80" rx="10" stroke-width="0.5"/>
-<text class="th" x="180.0" y="118" text-anchor="middle" dominant-baseline="central">rom_data.c</text>
-<text class="ts" x="180.0" y="138" text-anchor="middle" dominant-baseline="central">renderer: gfx_mem + PROM</text>
+<text class="th" x="180.0" y="118" text-anchor="middle" dominant-baseline="central">gegenereerde tiles + RGB-palet</text>
+<text class="ts" x="180.0" y="138" text-anchor="middle" dominant-baseline="central">uit graphics.rom + proms.rom</text>
 <text class="ts" x="180.0" y="154" text-anchor="middle" dominant-baseline="central">altijd in de binary</text>
 <rect class="box-green" x="60" y="190" width="240" height="80" rx="10" stroke-width="0.5"/>
 <text class="th" x="180.0" y="218" text-anchor="middle" dominant-baseline="central">phoenix_tables.c</text>
 <text class="ts" x="180.0" y="238" text-anchor="middle" dominant-baseline="central">gamecore, alle spellogica</text>
 <text class="ts" x="180.0" y="254" text-anchor="middle" dominant-baseline="central">altijd in de binary</text>
 <rect class="box-blue" x="380" y="90" width="240" height="80" rx="10" stroke-width="0.5" stroke-dasharray="5 4"/>
-<text class="th" x="500.0" y="118" text-anchor="middle" dominant-baseline="central">rom_data.c</text>
+<text class="th" x="500.0" y="118" text-anchor="middle" dominant-baseline="central">graphics.rom + proms.rom</text>
 <text class="ts" x="500.0" y="138" text-anchor="middle" dominant-baseline="central">alleen atlas-bake</text>
 <text class="ts" x="500.0" y="154" text-anchor="middle" dominant-baseline="central">(build-tijd, niet in binary)</text>
 <rect class="box-green" x="380" y="190" width="240" height="80" rx="10" stroke-width="0.5"/>
 <text class="th" x="500.0" y="218" text-anchor="middle" dominant-baseline="central">phoenix_tables.c</text>
 <text class="ts" x="500.0" y="238" text-anchor="middle" dominant-baseline="central">gedeelde gamecore</text>
 <text class="ts" x="500.0" y="254" text-anchor="middle" dominant-baseline="central">altijd in de binary</text>
-<text class="ts" x="340" y="304" text-anchor="middle" dominant-baseline="central">blauw = rom_data.c &#183; groen = phoenix_tables.c &#183; gestippeld = alleen tijdens bouwen</text>
+<text class="ts" x="340" y="304" text-anchor="middle" dominant-baseline="central">blauw = gegenereerde graphics-/paletassets &#183; groen = phoenix_tables.c &#183; gestippeld = alleen tijdens bouwen</text>
 </svg>

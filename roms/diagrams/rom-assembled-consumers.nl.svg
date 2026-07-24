@@ -38,8 +38,8 @@
 <text class="th" x="135.0" y="199.0" text-anchor="middle" dominant-baseline="central">jphoenix</text>
 <text class="ts" x="135.0" y="217.0" text-anchor="middle" dominant-baseline="central">Rechtstreeks geladen</text>
 <rect class="box-blue" x="245" y="180" width="190" height="56" rx="8" stroke-width="0.5"/>
-<text class="th" x="340.0" y="199.0" text-anchor="middle" dominant-baseline="central">gen-rom-data.py</text>
-<text class="ts" x="340.0" y="217.0" text-anchor="middle" dominant-baseline="central">-> rom_data.c</text>
+<text class="th" x="340.0" y="199.0" text-anchor="middle" dominant-baseline="central">render-assetgenerators</text>
+<text class="ts" x="340.0" y="217.0" text-anchor="middle" dominant-baseline="central">-> tiles, RGB-palet, hires-atlas</text>
 <rect class="box-blue" x="450" y="180" width="190" height="56" rx="8" stroke-width="0.5"/>
 <text class="th" x="545.0" y="199.0" text-anchor="middle" dominant-baseline="central">gen-phoenix-tables.py</text>
 <text class="ts" x="545.0" y="217.0" text-anchor="middle" dominant-baseline="central">-> phoenix_tables.c</text>

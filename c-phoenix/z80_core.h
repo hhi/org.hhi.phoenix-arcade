@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "phoenix_state.h"
 #include "phoenix_hw.h"
 
@@ -12,8 +14,7 @@
  * offset` pointer arithmetic previously scattered across the codebase.
  * An address that's ever computed wrong (an 8-bit wraparound, a stale
  * pointer, an off-by-one) now reads as 0 / writes as a no-op instead of
- * silently corrupting adjacent PhoenixState fields or reading past
- * prg_mem's bounds.
+ * silently corrupting adjacent PhoenixState fields.
  *
  * Real hardware map (see context/RAMUse.md and phoenix_hw.h):
  *   $0000-$3FFF  ROM (read-only)
@@ -29,11 +30,12 @@
  * existing port ranges.
  */
 extern PhoenixState state;
-extern const uint8_t prg_mem[0x4000];
 
 static inline uint8_t mem_read(uint16_t addr) {
     if (addr < 0x4000) {
-        return prg_mem[addr];
+        /* Program-ROM data is fully extracted into named runtime tables. */
+        fprintf(stderr, "fatal: unexpected program-ROM read at $%04X\n", addr);
+        abort();
     } else if (addr < 0x4C00) {
         uint8_t* ram = (uint8_t*)&state;
         return ram[addr - 0x4000];
