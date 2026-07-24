@@ -338,6 +338,10 @@ function slotColor(key) {{
   const offset = kind === "alien" ? 0 : kind === "bird" ? 53 : 106;
   return "hsl(" + ((Number(id) * 137 + offset) % 360) + " 72% 62%)";
 }}
+function isProjectileKey(key) {{
+  const [, kind] = key.split(":");
+  return ["player_bullet", "above_player_bullet", "enemy_bullet"].includes(kind);
+}}
 const sampleByFrameKey = new Map(samples.map(sample => [sample.frame + "|" + sampleKey(sample), sample]));
 const frameIndex = new Map(frames.map((frame, index) => [frame, index]));
 const compareByRecordKey = new Map(compareSamples.map(sample => [sample.record_index + "|" + sampleKey(sample), sample]));
@@ -856,8 +860,13 @@ function render() {{
     const keySamples = samplesByKey.get(key) || [];
     const points = keySamples.filter(point => point.active && point.visual_x != null && point.visual_y != null && point.record_index >= traceStartIndex && point.record_index <= selectedFrameIndex);
     const gridPoints = keySamples.filter(point => point.active && point.record_index >= traceStartIndex && point.record_index <= selectedFrameIndex);
-    drawTrail(points, color, emphasized);
-    drawGridTrail(gridPoints, color, emphasized);
+    // Projectile paths are visually noisy and do not represent persistent
+    // game objects. Show their current position only; retain fading trails
+    // for ships, aliens, birds, and other structural objects.
+    if (!isProjectileKey(key)) {{
+      drawTrail(points, color, emphasized);
+      drawGridTrail(gridPoints, color, emphasized);
+    }}
     const latest = latestAtOrBefore(key, frame);
     const other = compareSample(latest);
     const outline = isDiff(latest, other) ? "#ff4f3d" : key === hoveredKey ? "#ffcf4a" : key === selectedKey ? "#ffffff" : null;

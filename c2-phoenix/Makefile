@@ -11,27 +11,52 @@ PORT_TRACE ?= /tmp/port_$(SCENARIO)-semantic.json
 SUMMARY_ARGS ?=
 C2_VARIANT ?=
 NATIVE_TARGET ?= build/native$(if $(C2_VARIANT),/$(C2_VARIANT))/c2-phoenix
-NATIVE_REPLAY_SCRIPT ?= ../c-phoenix/context/input-scripts/basic_playthrough.txt
-NATIVE_REPLAY_FRAMES ?= 1200
-NATIVE_EXTRA_ARGS ?=
+# Keep replay controls aligned with c-phoenix.  The NATIVE_* spellings
+# remain supported for scripts that already use them.
+REPLAY_SCRIPT ?= ../c-phoenix/context/input-scripts/basic_playthrough.txt
+REPLAY_FRAMES ?= 1200
+REPLAY_EXTRA_ARGS ?=
+NATIVE_REPLAY_SCRIPT ?= $(REPLAY_SCRIPT)
+NATIVE_REPLAY_FRAMES ?= $(REPLAY_FRAMES)
+NATIVE_EXTRA_ARGS ?= $(REPLAY_EXTRA_ARGS)
 NATIVE_REFERENCE_DUMP ?=
 NATIVE_DUMP ?= /tmp/c2-$(SCENARIO).bin
 NATIVE_COMPARE_REGIONS ?= 4340-47FF,4B40-4BE5
 NATIVE_COMPARE_STOP_AFTER ?= 999999
 
 help:
-	@echo "C2-Phoenix semantic renderer prototype"
-	@echo "  make test                         Run contract tests"
-	@echo "  make demo DUMP=/path/to/dump.bin  Export frames and create an HTML viewer"
-	@echo "  make compare                      Compare JPhoenix and C-Phoenix semantic exports"
-	@echo "  make summary                      Report semantic scenario coverage"
-	@echo "  make native                       Build the interactive SDL C2 application"
-	@echo "  make run                          Build and play C2 interactively"
-	@echo "  make replayrun                    Visibly replay an input script in C2"
-	@echo "  make headlessrun                  Run a deterministic native C2 replay"
-	@echo "  make native-check                 Verify that native C2 has no graphics/PROM symbols"
-	@echo "  make native-compare               Compare a native C2 replay against a JPhoenix dump"
-	@echo "  make native C2_VARIANT=hires2     Build a named rendering variant into its own binary"
+	@echo "c2-phoenix make targets"
+	@echo ""
+	@echo "  make native          Build the interactive SDL C2 application"
+	@echo "  make run             Build and run C2 interactively"
+	@echo "  make replayrun       Visibly replay an input script"
+	@echo "  make headlessrun     Run a deterministic, headless replay"
+	@echo "  make native-compare  Compare a native C2 replay against a JPhoenix dump"
+	@echo "  make native-check    Verify that the C2 binary contains no graphics/PROM symbols"
+	@echo "  make native-clean    Remove generated native C2 build artefacts"
+	@echo "  make test            Run C2 contract tests"
+	@echo "  make demo            Export a RAM dump to a semantic HTML viewer"
+	@echo "  make compare         Compare semantic exports from JPhoenix and C-Phoenix"
+	@echo "  make summary         Report semantic scenario coverage"
+	@echo "  make help            Show this help"
+	@echo ""
+	@echo "requirements"
+	@echo "  native/run/replayrun/headlessrun: gcc and SDL2"
+	@echo "  native-compare: also a JPhoenix RAM dump"
+	@echo "  demo/compare/summary: Python 3 and the relevant RAM dumps"
+	@echo ""
+	@echo "replay defaults"
+	@echo "  REPLAY_SCRIPT=$(REPLAY_SCRIPT)"
+	@echo "  REPLAY_FRAMES=$(REPLAY_FRAMES) (headlessrun and native-compare only)"
+	@echo "  REPLAY_EXTRA_ARGS=$(if $(REPLAY_EXTRA_ARGS),$(REPLAY_EXTRA_ARGS),(none))"
+	@echo "  NATIVE_REPLAY_SCRIPT/NATIVE_REPLAY_FRAMES/NATIVE_EXTRA_ARGS remain supported aliases"
+	@echo ""
+	@echo "examples"
+	@echo "  make run"
+	@echo "  make replayrun REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt"
+	@echo "  make headlessrun REPLAY_SCRIPT=../c-phoenix/context/input-scripts/bird-investigation.txt REPLAY_FRAMES=13935"
+	@echo "  make native C2_VARIANT=hires2"
+	@echo "  make native-compare NATIVE_REFERENCE_DUMP=/tmp/ref_bird-investigation.bin REPLAY_FRAMES=13935"
 
 test:
 	$(PYTHON) -m unittest discover tests
