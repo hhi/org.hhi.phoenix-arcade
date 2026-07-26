@@ -77,7 +77,7 @@ VISUAL_TRACE_PLAYER ?= 1
 VISUAL_TRACE_KIND ?= auto
 VISUAL_TRACE_EXTRA_ARGS ?=
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun comparerun tracerun runtimegraph c2 c2-clean verify-rom-free docs help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun comparerun tracerun runtimegraph c2 c2-clean verify-rom-free docs interactive-asm help
 
 all: $(TARGET) verify-rom-free
 
@@ -190,6 +190,7 @@ help:
 	@echo "  make runtimegraph     Generate an executed C-function call graph"
 	@echo "  make c2               Build the native C2 renderer"
 	@echo "  make c2-clean         Remove C2 native build artefacts"
+	@echo "  make interactive-asm  Regenerate interactive Phoenix ASM documentation"
 	@echo "  make docs             Regenerate mapping and graph documentation"
 	@echo "  make clean            Remove object files and $(TARGET)"
 	@echo "  make help             Show this help"
@@ -262,10 +263,16 @@ help:
 	@echo "  make recordtracerun RECORD_NAME=bird-investigation"
 	@echo "  make recordtracerun RECORD_NAME=bird-investigation RECORD_TRACE_FRAMES=15000"
 
+interactive-asm:
+	@echo "Generating interactive Phoenix ASM documentation..."
+	@python3 tools/generate_annotated_asm.py
+	@python3 tools/generate_interactive_asm_html.py
+
 docs:
 	@echo "Generating architecture mappings and graphs..."
 	@python3 tools/generate_mappings.py
 	@python3 tools/generate_annotated_asm.py
+	@python3 tools/generate_interactive_asm_html.py
 	@python3 tools/generate_callgraph.py
 	@python3 tools/generate_file_callgraph.py
 	@python3 tools/generate_func_prefix_callgraph.py

@@ -1,6 +1,8 @@
-# Phoenix Z80 ASM - C Port Cross-Reference
+# Phoenix Z80 ASM — C Port Cross-Reference
 
-Dit document bevat de originele Z80 assembly code met klikbare links naar de C-port. Je kunt op de functienamen klikken om direct naar de juiste regel in de broncode te gaan!
+Generated from [code-annotated.asm](code-annotated.asm). Function annotations link to the corresponding C source.
+
+Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verwijzen naar de bijbehorende C-broncode.
 
 ```asm
 ; Source / bron: Computer Archeology - Phoenix

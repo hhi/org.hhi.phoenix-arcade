@@ -14,11 +14,23 @@ bestanden en schrijft mappingdocumentatie naar `context/mapping/`.
 python3 tools/generate_mappings.py
 ```
 
-`generate_annotated_asm.py` maakt van `context/code-annotated.asm` een
-klikbare Markdown-versie met C-koppelingen:
+`generate_annotated_asm.py` maakt zowel van `context/Phoenix.asm` als van
+`context/code-annotated.asm` een klikbare Markdown-versie met C-koppelingen:
 
 ```bash
 python3 tools/generate_annotated_asm.py
+```
+
+`generate_interactive_asm_html.py` maakt van `context/Phoenix.md` de
+interactieve `context/Phoenix.html`, met filterbare labelnavigatie,
+kleurcodering en selectievakjes voor code- en datalabels,
+`.EQU`-hoverbeschrijvingen met
+geheugenadres, klikbare labelverwijzingen, een ingebouwde C-bronviewer die
+kruisverwijzingen op de gekoppelde regel opent, zichtbare ASM-begin- en
+eindgrenzen voor gemapte C-functiebereiken, en terug-/vooruitknoppen:
+
+```bash
+python3 tools/generate_interactive_asm_html.py
 ```
 
 ## Verificatie en Replay

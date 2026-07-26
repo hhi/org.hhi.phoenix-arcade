@@ -55,9 +55,21 @@ the specific line in the C source code.
 ### `generate_annotated_asm.py`
 **Usage:** `python3 tools/generate_annotated_asm.py`
 
-This script transforms `context/code-annotated.asm` into
-`context/code-annotated.md`, with generated cross-reference notes at C function
-entry points, data/gap annotations, and Markdown headers for assembly labels.
+This script transforms both `context/Phoenix.asm` and
+`context/code-annotated.asm` into their corresponding Markdown files, with
+generated cross-reference notes at C function entry points, data/gap
+annotations, and Markdown headers for assembly labels.
+
+### `generate_interactive_asm_html.py`
+**Usage:** `python3 tools/generate_interactive_asm_html.py`
+
+This script turns `context/Phoenix.md` into `context/Phoenix.html`. The result
+has filterable, colour-coded code/data label navigation with checkbox type
+filters, address-prefixed
+`.EQU` hover descriptions, clickable in-assembly label references, an in-page
+C source viewer that opens cross-references at the linked line, visible ASM
+start/end boundaries for mapped C function scopes, and
+back/forward controls.
 
 ## Verification and Replay
 

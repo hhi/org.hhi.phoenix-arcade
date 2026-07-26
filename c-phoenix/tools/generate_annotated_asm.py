@@ -17,6 +17,96 @@ def object_reference_note(line):
     return f"> **Tile reference:** [Object {obj}]({link}){suffix}"
 
 
+def generate_markdown(in_asm, out_md, annotations):
+    with open(in_asm, 'r', encoding='utf-8', errors='ignore') as f:
+        asm_lines = f.readlines()
+
+    source_name = os.path.basename(in_asm)
+    md_output = []
+    md_output.append("# Phoenix Z80 ASM — C Port Cross-Reference")
+    md_output.append(
+        f"\nGenerated from [{source_name}]({source_name}). Function annotations "
+        "link to the corresponding C source."
+    )
+    md_output.append(
+        f"\nGegenereerd uit [{source_name}]({source_name}). Functieannotaties "
+        "verwijzen naar de bijbehorende C-broncode."
+    )
+    md_output.append("\n```asm")
+
+    in_code_block = True
+    last_annotated_addr = -1
+
+    for line in asm_lines:
+        stripped_line = line.strip()
+
+        label_match = re.match(r'^([A-Za-z_][A-Za-z0-9_]*):$', stripped_line)
+        if label_match:
+            label_name = label_match.group(1)
+            if in_code_block:
+                md_output.append("```")
+                in_code_block = False
+            md_output.append(f"\n### {label_name}:\n")
+            continue
+
+        # Phoenix.asm uses .ORG $XXXX; code-annotated.asm uses XXXX:.
+        addr_match = re.match(
+            r'^\s*\.ORG\s+\$([0-9A-Fa-f]{4})\b', line, re.IGNORECASE
+        )
+        if not addr_match:
+            addr_match = re.match(r'^([0-9A-Fa-f]{4}):', line)
+
+        if addr_match:
+            addr = int(addr_match.group(1), 16)
+            if addr in annotations and addr != last_annotated_addr:
+                if in_code_block:
+                    md_output.append("```")
+                    in_code_block = False
+
+                for ann in annotations[addr]:
+                    if ann['type'] == 'function':
+                        md_output.append("> [!NOTE]")
+                        md_output.append(
+                            f"> **Ported to C:** [`{ann['function']}`]"
+                            f"({ann['func_link']}) in `{ann['file']}` "
+                            f"(ASM: `{ann['asm']}`)"
+                        )
+                    elif ann['type'] == 'data':
+                        md_output.append("> [!TIP]")
+                        md_output.append(
+                            f"> {ann['function']} (ASM: `{ann['asm']}`)"
+                        )
+                    elif ann['type'] == 'gap':
+                        md_output.append("> [!WARNING]")
+                        md_output.append(
+                            f"> {ann['function']} (ASM: `{ann['asm']}`)"
+                        )
+                    md_output.append("")
+
+                last_annotated_addr = addr
+
+        tile_note = object_reference_note(line)
+        if tile_note:
+            if in_code_block:
+                md_output.append("```")
+                in_code_block = False
+            md_output.append(tile_note)
+            md_output.append("")
+
+        if not in_code_block and stripped_line != "":
+            md_output.append("```asm")
+            in_code_block = True
+
+        if in_code_block:
+            md_output.append(line.rstrip('\n'))
+
+    if in_code_block:
+        md_output.append("```")
+
+    with open(out_md, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(md_output))
+
+
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     dir_path = os.path.abspath(os.path.join(script_dir, ".."))
@@ -138,81 +228,15 @@ def main():
             annotations[addr] = []
         annotations[addr].append(r)
 
-    in_asm = os.path.join(dir_path, "context", "code-annotated.asm")
-    out_md = os.path.join(dir_path, "context", "code-annotated.md")
-
-    with open(in_asm, 'r', encoding='utf-8', errors='ignore') as f:
-        asm_lines = f.readlines()
-
-    md_output = []
-    md_output.append("# Phoenix Z80 ASM - C Port Cross-Reference")
-    md_output.append("\nDit document bevat de originele Z80 assembly code met klikbare links naar de C-port. Je kunt op de functienamen klikken om direct naar de juiste regel in de broncode te gaan!")
-    md_output.append("\n```asm")
-
-    in_code_block = True
-    last_annotated_addr = -1
-
-    for line in asm_lines:
-        stripped_line = line.strip()
-        
-        # Check if line is a label
-        label_match = re.match(r'^([A-Za-z_][A-Za-z0-9_]*):$', stripped_line)
-        
-        if label_match:
-            label_name = label_match.group(1)
-            if in_code_block:
-                md_output.append("```")
-                in_code_block = False
-            md_output.append(f"\n### {label_name}:\n")
-            continue
-
-        # Address line match
-        addr_match = re.match(r'^([0-9A-Fa-f]{4}):', line)
-        
-        if addr_match:
-            addr = int(addr_match.group(1), 16)
-            
-            if addr in annotations and addr != last_annotated_addr:
-                if in_code_block:
-                    md_output.append("```")
-                    in_code_block = False
-                
-                for ann in annotations[addr]:
-                    if ann['type'] == 'function':
-                        md_output.append("> [!NOTE]")
-                        md_output.append(f"> **Ported to C:** [`{ann['function']}`]({ann['func_link']}) in `{ann['file']}` (ASM: `{ann['asm']}`)")
-                    elif ann['type'] == 'data':
-                        md_output.append("> [!TIP]")
-                        md_output.append(f"> {ann['function']} (ASM: `{ann['asm']}`)")
-                    elif ann['type'] == 'gap':
-                        md_output.append("> [!WARNING]")
-                        md_output.append(f"> {ann['function']} (ASM: `{ann['asm']}`)")
-                    md_output.append("")
-                    
-                last_annotated_addr = addr
-
-        tile_note = object_reference_note(line)
-        if tile_note:
-            if in_code_block:
-                md_output.append("```")
-                in_code_block = False
-            md_output.append(tile_note)
-            md_output.append("")
-
-        if not in_code_block and stripped_line != "":
-            md_output.append("```asm")
-            in_code_block = True
-
-        if in_code_block:
-            md_output.append(line.rstrip('\n'))
-
-    if in_code_block:
-        md_output.append("```")
-
-    with open(out_md, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(md_output))
-
-    print(f"code-annotated.md generated successfully in {out_dir}")
+    sources = (
+        ("Phoenix.asm", "Phoenix.md"),
+        ("code-annotated.asm", "code-annotated.md"),
+    )
+    for input_name, output_name in sources:
+        in_asm = os.path.join(out_dir, input_name)
+        out_md = os.path.join(out_dir, output_name)
+        generate_markdown(in_asm, out_md, annotations)
+        print(f"{output_name} generated successfully in {out_dir}")
 
 if __name__ == '__main__':
     main()

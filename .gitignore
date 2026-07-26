@@ -10,6 +10,7 @@ c2-phoenix/native/c2_hires_sprite_assets.h
 # Generated traces and RAM dumps. The curated gzip fixtures below are exceptions.
 *.bin
 *.html
+!c-phoenix/context/Phoenix.html
 c2-phoenix/*.json
 c2-phoenix/*.html
 !c-phoenix/context/traces/two_player_last_grown_bird_compare/last-grown-bird-diff.html.zip
