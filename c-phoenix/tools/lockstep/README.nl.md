@@ -7,7 +7,7 @@ door zowel jphoenix met de opt-in poll-klok (`-Dphoenix.inputclock=poll`) als
 c-phoenix, en vergelijkt de RAM-dumps record-voor-record.
 
 Vereist: `../jphoenix-emulator-port` gebouwd (`make compile`) en een gebouwde
-`./c-phoenix`.
+`./build/c-phoenix`.
 
 ```bash
 # Volledige batch, ongeveer twee uur. RAM-dumps worden per script weggegooid:

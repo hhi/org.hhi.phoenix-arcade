@@ -8,7 +8,7 @@ through both jphoenix with the opt-in poll clock
 by record.
 
 Requirements: a built `../jphoenix-emulator-port` (`make compile`) and a built
-`./c-phoenix`.
+`./build/c-phoenix`.
 
 ```bash
 # Full batch, roughly two hours. RAM dumps are discarded per script:
@@ -30,7 +30,7 @@ game-start initialization window (records 40-60) and isolated one-record
 self-healing reset-boundary blips. Screen RAM, both foreground and background,
 may only show self-healing blips of eight records or less. The machine-readable
 criterion lives in `criteria.py`; the repeatable workflow is documented in
-`PROCEDURE.md`.
+[PROCEDURE.en.md](PROCEDURE.en.md) and [PROCEDURE.md](PROCEDURE.md) (Dutch).
 
 ## Semantic analysis
 

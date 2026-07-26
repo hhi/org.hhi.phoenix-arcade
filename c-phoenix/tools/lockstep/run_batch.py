@@ -64,7 +64,7 @@ def main():
                         "-cp", "build/classes", "PhoenixCoverageRunner",
                         script, COVDIR, str(jf)],
                        cwd=JPHX, capture_output=True, timeout=3600)
-        subprocess.run([os.path.join(CPHX, "c-phoenix"), f"--run-frames={lf}",
+        subprocess.run([os.path.join(CPHX, "build", "c-phoenix"), f"--run-frames={lf}",
                         f"--input-script={script}", f"--ram-dump={portbin}"],
                        cwd=CPHX, capture_output=True, timeout=3600)
         ref = load(refbin); port = load(portbin)

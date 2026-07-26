@@ -23,7 +23,7 @@ if ! java -Dphoenix.inputclock=poll -Dphoenix.ramdump="$REF_DUMP" -Dphoenix.ramd
 fi
 cd "$CPHX"
 SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-dummy}" SDL_AUDIODRIVER="${SDL_AUDIODRIVER:-dummy}" \
-  ./c-phoenix --run-frames=$LF --input-script="$SCRIPT" --ram-dump="$PORT_DUMP" --no-render >"$CPHX_LOG" 2>&1 || {
+  ./build/c-phoenix --run-frames=$LF --input-script="$SCRIPT" --ram-dump="$PORT_DUMP" --no-render >"$CPHX_LOG" 2>&1 || {
     echo "C-Phoenix-dump mislukt; zie $CPHX_LOG" >&2
     tail -n 40 "$CPHX_LOG" >&2
     exit 1

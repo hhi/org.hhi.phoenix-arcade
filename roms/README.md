@@ -15,8 +15,11 @@ validation.
 
 ## 2. Place the chip files
 
-Put the individual files from your Phoenix Amstar set in `roms/local/`. Their
-names must be exactly as shown here:
+Put the individual files from your Phoenix Amstar set in `roms/local/`. The
+filenames do not have to match the canonical names shown here: `make
+romprepare` identifies every expected chip by its SHA-256 hash and renames a
+unique full match to the canonical name. The names below are therefore the
+resulting normalized layout:
 
 ```text
 roms/local/
@@ -26,7 +29,10 @@ roms/local/
   mmi6301.ic40      mmi6301.ic41
 ```
 
-`roms/local/` is the default location used by the scripts.
+`roms/local/` is the default location used by the scripts. A complete match
+also creates `roms/local/phoenix_amstar-set1.zip` when it is absent, containing
+the canonical chip names. Unrecognized files and files from another revision
+are left unchanged and cause validation to fail.
 
 ## 3. Prepare the ROM set
 
@@ -35,6 +41,9 @@ From the repository root (the top-level directory), run:
 ```sh
 make romprepare
 ```
+
+To normalize filenames and create the local ZIP without building the assembled
+images, run `make romnormalize`.
 
 `make romprepare` verifies every supplied chip, combines them into three files in
 `roms/assembled/`, and updates the C sources derived from those files:

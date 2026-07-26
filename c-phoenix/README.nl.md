@@ -48,7 +48,7 @@ Draaien
 -------
 
 ```bash
-./c-phoenix
+./build/c-phoenix
 ```
 
 Opent een venster op 3x schaal (208x256 -> 624x768) en start het spel normaal
@@ -90,9 +90,9 @@ Voorbeelden
 -----------
 
 ```bash
-./c-phoenix --start-delay=3
-./c-phoenix --run-frames=3600 --ram-dump=/tmp/port.bin
-./c-phoenix --run-frames=1200 --input-script=context/input-scripts/basic_playthrough.txt
+./build/c-phoenix --start-delay=3
+./build/c-phoenix --run-frames=3600 --ram-dump=/tmp/port.bin
+./build/c-phoenix --run-frames=1200 --input-script=context/input-scripts/basic_playthrough.txt
 
 make replayrun
 make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
@@ -108,8 +108,8 @@ make headlessrun \
   REPLAY_RAM_DUMP=/tmp/c-last-grown-bird.bin \
   REPLAY_COVERAGE_DUMP=/tmp/c-last-grown-bird.coverage.json
 
-./c-phoenix --input-script=context/input-scripts/generated/mutated_rank_01_score_5003729.txt
-./c-phoenix --record-input=/tmp/session.txt
+./build/c-phoenix --input-script=context/input-scripts/generated/mutated_rank_01_score_5003729.txt
+./build/c-phoenix --record-input=/tmp/session.txt
 ```
 
 Zie [context/input-scripts/README.nl.md](context/input-scripts/README.nl.md)
@@ -170,7 +170,7 @@ java -Dphoenix.ramdump=/tmp/jphx.bin -Dphoenix.ramdump.frames=3600 \
      -cp build/classes PhoenixDesktop
 cd ../c-phoenix
 make
-./c-phoenix --run-frames=3610 --ram-dump=/tmp/port.bin
+./build/c-phoenix --run-frames=3610 --ram-dump=/tmp/port.bin
 python3 tools/compare_ram_dumps.py /tmp/jphx.bin /tmp/port.bin \
     --align-c98 --stop-after 999999
 ```

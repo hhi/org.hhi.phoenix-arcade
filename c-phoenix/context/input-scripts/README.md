@@ -32,7 +32,7 @@ One event per line: `<frame> <button> <press|release>`.
 
 ```bash
 make
-./c-phoenix --run-frames=4000 \
+./build/c-phoenix --run-frames=4000 \
     --input-script=context/input-scripts/extended_playthrough.txt \
     --ram-dump=/tmp/trace.bin
 ```

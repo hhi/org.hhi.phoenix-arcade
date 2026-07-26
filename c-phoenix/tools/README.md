@@ -14,6 +14,29 @@ their original ROM addresses.
 
 All generated documentation is placed in the `context/` directory.
 
+## Graph and Result Index
+
+The static `generate_*callgraph.py` tools write **design-time** source graphs
+to [context/graphs/README.md](../context/graphs/README.md). In contrast,
+`generate_c_runtime_callgraph.py` consumes a trace recorded by
+`make runtimegraph` and writes **runtime** call evidence to
+`context/runtimegraphs/<scenario>/`; `generate_c_design_runtime_comparison.py`
+compares those observed edges with the design graph. The corresponding graph
+and result locations are part of each command's output, so generated artifacts
+remain discoverable rather than being implicit scratch files.
+
+### Other build and maintenance tools
+
+| Tool | Purpose | Result/location |
+| --- | --- | --- |
+| `generate_classic_render_assets.py` | Decodes validated graphics and colour PROMs for the classic SDL renderer. | Tracked `phoenix_render_assets.h`; build-time asset, not gameplay ROM access. |
+| `migrate_artifacts.py` | Normalizes links and locations in curated trace artifacts. | Updated files under `context/traces/`. |
+| `melody_dump.c` | Small C diagnostic for sound-table inspection. | Console diagnostic output; not part of normal builds. |
+
+The C2 and JPhoenix tool directories have their own indexes:
+[../../c2-phoenix/tools/README.md](../../c2-phoenix/tools/README.md) and
+[../../jphoenix-emulator-port/tools/README.md](../../jphoenix-emulator-port/tools/README.md).
+
 ### `generate_mappings.py`
 **Usage:** `python3 tools/generate_mappings.py`
 
@@ -50,7 +73,7 @@ hits, and optional built-in targets.
 
 On machines without an SDL display, add `--sdl-video-driver dummy`. `evaluate`
 is intentionally headless because it passes `--run-frames=` to the emulator.
-To watch a generated script, run `./c-phoenix --input-script=...` directly
+To watch a generated script, run `./build/c-phoenix --input-script=...` directly
 without `--run-frames=`.
 
 ```bash
@@ -115,7 +138,7 @@ RAM-dump format. It supports `player_ship`, `player_bullet`,
 the full registry or repeat `--kind` for a subset.
 
 ```bash
-SDL_VIDEODRIVER=dummy ./c-phoenix --run-frames=4000 \
+SDL_VIDEODRIVER=dummy ./build/c-phoenix --run-frames=4000 \
     --input-script=context/input-scripts/my_session.txt \
     --ram-dump=/tmp/phoenix-ram.bin --no-render
 python3 tools/trace_sprites.py /tmp/phoenix-ram.bin --kind all \

@@ -29,7 +29,7 @@ printf '# leeg\n' > /tmp/passive.txt
 java -Dphoenix.ramdump=/tmp/jphx_passive.bin -Dphoenix.ramdump.frames=3600 \
      -cp build/classes PhoenixCoverageRunner /tmp/passive.txt /tmp/cov 3600
 cd ../c-phoenix
-./c-phoenix --run-frames=3610 --ram-dump=/tmp/port_passive.bin
+./build/c-phoenix --run-frames=3610 --ram-dump=/tmp/port_passive.bin
 python3 tools/compare_ram_dumps.py /tmp/jphx_passive.bin /tmp/port_passive.bin \
     --align-c98 --stop-after 999999 --regions 4000-4BE5 | grep -c "^Frame-paar"
 ```

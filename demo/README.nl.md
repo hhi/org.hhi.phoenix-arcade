@@ -81,6 +81,24 @@ alleen op hun actuele positie, zonder blijvend spoor. De eerste opdracht
 vereist GCC en SDL2, de tweede bouwt ook de C2-renderer, en de derde vereist
 een JDK en de geassembleerde ROM-set.
 
+De gegenereerde HTML-tracer is bewust gedetailleerd en kan groot zijn. Geef de
+browser maximaal 30 seconden om hem volledig te laden voordat je de
+framebediening gebruikt. Elk `demorun`-target opent zijn standaardresultaat met
+letterlijk een opdracht als:
+
+```sh
+# macOS
+open /tmp/c-phoenix-bird-investigation-tracer.html
+
+# Linux
+xdg-open /tmp/c-phoenix-bird-investigation-tracer.html
+```
+
+Vervang voor C2-Phoenix of JPhoenix `c-phoenix` in de bestandsnaam door
+`c2-phoenix` of `jphoenix`. Het target meldt ook het exacte uitvoerpad. Je kunt
+ook eerst je browser openen en **Bestand openen** kiezen, of het HTML-bestand
+vanuit Finder of je Linux-bestandsbeheer naar een browservenster slepen.
+
 Gebruik voor het zichtbaar afspelen van dezelfde sessie bij iedere
 implementatie dezelfde opdrachtnotatie:
 

@@ -31,7 +31,7 @@ Er is geen auto-release. Houd knoppen dus expliciet meerdere frames vast.
 
 ```bash
 make
-./c-phoenix --run-frames=4000 \
+./build/c-phoenix --run-frames=4000 \
     --input-script=context/input-scripts/extended_playthrough.txt \
     --ram-dump=/tmp/trace.bin
 ```

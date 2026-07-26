@@ -24,6 +24,8 @@ traceable to the original Phoenix Z80 ROM and to the jphoenix emulator.
 - [mapping/](mapping/) - generated C/ASM mapping reports and lockstep status
   data.
 - [graphs/](graphs/) - generated callgraph and coverage graph artifacts.
+- [verification/](verification/) - dated lockstep evidence, recorded revisions,
+  and JPhoenix PC coverage used to substantiate it.
 - [input-scripts/README.md](input-scripts/README.md) - replay scripts, generated
   bot inputs, `make replayrun`, and bug-reproduction workflow.
 - [traces/README.md](traces/README.md) - curated trace artifacts and policy for

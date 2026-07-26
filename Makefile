@@ -1,4 +1,4 @@
-.PHONY: help c-build c2-build c2-run j-build c-test j-test c2-test verify links large-files public-audit romcheck rombuild romprepare gen-phoenix-tables
+.PHONY: help c-build c2-build c2-run j-build c-test j-test c2-test verify links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -18,6 +18,7 @@ help:
 	@echo "  make large-files  Audit repository file sizes"
 	@echo "  make public-audit Report private-only material before a public export"
 	@echo "  make romcheck     Validate ROM_DIR chip dumps against ROM_SET (default: $(ROM_DIR))"
+	@echo "  make romnormalize Match ROM_DIR chip hashes, normalize names, and create phoenix_amstar-set1.zip"
 	@echo "  make rombuild     Assemble ROM_DIR chip dumps into ROM_OUTPUT_DIR (default: $(ROM_OUTPUT_DIR))"
 	@echo "  make romprepare   Assemble the ROMs and regenerate the derived C sources"
 	@echo "  make gen-phoenix-tables Regenerate c-phoenix/phoenix_tables.c from ROM_OUTPUT_DIR (aborts on mismatch)"
@@ -56,6 +57,9 @@ public-audit:
 
 romcheck:
 	python3 tools/rom_tool.py --manifest $(ROM_SET) check --rom-dir $(ROM_DIR)
+
+romnormalize:
+	python3 tools/rom_tool.py --manifest $(ROM_SET) normalize --rom-dir $(ROM_DIR)
 
 rombuild:
 	python3 tools/rom_tool.py --manifest $(ROM_SET) build --rom-dir $(ROM_DIR) --output-dir $(ROM_OUTPUT_DIR)

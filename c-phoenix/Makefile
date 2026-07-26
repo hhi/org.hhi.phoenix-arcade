@@ -1,5 +1,8 @@
 CC = gcc
 PYTHON ?= python3
+BUILD_DIR ?= build
+OBJ_DIR ?= $(BUILD_DIR)/obj
+GENERATED_DIR ?= $(BUILD_DIR)/generated
 CFLAGS = -Wall -Wextra -g -O0 -fdata-sections $(shell pkg-config --cflags sdl2 || sdl2-config --cflags)
 LDFLAGS = $(shell pkg-config --libs sdl2 || sdl2-config --libs)
 
@@ -14,15 +17,15 @@ else
 endif
 
 SRCS = $(wildcard *.c)
-OBJS = $(SRCS:.c=.o)
-TARGET = c-phoenix
+OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
+TARGET = $(BUILD_DIR)/c-phoenix
 C2_ROOT ?= ../c2-phoenix
 C2_VARIANT ?=
 C2_BUILD_DIR ?= $(C2_ROOT)/build/native$(if $(C2_VARIANT),/$(C2_VARIANT))
 C2_TARGET ?= $(C2_BUILD_DIR)/c2-phoenix
 C2_GAME_OBJS = $(patsubst %.c,$(C2_BUILD_DIR)/%.o,$(SRCS))
 C2_RENDERER_OBJ = $(C2_BUILD_DIR)/c2_renderer.o
-C2_ASSET_HEADER = $(C2_ROOT)/native/c2_hires_sprite_assets.h
+C2_ASSET_HEADER = $(C2_BUILD_DIR)/generated/c2_hires_sprite_assets.h
 CLASSIC_ASSET_HEADER = phoenix_render_assets.h
 C2_VARIANT_CFLAGS = $(if $(C2_VARIANT),-DC2_VARIANT_$(shell echo $(C2_VARIANT) | tr a-z A-Z)=1)
 C2_CFLAGS = $(CFLAGS) -DC2_RENDERER $(C2_VARIANT_CFLAGS) -I. -I$(C2_ROOT)/native -ffunction-sections -fdata-sections
@@ -78,10 +81,11 @@ VISUAL_TRACE_EXTRA_ARGS ?=
 
 all: $(TARGET) verify-rom-free
 
+
 $(CLASSIC_ASSET_HEADER): tools/generate_classic_render_assets.py ../roms/assembled/graphics.rom ../roms/assembled/proms.rom
 	$(PYTHON) tools/generate_classic_render_assets.py --graphics ../roms/assembled/graphics.rom --proms ../roms/assembled/proms.rom --output $@
 
-platform_sdl.o build/runtime/platform_sdl.o: $(CLASSIC_ASSET_HEADER)
+$(OBJ_DIR)/platform_sdl.o build/runtime/platform_sdl.o: $(CLASSIC_ASSET_HEADER)
 
 $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
@@ -102,13 +106,15 @@ $(C2_BUILD_DIR)/%.o: %.c
 	$(CC) $(C2_CFLAGS) -c $< -o $@
 
 $(C2_ASSET_HEADER): $(C2_ROOT)/tools/generate_hires_sprite_assets.py ../roms/assembled/graphics.rom ../roms/assembled/proms.rom
+	@mkdir -p $(dir $@)
 	$(PYTHON) $(C2_ROOT)/tools/generate_hires_sprite_assets.py --graphics ../roms/assembled/graphics.rom --proms ../roms/assembled/proms.rom --output $@
 
 $(C2_RENDERER_OBJ): $(C2_ROOT)/native/c2_renderer.c $(C2_ROOT)/native/c2_renderer.h $(C2_ASSET_HEADER)
 	@mkdir -p $(dir $@)
-	$(CC) $(C2_CFLAGS) -c $< -o $@
+	$(CC) $(C2_CFLAGS) -I$(dir $(C2_ASSET_HEADER)) -c $< -o $@
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 build/runtime/%.o: %.c
@@ -119,7 +125,8 @@ $(RUNTIME_TARGET): $(RUNTIME_OBJS)
 	$(CC) $(RUNTIME_OBJS) -o $@ $(LDFLAGS) -Wl,-no_pie
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(BUILD_DIR)
+	rm -f $(SRCS:.c=.o) c-phoenix
 
 c2-clean:
 	rm -rf $(C2_BUILD_DIR)

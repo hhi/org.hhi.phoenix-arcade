@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import sys
+import zipfile
 from pathlib import Path
 
 DEFAULT_MANIFEST = Path(__file__).resolve().parent.parent / "roms" / "phoenix-amstar" / "rom-set.json"
@@ -32,6 +33,66 @@ def sha256_bytes(data: bytes) -> str:
 def load_manifest(manifest_path: Path) -> dict:
     with manifest_path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def expected_chips_by_hash(manifest: dict) -> dict[str, dict]:
+    """Return the canonical chip metadata keyed by its content hash."""
+    expected: dict[str, dict] = {}
+    for image in manifest["images"]:
+        for chip in image["chips"]:
+            previous = expected.setdefault(chip["sha256"], chip)
+            if previous["file"] != chip["file"]:
+                raise ValueError(
+                    "manifest contains the same chip hash under two filenames: "
+                    f"{previous['file']} and {chip['file']}"
+                )
+    return expected
+
+
+def normalize_chip_names(manifest: dict, rom_dir: Path) -> int:
+    """Rename uniquely identified chip files to their manifest filenames.
+
+    Content is the authority: an arbitrary supplied filename is accepted only
+    when both its size and SHA-256 identify one expected physical chip. Unknown
+    files, wrong revisions, and duplicate canonical chips are left untouched.
+    """
+    expected = expected_chips_by_hash(manifest)
+    renamed = 0
+    for candidate in sorted(rom_dir.iterdir()):
+        if not candidate.is_file():
+            continue
+        size = candidate.stat().st_size
+        digest = sha256_file(candidate)
+        chip = expected.get(digest)
+        if chip is None or size != chip["size"]:
+            continue
+        destination = rom_dir / chip["file"]
+        if candidate == destination:
+            continue
+        if destination.exists():
+            if sha256_file(destination) == digest:
+                print(f"  keep {candidate.name}: canonical {destination.name} already exists")
+            else:
+                print(f"  skip {candidate.name}: canonical name {destination.name} is occupied")
+            continue
+        candidate.rename(destination)
+        renamed += 1
+        print(f"  rename {candidate.name} -> {destination.name} (SHA-256 match)")
+    return renamed
+
+
+def create_set_archive(manifest: dict, rom_dir: Path, archive_name: str) -> Path | None:
+    """Create a canonical local archive only after all chip files validate."""
+    archive_path = rom_dir / archive_name
+    if archive_path.exists():
+        print(f"  keep archive {archive_path}")
+        return None
+    with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_STORED) as archive:
+        for image in manifest["images"]:
+            for chip in sorted(image["chips"], key=lambda item: item["offset"]):
+                archive.write(rom_dir / chip["file"], arcname=chip["file"])
+    print(f"  archive {archive_path}")
+    return archive_path
 
 
 def check_chips(manifest: dict, rom_dir: Path) -> list[str]:
@@ -93,6 +154,25 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_normalize(args: argparse.Namespace) -> int:
+    manifest = load_manifest(args.manifest)
+    rom_dir = Path(args.rom_dir).resolve()
+    if not rom_dir.is_dir():
+        print(f"ROM_DIR not found: {rom_dir}", file=sys.stderr)
+        return 2
+    print(f"Matching chip dumps in {rom_dir} by SHA-256")
+    renamed = normalize_chip_names(manifest, rom_dir)
+    problems = check_chips(manifest, rom_dir)
+    if problems:
+        print(f"\n{len(problems)} problem(s); no archive created:", file=sys.stderr)
+        for problem in problems:
+            print(f"  - {problem}", file=sys.stderr)
+        return 1
+    print(f"\nAll chip dumps match after {renamed} rename(s).")
+    create_set_archive(manifest, rom_dir, args.archive_name)
+    return 0
+
+
 def cmd_build(args: argparse.Namespace) -> int:
     manifest = load_manifest(args.manifest)
     rom_dir = Path(args.rom_dir).resolve()
@@ -100,6 +180,8 @@ def cmd_build(args: argparse.Namespace) -> int:
         print(f"ROM_DIR not found: {rom_dir}", file=sys.stderr)
         return 2
 
+    print(f"Matching chip dumps in {rom_dir} by SHA-256")
+    renamed = normalize_chip_names(manifest, rom_dir)
     print(f"Checking chip dumps in {rom_dir} against {args.manifest.name}")
     problems = check_chips(manifest, rom_dir)
     if problems:
@@ -107,6 +189,10 @@ def cmd_build(args: argparse.Namespace) -> int:
         for problem in problems:
             print(f"  - {problem}", file=sys.stderr)
         return 1
+
+    if renamed:
+        print(f"\nRenamed {renamed} chip dump(s) to canonical manifest names.")
+    create_set_archive(manifest, rom_dir, args.archive_name)
 
     output_dir = Path(args.output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -155,10 +241,27 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     check_parser.add_argument("--rom-dir", required=True, help="Directory containing chip dump files")
     check_parser.set_defaults(func=cmd_check)
 
+    normalize_parser = subparsers.add_parser(
+        "normalize",
+        help="Identify chip dumps by SHA-256, rename matches, and create a canonical ZIP",
+    )
+    normalize_parser.add_argument("--rom-dir", required=True, help="Directory containing chip dump files")
+    normalize_parser.add_argument(
+        "--archive-name",
+        default="phoenix_amstar-set1.zip",
+        help="Local ZIP filename to create after a complete match",
+    )
+    normalize_parser.set_defaults(func=cmd_normalize)
+
     build_parser = subparsers.add_parser("build", help="Assemble chip dumps into ROM images")
     build_parser.add_argument("--rom-dir", required=True, help="Directory containing chip dump files")
     build_parser.add_argument(
         "--output-dir", required=True, help="Directory to write assembled .rom images into"
+    )
+    build_parser.add_argument(
+        "--archive-name",
+        default="phoenix_amstar-set1.zip",
+        help="Local ZIP filename to create after a complete match",
     )
     build_parser.set_defaults(func=cmd_build)
 

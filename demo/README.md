@@ -43,7 +43,7 @@ The visual tracer turns RAM dumps into standalone HTML: a physical Phoenix
 grid, frame controls, slot structures, object trails, level transitions,
 tooltips, and object-level JPhoenix/C-Phoenix differences.
 
-## Try It on macOS
+## Try It on Your Mac
 
 From the repository root, each implementation can run the recorded
 `bird-investigation` session and open its own standalone object tracer in your
@@ -61,6 +61,23 @@ shows object slots, positions, state metadata, and movement paths; bullets are
 shown at their current position without a persistent trail. The first command
 requires GCC and SDL2, the second also builds the C2 renderer, and the third
 requires a JDK and the assembled ROM set.
+
+The generated HTML tracer is deliberately detailed and can be large. Give the
+browser up to 30 seconds to load it completely before using the frame controls.
+Each `demorun` target opens its default result with a literal command such as:
+
+```sh
+# macOS
+open /tmp/c-phoenix-bird-investigation-tracer.html
+
+# Linux
+xdg-open /tmp/c-phoenix-bird-investigation-tracer.html
+```
+
+For C2-Phoenix or JPhoenix, replace `c-phoenix` in that filename with
+`c2-phoenix` or `jphoenix`. The target also prints the exact output path. You
+can instead open your browser first and choose **Open File**, or drag the HTML
+file from Finder or your Linux file manager onto a browser window.
 
 To watch that same session play visibly instead, use the same command shape
 for each implementation:

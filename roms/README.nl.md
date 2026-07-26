@@ -15,8 +15,11 @@ komen niet door de controle.
 
 ## 2. Plaats de chipbestanden
 
-Plaats de losse bestanden van je Phoenix Amstar-set in `roms/local/`. De namen
-moeten precies als volgt zijn:
+Plaats de losse bestanden van je Phoenix Amstar-set in `roms/local/`. De
+bestandsnamen hoeven niet overeen te komen met de onderstaande canonieke namen:
+`make romprepare` herkent iedere verwachte chip aan de SHA-256-hash en hernoemt
+een unieke volledige match naar de canonieke naam. De namen hieronder zijn dus
+de genormaliseerde eindsituatie:
 
 ```text
 roms/local/
@@ -26,7 +29,10 @@ roms/local/
   mmi6301.ic40      mmi6301.ic41
 ```
 
-`roms/local/` is de standaardlocatie die de scripts gebruiken.
+`roms/local/` is de standaardlocatie die de scripts gebruiken. Een volledige
+match maakt ook `roms/local/phoenix_amstar-set1.zip` aan als dat bestand nog
+niet bestaat, met de canonieke chipnamen. Niet-herkende bestanden en bestanden
+van een andere revisie blijven ongemoeid en laten de validatie falen.
 
 ## 3. Bereid de ROM-set voor
 
@@ -35,6 +41,9 @@ Voer vanuit de repository-root (de hoofddirectory) uit:
 ```sh
 make romprepare
 ```
+
+Gebruik `make romnormalize` om alleen bestandsnamen te normaliseren en de
+lokale ZIP te maken, zonder de samengestelde images te bouwen.
 
 `make romprepare` controleert ieder chipbestand, combineert ze tot drie bestanden in
 `roms/assembled/` en werkt de van die bestanden afgeleide C-bronbestanden bij:
