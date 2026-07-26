@@ -98,14 +98,14 @@ python3 tools/view_sprite_trace.py /tmp/c-last-grown-bird.bin \
   --output=/tmp/bird-trace.html
 ```
 
-Open de map via een lokale webserver:
+Gebruik de standaard lokale viewer-target:
 
 ```bash
-python3 -m http.server 8765 --bind 127.0.0.1 --directory /tmp
+make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/bird-trace.html
 ```
 
-Ga in de browser naar `http://127.0.0.1:8765/bird-trace.html`. Stop de server
-met `Ctrl-C` in dezelfde terminal.
+Open de door Make gemelde URL (standaardpoort `8766`). Stop de server met
+`Ctrl-C` in dezelfde terminal.
 
 ## Twee dumps vergelijken
 

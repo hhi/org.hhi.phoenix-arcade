@@ -37,14 +37,47 @@ traceable to the original Phoenix Z80 ROM and to the jphoenix emulator.
 - [traces/README.md](traces/README.md) - curated trace artifacts and policy for
   what belongs in Git.
 
-## Maintenance
+## Generate and View the Interactive ASM
 
-Regenerate derived mapping and annotation documents from the project root:
+From the repository root (recommended), generate the Markdown and HTML with:
 
 ```bash
-python3 tools/generate_mappings.py
-python3 tools/generate_annotated_asm.py
-python3 tools/generate_interactive_asm_html.py
+make c-asm-docs
+```
+
+Start a local viewer with C-source-link support:
+
+```bash
+make c-asm-view
+```
+
+To serve the already generated HTML without regenerating it, use:
+
+```bash
+make c-asm-view-only
+```
+
+Open `http://127.0.0.1:8765/context/Phoenix.html`; append `?theme=light` for
+the explicit light variant. Use `ASM_VIEW_PORT=8766` (or another free port) to
+override the default port. Stop the viewer with `Ctrl-C`.
+
+The equivalent commands when invoked from the `c-phoenix/` directory are:
+
+```bash
+make interactive-asm
+make interactive-asm-view
+make interactive-asm-view-only
+```
+
+Use the local viewer rather than opening `Phoenix.html` with `file://`: the
+in-page C source viewer must fetch C files over HTTP.
+
+## Maintenance
+
+Regenerate all derived mapping, annotation, and graph documents with:
+
+```bash
+make -C c-phoenix docs
 ```
 
 Keep ROM-address traceability intact when updating C comments or generated

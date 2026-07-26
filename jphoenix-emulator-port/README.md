@@ -146,8 +146,11 @@ make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt
 
 `context/...` is the shared script location used by every implementation.
 `make replayrun` resolves it to C-Phoenix's context directory and runs the
-desktop emulator with lockstep-compatible input polling. Use `make demorun`
-when you also want a fixed-length RAM dump and the standalone visual tracer.
+desktop emulator with lockstep-compatible input polling. `make demorun`
+generates a fixed-length RAM dump and standalone visual tracer. Use
+`make tracer-view` to generate it and serve it at `http://127.0.0.1:8766/`;
+use `make tracer-view-only` to serve an already generated tracer. This avoids
+opening interactive HTML through `file://`.
 
 The frame numbers are compatible with `c-phoenix --record-input=` and
 `--input-script=`. A recorded event is flushed after every line, so a

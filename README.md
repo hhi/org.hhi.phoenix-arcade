@@ -12,6 +12,9 @@ legally obtained Phoenix Amstar ROM set as described in
 | Play the native, high-resolution C2 presentation | `make c2-run` |
 | Run the classic C port | `cd c-phoenix && make run` |
 | Run the Java emulator | `cd jphoenix-emulator-port && make run` |
+| Generate and view the interactive ASM documentation | `make c-asm-view` |
+| Generate and view the C-Phoenix comparison tracer | `make c-tracer-view` |
+| Generate and view the JPhoenix demo tracer | `make j-tracer-view` |
 | Build and check the whole repository | `make verify` |
 | Watch replays, tracer output, and callgraphs | [demo/](demo/README.md) |
 

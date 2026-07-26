@@ -143,14 +143,14 @@ make tracerun \
   COMPARE_STOP_AFTER=999999
 ```
 
-Product: naast de twee dumps `/tmp/bird-investigation-diff.html`. Open die
-bijvoorbeeld lokaal:
+Product: naast de twee dumps `/tmp/bird-investigation-diff.html`. Toon die
+via de uniforme lokale viewer:
 
 ```sh
-python3 -m http.server 8766 --bind 127.0.0.1 --directory /tmp
+make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/bird-investigation-diff.html
 ```
 
-Ga dan naar `http://127.0.0.1:8766/bird-investigation-diff.html`.
+De target toont de URL op `http://127.0.0.1:8766/` en stopt met `Ctrl-C`.
 
 ### `make recordtracerun`
 

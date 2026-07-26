@@ -1,6 +1,5 @@
 JAVAC ?= javac
 JAVA ?= java
-OPEN ?= open
 
 BUILD_DIR := build
 RUNTIME_CLASSES := $(BUILD_DIR)/classes
@@ -49,8 +48,11 @@ DEMO_COVERAGE_DIR ?= /tmp/jphoenix-$(DEMO_NAME)-coverage
 DEMO_TRACE_OUTPUT ?= /tmp/jphoenix-$(DEMO_NAME)-tracer.html
 DEMO_TRACE_KIND ?= all
 DEMO_TRACE_PLAYER ?= all
+TRACER_VIEW_PORT ?= 8766
+TRACER_VIEW_OUTPUT ?= $(DEMO_TRACE_OUTPUT)
+TRACER_VIEW_DIR ?= $(dir $(TRACER_VIEW_OUTPUT))
 
-.PHONY: all compile run replayrun demorun runtimegraph libgdx run-libgdx verify verify-libgdx artifacts clean help
+.PHONY: all compile run replayrun demorun tracer-view tracer-view-only runtimegraph libgdx run-libgdx verify verify-libgdx artifacts clean help
 
 all: compile
 
@@ -72,8 +74,15 @@ demorun: compile
 	mkdir -p $(DEMO_COVERAGE_DIR)
 	$(JAVA) -Dphoenix.inputclock=poll -Dphoenix.romdir=$(ROM_DIR) -Dphoenix.ramdump=$(DEMO_DUMP) -Dphoenix.ramdump.frames=$(DEMO_FRAMES) -cp $(RUNTIME_CLASSES) PhoenixCoverageRunner $(call resolve_context_path,$(DEMO_SCRIPT)) $(DEMO_COVERAGE_DIR) $(DEMO_FRAMES)
 	python3 ../c-phoenix/tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label jphoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "JPhoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
-	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
-	@echo "Opened JPhoenix object tracer: $(DEMO_TRACE_OUTPUT)"
+	@echo "JPhoenix object tracer generated: $(DEMO_TRACE_OUTPUT)"
+
+tracer-view: demorun tracer-view-only
+
+tracer-view-only:
+	@test -f "$(TRACER_VIEW_OUTPUT)" || { echo "Tracer HTML not found: $(TRACER_VIEW_OUTPUT)"; exit 2; }
+	@echo "Open http://127.0.0.1:$(TRACER_VIEW_PORT)/$(notdir $(TRACER_VIEW_OUTPUT))"
+	@echo "Press Ctrl-C to stop the local tracer viewer."
+	@python3 -m http.server $(TRACER_VIEW_PORT) --bind 127.0.0.1 --directory "$(TRACER_VIEW_DIR)"
 
 runtimegraph: compile
 	@test -n "$(RUNTIME_SCENARIO)" || { echo "Usage: make runtimegraph RUNTIME_SCENARIO=<input-script-without-.txt> RUNTIME_FRAMES=<frames>"; exit 2; }
@@ -126,7 +135,9 @@ help:
 	@echo "  make compile    Compile JPhoenix"
 	@echo "  make run        Build and run the desktop emulator"
 	@echo "  make replayrun  Build and visibly replay an input script"
-	@echo "  make demorun    Run the default demo and create a standalone JPhoenix tracer"
+	@echo "  make demorun    Run the default demo and generate a standalone JPhoenix tracer"
+	@echo "  make tracer-view Generate and serve the JPhoenix tracer locally"
+	@echo "  make tracer-view-only Serve an existing JPhoenix tracer locally"
 	@echo "  make verify     Run the Java verification suite"
 	@echo "  make help       Show this help"
 	@echo ""
@@ -141,6 +152,9 @@ help:
 	@echo "  DEMO_NAME=$(DEMO_NAME)"
 	@echo "  DEMO_DUMP=$(DEMO_DUMP)"
 	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
+	@echo "  TRACER_VIEW_OUTPUT=$(TRACER_VIEW_OUTPUT)"
+	@echo "  TRACER_VIEW_DIR=$(TRACER_VIEW_DIR)"
+	@echo "  TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)"
 	@echo ""
 	@echo "example"
 	@echo "  make replayrun REPLAY_SCRIPT=context/input-scripts/bird-investigation.txt"

@@ -12,6 +12,9 @@ zoals beschreven in [`roms/README.nl.md`](roms/README.nl.md).
 | De native C2-presentatie in hoge resolutie spelen | `make c2-run` |
 | De klassieke C-poort draaien | `cd c-phoenix && make run` |
 | De Java-emulator draaien | `cd jphoenix-emulator-port && make run` |
+| De interactieve ASM-documentatie genereren en tonen | `make c-asm-view` |
+| De C-Phoenix-vergelijkingstracer genereren en tonen | `make c-tracer-view` |
+| De JPhoenix-demotracer genereren en tonen | `make j-tracer-view` |
 | De hele repository bouwen en controleren | `make verify` |
 | Replays, tracer-uitvoer en callgraphs bekijken | [demo/](demo/README.nl.md) |
 

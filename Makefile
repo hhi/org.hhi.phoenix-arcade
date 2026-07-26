@@ -1,15 +1,24 @@
-.PHONY: help c-build c2-build c2-run j-build c-test j-test c2-test verify links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
 ROM_OUTPUT_DIR ?= roms/assembled
+ASM_VIEW_PORT ?= 8765
+TRACER_VIEW_PORT ?= 8766
 
 help:
 	@echo "Phoenix Arcade monorepo"
 	@echo "  make c-build      Build C-Phoenix"
+	@echo "  make c-asm-docs   Generate interactive Phoenix ASM documentation"
+	@echo "  make c-asm-view   Generate and serve Phoenix ASM documentation locally"
+	@echo "  make c-asm-view-only Serve existing Phoenix ASM documentation locally"
+	@echo "  make c-tracer-view Generate and serve the C-Phoenix comparison tracer"
+	@echo "  make c-tracer-view-only Serve an existing C-Phoenix tracer locally"
 	@echo "  make c2-build     Build the native interactive C2-Phoenix application"
 	@echo "  make c2-run       Build and run native C2-Phoenix"
 	@echo "  make j-build      Build JPhoenix"
+	@echo "  make j-tracer-view Generate and serve the JPhoenix tracer locally"
+	@echo "  make j-tracer-view-only Serve an existing JPhoenix tracer locally"
 	@echo "  make c-test       Run C-Phoenix tests"
 	@echo "  make c2-test      Run C2-Phoenix semantic contract tests"
 	@echo "  make j-test       Run JPhoenix verification"
@@ -26,6 +35,21 @@ help:
 c-build:
 	$(MAKE) -C c-phoenix
 
+c-asm-docs:
+	$(MAKE) -C c-phoenix interactive-asm
+
+c-asm-view:
+	$(MAKE) -C c-phoenix interactive-asm-view ASM_VIEW_PORT=$(ASM_VIEW_PORT)
+
+c-asm-view-only:
+	$(MAKE) -C c-phoenix interactive-asm-view-only ASM_VIEW_PORT=$(ASM_VIEW_PORT)
+
+c-tracer-view:
+	$(MAKE) -C c-phoenix tracer-view TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)
+
+c-tracer-view-only:
+	$(MAKE) -C c-phoenix tracer-view-only TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)
+
 c2-build:
 	$(MAKE) -C c2-phoenix native
 
@@ -34,6 +58,12 @@ c2-run:
 
 j-build:
 	$(MAKE) -C jphoenix-emulator-port
+
+j-tracer-view:
+	$(MAKE) -C jphoenix-emulator-port tracer-view TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)
+
+j-tracer-view-only:
+	$(MAKE) -C jphoenix-emulator-port tracer-view-only TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)
 
 c-test:
 	python3 -m unittest discover c-phoenix/tests

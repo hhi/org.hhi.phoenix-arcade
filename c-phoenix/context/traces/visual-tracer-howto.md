@@ -21,13 +21,27 @@ make tracerun \
   COMPARE_STOP_AFTER=999999
 ```
 
+Generate and serve the same tracer over HTTP with:
+
+```sh
+make tracer-view \
+  COMPARE_SCRIPT=context/input-scripts/two_player_last_grown_bird.txt \
+  COMPARE_FRAMES=9000 COMPARE_NAME=last-grown-bird \
+  COMPARE_STOP_AFTER=999999
+```
+
+The command prints the `http://127.0.0.1:8766/` URL and stays active until
+`Ctrl-C`. To serve an existing `/tmp` tracer without regenerating it, use
+`make tracer-view-only` (override the file with
+`TRACE_VIEW_OUTPUT=/tmp/other-diff.html`).
+
 For one C-Phoenix dump, first use `make headlessrun` with `REPLAY_RAM_DUMP`,
 then generate and serve HTML:
 
 ```sh
 python3 tools/view_sprite_trace.py /tmp/c-last-grown-bird.bin \
   --player 1 --output=/tmp/phoenix-trace.html
-python3 -m http.server 8765 --bind 127.0.0.1 --directory /tmp
+make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/phoenix-trace.html
 ```
 
 For a direct two-dump comparison:

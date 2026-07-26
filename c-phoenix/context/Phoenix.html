@@ -16,6 +16,7 @@
     #label-search { width: 100%; padding: .55rem .65rem; border: 1px solid var(--border); border-radius: .35rem; background: var(--code); color: var(--text); }
     .nav-controls { display: flex; gap: .5rem; }
     button { padding: .4rem .65rem; border: 1px solid var(--border); border-radius: .3rem; background: var(--code); color: var(--text); cursor: pointer; }
+    .theme-control { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin: .75rem 0; } .theme-control span { color: var(--muted); font-size: .85rem; }
     button:focus, a:focus, input:focus { outline: 2px solid var(--focus); outline-offset: 2px; }
     #label-list { display: grid; gap: .12rem; margin-top: .65rem; }
     #label-list a { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .15rem .35rem; border-radius: .25rem; color: var(--text); text-decoration: none; font: .85rem ui-monospace, monospace; }
@@ -45,18 +46,22 @@
     .asm-section:target h3 { color: var(--focus); }
     .hidden, #label-list a.hidden { display: none; }
     @media (prefers-color-scheme: light) {
-      :root { --bg: #f4f7fb; --panel: #ffffff; --code: #f8fafc; --text: #17212b; --muted: #52606d; --accent: #006e9c; --border: #b7c3cf; --focus: #8a5700; --badge-text: #17212b; }
+      :root { --bg: #f4f7fb; --panel: #ffffff; --code: #f8fafc; --text: #17212b; --muted: #52606d; --accent: #006e9c; --border: #b7c3cf; --focus: #8a5700; --badge-text: #ffffff; }
       #label-list a:hover, #label-list a:focus { background: #dcecf5; }
       .label-kind-code { --kind-color: #a84d0e; color: var(--kind-color); } .label-kind-data { --kind-color: #26733a; color: var(--kind-color); } .label-kind-unknown { --kind-color: #52606d; color: var(--kind-color); }
       .mnemonic { color: #1267b3; } .mnemonic-emphasis { color: #007da8; } .register { color: #7040a0; } .directive { color: #00749f; } .literal { color: #26733a; } .comment { color: #4b5968; }
       .control-separator { background: color-mix(in srgb, var(--border) 85%, transparent); }
       .label-ref { color: #805900; } .label-ref-data { color: #176c38; text-decoration-color: #176c38; } .label-ref-unknown { color: var(--muted); } .symbol-ref { color: #176c38; } .c-source-link { color: #176c38; } .data-c-representation { border-left-color: #26733a; background: #e9f6ec; } #code-tooltip { background: #ffffff; } .callout { background: #e6f4fb; } .c-function-boundary { background: #e6f4fb; } .c-line-highlight { background: #fff0bf; }
     }
-    body.theme-light { color-scheme: light; --bg: #f4f7fb; --panel: #ffffff; --code: #f8fafc; --text: #17212b; --muted: #52606d; --accent: #006e9c; --border: #b7c3cf; --focus: #8a5700; --badge-text: #17212b; }
+    body.theme-light { color-scheme: light; --bg: #f4f7fb; --panel: #ffffff; --code: #f8fafc; --text: #17212b; --muted: #52606d; --accent: #006e9c; --border: #b7c3cf; --focus: #8a5700; --badge-text: #ffffff; }
     body.theme-light #label-list a:hover, body.theme-light #label-list a:focus { background: #dcecf5; }
     body.theme-light .label-kind-code { --kind-color: #a84d0e; color: var(--kind-color); } body.theme-light .label-kind-data { --kind-color: #26733a; color: var(--kind-color); } body.theme-light .label-kind-unknown { --kind-color: #52606d; color: var(--kind-color); }
     body.theme-light .mnemonic { color: #1267b3; } body.theme-light .mnemonic-emphasis { color: #007da8; } body.theme-light .register { color: #7040a0; } body.theme-light .directive { color: #00749f; } body.theme-light .literal { color: #26733a; } body.theme-light .comment { color: #4b5968; }
     body.theme-light .control-separator { background: color-mix(in srgb, var(--border) 85%, transparent); } body.theme-light .label-ref { color: #805900; } body.theme-light .label-ref-data { color: #176c38; text-decoration-color: #176c38; } body.theme-light .label-ref-unknown { color: var(--muted); } body.theme-light .symbol-ref, body.theme-light .c-source-link { color: #176c38; } body.theme-light .data-c-representation { border-left-color: #26733a; background: #e9f6ec; } body.theme-light #code-tooltip { background: #ffffff; } body.theme-light .callout, body.theme-light .c-function-boundary { background: #e6f4fb; } body.theme-light .c-line-highlight { background: #fff0bf; }
+    body.theme-dark { color-scheme: dark; --bg: #101419; --panel: #182027; --code: #0c1116; --text: #d8e0e8; --muted: #92a2b2; --accent: #77d7ff; --border: #2d3a44; --focus: #ffd166; --badge-text: #101419; }
+    body.theme-dark #label-list a:hover, body.theme-dark #label-list a:focus { background: #263b49; color: var(--accent); } body.theme-dark .label-kind-code { --kind-color: #ff9e64; color: var(--kind-color); } body.theme-dark .label-kind-data { --kind-color: #7ee787; color: var(--kind-color); } body.theme-dark .label-kind-unknown { --kind-color: #92a2b2; color: var(--kind-color); }
+    body.theme-dark .mnemonic { color: #6cb6ff; } body.theme-dark .mnemonic-emphasis { color: #56d4ff; } body.theme-dark .register { color: #c099ff; } body.theme-dark .directive { color: #7dcfff; } body.theme-dark .literal { color: #9ece6a; } body.theme-dark .comment { color: #9aa8b7; }
+    body.theme-dark .control-separator { background: color-mix(in srgb, var(--border) 75%, transparent); } body.theme-dark .label-ref { color: #ffe08a; } body.theme-dark .label-ref-data { color: #7ee787; text-decoration-color: #7ee787; } body.theme-dark .label-ref-unknown { color: var(--muted); } body.theme-dark .symbol-ref, body.theme-dark .c-source-link { color: #7ee787; } body.theme-dark .data-c-representation { border-left-color: #7ee787; background: color-mix(in srgb, #7ee787 9%, var(--panel)); } body.theme-dark #code-tooltip { background: #26343d; } body.theme-dark .callout { background: #162b36; } body.theme-dark .c-function-boundary { background: #132e3c; } body.theme-dark .c-line-highlight { background: #4b3f1a; }
     @media (max-width: 760px) { .layout { display: block; } aside#navigator { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--border); } #label-list { max-height: 13rem; overflow: auto; } main { padding: 1rem; } }
   </style>
 </head>
@@ -64,6 +69,7 @@
   <div class="layout">
     <aside id="navigator" aria-label="Assembly label navigation">
       <strong>Phoenix ASM</strong>
+      <div class="theme-control"><span>Color theme</span><button id="theme-toggle" type="button" aria-pressed="false">Use light theme</button></div>
       <h2>Navigate</h2>
       <div class="nav-controls"><button id="go-back" type="button">← Back</button><button id="go-forward" type="button">Forward →</button></div>
       <h2>Labels</h2>
@@ -12485,7 +12491,15 @@
   <dialog id="c-viewer" aria-label="C source viewer"><header><strong id="c-source-title">C source</strong><button id="close-c-viewer" type="button">Close</button></header><code id="c-source-code"></code></dialog>
   <div id="code-tooltip" role="tooltip" hidden></div>
   <script>
-    if (new URLSearchParams(location.search).get('theme') === 'light') document.body.classList.add('theme-light');
+    const themeToggle = document.querySelector('#theme-toggle');
+    const queryTheme = new URLSearchParams(location.search).get('theme');
+    const storedTheme = (() => { try { return localStorage.getItem('phoenix-asm-theme'); } catch { return null; } })();
+    const systemTheme = () => matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const activeTheme = () => document.body.classList.contains('theme-light') ? 'light' : document.body.classList.contains('theme-dark') ? 'dark' : systemTheme();
+    const applyTheme = (theme, persist = false) => { document.body.classList.remove('theme-light', 'theme-dark'); document.body.classList.add(`theme-${theme}`); themeToggle.textContent = `Use ${theme === 'light' ? 'dark' : 'light'} theme`; themeToggle.setAttribute('aria-pressed', String(theme === 'dark')); if (persist) { try { localStorage.setItem('phoenix-asm-theme', theme); } catch { /* Storage can be unavailable. */ } const url = new URL(location.href); url.searchParams.set('theme', theme); history.replaceState(null, '', url); } };
+    if (queryTheme === 'light' || queryTheme === 'dark') applyTheme(queryTheme); else if (storedTheme === 'light' || storedTheme === 'dark') applyTheme(storedTheme);
+    else { themeToggle.textContent = `Use ${systemTheme() === 'light' ? 'dark' : 'light'} theme`; themeToggle.setAttribute('aria-pressed', String(systemTheme() === 'dark')); }
+    themeToggle.addEventListener('click', () => applyTheme(activeTheme() === 'light' ? 'dark' : 'light', true));
     const historyStack = [], forwardStack = [];
     const currentTarget = () => location.hash || '#document';
     const visit = (target) => { historyStack.push(currentTarget()); forwardStack.length = 0; location.hash = target; updateButtons(); };

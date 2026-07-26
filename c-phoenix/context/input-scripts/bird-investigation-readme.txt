@@ -22,8 +22,8 @@ Uitvoer (niet gecommit):
 
 Open de tracer lokaal:
 
-python3 -m http.server 8766 --bind 127.0.0.1 --directory /tmp
+make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/bird-investigation-diff.html
 
-Open daarna http://127.0.0.1:8766/bird-investigation-diff.html
+Open daarna de door Make gemelde localhost-URL. Stop de server met Ctrl-C.
 
 De .bin-dumps en de HTML zijn afgeleide, grote bestanden en horen niet in Git.

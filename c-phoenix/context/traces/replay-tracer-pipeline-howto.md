@@ -106,10 +106,16 @@ make tracerun \
   COMPARE_FRAMES=13935 \
   COMPARE_NAME=bird-investigation \
   COMPARE_STOP_AFTER=999999
-python3 -m http.server 8766 --bind 127.0.0.1 --directory /tmp
 ```
 
-Open `http://127.0.0.1:8766/bird-investigation-diff.html`.
+Then serve the generated viewer through the standard local server:
+
+```sh
+make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/bird-investigation-diff.html
+```
+
+Open the URL printed by Make (default port `8766`) and stop the server with
+`Ctrl-C`.
 
 ### `make recordtracerun`
 

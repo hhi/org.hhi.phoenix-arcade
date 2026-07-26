@@ -150,9 +150,20 @@ make tracerun \
   COMPARE_STOP_AFTER=999999
 ```
 
-Serve the reported HTML directory, for example with `python3 -m http.server
-8765`, then open `http://127.0.0.1:8765/last-grown-bird-diff.html`. Override
-the tracer with `VISUAL_TRACE_OUTPUT`, `VISUAL_TRACE_PLAYER`,
+Use the local viewer target to generate and serve it in one step:
+
+```bash
+make tracer-view \
+  COMPARE_SCRIPT=context/input-scripts/two_player_last_grown_bird.txt \
+  COMPARE_FRAMES=9000 \
+  COMPARE_NAME=last-grown-bird \
+  COMPARE_STOP_AFTER=999999
+```
+
+It prints the localhost URL (default port `8766`) and keeps the server running
+until `Ctrl-C`. To serve an already generated tracer, use
+`make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/last-grown-bird-diff.html`.
+Override the tracer with `VISUAL_TRACE_OUTPUT`, `VISUAL_TRACE_PLAYER`,
 `VISUAL_TRACE_KIND`, and `VISUAL_TRACE_EXTRA_ARGS`.
 
 Lockstep Verification

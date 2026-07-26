@@ -19,20 +19,15 @@ intentionally listed in `.gitignore`.
 
 ## Start
 
-From the repository root, start a local web server:
+From the repository root, use the standard local viewer target:
 
 ```bash
-python3 -m http.server 8765 --bind 127.0.0.1 \
-  --directory context/traces/two_player_last_grown_bird_compare
+make -C c-phoenix tracer-view-only \
+  TRACE_VIEW_OUTPUT=context/traces/two_player_last_grown_bird_compare/last-grown-bird-diff.html
 ```
 
-Then open:
-
-```text
-http://127.0.0.1:8765/last-grown-bird-diff.html
-```
-
-Stop the server with `Ctrl-C` in the same terminal.
+Open the localhost URL reported by Make (default port `8766`). Stop the server
+with `Ctrl-C` in the same terminal.
 
 ## Regenerate
 

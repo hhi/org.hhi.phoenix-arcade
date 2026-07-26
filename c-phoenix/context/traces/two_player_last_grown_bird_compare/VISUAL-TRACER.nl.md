@@ -19,20 +19,15 @@ staat bewust in `.gitignore`.
 
 ## Starten
 
-Start vanuit de repository-root een lokale webserver:
+Gebruik vanuit de repository-root de standaard lokale viewer-target:
 
 ```bash
-python3 -m http.server 8765 --bind 127.0.0.1 \
-  --directory context/traces/two_player_last_grown_bird_compare
+make -C c-phoenix tracer-view-only \
+  TRACE_VIEW_OUTPUT=context/traces/two_player_last_grown_bird_compare/last-grown-bird-diff.html
 ```
 
-Open vervolgens:
-
-```text
-http://127.0.0.1:8765/last-grown-bird-diff.html
-```
-
-Stop de server met `Ctrl-C` in dezelfde terminal.
+Open de door Make gemelde localhost-URL (standaardpoort `8766`). Stop de
+server met `Ctrl-C` in dezelfde terminal.
 
 ## Opnieuw Genereren
 

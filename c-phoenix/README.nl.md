@@ -152,11 +152,21 @@ make tracerun \
   COMPARE_STOP_AFTER=999999
 ```
 
-Open daarna de gemelde HTML vanuit de directory met bijvoorbeeld
-`python3 -m http.server 8765`, en ga naar
-`http://127.0.0.1:8765/last-grown-bird-diff.html`. Gebruik
-`VISUAL_TRACE_OUTPUT`, `VISUAL_TRACE_PLAYER`, `VISUAL_TRACE_KIND` en
-`VISUAL_TRACE_EXTRA_ARGS` om de traceruitvoer aan te passen.
+Gebruik de lokale viewer-target om in een stap te genereren en te tonen:
+
+```bash
+make tracer-view \
+  COMPARE_SCRIPT=context/input-scripts/two_player_last_grown_bird.txt \
+  COMPARE_FRAMES=9000 \
+  COMPARE_NAME=last-grown-bird \
+  COMPARE_STOP_AFTER=999999
+```
+
+Deze meldt de localhost-URL (standaardpoort `8766`) en houdt de server actief
+tot `Ctrl-C`. Gebruik voor een reeds gegenereerde tracer
+`make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/last-grown-bird-diff.html`.
+Pas de traceruitvoer aan met `VISUAL_TRACE_OUTPUT`, `VISUAL_TRACE_PLAYER`,
+`VISUAL_TRACE_KIND` en `VISUAL_TRACE_EXTRA_ARGS`.
 
 Lockstep-Verificatie
 --------------------

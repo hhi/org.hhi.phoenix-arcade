@@ -36,14 +36,48 @@ naar de originele Phoenix Z80-ROM en naar de jphoenix-emulator.
 - [traces/README.nl.md](traces/README.nl.md) - gecureerde trace-artefacten en
   beleid voor wat in Git thuishoort.
 
-## Onderhoud
+## Interactieve ASM genereren en bekijken
 
-Genereer afgeleide mapping- en annotatiedocumenten vanuit de projectroot:
+Genereer vanuit de repository-root (aanbevolen) de Markdown en HTML met:
 
 ```bash
-python3 tools/generate_mappings.py
-python3 tools/generate_annotated_asm.py
-python3 tools/generate_interactive_asm_html.py
+make c-asm-docs
+```
+
+Start een lokale viewer met ondersteuning voor C-bronlinks:
+
+```bash
+make c-asm-view
+```
+
+Gebruik het volgende commando om de al gegenereerde HTML te tonen zonder
+opnieuw te genereren:
+
+```bash
+make c-asm-view-only
+```
+
+Open `http://127.0.0.1:8765/context/Phoenix.html`; voeg `?theme=light` toe
+voor de expliciete lichte variant. Gebruik `ASM_VIEW_PORT=8766` (of een andere
+vrije poort) om de standaardpoort te wijzigen. Stop de viewer met `Ctrl-C`.
+
+De equivalente commando's wanneer je ze vanuit de map `c-phoenix/` uitvoert:
+
+```bash
+make interactive-asm
+make interactive-asm-view
+make interactive-asm-view-only
+```
+
+Gebruik de lokale viewer en open `Phoenix.html` niet via `file://`: de
+ingebouwde C-bronviewer moet C-bestanden via HTTP kunnen ophalen.
+
+## Onderhoud
+
+Genereer alle afgeleide mapping-, annotatie- en grafiekdocumenten met:
+
+```bash
+make -C c-phoenix docs
 ```
 
 Houd ROM-adrestraceerbaarheid intact bij wijzigingen aan C-comments of

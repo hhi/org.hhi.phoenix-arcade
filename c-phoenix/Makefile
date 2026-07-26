@@ -46,7 +46,6 @@ REPLAY_RAM_DUMP ?=
 REPLAY_COVERAGE_DUMP ?=
 REPLAY_EXTRA_ARGS ?=
 HEADLESS_ENV ?= SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy
-OPEN ?= open
 DEMO_SCRIPT ?= $(CONTEXT_ROOT)/input-scripts/bird-investigation.txt
 DEMO_FRAMES ?= 13935
 DEMO_NAME ?= bird-investigation
@@ -76,8 +75,12 @@ VISUAL_TRACE_OUTPUT ?= /tmp/$(COMPARE_NAME)-diff.html
 VISUAL_TRACE_PLAYER ?= 1
 VISUAL_TRACE_KIND ?= auto
 VISUAL_TRACE_EXTRA_ARGS ?=
+ASM_VIEW_PORT ?= 8765
+TRACER_VIEW_PORT ?= 8766
+TRACE_VIEW_OUTPUT ?= $(VISUAL_TRACE_OUTPUT)
+TRACE_VIEW_DIR ?= $(dir $(TRACE_VIEW_OUTPUT))
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun comparerun tracerun runtimegraph c2 c2-clean verify-rom-free docs interactive-asm help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only help
 
 all: $(TARGET) verify-rom-free
 
@@ -156,8 +159,12 @@ headlessrun: $(TARGET)
 demorun: $(TARGET)
 	$(HEADLESS_ENV) ./$(TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(call resolve_context_path,$(DEMO_SCRIPT)) --no-render --ram-dump=$(DEMO_DUMP) $(DEMO_EXTRA_ARGS)
 	$(PYTHON) tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label c-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
-	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
-	@echo "Opened C-Phoenix object tracer: $(DEMO_TRACE_OUTPUT)"
+	@echo "C-Phoenix object tracer generated: $(DEMO_TRACE_OUTPUT)"
+
+demo-tracer-view: demorun demo-tracer-view-only
+
+demo-tracer-view-only:
+	@$(MAKE) tracer-view-only TRACE_VIEW_OUTPUT=$(DEMO_TRACE_OUTPUT) TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)
 
 comparerun: $(TARGET)
 	REF_DUMP=$(COMPARE_REF_DUMP) PORT_DUMP=$(COMPARE_PORT_DUMP) tools/lockstep/dump_pair.sh $(COMPARE_SCRIPT) $(COMPARE_FRAMES) $(COMPARE_NAME)
@@ -166,6 +173,14 @@ comparerun: $(TARGET)
 tracerun: comparerun
 	python3 tools/view_sprite_trace.py $(COMPARE_REF_DUMP) --compare $(COMPARE_PORT_DUMP) --reference-label jphoenix --port-label c-phoenix --kind $(VISUAL_TRACE_KIND) --player $(VISUAL_TRACE_PLAYER) --output=$(VISUAL_TRACE_OUTPUT) $(VISUAL_TRACE_EXTRA_ARGS)
 	@echo "Visual tracer: $(VISUAL_TRACE_OUTPUT)"
+
+tracer-view: tracerun tracer-view-only
+
+tracer-view-only:
+	@test -f "$(TRACE_VIEW_OUTPUT)" || { echo "Tracer HTML not found: $(TRACE_VIEW_OUTPUT)"; exit 2; }
+	@echo "Open http://127.0.0.1:$(TRACER_VIEW_PORT)/$(notdir $(TRACE_VIEW_OUTPUT))"
+	@echo "Press Ctrl-C to stop the local tracer viewer."
+	@$(PYTHON) -m http.server $(TRACER_VIEW_PORT) --bind 127.0.0.1 --directory "$(TRACE_VIEW_DIR)"
 
 runtimegraph: $(RUNTIME_TARGET)
 	@test -n "$(RUNTIME_SCENARIO)" || { echo "Usage: make runtimegraph RUNTIME_SCENARIO=<input-script-without-.txt> RUNTIME_FRAMES=<frames>"; exit 2; }
@@ -185,12 +200,17 @@ help:
 	@echo "  make replayrun        Build and visibly replay an input script"
 	@echo "  make headlessrun      Build and run a headless replay; optionally dump RAM"
 	@echo "  make demorun          Run the default demo and create a standalone C-Phoenix tracer"
+	@echo "  make demo-tracer-view Generate and serve the standalone C-Phoenix tracer"
 	@echo "  make comparerun       Run replay through jphoenix and c-phoenix, then compare RAM"
 	@echo "  make tracerun         Run comparerun and generate an interactive visual tracer"
+	@echo "  make tracer-view      Generate and serve the comparison visual tracer"
+	@echo "  make tracer-view-only Serve an existing visual tracer locally"
 	@echo "  make runtimegraph     Generate an executed C-function call graph"
 	@echo "  make c2               Build the native C2 renderer"
 	@echo "  make c2-clean         Remove C2 native build artefacts"
 	@echo "  make interactive-asm  Regenerate interactive Phoenix ASM documentation"
+	@echo "  make interactive-asm-view Generate ASM documentation and serve it locally"
+	@echo "  make interactive-asm-view-only Serve existing ASM documentation locally"
 	@echo "  make docs             Regenerate mapping and graph documentation"
 	@echo "  make clean            Remove object files and $(TARGET)"
 	@echo "  make help             Show this help"
@@ -232,6 +252,7 @@ help:
 	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
 	@echo "  DEMO_TRACE_KIND=$(DEMO_TRACE_KIND)"
 	@echo "  DEMO_TRACE_PLAYER=$(DEMO_TRACE_PLAYER)"
+	@echo "  TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)"
 	@echo "  DEMO_EXTRA_ARGS=$(if $(DEMO_EXTRA_ARGS),$(DEMO_EXTRA_ARGS),(none))"
 	@echo ""
 	@echo "comparerun defaults"
@@ -246,6 +267,9 @@ help:
 	@echo ""
 	@echo "tracerun defaults"
 	@echo "  VISUAL_TRACE_OUTPUT=$(VISUAL_TRACE_OUTPUT)"
+	@echo "  TRACE_VIEW_OUTPUT=$(TRACE_VIEW_OUTPUT)"
+	@echo "  TRACE_VIEW_DIR=$(TRACE_VIEW_DIR)"
+	@echo "  TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)"
 	@echo "  VISUAL_TRACE_PLAYER=$(VISUAL_TRACE_PLAYER)"
 	@echo "  VISUAL_TRACE_KIND=$(VISUAL_TRACE_KIND)"
 	@echo "  VISUAL_TRACE_EXTRA_ARGS=$(if $(VISUAL_TRACE_EXTRA_ARGS),$(VISUAL_TRACE_EXTRA_ARGS),(none))"
@@ -267,6 +291,14 @@ interactive-asm:
 	@echo "Generating interactive Phoenix ASM documentation..."
 	@python3 tools/generate_annotated_asm.py
 	@python3 tools/generate_interactive_asm_html.py
+
+interactive-asm-view: interactive-asm interactive-asm-view-only
+
+interactive-asm-view-only:
+	@echo "Open http://127.0.0.1:$(ASM_VIEW_PORT)/context/Phoenix.html"
+	@echo "Light theme: http://127.0.0.1:$(ASM_VIEW_PORT)/context/Phoenix.html?theme=light"
+	@echo "Press Ctrl-C to stop the local viewer."
+	@$(PYTHON) -m http.server $(ASM_VIEW_PORT) --bind 127.0.0.1
 
 docs:
 	@echo "Generating architecture mappings and graphs..."
