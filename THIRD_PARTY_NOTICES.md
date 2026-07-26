@@ -52,10 +52,11 @@ for that material here.
 ## Computer Archeology
 
 [Computer Archeology's Phoenix material](https://computerarcheology.com/Arcade/Phoenix/)
-is cited in the annotated hardware and graphics documentation, including
-`c-phoenix/context/fgtiles.md`, `bgtiles.md`, and `RAMUse.md`. It is used as a
-research and attribution source. Its pages remain subject to their own terms;
-copying text, diagrams, or other expressive content requires separate review.
+is cited through `c-phoenix/context/ComputerArcheology.md` and the annotated
+hardware and graphics documentation, including `fgtiles.md`, `bgtiles.md`, and
+`RAMUse.md`. It is used as a research and attribution source. Its pages remain
+subject to their own terms; copying text, diagrams, or other expressive content
+requires separate review.
 
 ## Runtime dependencies
 

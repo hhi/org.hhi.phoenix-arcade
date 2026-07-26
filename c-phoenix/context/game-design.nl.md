@@ -1,6 +1,6 @@
 # Phoenix: spelontwerp en architectuur
 
-Dit document beschrijft Phoenix zoals de huidige C-port het gedrag van de originele Z80-ROM uitvoert. Het is een wegwijzer, niet de normatieve specificatie voor een vertaalwijziging: bij conflict hebben [code-annotated.asm](code-annotated.asm), [RAMUse.md](RAMUse.md) en de `[ASM: ...]`-ankers in de C-code voorrang.
+Dit document beschrijft Phoenix zoals de huidige C-port het gedrag van de originele Z80-ROM uitvoert. Het is een wegwijzer, niet de normatieve specificatie voor een vertaalwijziging: bij conflict hebben [code-annotated.asm](code-annotated.asm), de [Computer Archeology Phoenix-referentie](ComputerArcheology.md) en de `[ASM: ...]`-ankers in de C-code voorrang.
 
 ## Doel en opbouw
 
@@ -80,7 +80,7 @@ Dit is de ROM-dispatch, geen algemene leveldesigner. De precieze configuratie pe
 
 De speler kan binnen een vaste horizontale band bewegen. Een vuurschot wordt op een invoerflank gestart; ingedrukt houden is dus niet hetzelfde als iedere frame opnieuw schieten. Het schild is tijdelijk en wordt eveneens via de invoerlogica geactiveerd. `player_update()` verzorgt per frame de invoer, positie, kogels, schild en sprite-adressering in [`player_logic.c`](../player_logic.c).
 
-De voornaamste bijbehorende RAM-velden zijn `PlayerShipX`, `PlayerState`, `ShieldCount`, `PlayerBulletState` en `AbovePlayerBulletState`; hun exacte adressen en bitbetekenissen staan in [RAMUse.md](RAMUse.md).
+De voornaamste bijbehorende RAM-velden zijn `PlayerShipX`, `PlayerState`, `ShieldCount`, `PlayerBulletState` en `AbovePlayerBulletState`; hun exacte adressen en bitbetekenissen staan in de [Computer Archeology Phoenix-referentie](ComputerArcheology.md).
 
 ### Vijanden en botsingen
 
@@ -104,7 +104,8 @@ De attractmodus is onderdeel van het spelontwerp, niet alleen een menu. Hij teke
 
 - [c_files_categorization.md](c_files_categorization.md): modules gegroepeerd per verantwoordelijkheid.
 - [code-annotated.md](code-annotated.md): de geannoteerde ROM, met C-links.
-- [RAMUse.md](RAMUse.md): RAM-velden, adressen en bekende betekenissen.
+- [ComputerArcheology.md](ComputerArcheology.md): externe hardware-, software-
+  en RAM-referentie voor Phoenix.
 - [mapping/c_functions_by_address.md](mapping/c_functions_by_address.md): adres-naar-C-functiemapping.
 - [input-scripts/README.nl.md](input-scripts/README.nl.md): reproduceerbare spel- en regressiescenario's.
 

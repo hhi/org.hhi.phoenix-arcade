@@ -1,7 +1,6 @@
-.PHONY: help test demo compare summary native run replayrun headlessrun demorun native-check native-compare native-clean
+.PHONY: help test demo demo-view demo-view-only compare summary native run replayrun headlessrun demorun tracer-view tracer-view-only native-check native-compare native-clean
 
 PYTHON ?= python3
-OPEN ?= open
 SCENARIO ?= bird-investigation
 TRACE ?= /tmp/$(SCENARIO)-semantic.json
 VIEWER ?= /tmp/$(SCENARIO)-c2.html
@@ -31,6 +30,9 @@ DEMO_TRACE_OUTPUT ?= /tmp/c2-phoenix-$(DEMO_NAME)-tracer.html
 DEMO_TRACE_KIND ?= all
 DEMO_TRACE_PLAYER ?= all
 DEMO_EXTRA_ARGS ?=
+TRACER_VIEW_PORT ?= 8767
+TRACE_VIEW_OUTPUT ?= $(DEMO_TRACE_OUTPUT)
+TRACE_VIEW_DIR ?= $(dir $(TRACE_VIEW_OUTPUT))
 NATIVE_REFERENCE_DUMP ?=
 NATIVE_DUMP ?= /tmp/c2-$(SCENARIO).bin
 NATIVE_COMPARE_REGIONS ?= 4340-47FF,4B40-4BE5
@@ -44,11 +46,15 @@ help:
 	@echo "  make replayrun       Visibly replay an input script"
 	@echo "  make headlessrun     Run a deterministic, headless replay"
 	@echo "  make demorun         Run the default demo and create a standalone C2 tracer"
+	@echo "  make tracer-view     Generate and serve the standalone C2 tracer"
+	@echo "  make tracer-view-only Serve an existing C2 HTML viewer locally"
 	@echo "  make native-compare  Compare a native C2 replay against a JPhoenix dump"
 	@echo "  make native-check    Verify that the C2 binary contains no graphics/PROM symbols"
 	@echo "  make native-clean    Remove generated native C2 build artefacts"
 	@echo "  make test            Run C2 contract tests"
 	@echo "  make demo            Export a RAM dump to a semantic HTML viewer"
+	@echo "  make demo-view       Generate and serve the semantic HTML viewer"
+	@echo "  make demo-view-only  Serve an existing semantic HTML viewer locally"
 	@echo "  make compare         Compare semantic exports from JPhoenix and C-Phoenix"
 	@echo "  make summary         Report semantic scenario coverage"
 	@echo "  make help            Show this help"
@@ -71,6 +77,9 @@ help:
 	@echo "  DEMO_NAME=$(DEMO_NAME)"
 	@echo "  DEMO_DUMP=$(DEMO_DUMP)"
 	@echo "  DEMO_TRACE_OUTPUT=$(DEMO_TRACE_OUTPUT)"
+	@echo "  TRACE_VIEW_OUTPUT=$(TRACE_VIEW_OUTPUT)"
+	@echo "  TRACE_VIEW_DIR=$(TRACE_VIEW_DIR)"
+	@echo "  TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)"
 	@echo "  DEMO_TRACE_KIND=$(DEMO_TRACE_KIND)"
 	@echo "  DEMO_TRACE_PLAYER=$(DEMO_TRACE_PLAYER)"
 	@echo "  DEMO_EXTRA_ARGS=$(if $(DEMO_EXTRA_ARGS),$(DEMO_EXTRA_ARGS),(none))"
@@ -96,6 +105,11 @@ demo:
 	$(PYTHON) tools/extract_semantic_frames.py $(DUMP) --output $(TRACE)
 	$(PYTHON) tools/render_semantic_trace.py $(TRACE) --output $(VIEWER)
 	@echo "C2 viewer: $(VIEWER)"
+
+demo-view: demo demo-view-only
+
+demo-view-only:
+	@$(MAKE) tracer-view-only TRACE_VIEW_OUTPUT=$(VIEWER) TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)
 
 compare:
 	@test -f "$(REFERENCE_DUMP)" || { echo "Reference dump not found: $(REFERENCE_DUMP)"; exit 2; }
@@ -125,8 +139,15 @@ headlessrun: native
 demorun: native
 	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./$(NATIVE_TARGET) --run-frames=$(DEMO_FRAMES) --input-script=$(call resolve_context_path,$(DEMO_SCRIPT)) --no-render --ram-dump=$(DEMO_DUMP) $(DEMO_EXTRA_ARGS)
 	$(PYTHON) ../c-phoenix/tools/view_sprite_trace.py $(DEMO_DUMP) --reference-label c2-phoenix --kind $(DEMO_TRACE_KIND) --player $(DEMO_TRACE_PLAYER) --title "C2-Phoenix $(DEMO_NAME) object tracer" --output=$(DEMO_TRACE_OUTPUT)
-	$(OPEN) "$(DEMO_TRACE_OUTPUT)"
-	@echo "Opened C2-Phoenix object tracer: $(DEMO_TRACE_OUTPUT)"
+	@echo "C2-Phoenix object tracer generated: $(DEMO_TRACE_OUTPUT)"
+
+tracer-view: demorun tracer-view-only
+
+tracer-view-only:
+	@test -f "$(TRACE_VIEW_OUTPUT)" || { echo "HTML viewer not found: $(TRACE_VIEW_OUTPUT)"; exit 2; }
+	@echo "Open http://127.0.0.1:$(TRACER_VIEW_PORT)/$(notdir $(TRACE_VIEW_OUTPUT))"
+	@echo "Press Ctrl-C to stop the local viewer."
+	@$(PYTHON) -m http.server $(TRACER_VIEW_PORT) --bind 127.0.0.1 --directory "$(TRACE_VIEW_DIR)"
 
 native-check: native
 	@if nm "$(NATIVE_TARGET)" | grep -E 'gfx_mem|palette_prom|init_phoenix_palette|get_phoenix_color' >/dev/null; then \

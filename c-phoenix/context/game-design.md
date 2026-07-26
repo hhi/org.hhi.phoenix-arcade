@@ -2,7 +2,8 @@
 
 This guide describes how the current C port executes the original 8080 ROM
 behaviour. It is an orientation guide, not the normative specification for a
-translation change: [code-annotated.asm](code-annotated.asm), [RAMUse.md](RAMUse.md),
+translation change: [code-annotated.asm](code-annotated.asm), the
+[Computer Archeology Phoenix reference](ComputerArcheology.md),
 and `[ASM: ...]` anchors in C code take precedence on conflict.
 
 ## Purpose and Structure
@@ -86,7 +87,8 @@ and [`mothership_impl.c`](../mothership_impl.c).
 position, bullets, shield, and sprite addressing each frame. Firing is started
 on an input edge; holding fire is not the same as firing every frame. The key
 RAM fields are `PlayerShipX`, `PlayerState`, `ShieldCount`,
-`PlayerBulletState`, and `AbovePlayerBulletState`; see [RAMUse.md](RAMUse.md).
+`PlayerBulletState`, and `AbovePlayerBulletState`; see the
+[Computer Archeology Phoenix reference](ComputerArcheology.md).
 
 Alien, bird, and mothership behaviour remain in separate modules to preserve
 ROM routine boundaries. Collision and projectile handling are in
@@ -112,7 +114,8 @@ a menu; see [`attract_mode.c`](../attract_mode.c).
 
 - [c_files_categorization.md](c_files_categorization.md): modules by responsibility.
 - [code-annotated.md](code-annotated.md): annotated ROM with C links.
-- [RAMUse.md](RAMUse.md): RAM fields, addresses, and known meanings.
+- [ComputerArcheology.md](ComputerArcheology.md): external hardware, software,
+  and RAM-reference material for Phoenix.
 - [mapping/c_functions_by_address.md](mapping/c_functions_by_address.md): address-to-C mapping.
 - [input-scripts/README.md](input-scripts/README.md): reproducible game and regression scenarios.
 

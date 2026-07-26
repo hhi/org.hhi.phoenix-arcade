@@ -5,10 +5,24 @@ Phoenix Arcade is een plek voor verschillende manieren om de arcadegame
 draaien van een project eerst een legaal verkregen Phoenix Amstar-ROM-set voor,
 zoals beschreven in [`roms/README.nl.md`](roms/README.nl.md).
 
+## Begin met de demo
+
+**Lees voor de beste introductie de [Phoenix-demo-handleiding](demo/README.nl.md).**
+Die begint met speelbare opnamen en laat vervolgens zien hoe je deze zichtbaar
+of headless herhaalt, visuele tracers en runtimegrafieken onderzoekt en door de
+interactieve C-geannoteerde assemblyviewer navigeert.
+
+De demo-handleiding is het aanbevolen startpunt voor de volledige
+Phoenix-ervaring. Kom hier terug voor projectopzet, ROM-voorbereiding en
+onderhoudscommando's.
+
 ## Kies je startpunt
 
 | Als je wilt… | Begin dan hier |
 | --- | --- |
+| De volledige Phoenix-demo ervaren | **[Lees de demo-handleiding](demo/README.nl.md)** |
+| Alle drie uitvoerbare implementaties bouwen | `make build` (of `make all`) |
+| Lokale build-uitvoer verwijderen voor een schone build | `make clean` |
 | De native C2-presentatie in hoge resolutie spelen | `make c2-run` |
 | De klassieke C-poort draaien | `cd c-phoenix && make run` |
 | De Java-emulator draaien | `cd jphoenix-emulator-port && make run` |
@@ -16,7 +30,6 @@ zoals beschreven in [`roms/README.nl.md`](roms/README.nl.md).
 | De C-Phoenix-vergelijkingstracer genereren en tonen | `make c-tracer-view` |
 | De JPhoenix-demotracer genereren en tonen | `make j-tracer-view` |
 | De hele repository bouwen en controleren | `make verify` |
-| Replays, tracer-uitvoer en callgraphs bekijken | [demo/](demo/README.nl.md) |
 
 De projecten in deze repository zijn:
 
@@ -32,7 +45,7 @@ De eigen, oorspronkelijke Phoenix Arcade-bijdragen vallen onder de
 [MIT-licentie](LICENSE). Herkomst en uitsluitingen van materiaal van derden
 staan in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-## Snel starten
+## Snel starten met ontwikkelen
 
 Na het voorbereiden van de ROM-set is dit de kortste route naar iets
 interactiefs:
@@ -40,6 +53,20 @@ interactiefs:
 ```sh
 make c2-run
 ```
+
+Gebruik voor het compileren van C-Phoenix, C2-Phoenix en JPhoenix zonder een
+programma te starten:
+
+```sh
+make build
+```
+
+`make all` is een alias voor `make build`. Geen van beide targets voert tests
+uit, genereert documentatie of tracers, bereidt ROMs voor of start een viewer.
+
+Gebruik voor een frisse lokale build eerst `make clean`. Dit verwijdert alleen
+gegenereerde C-, C2-native- en Java-compile-uitvoer; ROMs, bronbestanden,
+opnamen, traces en gegenereerde documentatie blijven behouden.
 
 Wil je in plaats daarvan alle beschikbare controles bouwen en draaien:
 
@@ -83,3 +110,25 @@ make large-files  # Meld bestanden >= 1 MiB; blokkeer niet-goedgekeurde >= 20 Mi
 Grote gegenereerde dumps en HTML-traces worden genegeerd. Gecureerde
 gecomprimeerde fixtures en demomateriaal staan in
 [LARGE-FILES.md](LARGE-FILES.md).
+
+## Repositoryonderhoudstools
+
+Voer deze targets uit vanuit de repository-root. Zij zijn de ondersteunde
+ingang voor de root-hulpscripts; de scripts direct aanroepen is normaal niet
+nodig.
+
+| Make-target | Script | Doel |
+| --- | --- | --- |
+| `make links` | `tools/check_markdown_links.py` | Controleert lokale Markdown-links. |
+| `make large-files` | `tools/audit_large_files.py` | Meldt grote bestanden en blokkeert niet-goedgekeurde bestanden van 20 MiB of meer. |
+| `make public-audit` | `tools/audit_public_export.py` | Meldt private bestanden die niet in de beoogde bytevrije publieke export mogen komen. Voeg `--strict` alleen toe wanneer het script direct in een handhavingsworkflow wordt gebruikt. |
+| `make romcheck` | `tools/rom_tool.py` | Valideert de aangeleverde Phoenix-chipset tegen het ROM-manifest. |
+| `make romnormalize` | `tools/rom_tool.py` | Normaliseert aangeleverde chipbestandsnamen en maakt het lokale archief zonder ROM-images samen te stellen. |
+| `make rombuild` | `tools/rom_tool.py` | Bouwt de samengestelde programma-, graphics- en PROM-images uit gevalideerde chips. |
+| `make romprepare` | `tools/rom_tool.py` + `tools/generate_phoenix_tables.py` | Bouwt de ROM-images en controleert de uit de program-ROM afgeleide C-tabellen. |
+| `make gen-phoenix-tables` | `tools/generate_phoenix_tables.py` | Genereert de bytepayloads in `c-phoenix/phoenix_tables.c` opnieuw uit `program.rom`, maar stopt bij een onverwachte afwijking. |
+
+De ROM-workflow, het manifest en de verwachte chipbestanden staan in
+[roms/README.nl.md](roms/README.nl.md). `gen-phoenix-tables` is bewust
+behoudend: gebruik `ALLOW_MISMATCH=1` alleen nadat een daadwerkelijke wijziging
+van de ROM-set is beoordeeld.

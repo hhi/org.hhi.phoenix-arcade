@@ -11,6 +11,7 @@ extern PhoenixState state;
  * resulting A (CounterB9 unchanged, or the clamped 0x10) -- L20E8 uses
  * this returned value, not the CounterA5 it had in A before the call.
  * [ASM: 211C-212C]
+ * Proposed C name: clamp_scroll_for_player_explosion
  */
 uint8_t l211c(void) {
     uint8_t a = state.CounterB9;
@@ -26,6 +27,7 @@ uint8_t l211c(void) {
  * Translates L20E8
  * Player explosion part 2.
  * [ASM: 20E8-210D]
+ * Proposed C name: draw_player_ship_explosion_fragment
  */
 void l20e8(uint8_t a, uint8_t d, uint8_t e) {
     uint8_t b = a;
@@ -111,6 +113,7 @@ void l2085_particles(uint8_t counter_a5, uint16_t tile_base, uint16_t ctrl_base,
  * Translates L2070
  * Player ship particles explosion setup.
  * [ASM: 2070-2084]
+ * Proposed C name: setup_player_ship_particle_explosion
  */
 void l2070(uint8_t d, uint8_t e) {
     uint8_t a = e - 0x0A;

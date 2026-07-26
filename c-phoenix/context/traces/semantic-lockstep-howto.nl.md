@@ -3,7 +3,7 @@
 Deze how-to gebruikt lockstep om onderbouwd vast te leggen wat een RAM-veld,
 bit, routine of overgang betekent. Hij vult de geannoteerde Z80-assembly aan;
 bij conflict blijven [code-annotated.asm](../code-annotated.asm) en
-[RAMUse.md](../RAMUse.md) de bron van waarheid.
+[ComputerArcheology.md](../ComputerArcheology.md) de bron van waarheid.
 
 ## Doel
 

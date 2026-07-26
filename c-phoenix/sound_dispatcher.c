@@ -30,6 +30,7 @@ static void l23d6(void) {
 
 /*
  * [ASM: 27BD-27EE] Player-hit / bullet-fired sound effect trigger.
+ * Proposed C name: update_player_hit_and_bullet_sound
  */
 static void l27bd(void) {
     if (state.ParticleExplosion != 0) {
@@ -268,4 +269,3 @@ void l3a10(void) {
     }
     state.SoundControlB = 0xCF;
 }
-

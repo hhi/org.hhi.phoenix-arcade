@@ -98,11 +98,17 @@ Voer daarna uit:
 
 ```sh
 cd c2-phoenix
-make demo DUMP=/tmp/port_bird-investigation.bin
-python3 -m http.server 8767 --bind 127.0.0.1 --directory /tmp
+make demo-view DUMP=/tmp/port_bird-investigation.bin
 ```
 
-Open `http://127.0.0.1:8767/bird-investigation-c2.html`.
+Make meldt de localhost-URL (standaardpoort `8767`) en houdt de server actief
+tot `Ctrl-C`. Gebruik `make demo-view-only` om een bestaande semantische viewer
+te serveren zonder opnieuw te genereren. Dezelfde lokale-serverwerkwijze is
+beschikbaar voor de zelfstandige C2-objecttracer via `make tracer-view` en
+`make tracer-view-only`; gebruik vanuit de monorepo-root respectievelijk
+`make c2-tracer-view` en `make c2-tracer-view-only`. De root-equivalenten voor
+de semantische viewer zijn `make c2-demo-view` en `make c2-demo-view-only`.
+Open deze interactieve viewers niet via `file://`.
 
 De gegenereerde semantische JSON en HTML blijven standaard buiten Git. Het
 zijn afgeleide artefacten, geen vervanging voor een replay of bewijs van

@@ -95,11 +95,17 @@ Then run:
 
 ```sh
 cd c2-phoenix
-make demo DUMP=/tmp/port_bird-investigation.bin
-python3 -m http.server 8767 --bind 127.0.0.1 --directory /tmp
+make demo-view DUMP=/tmp/port_bird-investigation.bin
 ```
 
-Open `http://127.0.0.1:8767/bird-investigation-c2.html`.
+Make prints the localhost URL (default port `8767`) and keeps the server
+running until `Ctrl-C`. Use `make demo-view-only` to serve an existing semantic
+viewer without regenerating it. The same local-server workflow is available
+for C2's standalone object tracer through `make tracer-view` and
+`make tracer-view-only`; from the monorepo root, use `make c2-tracer-view` and
+`make c2-tracer-view-only` instead. For the semantic viewer, the root
+equivalents are `make c2-demo-view` and `make c2-demo-view-only`. Do not open
+these interactive viewers with `file://`.
 
 The generated semantic JSON and HTML remain outside Git by default. They are
 derived artefacts, not a replacement for a replay or a proof of game-state

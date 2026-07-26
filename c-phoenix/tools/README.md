@@ -180,7 +180,14 @@ python3 tools/view_sprite_trace.py /tmp/jphoenix-ram.bin \
     --kind birds --player 1 --output=/tmp/bird-diff.html
 ```
 
-Open the generated HTML file in a browser. Mothership, shield, and explosion
-families remain available in `trace_sprites.py` as event timelines, but do not
-have a visual view because their RAM structures do not provide a coherent
-object coordinate.
+Serve the generated viewer through the standard local server rather than
+opening it via `file://`:
+
+```bash
+make tracer-view-only TRACE_VIEW_OUTPUT=/tmp/phoenix-paths.html
+```
+
+This command is run from `c-phoenix/` and prints the localhost URL. Mothership,
+shield, and explosion families remain available in `trace_sprites.py` as event
+timelines, but do not have a visual view because their RAM structures do not
+provide a coherent object coordinate.

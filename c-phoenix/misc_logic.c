@@ -7,6 +7,7 @@ extern PhoenixState state;
 
 /*
  * [ASM: 06F0-0701]
+ * Proposed C name: update_scroll_register_and_fill_background
  */
 void l06f0(void) {
     extern void stars_scroll_down(void);
@@ -49,6 +50,7 @@ void l24a0(void) {
  * bullet at the player's current position when that random X falls
  * within the player ship's width.
  * [ASM: 24F2-251C]
+ * Proposed C name: trigger_random_enemy_bomb_drop
  */
 void l24f2(void) {
     extern uint8_t get_random_number(void);

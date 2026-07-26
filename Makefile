@@ -1,13 +1,17 @@
-.PHONY: help c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
 ROM_OUTPUT_DIR ?= roms/assembled
 ASM_VIEW_PORT ?= 8765
 TRACER_VIEW_PORT ?= 8766
+C2_VIEW_PORT ?= 8767
 
 help:
 	@echo "Phoenix Arcade monorepo"
+	@echo "  make build        Build C-Phoenix, C2-Phoenix, and JPhoenix"
+	@echo "  make all          Alias for make build"
+	@echo "  make clean        Remove local C, C2-native, and Java build artefacts"
 	@echo "  make c-build      Build C-Phoenix"
 	@echo "  make c-asm-docs   Generate interactive Phoenix ASM documentation"
 	@echo "  make c-asm-view   Generate and serve Phoenix ASM documentation locally"
@@ -16,6 +20,10 @@ help:
 	@echo "  make c-tracer-view-only Serve an existing C-Phoenix tracer locally"
 	@echo "  make c2-build     Build the native interactive C2-Phoenix application"
 	@echo "  make c2-run       Build and run native C2-Phoenix"
+	@echo "  make c2-tracer-view Generate and serve the standalone C2-Phoenix tracer"
+	@echo "  make c2-tracer-view-only Serve an existing C2-Phoenix tracer locally"
+	@echo "  make c2-demo-view Generate and serve the C2 semantic HTML viewer"
+	@echo "  make c2-demo-view-only Serve an existing C2 semantic HTML viewer locally"
 	@echo "  make j-build      Build JPhoenix"
 	@echo "  make j-tracer-view Generate and serve the JPhoenix tracer locally"
 	@echo "  make j-tracer-view-only Serve an existing JPhoenix tracer locally"
@@ -31,6 +39,20 @@ help:
 	@echo "  make rombuild     Assemble ROM_DIR chip dumps into ROM_OUTPUT_DIR (default: $(ROM_OUTPUT_DIR))"
 	@echo "  make romprepare   Assemble the ROMs and regenerate the derived C sources"
 	@echo "  make gen-phoenix-tables Regenerate c-phoenix/phoenix_tables.c from ROM_OUTPUT_DIR (aborts on mismatch)"
+
+# Build every runnable implementation.  This deliberately excludes tests,
+# documentation generation, trace generation, ROM preparation, and viewers.
+build: c-build c2-build j-build
+
+# Conventional alias for build systems and CI callers.
+all: build
+
+# Remove only generated compilation output.  ROMs, generated documentation,
+# traces, recordings, and source files are intentionally preserved.
+clean:
+	$(MAKE) -C c-phoenix clean
+	$(MAKE) -C c-phoenix c2-clean
+	$(MAKE) -C jphoenix-emulator-port clean
 
 c-build:
 	$(MAKE) -C c-phoenix
@@ -55,6 +77,18 @@ c2-build:
 
 c2-run:
 	$(MAKE) -C c2-phoenix run
+
+c2-tracer-view:
+	$(MAKE) -C c2-phoenix tracer-view TRACER_VIEW_PORT=$(C2_VIEW_PORT)
+
+c2-tracer-view-only:
+	$(MAKE) -C c2-phoenix tracer-view-only TRACER_VIEW_PORT=$(C2_VIEW_PORT)
+
+c2-demo-view:
+	$(MAKE) -C c2-phoenix demo-view TRACER_VIEW_PORT=$(C2_VIEW_PORT)
+
+c2-demo-view-only:
+	$(MAKE) -C c2-phoenix demo-view-only TRACER_VIEW_PORT=$(C2_VIEW_PORT)
 
 j-build:
 	$(MAKE) -C jphoenix-emulator-port

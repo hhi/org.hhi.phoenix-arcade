@@ -75,6 +75,7 @@ void l24c4(void) {
  * Translates L2204
  * Shared round-transition countdown (M43B6).
  * [ASM: 2204-222B]
+ * Proposed C name: advance_round_transition
  */
 void l2204(void) {
     state.M43B6--;
