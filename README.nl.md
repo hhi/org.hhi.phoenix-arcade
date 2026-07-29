@@ -16,6 +16,17 @@ De demo-handleiding is het aanbevolen startpunt voor de volledige
 Phoenix-ervaring. Kom hier terug voor projectopzet, ROM-voorbereiding en
 onderhoudscommando's.
 
+## Bestudeer de C-poort
+
+De C-poort heeft een brongekoppelde knowledge base en een visueel archief van
+bewegingspatronen. Zij verbinden C-functies, geannoteerde Z80-routines,
+RAM-slots, ROM-patronen, states, tabellen, claims en SVG-trajecten.
+
+- [C-Phoenix knowledge base](c-phoenix/c-annotated/README.md) — kies
+  Nederlands of Engels; bevat ook de machineleesbare graph en validators.
+- [Animatie- en trajectarchief](c-phoenix/animations/README.md) — kies
+  Nederlands of Engels; bevat vogelfases en ROM-gedreven bewegingspatronen.
+
 ## Kies je startpunt
 
 | Als je wilt… | Begin dan hier |
@@ -26,6 +37,8 @@ onderhoudscommando's.
 | De native C2-presentatie in hoge resolutie spelen | `make c2-run` |
 | De klassieke C-poort draaien | `cd c-phoenix && make run` |
 | De Java-emulator draaien | `cd jphoenix-emulator-port && make run` |
+| De knowledge base van de C-poort bestuderen | [Open C-annotated-documentatie](c-phoenix/c-annotated/README.md) |
+| ROM-bewegingspatronen verkennen | [Open animaties en trajecten](c-phoenix/animations/README.md) |
 | De interactieve ASM-documentatie genereren en tonen | `make c-asm-view` |
 | De C-Phoenix-vergelijkingstracer genereren en tonen | `make c-tracer-view` |
 | De JPhoenix-demotracer genereren en tonen | `make j-tracer-view` |

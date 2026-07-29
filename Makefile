@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -108,7 +108,10 @@ c2-test:
 j-test:
 	$(MAKE) -C jphoenix-emulator-port verify
 
-verify: c-build j-build c-test c2-test j-test links large-files
+verify: c-build j-build c-test c2-test j-test documentation-check links large-files
+
+documentation-check:
+	python3 tools/validate_documentation.py
 
 links:
 	python3 tools/check_markdown_links.py .

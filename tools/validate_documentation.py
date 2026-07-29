@@ -190,6 +190,26 @@ def validate_english_locale_quality(root: Path, documents: list[Path]) -> list[s
     return problems
 
 
+def validate_repository_entrypoints(root: Path) -> list[str]:
+    """Require both repository landing pages to expose the two study topics."""
+    repository_root = root.parent
+    required_links = (
+        "c-phoenix/c-annotated/README.md",
+        "c-phoenix/animations/README.md",
+    )
+    problems: list[str] = []
+    for name in ("README.md", "README.nl.md"):
+        readme = repository_root / name
+        if not readme.is_file():
+            problems.append(f"{name}: missing repository entry point")
+            continue
+        text = readme.read_text(encoding="utf-8")
+        for link in required_links:
+            if link not in text:
+                problems.append(f"{name}: missing required study-topic link: {link}")
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("c-phoenix"), help="Phoenix source root")
@@ -206,6 +226,7 @@ def main() -> int:
     problems.extend(validate_svg_count(root))
     problems.extend(validate_pattern_metadata(root))
     problems.extend(validate_english_locale_quality(root, documents))
+    problems.extend(validate_repository_entrypoints(root))
     if problems:
         print("Documentation validation failed:")
         for problem in problems:
