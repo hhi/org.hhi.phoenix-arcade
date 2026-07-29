@@ -210,14 +210,18 @@ def validate_repository_entrypoints(root: Path) -> list[str]:
     return problems
 
 
-def validate_trajectory_math(root: Path) -> list[str]:
-    """Keep the trajectory formulas inside GitHub's tested MathJax subset."""
+def validate_trajectory_vector_explanation(root: Path) -> list[str]:
+    """Require the source-faithful, renderer-independent vector explanation."""
     documents = (
         root / "animations" / "en" / "animation-trajectory.md",
         root / "animations" / "nl" / "animation-trajectory.md",
     )
     forbidden = (r"\operatorname", r"\begin{aligned}", r"\mathbin")
-    required = (r"\mathrm{VectorAddress}", r"\mathtt{0x1700}", r"\mathrm{AND}")
+    required = (
+        "`vector_offset = step_byte × 2`",
+        "phoenix_alien_direction_vectors[vector_offset]",
+        "phoenix_alien_direction_vectors[vector_offset + 1]",
+    )
     problems: list[str] = []
     for document in documents:
         if not document.is_file():
@@ -227,12 +231,12 @@ def validate_trajectory_math(root: Path) -> list[str]:
         for macro in forbidden:
             if macro in text:
                 problems.append(
-                    f"{document.relative_to(root)}: GitHub-unsafe math macro: {macro}"
+                    f"{document.relative_to(root)}: obsolete trajectory math macro: {macro}"
                 )
         for expression in required:
             if expression not in text:
                 problems.append(
-                    f"{document.relative_to(root)}: missing tested trajectory formula expression: {expression}"
+                    f"{document.relative_to(root)}: missing required vector explanation: {expression}"
                 )
     return problems
 
@@ -254,7 +258,7 @@ def main() -> int:
     problems.extend(validate_pattern_metadata(root))
     problems.extend(validate_english_locale_quality(root, documents))
     problems.extend(validate_repository_entrypoints(root))
-    problems.extend(validate_trajectory_math(root))
+    problems.extend(validate_trajectory_vector_explanation(root))
     if problems:
         print("Documentation validation failed:")
         for problem in problems:

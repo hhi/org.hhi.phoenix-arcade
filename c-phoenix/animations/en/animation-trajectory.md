@@ -31,20 +31,14 @@ Each active entity on screen utilizes a specific memory layout in Arcade RAM (`$
 | `$4800–$4B3F` | `BackgroundScreen` / VRAM | 90° rotated 32x32 tile matrix video buffer (832 bytes per page) |
 
 ### **Vector Transformation & Indexing**
-A RAM pointer (e.g. at offset `$4B50`) reads a step byte from ROM per frame. This byte acts as an index into the direction table [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
+A RAM pointer (e.g. at offset `$4B50`) reads one step byte from ROM per frame. The byte is already a direction-vector number in the range `0x00–0x1F`; it is **not** masked at this point. The Z80 performs one `RLCA`, which is equivalent to multiplying this bounded value by two and therefore selects one pair in [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
 
-```math
-\mathrm{VectorAddress} = \mathtt{0x1700} + (\mathtt{StepByte}\ \mathrm{AND}\ \mathtt{0x1F}) \times 2
-```
+1. `vector_offset = step_byte × 2`
+2. `delta_x = phoenix_alien_direction_vectors[vector_offset]`
+3. `delta_y = phoenix_alien_direction_vectors[vector_offset + 1]`
+4. `x = x + delta_x`; `y = y + delta_y`
 
-Reading these two bytes yields the pairwise directional delta $(\Delta X, \Delta Y)$:
-```math
-X_{\mathrm{new}} = X_{\mathrm{old}} + \Delta X
-```
-
-```math
-Y_{\mathrm{new}} = Y_{\mathrm{old}} + \Delta Y
-```
+In other words: each pattern byte chooses one `(delta_x, delta_y)` pair, and that pair moves the alien by one vector step.
 
 ---
 

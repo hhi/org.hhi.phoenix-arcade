@@ -31,20 +31,14 @@ Elke actieve entiteit op het scherm gebruikt een specifieke geheugenstructuur in
 | `$4800–$4B3F` | `BackgroundScreen` / VRAM | 90° geroteerde 32x32 tegelmatrix videobuffer (832 bytes per pagina) |
 
 ### **Vector-transformatie & Indexering**
-Een RAM-pointer (bijv. op offset `$4B50`) leest per frame een stap-byte uit het ROM. Deze byte fungeert als index in de richtingstabel [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
+Een RAM-pointer (bijv. op offset `$4B50`) leest per frame één stap-byte uit het ROM. Die byte is al een richtingvectornummer in het bereik `0x00–0x1F`; hij wordt hier **niet** gemaskeerd. De Z80 voert één `RLCA` uit. Omdat de waarde al begrensd is, is dat hetzelfde als vermenigvuldigen met twee en kiest het één paar uit [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
 
-```math
-\mathrm{VectorAddress} = \mathtt{0x1700} + (\mathtt{StepByte}\ \mathrm{AND}\ \mathtt{0x1F}) \times 2
-```
+1. `vector_offset = step_byte × 2`
+2. `delta_x = phoenix_alien_direction_vectors[vector_offset]`
+3. `delta_y = phoenix_alien_direction_vectors[vector_offset + 1]`
+4. `x = x + delta_x`; `y = y + delta_y`
 
-De gelezen twee bytes leveren het paarsgewijze richtingsverschil $(\Delta X, \Delta Y)$ op:
-```math
-X_{\mathrm{nieuw}} = X_{\mathrm{oud}} + \Delta X
-```
-
-```math
-Y_{\mathrm{nieuw}} = Y_{\mathrm{oud}} + \Delta Y
-```
+Met andere woorden: iedere patroon-byte kiest één `(delta_x, delta_y)`-paar, en dat paar verplaatst de alien één vectorstap.
 
 ---
 
