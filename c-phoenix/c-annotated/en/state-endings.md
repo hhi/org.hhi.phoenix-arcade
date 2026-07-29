@@ -1,0 +1,17 @@
+# State Endings (`state_endings.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`state_endings.c`](../../state_endings.c). This module handles player death explosion sequencing (State 4), Game Over screens (State 5), and Mothership explosion victory displays (State 6).
+
+---
+
+## Table of Contents
+1. [Player Explosion Sequence](#1-player-explosion-sequence)
+2. [Game Over & Mothership Destruction](#2-game-over--mothership-destruction)
+
+---
+
+## 1. Player Explosion Sequence
+
+### `handle_player_explosion_state`
+#### **Description**
+The function [`handle_player_explosion_state`](../../state_endings.c#L45-L95) (Z80 ROM: `$02A0–$0300`) renders player ship fragment disintegration patterns over 64 VBlank frames.

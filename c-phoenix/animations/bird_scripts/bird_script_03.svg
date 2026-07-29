@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 03: Fast Horizontal Flap & Glide</text>
+  <text x="15" y="22" class="label">Script 03: Fast Horizontal Flap &amp; Glide</text>
   <text x="15" y="38" class="label">ROM $3F18: Speed=0x30, Param=0xFF, Phase=0x04</text>
   
   <!-- Player Ship Reference Line at bottom -->

@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 06: Sine Dive-Bomb & Bomb Drop</text>
+  <text x="15" y="22" class="label">Script 06: Sine Dive-Bomb &amp; Bomb Drop</text>
   <text x="15" y="38" class="label">ROM $3F30: Speed=0x10, Param=0x60, Phase=0x07</text>
   
   <!-- Player Ship Reference Line at bottom -->

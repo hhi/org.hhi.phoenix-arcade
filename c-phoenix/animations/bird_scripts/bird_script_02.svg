@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 02: Flap & Aimed Descent Step</text>
+  <text x="15" y="22" class="label">Script 02: Flap &amp; Aimed Descent Step</text>
   <text x="15" y="38" class="label">ROM $3F10: Speed=0x20, Param=0xFF, Phase=0x03</text>
   
   <!-- Player Ship Reference Line at bottom -->

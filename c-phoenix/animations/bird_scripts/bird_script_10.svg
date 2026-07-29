@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 10: Advanced Sine Attack & Dive</text>
+  <text x="15" y="22" class="label">Script 10: Advanced Sine Attack &amp; Dive</text>
   <text x="15" y="38" class="label">ROM $3F50: Speed=0x40, Param=0x10, Phase=0x0F</text>
   
   <!-- Player Ship Reference Line at bottom -->

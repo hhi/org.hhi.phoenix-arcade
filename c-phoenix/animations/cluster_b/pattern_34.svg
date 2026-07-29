@@ -17,7 +17,7 @@
     .portrait-badge { fill: #4DD0E1; font-family: monospace; font-size: 13px; font-weight: bold; }
   </style>
 
-  <!-- Title & Cyan Origin Grid Header -->
+  <!-- Title &amp; Cyan Origin Grid Header -->
   <text x="35" y="45" class="title-text">Cluster B Pattern 34 (ROM $2F34, 46 Steps)</text>
   <text x="35" y="80" class="portrait-badge">📍 Optimal Range: Origin X=0 / Y=0 | Exact Range X:[-48,+12], Y:[-8,+30]</text>
   
@@ -32,7 +32,7 @@
     <animate attributeName="stroke-dashoffset" values="130.0; -2684.0" dur="7.5s" repeatCount="indefinite" />
   </path>
 
-  <!-- LAYER 4: Step Dots & Numbers Along Trajectory -->
+  <!-- LAYER 4: Step Dots &amp; Numbers Along Trajectory -->
   <g class="step-group">
       <title>Step #0 | ROM Byte: 0x00 | Vector dX: +0, dY: +0 | Relative Position: (X=+0, Y=+0)</title>
       <circle cx="731.0" cy="514.2" r="8.5" class="start-dot" />

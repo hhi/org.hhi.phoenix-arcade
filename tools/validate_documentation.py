@@ -22,7 +22,7 @@ MARKDOWN_LINK_RE = re.compile(r"!?\[([^\]]*)\]\(([^)\s]+)(?:\s+[^)]*)?\)")
 SVG_COUNT_RE = re.compile(r"\b(\d+)\s+(?:individuele\s+)?SVG-(?:animaties|bestanden|patroonbestanden)\b", re.I)
 FUNCTION_RE = re.compile(r"\b([A-Za-z_]\w*)\s*\(")
 SVG_PATTERN_RE = re.compile(
-    r"Cluster ([AB]) Pattern (\d+) \(ROM \$([0-9A-F]+), (\d+) Steps\)"
+    r"Cluster ([AB]) (?:Patroon|Pattern) (\d+) \(ROM \$([0-9A-F]+), (\d+) (?:Stappen|Steps)\)"
 )
 DOC_PATTERN_RE = re.compile(
     r"Patroon (\d+) \(ROM \$([0-9A-F]+), (\d+)b\s+—"
@@ -103,17 +103,32 @@ def validate_c_function_links(root: Path, documents: list[Path]) -> list[str]:
     return problems
 
 
+import xml.etree.ElementTree as ET
+
+
+def validate_svg_xml_syntax(root: Path) -> list[str]:
+    problems: list[str] = []
+    for svg in sorted((root / "animations").rglob("*.svg")) + sorted((root / "c-annotated").rglob("*.svg")):
+        try:
+            ET.parse(svg)
+        except Exception as err:
+            problems.append(f"{svg.relative_to(root)}: XML parse error: {err}")
+    return problems
+
+
 def validate_svg_count(root: Path) -> list[str]:
     animation_root = root / "animations"
-    readme = animation_root / "README.md"
+    readme = animation_root / "nl" / "README.md"
     if not readme.is_file():
-        return ["animations/README.md: missing"]
+        readme = animation_root / "README.md"
+    if not readme.is_file():
+        return ["animations/nl/README.md: missing"]
     actual = len(list(animation_root.rglob("*.svg")))
     stated = [int(value) for value in SVG_COUNT_RE.findall(readme.read_text(encoding="utf-8"))]
     if not stated:
-        return ["animations/README.md: no SVG asset count found"]
+        return ["animations/nl/README.md: no SVG asset count found"]
     return [
-        f"animations/README.md: states {value} SVG assets, found {actual}"
+        f"animations/nl/README.md: states {value} SVG assets, found {actual}"
         for value in stated
         if value != actual
     ]
@@ -121,9 +136,11 @@ def validate_svg_count(root: Path) -> list[str]:
 
 def validate_pattern_metadata(root: Path) -> list[str]:
     animations = root / "animations"
-    trajectory = animations / "animation-trajectory.md"
+    trajectory = animations / "nl" / "animation-trajectory.md"
     if not trajectory.is_file():
-        return ["animations/animation-trajectory.md: missing"]
+        trajectory = animations / "animation-trajectory.md"
+    if not trajectory.is_file():
+        return ["animations/nl/animation-trajectory.md: missing"]
 
     documented = {
         int(number): (address, int(steps))
@@ -154,20 +171,41 @@ def validate_pattern_metadata(root: Path) -> list[str]:
     return problems
 
 
+def validate_english_locale_quality(root: Path, documents: list[Path]) -> list[str]:
+    """Ensure documents under en/ subdirectories contain zero residual Dutch words."""
+    dutch_words_regex = re.compile(
+        r"\b(het|een|van|met|wordt|functie|Werking|Overzicht|Inhoudsopgave|Aangeroepen|Aanroepen|Beschrijving|Stap|Gesloten|Lus|Patroon|Patronen|Vogel|Vogels|Gedeelde|Moederschip|Scherm|tegel|spelerschip|vijandelijke|bommen|kogels|botsingen|treffer|buiten|binnen|formatie|punten|toegekend)\b"
+    )
+    problems: list[str] = []
+    for doc in documents:
+        rel_path = doc.relative_to(root).as_posix()
+        if "/en/" not in f"/{rel_path}":
+            continue
+        text = doc.read_text(encoding="utf-8")
+        matches = set(dutch_words_regex.findall(text))
+        if matches:
+            problems.append(
+                f"{rel_path}: English locale document contains residual Dutch words: {', '.join(sorted(matches))}"
+            )
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("c-phoenix"), help="Phoenix source root")
     args = parser.parse_args()
     root = args.root.resolve()
-    documents = sorted((root / "c-annotated").glob("*.md")) + sorted((root / "animations").glob("*.md"))
+    documents = sorted((root / "c-annotated").rglob("*.md")) + sorted((root / "animations").rglob("*.md"))
     if not documents:
         raise SystemExit(f"No documentation found below {root}")
 
     problems = []
+    problems.extend(validate_svg_xml_syntax(root))
     problems.extend(validate_markdown_links(root, documents))
     problems.extend(validate_c_function_links(root, documents))
     problems.extend(validate_svg_count(root))
     problems.extend(validate_pattern_metadata(root))
+    problems.extend(validate_english_locale_quality(root, documents))
     if problems:
         print("Documentation validation failed:")
         for problem in problems:

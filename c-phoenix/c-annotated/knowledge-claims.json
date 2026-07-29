@@ -5,7 +5,7 @@
       "id": "claim:bird-process-loop",
       "statement": "process_birds is the C-port entry point for the bird-wave update loop.",
       "status": "confirmed",
-      "sources": ["bird_logic.c#L27-L67", "c-annotated/bird-logic.md#process_birds"],
+      "sources": ["bird_logic.c#L27-L67", "c-annotated/nl/bird-logic.md#process_birds"],
       "relates_to": ["c:bird_logic:process_birds", "asm:3400-3436", "asm:3438-344D"]
     },
     {

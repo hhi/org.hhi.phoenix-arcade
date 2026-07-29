@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 05: Formation Climb & Step Reset</text>
+  <text x="15" y="22" class="label">Script 05: Formation Climb &amp; Step Reset</text>
   <text x="15" y="38" class="label">ROM $3F28: Speed=0x10, Param=0xFF, Phase=0x06</text>
   
   <!-- Player Ship Reference Line at bottom -->

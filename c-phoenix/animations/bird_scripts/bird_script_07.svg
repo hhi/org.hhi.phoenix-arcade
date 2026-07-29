@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 07: Deep Attack Loop & Aim</text>
+  <text x="15" y="22" class="label">Script 07: Deep Attack Loop &amp; Aim</text>
   <text x="15" y="38" class="label">ROM $3F38: Speed=0xF0, Param=0x10, Phase=0x0B</text>
   
   <!-- Player Ship Reference Line at bottom -->

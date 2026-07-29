@@ -26,7 +26,7 @@
   <!-- Aimed Dive Trajectory Path -->
   <path d="M 65.0,84.8 Q 156.0,127.4 247.0,170" class="dive-line" />
   
-  <!-- Diving Bird & Dropping Bomb -->
+  <!-- Diving Bird &amp; Dropping Bomb -->
   <g>
     <animateMotion path="M 65.0,84.8 Q 156.0,127.4 247.0,170" dur="4.5s" repeatCount="indefinite" rotate="auto" />
     <g transform="translate(-10, -5)">

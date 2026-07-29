@@ -36,15 +36,15 @@ svg_content = """<svg width="1000" height="780" viewBox="0 0 1000 780" xmlns="ht
     </linearGradient>
 
     <!-- Arrow marker definitions -->
-    <marker id="arrowCyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#00FFCC" />
     </marker>
 
-    <marker id="arrowPurple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#D500F9" />
     </marker>
 
-    <marker id="arrowYellow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrowYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFCC00" />
     </marker>
 
@@ -149,33 +149,56 @@ svg_content = """<svg width="1000" height="780" viewBox="0 0 1000 780" xmlns="ht
   <!-- ==================== CONNECTING ARROWS & DATA FLOW ==================== -->
 
   <!-- Top-down Arrow Tier 1 -> Tier 2 -->
-  <line x1="190" y1="213" x2="190" y2="300" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <line x1="190" y1="213" x2="190" y2="303" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
   <text x="200" y="248" class="edge-label">Z80 Porting</text>
 
-  <line x1="500" y1="213" x2="500" y2="300" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <line x1="500" y1="213" x2="500" y2="303" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
   <text x="510" y="248" class="edge-label">RAM Mapping</text>
 
-  <!-- Mid Arrow Tier 2 -> Tier 3 (Generator) -->
-  <path d="M 190,378 L 190,410 L 260,410 L 260,422" fill="none" stroke="#D500F9" stroke-width="2" marker-end="url(#arrowPurple)" />
-  <text x="200" y="402" class="edge-label" fill="#D500F9">Auto Extract</text>
+  <!-- Straight Vertical Arrow from Tier 2 to Machine Graph -->
+  <line x1="190" y1="378" x2="190" y2="425" stroke="#D500F9" stroke-width="2" marker-end="url(#arrowPurple)" />
+  <text x="200" y="405" class="edge-label" fill="#D500F9">Auto Extract</text>
 
-  <!-- Mid Arrow Tier 2 -> Tier 4 (Documentation) -->
-  <path d="M 810,378 L 810,410 L 740,410 L 740,422" fill="none" stroke="#00FFCC" stroke-width="2" marker-end="url(#arrowCyan)" />
-  <text x="750" y="402" class="edge-label">Annotation</text>
+  <!-- Straight Vertical Arrow from Tier 2 to Documentation -->
+  <line x1="810" y1="378" x2="810" y2="425" stroke="#00FFCC" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <text x="820" y="405" class="edge-label">Annotation</text>
 
-  <!-- Horizontal Double Arrow Tier 3 <-> Tier 4 (Evidence & Backlinks) -->
-  <line x1="485" y1="520" x2="512" stroke="#FFCC00" stroke-width="2.5" marker-end="url(#arrowYellow)" />
-  <line x1="515" y1="550" x2="488" stroke="#00FFCC" stroke-width="2.5" marker-end="url(#arrowCyan)" />
-  <text x="435" y="508" class="edge-label" fill="#FFCC00">evidence.documentation</text>
-  <text x="445" y="575" class="edge-label" fill="#00FFCC">backlinks &amp; links</text>
+  <!-- Horizontal Double Arrow between Machine Graph and Documentation -->
+  <line x1="485" y1="520" x2="515" y2="520" stroke="#FFCC00" stroke-width="2.5" marker-end="url(#arrowYellow)" />
+  <text x="500" y="512" text-anchor="middle" class="edge-label" fill="#FFCC00">evidence.documentation</text>
+  <line x1="515" y1="560" x2="485" y2="560" stroke="#00FFCC" stroke-width="2.5" marker-end="url(#arrowCyan)" />
+  <text x="500" y="575" text-anchor="middle" class="edge-label" fill="#00FFCC">backlinks &amp; links</text>
 
   <!-- FOOTER STATUS BADGE -->
   <rect x="40" y="680" width="920" height="50" rx="8" fill="#09140C" stroke="#00FFCC" stroke-width="1" />
   <text x="60" y="710" class="sub-label" font-size="12px" fill="#00FFCC">BEWIJSVOLGORDE: Z80 ASM/ROM -&gt; C-PORT CODE -&gt; GEANNOTEERDE DOCUMENTATIE -&gt; VISUELE SVG'S</text>
 </svg>"""
 
-def render_svg(project_root: Path) -> str:
-    """Fill the architecture template with current graph and asset counts."""
+ENGLISH_TEXT = {
+    "PHOENIX KENNISGRAAF ARCHITECTUUR": "PHOENIX KNOWLEDGE GRAPH ARCHITECTURE",
+    "SYNCHRONISATIE TUSSEN Z80 HARDWARE, C-PORT, MACHINEGRAAF (.JSON) &amp; OBSIDIAN VAULT (.MD)": "SYNCHRONIZATION BETWEEN Z80 HARDWARE, C-PORT, MACHINE GRAPH (.JSON) &amp; OBSIDIAN VAULT (.MD)",
+    "1. HARDWARE &amp; Z80 ROM/RAM LAAG (Oorspronkelijke Bron van Waarheid)": "1. HARDWARE &amp; Z80 ROM/RAM LAYER (Original Source of Truth)",
+    "Z80 ROM Code &amp; Vector Tabellen": "Z80 ROM Code &amp; Vector Tables",
+    "ROM $1020-$10BF (Alien Trajecten)": "ROM $1020-$10BF (Alien Trajectories)",
+    "ROM $0D70-$0DB5 (Animatie Logica)": "ROM $0D70-$0DB5 (Animation Logic)",
+    "Arcade RAM Geheugenkaart": "Arcade RAM Memory Map",
+    "Poorten $5000-$7800 (DIP Switches)": "Ports $5000-$7800 (DIP Switches)",
+    "2. C-PORT BRONCODE &amp; HEADERS (c-phoenix/*.c, *.h)": "2. C-PORT SOURCE CODE &amp; HEADERS (c-phoenix/*.c, *.h)",
+    "3. MACHINEGRAAF (knowledge-graph.json)": "3. MACHINE GRAPH (knowledge-graph.json)",
+    "Node Typen": "Node Types",
+    "Relatietypen": "Relation Types",
+    "claim (uit knowledge-claims.json)": "claim (from knowledge-claims.json)",
+    "Geannoteerde Documenten": "Annotated Documents",
+    "SVG Bestanden": "SVG Files",
+    "Outgoing &amp; Backlink Markdown Koppelingen": "Outgoing &amp; Backlink Markdown Links",
+    "Interactive SVG met Arcade Display &amp; Path Motion": "Interactive SVG with Arcade Display &amp; Path Motion",
+    "Validatie: python3 tools/validate_documentation.py": "Validation: python3 tools/validate_documentation.py",
+    "BEWIJSVOLGORDE: Z80 ASM/ROM -&gt; C-PORT CODE -&gt; GEANNOTEERDE DOCUMENTATIE -&gt; VISUELE SVG'S": "EVIDENCE PRIORITY: Z80 ASM/ROM -&gt; C-PORT CODE -&gt; ANNOTATED DOCUMENTATION -&gt; VISUAL SVGS",
+}
+
+
+def render_svg(project_root: Path, language: str) -> str:
+    """Fill the architecture template with current metadata in one language."""
     graph = json.loads(
         (project_root / "c-annotated" / "knowledge-graph.json").read_text(
             encoding="utf-8"
@@ -186,12 +209,17 @@ def render_svg(project_root: Path) -> str:
         "{{RELATION_KIND_COUNT}}": str(
             len({relation["kind"] for relation in graph["relations"]})
         ),
-        "{{DOCUMENT_COUNT}}": str(len(list((project_root / "c-annotated").glob("*.md")))),
+        "{{DOCUMENT_COUNT}}": str(
+            1 + len(list((project_root / "c-annotated" / language).glob("*.md")))
+        ),
         "{{SVG_COUNT}}": str(len(list((project_root / "animations").rglob("*.svg")))),
     }
     rendered = svg_content
     for marker, value in replacements.items():
         rendered = rendered.replace(marker, value)
+    if language == "en":
+        for dutch, english in ENGLISH_TEXT.items():
+            rendered = rendered.replace(dutch, english)
     ET.fromstring(rendered)
     return rendered
 
@@ -200,16 +228,20 @@ def main() -> int:
     project_root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--output",
-        type=Path,
-        default=Path("c-annotated/kennisgraaf_meta_architectuur.svg"),
-        help="SVG to write (default: c-annotated/kennisgraaf_meta_architectuur.svg)",
+        "--language",
+        choices=("nl", "en", "both"),
+        default="both",
+        help="Locale variant to generate (default: both)",
     )
     args = parser.parse_args()
-    output = args.output if args.output.is_absolute() else project_root / args.output
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(render_svg(project_root), encoding="utf-8")
-    print(f"Generated and XML-validated {args.output}")
+    outputs = {
+        "nl": project_root / "c-annotated" / "kennisgraaf_meta_architectuur.svg",
+        "en": project_root / "c-annotated" / "knowledge_graph_meta_architecture.svg",
+    }
+    languages = outputs if args.language == "both" else {args.language: outputs[args.language]}
+    for language, output in languages.items():
+        output.write_text(render_svg(project_root, language), encoding="utf-8")
+        print(f"Generated and XML-validated {output.relative_to(project_root)}")
     return 0
 
 

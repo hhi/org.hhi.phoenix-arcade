@@ -10,6 +10,14 @@
     .step-num { fill: #88C4A3; font-family: monospace; font-size: 12px; font-weight: bold; pointer-events:none; }
     .start-dot { fill:#00E676; stroke:#FFFFFF; stroke-width:2.5; cursor:pointer; }
     .start-text { fill:#00E676; font-family: monospace; font-size: 13px; font-weight: bold; pointer-events:none; }
+
+    /* INSTANT 0ms CSS HOVER TOOLTIP STYLING */
+    .hover-card { display: none; pointer-events: none; }
+    .step-group:hover .hover-card { display: block; }
+    .hover-bg { fill: #04160E; stroke: #00FFCC; stroke-width: 1.5; filter: drop-shadow(0 0 8px rgba(0,255,204,0.6)); }
+    .hover-title { fill: #00FFCC; font-family: monospace; font-size: 12px; font-weight: bold; }
+    .hover-sub { fill: #FFFFFF; font-family: monospace; font-size: 11px; font-weight: bold; }
+
     .alien-main { fill:#00FFCC; stroke:#FFFFFF; stroke-width:1; }
     .alien-wing { fill:#FF00AA; }
     .alien-eye { fill:#FFFF00; }
@@ -17,9 +25,9 @@
     .portrait-badge { fill: #4DD0E1; font-family: monospace; font-size: 13px; font-weight: bold; }
   </style>
 
-  <!-- Title & Cyan Origin Grid Header -->
+  <!-- Title &amp; Cyan Origin Grid Header -->
   <text x="35" y="45" class="title-text">Cluster A Pattern 02 (ROM $1064, 64 Steps)</text>
-  <text x="35" y="80" class="portrait-badge">📍 Optimal Range: Origin X=0 / Y=0 | Exact Range X:[-20,+20], Y:[+0,+64]</text>
+  <text x="35" y="80" class="portrait-badge">📍 Optimaal Bereik: Oorsprong X=0 / Y=0 | Exact Bereik X:[-20,+20], Y:[+0,+64]</text>
   
   <!-- LAYER 1: Phoenix Screen Grid Overlay -->
   <line x1="267.5" y1="180" x2="267.5" y2="1135" class="grid-line" /><text x="253.5" y="165" class="axis-label">X=-16</text><line x1="380.0" y1="180" x2="380.0" y2="1135" class="grid-line" /><text x="366.0" y="165" class="axis-label">X=-8</text><line x1="492.5" y1="180" x2="492.5" y2="1135" class="axis-main-line" /><text x="478.5" y="165" class="origin-label">X=+0</text><line x1="605.0" y1="180" x2="605.0" y2="1135" class="grid-line" /><text x="591.0" y="165" class="axis-label">X=+8</text><line x1="717.5" y1="180" x2="717.5" y2="1135" class="grid-line" /><text x="703.5" y="165" class="axis-label">X=+16</text><line x1="70" y1="210.0" x2="915" y2="210.0" class="axis-main-line" /><text x="15" y="215.0" class="origin-label">Y=+0</text><line x1="70" y1="322.5" x2="915" y2="322.5" class="grid-line" /><text x="15" y="327.5" class="axis-label">Y=+8</text><line x1="70" y1="435.0" x2="915" y2="435.0" class="grid-line" /><text x="15" y="440.0" class="axis-label">Y=+16</text><line x1="70" y1="547.5" x2="915" y2="547.5" class="grid-line" /><text x="15" y="552.5" class="axis-label">Y=+24</text><line x1="70" y1="660.0" x2="915" y2="660.0" class="grid-line" /><text x="15" y="665.0" class="axis-label">Y=+32</text><line x1="70" y1="772.5" x2="915" y2="772.5" class="grid-line" /><text x="15" y="777.5" class="axis-label">Y=+40</text><line x1="70" y1="885.0" x2="915" y2="885.0" class="grid-line" /><text x="15" y="890.0" class="axis-label">Y=+48</text><line x1="70" y1="997.5" x2="915" y2="997.5" class="grid-line" /><text x="15" y="1002.5" class="axis-label">Y=+56</text><line x1="70" y1="1110.0" x2="915" y2="1110.0" class="grid-line" /><text x="15" y="1115.0" class="axis-label">Y=+64</text>
@@ -27,279 +35,603 @@
   <!-- LAYER 2: Prescribed Vector Path Line -->
   <path id="patPath" d="M 492.5,210.0 L 492.5,266.2 L 548.8,322.5 L 605.0,378.8 L 605.0,435.0 L 605.0,491.2 L 605.0,547.5 L 605.0,603.8 L 605.0,660.0 L 605.0,716.2 L 661.2,772.5 L 717.5,716.2 L 661.2,660.0 L 605.0,716.2 L 605.0,772.5 L 605.0,828.8 L 605.0,885.0 L 605.0,941.2 L 605.0,997.5 L 661.2,1053.8 L 717.5,1053.8 L 773.8,997.5 L 773.8,941.2 L 717.5,885.0 L 661.2,885.0 L 605.0,941.2 L 605.0,997.5 L 605.0,1053.8 L 548.8,1110.0 L 492.5,1110.0 L 436.2,1053.8 L 436.2,997.5 L 492.5,941.2 L 548.8,997.5 L 548.8,1053.8 L 492.5,1110.0 L 436.2,1110.0 L 380.0,1053.8 L 380.0,997.5 L 380.0,941.2 L 323.8,885.0 L 267.5,885.0 L 211.2,941.2 L 211.2,997.5 L 267.5,1053.8 L 323.8,1053.8 L 380.0,997.5 L 380.0,941.2 L 380.0,885.0 L 380.0,828.8 L 380.0,772.5 L 380.0,716.2 L 323.8,660.0 L 267.5,716.2 L 323.8,772.5 L 380.0,716.2 L 380.0,660.0 L 380.0,603.8 L 380.0,547.5 L 380.0,491.2 L 380.0,435.0 L 380.0,378.8 L 380.0,322.5 L 436.2,266.2 L 492.5,210.0" class="path" />
   
-  <!-- LAYER 3: GLOWING GREEN PATH TRAIL (Renders EXACTLY on path_d and extends STRICTLY BEHIND the alien bug!) -->
+  <!-- LAYER 3: GLOWING GREEN PATH TRAIL -->
   <path d="M 492.5,210.0 L 492.5,266.2 L 548.8,322.5 L 605.0,378.8 L 605.0,435.0 L 605.0,491.2 L 605.0,547.5 L 605.0,603.8 L 605.0,660.0 L 605.0,716.2 L 661.2,772.5 L 717.5,716.2 L 661.2,660.0 L 605.0,716.2 L 605.0,772.5 L 605.0,828.8 L 605.0,885.0 L 605.0,941.2 L 605.0,997.5 L 661.2,1053.8 L 717.5,1053.8 L 773.8,997.5 L 773.8,941.2 L 717.5,885.0 L 661.2,885.0 L 605.0,941.2 L 605.0,997.5 L 605.0,1053.8 L 548.8,1110.0 L 492.5,1110.0 L 436.2,1053.8 L 436.2,997.5 L 492.5,941.2 L 548.8,997.5 L 548.8,1053.8 L 492.5,1110.0 L 436.2,1110.0 L 380.0,1053.8 L 380.0,997.5 L 380.0,941.2 L 323.8,885.0 L 267.5,885.0 L 211.2,941.2 L 211.2,997.5 L 267.5,1053.8 L 323.8,1053.8 L 380.0,997.5 L 380.0,941.2 L 380.0,885.0 L 380.0,828.8 L 380.0,772.5 L 380.0,716.2 L 323.8,660.0 L 267.5,716.2 L 323.8,772.5 L 380.0,716.2 L 380.0,660.0 L 380.0,603.8 L 380.0,547.5 L 380.0,491.2 L 380.0,435.0 L 380.0,378.8 L 380.0,322.5 L 436.2,266.2 L 492.5,210.0" stroke="#00E676" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.90" style="filter:drop-shadow(0 0 6px #00FFCC); stroke-dasharray:130.0 4205.8;">
     <animate attributeName="stroke-dashoffset" values="130.0; -4075.8" dur="7.5s" repeatCount="indefinite" />
   </path>
 
-  <!-- LAYER 4: Step Dots & Numbers Along Trajectory -->
+  <!-- LAYER 4: Step Dots &amp; Instant 0ms Hover Cards -->
   <g class="step-group">
-      <title>Step #0 | ROM Byte: 0x00 | Vector dX: +0, dY: +0 | Relative Position: (X=+0, Y=+0)</title>
+      <title>Stap #0 | ROM Byte: 0x00 | Vector dX: +0, dY: +0 | Relatieve Positie: (X=+0, Y=+0)</title>
       <circle cx="492.5" cy="210.0" r="8.5" class="start-dot" />
       <text x="504.5" y="201.0" class="start-text">#0</text>
+      <g class="hover-card">
+        <rect x="504.5" y="225.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="514.5" y="243.0" class="hover-title">⚡ Stap #0 | ROM: 0x00</text>
+        <text x="514.5" y="259.0" class="hover-sub">dX:+0, dY:+0 → (X:+0, Y:+0)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #1 | ROM Byte: 0x0B | Vector dX: +0, dY: +4 | Relative Position: (X=+0, Y=+4)</title>
+      <title>Stap #1 | ROM Byte: 0x0B | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+4)</title>
       <circle cx="492.5" cy="266.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="504.5" y="221.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="514.5" y="239.2" class="hover-title">⚡ Stap #1 | ROM: 0x0B</text>
+        <text x="514.5" y="255.2" class="hover-sub">dX:+0, dY:+4 → (X:+0, Y:+4)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #2 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relative Position: (X=+4, Y=+8)</title>
+      <title>Stap #2 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relatieve Positie: (X=+4, Y=+8)</title>
       <circle cx="548.8" cy="322.5" r="5.5" class="step-dot" />
       <text x="556.8" y="315.5" class="step-num">#2</text>
+      <g class="hover-card">
+        <rect x="560.8" y="277.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="570.8" y="295.5" class="hover-title">⚡ Stap #2 | ROM: 0x1E</text>
+        <text x="570.8" y="311.5" class="hover-sub">dX:+4, dY:+4 → (X:+4, Y:+8)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #3 | ROM Byte: 0x19 | Vector dX: +4, dY: +4 | Relative Position: (X=+8, Y=+12)</title>
+      <title>Stap #3 | ROM Byte: 0x19 | Vector dX: +4, dY: +4 | Relatieve Positie: (X=+8, Y=+12)</title>
       <circle cx="605.0" cy="378.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="333.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="351.8" class="hover-title">⚡ Stap #3 | ROM: 0x19</text>
+        <text x="627.0" y="367.8" class="hover-sub">dX:+4, dY:+4 → (X:+8, Y:+12)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #4 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+16)</title>
+      <title>Stap #4 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+16)</title>
       <circle cx="605.0" cy="435.0" r="5.5" class="step-dot" />
       <text x="613.0" y="428.0" class="step-num">#4</text>
+      <g class="hover-card">
+        <rect x="617.0" y="390.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="408.0" class="hover-title">⚡ Stap #4 | ROM: 0x06</text>
+        <text x="627.0" y="424.0" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+16)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #5 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+20)</title>
+      <title>Stap #5 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+20)</title>
       <circle cx="605.0" cy="491.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="446.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="464.2" class="hover-title">⚡ Stap #5 | ROM: 0x06</text>
+        <text x="627.0" y="480.2" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+20)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #6 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+24)</title>
+      <title>Stap #6 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+24)</title>
       <circle cx="605.0" cy="547.5" r="5.5" class="step-dot" />
       <text x="613.0" y="540.5" class="step-num">#6</text>
+      <g class="hover-card">
+        <rect x="617.0" y="502.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="520.5" class="hover-title">⚡ Stap #6 | ROM: 0x06</text>
+        <text x="627.0" y="536.5" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+24)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #7 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+28)</title>
+      <title>Stap #7 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+28)</title>
       <circle cx="605.0" cy="603.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="558.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="576.8" class="hover-title">⚡ Stap #7 | ROM: 0x06</text>
+        <text x="627.0" y="592.8" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+28)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #8 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+32)</title>
+      <title>Stap #8 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+32)</title>
       <circle cx="605.0" cy="660.0" r="5.5" class="step-dot" />
       <text x="613.0" y="653.0" class="step-num">#8</text>
+      <g class="hover-card">
+        <rect x="617.0" y="615.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="633.0" class="hover-title">⚡ Stap #8 | ROM: 0x06</text>
+        <text x="627.0" y="649.0" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+32)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #9 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+36)</title>
+      <title>Stap #9 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+36)</title>
       <circle cx="605.0" cy="716.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="671.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="689.2" class="hover-title">⚡ Stap #9 | ROM: 0x06</text>
+        <text x="627.0" y="705.2" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+36)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #10 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relative Position: (X=+12, Y=+40)</title>
+      <title>Stap #10 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relatieve Positie: (X=+12, Y=+40)</title>
       <circle cx="661.2" cy="772.5" r="5.5" class="step-dot" />
       <text x="669.2" y="765.5" class="step-num">#10</text>
+      <g class="hover-card">
+        <rect x="673.2" y="727.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="683.2" y="745.5" class="hover-title">⚡ Stap #10 | ROM: 0x1E</text>
+        <text x="683.2" y="761.5" class="hover-sub">dX:+4, dY:+4 → (X:+12, Y:+40)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #11 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relative Position: (X=+16, Y=+36)</title>
+      <title>Stap #11 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relatieve Positie: (X=+16, Y=+36)</title>
       <circle cx="717.5" cy="716.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="482.5" y="671.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="492.5" y="689.2" class="hover-title">⚡ Stap #11 | ROM: 0x1F</text>
+        <text x="492.5" y="705.2" class="hover-sub">dX:+4, dY:-4 → (X:+16, Y:+36)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #12 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relative Position: (X=+12, Y=+32)</title>
+      <title>Stap #12 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relatieve Positie: (X=+12, Y=+32)</title>
       <circle cx="661.2" cy="660.0" r="5.5" class="step-dot" />
       <text x="669.2" y="653.0" class="step-num">#12</text>
+      <g class="hover-card">
+        <rect x="673.2" y="615.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="683.2" y="633.0" class="hover-title">⚡ Stap #12 | ROM: 0x1C</text>
+        <text x="683.2" y="649.0" class="hover-sub">dX:-4, dY:-4 → (X:+12, Y:+32)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #13 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relative Position: (X=+8, Y=+36)</title>
+      <title>Stap #13 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relatieve Positie: (X=+8, Y=+36)</title>
       <circle cx="605.0" cy="716.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="671.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="689.2" class="hover-title">⚡ Stap #13 | ROM: 0x1D</text>
+        <text x="627.0" y="705.2" class="hover-sub">dX:-4, dY:+4 → (X:+8, Y:+36)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #14 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+40)</title>
+      <title>Stap #14 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+40)</title>
       <circle cx="605.0" cy="772.5" r="5.5" class="step-dot" />
       <text x="613.0" y="765.5" class="step-num">#14</text>
+      <g class="hover-card">
+        <rect x="617.0" y="727.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="745.5" class="hover-title">⚡ Stap #14 | ROM: 0x06</text>
+        <text x="627.0" y="761.5" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+40)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #15 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+44)</title>
+      <title>Stap #15 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+44)</title>
       <circle cx="605.0" cy="828.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="783.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="801.8" class="hover-title">⚡ Stap #15 | ROM: 0x06</text>
+        <text x="627.0" y="817.8" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+44)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #16 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+48)</title>
+      <title>Stap #16 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+48)</title>
       <circle cx="605.0" cy="885.0" r="5.5" class="step-dot" />
       <text x="613.0" y="878.0" class="step-num">#16</text>
+      <g class="hover-card">
+        <rect x="617.0" y="840.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="858.0" class="hover-title">⚡ Stap #16 | ROM: 0x06</text>
+        <text x="627.0" y="874.0" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+48)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #17 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+52)</title>
+      <title>Stap #17 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+52)</title>
       <circle cx="605.0" cy="941.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="914.2" class="hover-title">⚡ Stap #17 | ROM: 0x06</text>
+        <text x="627.0" y="930.2" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #18 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+56)</title>
+      <title>Stap #18 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+56)</title>
       <circle cx="605.0" cy="997.5" r="5.5" class="step-dot" />
       <text x="613.0" y="990.5" class="step-num">#18</text>
+      <g class="hover-card">
+        <rect x="617.0" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="970.5" class="hover-title">⚡ Stap #18 | ROM: 0x06</text>
+        <text x="627.0" y="986.5" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #19 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relative Position: (X=+12, Y=+60)</title>
+      <title>Stap #19 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relatieve Positie: (X=+12, Y=+60)</title>
       <circle cx="661.2" cy="1053.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="673.2" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="683.2" y="1026.8" class="hover-title">⚡ Stap #19 | ROM: 0x1E</text>
+        <text x="683.2" y="1042.8" class="hover-sub">dX:+4, dY:+4 → (X:+12, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #20 | ROM Byte: 0x03 | Vector dX: +4, dY: +0 | Relative Position: (X=+16, Y=+60)</title>
+      <title>Stap #20 | ROM Byte: 0x03 | Vector dX: +4, dY: +0 | Relatieve Positie: (X=+16, Y=+60)</title>
       <circle cx="717.5" cy="1053.8" r="5.5" class="step-dot" />
       <text x="725.5" y="1046.8" class="step-num">#20</text>
+      <g class="hover-card">
+        <rect x="482.5" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="492.5" y="1026.8" class="hover-title">⚡ Stap #20 | ROM: 0x03</text>
+        <text x="492.5" y="1042.8" class="hover-sub">dX:+4, dY:+0 → (X:+16, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #21 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relative Position: (X=+20, Y=+56)</title>
+      <title>Stap #21 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relatieve Positie: (X=+20, Y=+56)</title>
       <circle cx="773.8" cy="997.5" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="538.8" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="548.8" y="970.5" class="hover-title">⚡ Stap #21 | ROM: 0x1F</text>
+        <text x="548.8" y="986.5" class="hover-sub">dX:+4, dY:-4 → (X:+20, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #22 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=+20, Y=+52)</title>
+      <title>Stap #22 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=+20, Y=+52)</title>
       <circle cx="773.8" cy="941.2" r="5.5" class="step-dot" />
       <text x="781.8" y="934.2" class="step-num">#22</text>
+      <g class="hover-card">
+        <rect x="538.8" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="548.8" y="914.2" class="hover-title">⚡ Stap #22 | ROM: 0x05</text>
+        <text x="548.8" y="930.2" class="hover-sub">dX:+0, dY:-4 → (X:+20, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #23 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relative Position: (X=+16, Y=+48)</title>
+      <title>Stap #23 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relatieve Positie: (X=+16, Y=+48)</title>
       <circle cx="717.5" cy="885.0" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="482.5" y="840.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="492.5" y="858.0" class="hover-title">⚡ Stap #23 | ROM: 0x1C</text>
+        <text x="492.5" y="874.0" class="hover-sub">dX:-4, dY:-4 → (X:+16, Y:+48)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #24 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relative Position: (X=+12, Y=+48)</title>
+      <title>Stap #24 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=+12, Y=+48)</title>
       <circle cx="661.2" cy="885.0" r="5.5" class="step-dot" />
       <text x="669.2" y="878.0" class="step-num">#24</text>
+      <g class="hover-card">
+        <rect x="673.2" y="840.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="683.2" y="858.0" class="hover-title">⚡ Stap #24 | ROM: 0x04</text>
+        <text x="683.2" y="874.0" class="hover-sub">dX:-4, dY:+0 → (X:+12, Y:+48)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #25 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relative Position: (X=+8, Y=+52)</title>
+      <title>Stap #25 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relatieve Positie: (X=+8, Y=+52)</title>
       <circle cx="605.0" cy="941.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="914.2" class="hover-title">⚡ Stap #25 | ROM: 0x1D</text>
+        <text x="627.0" y="930.2" class="hover-sub">dX:-4, dY:+4 → (X:+8, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #26 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+56)</title>
+      <title>Stap #26 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+56)</title>
       <circle cx="605.0" cy="997.5" r="5.5" class="step-dot" />
       <text x="613.0" y="990.5" class="step-num">#26</text>
+      <g class="hover-card">
+        <rect x="617.0" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="970.5" class="hover-title">⚡ Stap #26 | ROM: 0x06</text>
+        <text x="627.0" y="986.5" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #27 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+8, Y=+60)</title>
+      <title>Stap #27 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+8, Y=+60)</title>
       <circle cx="605.0" cy="1053.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="617.0" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="627.0" y="1026.8" class="hover-title">⚡ Stap #27 | ROM: 0x06</text>
+        <text x="627.0" y="1042.8" class="hover-sub">dX:+0, dY:+4 → (X:+8, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #28 | ROM Byte: 0x1A | Vector dX: -4, dY: +4 | Relative Position: (X=+4, Y=+64)</title>
+      <title>Stap #28 | ROM Byte: 0x1A | Vector dX: -4, dY: +4 | Relatieve Positie: (X=+4, Y=+64)</title>
       <circle cx="548.8" cy="1110.0" r="5.5" class="step-dot" />
       <text x="556.8" y="1103.0" class="step-num">#28</text>
+      <g class="hover-card">
+        <rect x="560.8" y="1065.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="570.8" y="1083.0" class="hover-title">⚡ Stap #28 | ROM: 0x1A</text>
+        <text x="570.8" y="1099.0" class="hover-sub">dX:-4, dY:+4 → (X:+4, Y:+64)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #29 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relative Position: (X=+0, Y=+64)</title>
+      <title>Stap #29 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=+0, Y=+64)</title>
       <circle cx="492.5" cy="1110.0" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="504.5" y="1065.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="514.5" y="1083.0" class="hover-title">⚡ Stap #29 | ROM: 0x04</text>
+        <text x="514.5" y="1099.0" class="hover-sub">dX:-4, dY:+0 → (X:+0, Y:+64)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #30 | ROM Byte: 0x1B | Vector dX: -4, dY: -4 | Relative Position: (X=-4, Y=+60)</title>
+      <title>Stap #30 | ROM Byte: 0x1B | Vector dX: -4, dY: -4 | Relatieve Positie: (X=-4, Y=+60)</title>
       <circle cx="436.2" cy="1053.8" r="5.5" class="step-dot" />
       <text x="444.2" y="1046.8" class="step-num">#30</text>
+      <g class="hover-card">
+        <rect x="448.2" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="458.2" y="1026.8" class="hover-title">⚡ Stap #30 | ROM: 0x1B</text>
+        <text x="458.2" y="1042.8" class="hover-sub">dX:-4, dY:-4 → (X:-4, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #31 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-4, Y=+56)</title>
+      <title>Stap #31 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-4, Y=+56)</title>
       <circle cx="436.2" cy="997.5" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="448.2" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="458.2" y="970.5" class="hover-title">⚡ Stap #31 | ROM: 0x05</text>
+        <text x="458.2" y="986.5" class="hover-sub">dX:+0, dY:-4 → (X:-4, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #32 | ROM Byte: 0x18 | Vector dX: +4, dY: -4 | Relative Position: (X=+0, Y=+52)</title>
+      <title>Stap #32 | ROM Byte: 0x18 | Vector dX: +4, dY: -4 | Relatieve Positie: (X=+0, Y=+52)</title>
       <circle cx="492.5" cy="941.2" r="5.5" class="step-dot" />
       <text x="500.5" y="934.2" class="step-num">#32</text>
+      <g class="hover-card">
+        <rect x="504.5" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="514.5" y="914.2" class="hover-title">⚡ Stap #32 | ROM: 0x18</text>
+        <text x="514.5" y="930.2" class="hover-sub">dX:+4, dY:-4 → (X:+0, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #33 | ROM Byte: 0x19 | Vector dX: +4, dY: +4 | Relative Position: (X=+4, Y=+56)</title>
+      <title>Stap #33 | ROM Byte: 0x19 | Vector dX: +4, dY: +4 | Relatieve Positie: (X=+4, Y=+56)</title>
       <circle cx="548.8" cy="997.5" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="560.8" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="570.8" y="970.5" class="hover-title">⚡ Stap #33 | ROM: 0x19</text>
+        <text x="570.8" y="986.5" class="hover-sub">dX:+4, dY:+4 → (X:+4, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #34 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=+4, Y=+60)</title>
+      <title>Stap #34 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+4, Y=+60)</title>
       <circle cx="548.8" cy="1053.8" r="5.5" class="step-dot" />
       <text x="556.8" y="1046.8" class="step-num">#34</text>
+      <g class="hover-card">
+        <rect x="560.8" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="570.8" y="1026.8" class="hover-title">⚡ Stap #34 | ROM: 0x06</text>
+        <text x="570.8" y="1042.8" class="hover-sub">dX:+0, dY:+4 → (X:+4, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #35 | ROM Byte: 0x1A | Vector dX: -4, dY: +4 | Relative Position: (X=+0, Y=+64)</title>
+      <title>Stap #35 | ROM Byte: 0x1A | Vector dX: -4, dY: +4 | Relatieve Positie: (X=+0, Y=+64)</title>
       <circle cx="492.5" cy="1110.0" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="504.5" y="1065.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="514.5" y="1083.0" class="hover-title">⚡ Stap #35 | ROM: 0x1A</text>
+        <text x="514.5" y="1099.0" class="hover-sub">dX:-4, dY:+4 → (X:+0, Y:+64)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #36 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relative Position: (X=-4, Y=+64)</title>
+      <title>Stap #36 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=-4, Y=+64)</title>
       <circle cx="436.2" cy="1110.0" r="5.5" class="step-dot" />
       <text x="444.2" y="1103.0" class="step-num">#36</text>
+      <g class="hover-card">
+        <rect x="448.2" y="1065.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="458.2" y="1083.0" class="hover-title">⚡ Stap #36 | ROM: 0x04</text>
+        <text x="458.2" y="1099.0" class="hover-sub">dX:-4, dY:+0 → (X:-4, Y:+64)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #37 | ROM Byte: 0x1B | Vector dX: -4, dY: -4 | Relative Position: (X=-8, Y=+60)</title>
+      <title>Stap #37 | ROM Byte: 0x1B | Vector dX: -4, dY: -4 | Relatieve Positie: (X=-8, Y=+60)</title>
       <circle cx="380.0" cy="1053.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="1026.8" class="hover-title">⚡ Stap #37 | ROM: 0x1B</text>
+        <text x="402.0" y="1042.8" class="hover-sub">dX:-4, dY:-4 → (X:-8, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #38 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+56)</title>
+      <title>Stap #38 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+56)</title>
       <circle cx="380.0" cy="997.5" r="5.5" class="step-dot" />
       <text x="388.0" y="990.5" class="step-num">#38</text>
+      <g class="hover-card">
+        <rect x="392.0" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="970.5" class="hover-title">⚡ Stap #38 | ROM: 0x05</text>
+        <text x="402.0" y="986.5" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #39 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+52)</title>
+      <title>Stap #39 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+52)</title>
       <circle cx="380.0" cy="941.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="914.2" class="hover-title">⚡ Stap #39 | ROM: 0x05</text>
+        <text x="402.0" y="930.2" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #40 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relative Position: (X=-12, Y=+48)</title>
+      <title>Stap #40 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relatieve Positie: (X=-12, Y=+48)</title>
       <circle cx="323.8" cy="885.0" r="5.5" class="step-dot" />
       <text x="331.8" y="878.0" class="step-num">#40</text>
+      <g class="hover-card">
+        <rect x="335.8" y="840.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="345.8" y="858.0" class="hover-title">⚡ Stap #40 | ROM: 0x1C</text>
+        <text x="345.8" y="874.0" class="hover-sub">dX:-4, dY:-4 → (X:-12, Y:+48)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #41 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relative Position: (X=-16, Y=+48)</title>
+      <title>Stap #41 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=-16, Y=+48)</title>
       <circle cx="267.5" cy="885.0" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="279.5" y="840.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="289.5" y="858.0" class="hover-title">⚡ Stap #41 | ROM: 0x04</text>
+        <text x="289.5" y="874.0" class="hover-sub">dX:-4, dY:+0 → (X:-16, Y:+48)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #42 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relative Position: (X=-20, Y=+52)</title>
+      <title>Stap #42 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relatieve Positie: (X=-20, Y=+52)</title>
       <circle cx="211.2" cy="941.2" r="5.5" class="step-dot" />
       <text x="219.2" y="934.2" class="step-num">#42</text>
+      <g class="hover-card">
+        <rect x="223.2" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="233.2" y="914.2" class="hover-title">⚡ Stap #42 | ROM: 0x1D</text>
+        <text x="233.2" y="930.2" class="hover-sub">dX:-4, dY:+4 → (X:-20, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #43 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relative Position: (X=-20, Y=+56)</title>
+      <title>Stap #43 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=-20, Y=+56)</title>
       <circle cx="211.2" cy="997.5" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="223.2" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="233.2" y="970.5" class="hover-title">⚡ Stap #43 | ROM: 0x06</text>
+        <text x="233.2" y="986.5" class="hover-sub">dX:+0, dY:+4 → (X:-20, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #44 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relative Position: (X=-16, Y=+60)</title>
+      <title>Stap #44 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relatieve Positie: (X=-16, Y=+60)</title>
       <circle cx="267.5" cy="1053.8" r="5.5" class="step-dot" />
       <text x="275.5" y="1046.8" class="step-num">#44</text>
+      <g class="hover-card">
+        <rect x="279.5" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="289.5" y="1026.8" class="hover-title">⚡ Stap #44 | ROM: 0x1E</text>
+        <text x="289.5" y="1042.8" class="hover-sub">dX:+4, dY:+4 → (X:-16, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #45 | ROM Byte: 0x03 | Vector dX: +4, dY: +0 | Relative Position: (X=-12, Y=+60)</title>
+      <title>Stap #45 | ROM Byte: 0x03 | Vector dX: +4, dY: +0 | Relatieve Positie: (X=-12, Y=+60)</title>
       <circle cx="323.8" cy="1053.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="335.8" y="1008.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="345.8" y="1026.8" class="hover-title">⚡ Stap #45 | ROM: 0x03</text>
+        <text x="345.8" y="1042.8" class="hover-sub">dX:+4, dY:+0 → (X:-12, Y:+60)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #46 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relative Position: (X=-8, Y=+56)</title>
+      <title>Stap #46 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relatieve Positie: (X=-8, Y=+56)</title>
       <circle cx="380.0" cy="997.5" r="5.5" class="step-dot" />
       <text x="388.0" y="990.5" class="step-num">#46</text>
+      <g class="hover-card">
+        <rect x="392.0" y="952.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="970.5" class="hover-title">⚡ Stap #46 | ROM: 0x1F</text>
+        <text x="402.0" y="986.5" class="hover-sub">dX:+4, dY:-4 → (X:-8, Y:+56)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #47 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+52)</title>
+      <title>Stap #47 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+52)</title>
       <circle cx="380.0" cy="941.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="896.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="914.2" class="hover-title">⚡ Stap #47 | ROM: 0x05</text>
+        <text x="402.0" y="930.2" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+52)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #48 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+48)</title>
+      <title>Stap #48 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+48)</title>
       <circle cx="380.0" cy="885.0" r="5.5" class="step-dot" />
       <text x="388.0" y="878.0" class="step-num">#48</text>
+      <g class="hover-card">
+        <rect x="392.0" y="840.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="858.0" class="hover-title">⚡ Stap #48 | ROM: 0x05</text>
+        <text x="402.0" y="874.0" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+48)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #49 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+44)</title>
+      <title>Stap #49 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+44)</title>
       <circle cx="380.0" cy="828.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="783.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="801.8" class="hover-title">⚡ Stap #49 | ROM: 0x05</text>
+        <text x="402.0" y="817.8" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+44)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #50 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+40)</title>
+      <title>Stap #50 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+40)</title>
       <circle cx="380.0" cy="772.5" r="5.5" class="step-dot" />
       <text x="388.0" y="765.5" class="step-num">#50</text>
+      <g class="hover-card">
+        <rect x="392.0" y="727.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="745.5" class="hover-title">⚡ Stap #50 | ROM: 0x05</text>
+        <text x="402.0" y="761.5" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+40)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #51 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+36)</title>
+      <title>Stap #51 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+36)</title>
       <circle cx="380.0" cy="716.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="671.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="689.2" class="hover-title">⚡ Stap #51 | ROM: 0x05</text>
+        <text x="402.0" y="705.2" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+36)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #52 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relative Position: (X=-12, Y=+32)</title>
+      <title>Stap #52 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relatieve Positie: (X=-12, Y=+32)</title>
       <circle cx="323.8" cy="660.0" r="5.5" class="step-dot" />
       <text x="331.8" y="653.0" class="step-num">#52</text>
+      <g class="hover-card">
+        <rect x="335.8" y="615.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="345.8" y="633.0" class="hover-title">⚡ Stap #52 | ROM: 0x1C</text>
+        <text x="345.8" y="649.0" class="hover-sub">dX:-4, dY:-4 → (X:-12, Y:+32)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #53 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relative Position: (X=-16, Y=+36)</title>
+      <title>Stap #53 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relatieve Positie: (X=-16, Y=+36)</title>
       <circle cx="267.5" cy="716.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="279.5" y="671.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="289.5" y="689.2" class="hover-title">⚡ Stap #53 | ROM: 0x1D</text>
+        <text x="289.5" y="705.2" class="hover-sub">dX:-4, dY:+4 → (X:-16, Y:+36)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #54 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relative Position: (X=-12, Y=+40)</title>
+      <title>Stap #54 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relatieve Positie: (X=-12, Y=+40)</title>
       <circle cx="323.8" cy="772.5" r="5.5" class="step-dot" />
       <text x="331.8" y="765.5" class="step-num">#54</text>
+      <g class="hover-card">
+        <rect x="335.8" y="727.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="345.8" y="745.5" class="hover-title">⚡ Stap #54 | ROM: 0x1E</text>
+        <text x="345.8" y="761.5" class="hover-sub">dX:+4, dY:+4 → (X:-12, Y:+40)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #55 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relative Position: (X=-8, Y=+36)</title>
+      <title>Stap #55 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relatieve Positie: (X=-8, Y=+36)</title>
       <circle cx="380.0" cy="716.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="671.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="689.2" class="hover-title">⚡ Stap #55 | ROM: 0x1F</text>
+        <text x="402.0" y="705.2" class="hover-sub">dX:+4, dY:-4 → (X:-8, Y:+36)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #56 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+32)</title>
+      <title>Stap #56 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+32)</title>
       <circle cx="380.0" cy="660.0" r="5.5" class="step-dot" />
       <text x="388.0" y="653.0" class="step-num">#56</text>
+      <g class="hover-card">
+        <rect x="392.0" y="615.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="633.0" class="hover-title">⚡ Stap #56 | ROM: 0x05</text>
+        <text x="402.0" y="649.0" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+32)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #57 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+28)</title>
+      <title>Stap #57 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+28)</title>
       <circle cx="380.0" cy="603.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="558.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="576.8" class="hover-title">⚡ Stap #57 | ROM: 0x05</text>
+        <text x="402.0" y="592.8" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+28)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #58 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+24)</title>
+      <title>Stap #58 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+24)</title>
       <circle cx="380.0" cy="547.5" r="5.5" class="step-dot" />
       <text x="388.0" y="540.5" class="step-num">#58</text>
+      <g class="hover-card">
+        <rect x="392.0" y="502.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="520.5" class="hover-title">⚡ Stap #58 | ROM: 0x05</text>
+        <text x="402.0" y="536.5" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+24)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #59 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+20)</title>
+      <title>Stap #59 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+20)</title>
       <circle cx="380.0" cy="491.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="446.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="464.2" class="hover-title">⚡ Stap #59 | ROM: 0x05</text>
+        <text x="402.0" y="480.2" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+20)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #60 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+16)</title>
+      <title>Stap #60 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+16)</title>
       <circle cx="380.0" cy="435.0" r="5.5" class="step-dot" />
       <text x="388.0" y="428.0" class="step-num">#60</text>
+      <g class="hover-card">
+        <rect x="392.0" y="390.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="408.0" class="hover-title">⚡ Stap #60 | ROM: 0x05</text>
+        <text x="402.0" y="424.0" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+16)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #61 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+12)</title>
+      <title>Stap #61 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+12)</title>
       <circle cx="380.0" cy="378.8" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="392.0" y="333.8" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="351.8" class="hover-title">⚡ Stap #61 | ROM: 0x05</text>
+        <text x="402.0" y="367.8" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+12)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #62 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relative Position: (X=-8, Y=+8)</title>
+      <title>Stap #62 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-8, Y=+8)</title>
       <circle cx="380.0" cy="322.5" r="5.5" class="step-dot" />
       <text x="388.0" y="315.5" class="step-num">#62</text>
+      <g class="hover-card">
+        <rect x="392.0" y="277.5" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="402.0" y="295.5" class="hover-title">⚡ Stap #62 | ROM: 0x05</text>
+        <text x="402.0" y="311.5" class="hover-sub">dX:+0, dY:-4 → (X:-8, Y:+8)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #63 | ROM Byte: 0x18 | Vector dX: +4, dY: -4 | Relative Position: (X=-4, Y=+4)</title>
+      <title>Stap #63 | ROM Byte: 0x18 | Vector dX: +4, dY: -4 | Relatieve Positie: (X=-4, Y=+4)</title>
       <circle cx="436.2" cy="266.2" r="5.5" class="step-dot" />
       
+      <g class="hover-card">
+        <rect x="448.2" y="221.2" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="458.2" y="239.2" class="hover-title">⚡ Stap #63 | ROM: 0x18</text>
+        <text x="458.2" y="255.2" class="hover-sub">dX:+4, dY:-4 → (X:-4, Y:+4)</text>
+      </g>
     </g><g class="step-group">
-      <title>Step #64 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relative Position: (X=+0, Y=+0)</title>
+      <title>Stap #64 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relatieve Positie: (X=+0, Y=+0)</title>
       <circle cx="492.5" cy="210.0" r="5.5" class="step-dot" />
       <text x="500.5" y="203.0" class="step-num">#64</text>
+      <g class="hover-card">
+        <rect x="504.5" y="225.0" width="220" height="46" rx="6" class="hover-bg" />
+        <text x="514.5" y="243.0" class="hover-title">⚡ Stap #64 | ROM: 0x1F</text>
+        <text x="514.5" y="259.0" class="hover-sub">dX:+4, dY:-4 → (X:+0, Y:+0)</text>
+      </g>
     </g>
   
   <!-- LAYER 5: Authentic 8-Bit Phoenix Alien Bug Moving Sprite -->
   <g>
     <animateMotion path="M 492.5,210.0 L 492.5,266.2 L 548.8,322.5 L 605.0,378.8 L 605.0,435.0 L 605.0,491.2 L 605.0,547.5 L 605.0,603.8 L 605.0,660.0 L 605.0,716.2 L 661.2,772.5 L 717.5,716.2 L 661.2,660.0 L 605.0,716.2 L 605.0,772.5 L 605.0,828.8 L 605.0,885.0 L 605.0,941.2 L 605.0,997.5 L 661.2,1053.8 L 717.5,1053.8 L 773.8,997.5 L 773.8,941.2 L 717.5,885.0 L 661.2,885.0 L 605.0,941.2 L 605.0,997.5 L 605.0,1053.8 L 548.8,1110.0 L 492.5,1110.0 L 436.2,1053.8 L 436.2,997.5 L 492.5,941.2 L 548.8,997.5 L 548.8,1053.8 L 492.5,1110.0 L 436.2,1110.0 L 380.0,1053.8 L 380.0,997.5 L 380.0,941.2 L 323.8,885.0 L 267.5,885.0 L 211.2,941.2 L 211.2,997.5 L 267.5,1053.8 L 323.8,1053.8 L 380.0,997.5 L 380.0,941.2 L 380.0,885.0 L 380.0,828.8 L 380.0,772.5 L 380.0,716.2 L 323.8,660.0 L 267.5,716.2 L 323.8,772.5 L 380.0,716.2 L 380.0,660.0 L 380.0,603.8 L 380.0,547.5 L 380.0,491.2 L 380.0,435.0 L 380.0,378.8 L 380.0,322.5 L 436.2,266.2 L 492.5,210.0" dur="7.5s" begin="0s" repeatCount="indefinite" rotate="auto" />
     
-    <!-- Authentic Phoenix Alien Bug Sprite (Positioned facing forward at origin x=0, y=0) -->
     <g transform="translate(-10, -10) scale(0.9)">
       <path d="M 6,2 L 4,0 L 2,2 M 18,2 L 20,0 L 22,2" stroke="#00FFCC" stroke-width="1.5" fill="none" />
       <path d="M 4,4 L 20,4 L 22,10 L 18,18 L 12,20 L 6,18 L 2,10 Z" class="alien-main" />

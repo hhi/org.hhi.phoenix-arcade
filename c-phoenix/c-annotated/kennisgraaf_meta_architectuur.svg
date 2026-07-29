@@ -28,15 +28,15 @@
     </linearGradient>
 
     <!-- Arrow marker definitions -->
-    <marker id="arrowCyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#00FFCC" />
     </marker>
 
-    <marker id="arrowPurple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#D500F9" />
     </marker>
 
-    <marker id="arrowYellow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrowYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFCC00" />
     </marker>
 
@@ -141,25 +141,25 @@
   <!-- ==================== CONNECTING ARROWS & DATA FLOW ==================== -->
 
   <!-- Top-down Arrow Tier 1 -> Tier 2 -->
-  <line x1="190" y1="213" x2="190" y2="300" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <line x1="190" y1="213" x2="190" y2="303" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
   <text x="200" y="248" class="edge-label">Z80 Porting</text>
 
-  <line x1="500" y1="213" x2="500" y2="300" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <line x1="500" y1="213" x2="500" y2="303" stroke="#00E676" stroke-width="2" marker-end="url(#arrowCyan)" />
   <text x="510" y="248" class="edge-label">RAM Mapping</text>
 
-  <!-- Mid Arrow Tier 2 -> Tier 3 (Generator) -->
-  <path d="M 190,378 L 190,410 L 260,410 L 260,422" fill="none" stroke="#D500F9" stroke-width="2" marker-end="url(#arrowPurple)" />
-  <text x="200" y="402" class="edge-label" fill="#D500F9">Auto Extract</text>
+  <!-- Straight Vertical Arrow from Tier 2 to Machine Graph -->
+  <line x1="190" y1="378" x2="190" y2="425" stroke="#D500F9" stroke-width="2" marker-end="url(#arrowPurple)" />
+  <text x="200" y="405" class="edge-label" fill="#D500F9">Auto Extract</text>
 
-  <!-- Mid Arrow Tier 2 -> Tier 4 (Documentation) -->
-  <path d="M 810,378 L 810,410 L 740,410 L 740,422" fill="none" stroke="#00FFCC" stroke-width="2" marker-end="url(#arrowCyan)" />
-  <text x="750" y="402" class="edge-label">Annotation</text>
+  <!-- Straight Vertical Arrow from Tier 2 to Documentation -->
+  <line x1="810" y1="378" x2="810" y2="425" stroke="#00FFCC" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <text x="820" y="405" class="edge-label">Annotation</text>
 
-  <!-- Horizontal Double Arrow Tier 3 <-> Tier 4 (Evidence & Backlinks) -->
-  <line x1="485" y1="520" x2="512" stroke="#FFCC00" stroke-width="2.5" marker-end="url(#arrowYellow)" />
-  <line x1="515" y1="550" x2="488" stroke="#00FFCC" stroke-width="2.5" marker-end="url(#arrowCyan)" />
-  <text x="435" y="508" class="edge-label" fill="#FFCC00">evidence.documentation</text>
-  <text x="445" y="575" class="edge-label" fill="#00FFCC">backlinks &amp; links</text>
+  <!-- Horizontal Double Arrow between Machine Graph and Documentation -->
+  <line x1="485" y1="520" x2="515" y2="520" stroke="#FFCC00" stroke-width="2.5" marker-end="url(#arrowYellow)" />
+  <text x="500" y="512" text-anchor="middle" class="edge-label" fill="#FFCC00">evidence.documentation</text>
+  <line x1="515" y1="560" x2="485" y2="560" stroke="#00FFCC" stroke-width="2.5" marker-end="url(#arrowCyan)" />
+  <text x="500" y="575" text-anchor="middle" class="edge-label" fill="#00FFCC">backlinks &amp; links</text>
 
   <!-- FOOTER STATUS BADGE -->
   <rect x="40" y="680" width="920" height="50" rx="8" fill="#09140C" stroke="#00FFCC" stroke-width="1" />

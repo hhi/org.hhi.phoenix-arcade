@@ -6,7 +6,7 @@
     .player { fill: #00FFCC; }
   </style>
 
-  <text x="15" y="22" class="label">Script 01: Egg Hatch & Flap Climb</text>
+  <text x="15" y="22" class="label">Script 01: Egg Hatch &amp; Flap Climb</text>
   <text x="15" y="38" class="label">ROM $3F08: Speed=0x20, Param=0xFF, Phase=0x02</text>
   
   <!-- Player Ship Reference Line at bottom -->
