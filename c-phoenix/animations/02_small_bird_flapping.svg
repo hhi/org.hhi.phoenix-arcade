@@ -26,7 +26,7 @@
   </style>
 
   <!-- Frame A -->
-  <text x="20" y="25" class="label">Frame A: Vleugels Omhoog</text>
+  <text x="20" y="25" class="label">Frame A: Wings Up</text>
   <g class="group-a" transform="translate(45, 45)">
     <g class="frame-a">
       <rect x="0" y="0" width="8" height="16" class="bird-wing" />
@@ -37,7 +37,7 @@
   </g>
 
   <!-- Frame B -->
-  <text x="230" y="25" class="label">Frame B: Vleugels Omlaag</text>
+  <text x="230" y="25" class="label">Frame B: Wings Down</text>
   <g class="group-b" transform="translate(255, 45)">
     <g class="frame-b">
       <rect x="16" y="0" width="16" height="8" class="bird-body" />

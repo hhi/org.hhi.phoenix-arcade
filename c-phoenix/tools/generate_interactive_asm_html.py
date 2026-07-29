@@ -7,7 +7,10 @@ import re
 from pathlib import Path
 
 
-LABEL_HEADING_RE = re.compile(r"^### ([A-Za-z_][A-Za-z0-9_]*):\s*$")
+LABEL_HEADING_RE = re.compile(
+    r"^### (?P<name>[A-Za-z_][A-Za-z0-9_]*):"
+    r"(?:\s+(?P<reference>\[[^\]]+\]\([^)]+\)))?\s*$"
+)
 ORG_RE = re.compile(r"\.ORG\s+\$([0-9A-Fa-f]+)")
 LEGACY_LABEL_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):\s*$")
 LEGACY_ADDRESS_RE = re.compile(r"^([0-9A-Fa-f]{4}):")
@@ -394,6 +397,7 @@ def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_roo
                 f'<section class="asm-section" id="{label_id(name)}">'
                 f'<h3><a class="permalink" href="#{label_id(name)}" '
                 f'data-tooltip="{html.escape(tooltip, quote=True)}">{name}</a>'
+                f'{" " + render_inline(heading_match.group("reference")) if heading_match.group("reference") else ""}'
                 f'<span class="label-kind label-kind-{kind}">{LABEL_KIND_NAMES[kind]}</span></h3>'
             )
             if representation := data_representations.get(name):

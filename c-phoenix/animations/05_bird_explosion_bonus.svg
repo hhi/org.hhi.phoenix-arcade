@@ -17,7 +17,7 @@
     .anim-burst { animation: particleBurst 4.5s infinite ease-out; transform-origin: 0px 0px; }
     .anim-score { animation: scoreFloat 4.5s infinite ease-in-out; }
   </style>
-  <text x="15" y="25" class="label">Deeltjes-Explosie &amp; Score Weergave</text>
+  <text x="15" y="25" class="label">Particle Explosion &amp; Score Display</text>
   
   <!-- Explosion Particles -->
   <g class="anim-burst">

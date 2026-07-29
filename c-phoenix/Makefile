@@ -80,7 +80,7 @@ TRACER_VIEW_PORT ?= 8766
 TRACE_VIEW_OUTPUT ?= $(VISUAL_TRACE_OUTPUT)
 TRACE_VIEW_DIR ?= $(dir $(TRACE_VIEW_OUTPUT))
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only wave-screenshots help
 
 all: $(TARGET) verify-rom-free
 
@@ -299,6 +299,9 @@ interactive-asm-view-only:
 	@echo "Light theme: http://127.0.0.1:$(ASM_VIEW_PORT)/context/Phoenix.html?theme=light"
 	@echo "Press Ctrl-C to stop the local viewer."
 	@$(PYTHON) -m http.server $(ASM_VIEW_PORT) --bind 127.0.0.1
+
+wave-screenshots: $(TARGET)
+	@$(PYTHON) tools/capture_initial_alien_waves.py --binary $(TARGET)
 
 docs:
 	@echo "Generating architecture mappings and graphs..."

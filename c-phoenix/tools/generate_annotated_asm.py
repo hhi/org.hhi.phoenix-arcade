@@ -5,6 +5,48 @@ OBJECT_LINK_RE = re.compile(
     r'\[Object\s+([^\]]+)\]\(((?:fg|bg)tiles\.md#[^)]+)\)(.*)$'
 )
 
+# The trajectory diagrams are static visualisations, but their entry points are
+# ROM labels in the annotated listing.  Keep this mapping in the Markdown
+# generator so rebuilding the listing does not discard those cross-references.
+ANIMATION_SVG_BY_LABEL = {
+    "T1000": ("Cluster A overview SVG", "../animations/07_alien_closed_loop_cluster_a.svg"),
+}
+
+for label, pattern in zip(
+    (
+        "T1020", "T1064", "T10A8", "T10D4", "T1100", "T1130", "T1160",
+        "T11A4", "T11D0", "T1200", "T1244", "T1288", "T12CA", "T1300",
+        "T1328", "T1354", "T139C", "T13D0",
+    ),
+    range(1, 19),
+):
+    ANIMATION_SVG_BY_LABEL[label] = (
+        f"Pattern {pattern:02d} SVG",
+        f"../animations/cluster_a/pattern_{pattern:02d}.svg",
+    )
+
+for label, pattern in zip(
+    (
+        "T2C00", "T2C34", "T2C90", "T2CC8", "T2D00", "T2D44", "T2D88",
+        "T2DC0", "T2E00", "T2E20", "T2E40", "T2E6C", "T2E90", "T2EC4",
+        "T2F00", "T2F34", "T2F64", "T2FA0",
+    ),
+    range(19, 37),
+):
+    ANIMATION_SVG_BY_LABEL[label] = (
+        f"Pattern {pattern:02d} SVG",
+        f"../animations/cluster_b/pattern_{pattern:02d}.svg",
+    )
+
+for label, layout in zip(
+    ("T1540", "T1560", "T1580", "T15A0", "T15C0", "T15E0"),
+    range(1, 7),
+):
+    ANIMATION_SVG_BY_LABEL[label] = (
+        f"Initial layout {layout:02d} SVG",
+        f"wave-screenshots/layout-{layout:02d}.svg",
+    )
+
 
 def object_reference_note(line):
     match = OBJECT_LINK_RE.search(line)
@@ -15,6 +57,15 @@ def object_reference_note(line):
     description = description.strip()
     suffix = f" - {description}" if description else ""
     return f"> **Tile reference:** [Object {obj}]({link}){suffix}"
+
+
+def animation_reference(label_name):
+    """Return the optional trajectory-diagram link for a ROM table label."""
+    animation = ANIMATION_SVG_BY_LABEL.get(label_name.upper())
+    if not animation:
+        return ""
+    title, path = animation
+    return f" [{title}]({path})"
 
 
 def generate_markdown(in_asm, out_md, annotations):
@@ -46,7 +97,8 @@ def generate_markdown(in_asm, out_md, annotations):
             if in_code_block:
                 md_output.append("```")
                 in_code_block = False
-            md_output.append(f"\n### {label_name}:\n")
+            reference = animation_reference(label_name) if source_name == "Phoenix.asm" else ""
+            md_output.append(f"\n### {label_name}:{reference}\n")
             continue
 
         # Phoenix.asm uses .ORG $XXXX; code-annotated.asm uses XXXX:.

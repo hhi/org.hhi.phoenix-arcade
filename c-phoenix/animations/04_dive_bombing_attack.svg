@@ -18,7 +18,7 @@
     .anim-bird { animation: birdFlight 5.5s infinite ease-in-out; }
     .anim-bomb { animation: bombFall 1.5s infinite linear; }
   </style>
-  <text x="15" y="25" class="label">Duikvlucht Traject &amp; Bommenwerpen</text>
+  <text x="15" y="25" class="label">Dive-Bombing Trajectory &amp; Bomb Drop</text>
   
   <!-- Sinus Flight Path -->
   <path d="M 40,40 Q 140,40 180,85 T 320,140" class="path" />

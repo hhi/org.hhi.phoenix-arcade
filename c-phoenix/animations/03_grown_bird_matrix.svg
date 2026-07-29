@@ -16,7 +16,7 @@
     .anim-grown { animation: grownGlide 4.5s infinite ease-in-out; }
     .anim-core { animation: coreGlow 2.5s infinite ease-in-out; }
   </style>
-  <text x="15" y="25" class="label">Volgroeide Vogel (4x4 Matrix Spanwijdte)</text>
+  <text x="15" y="25" class="label">Grown Bird (4x4 Wing-Span Matrix)</text>
   <g class="anim-grown">
     <!-- Wingspan -->
     <rect x="0" y="8" width="24" height="8" class="large-wing" />

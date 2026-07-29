@@ -10,7 +10,7 @@
     }
     .anim-intro { animation: introGlideSmooth 7.5s infinite ease-in-out; }
   </style>
-  <text x="15" y="25" class="label">Intro Splash Vogel (Attract Mode)</text>
+  <text x="15" y="25" class="label">Intro Splash Bird (Attract Mode)</text>
   <g class="anim-intro">
     <rect x="24" y="0" width="72" height="8" class="intro-bird" />
     <rect x="8" y="8" width="104" height="16" class="intro-bird" />

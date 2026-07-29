@@ -14,7 +14,7 @@
     .anim-mothership { animation: mothershipDescent 8s infinite ease-in-out; }
   </style>
 
-  <text x="15" y="25" class="label">Moederschip Daal-Traject (ROM $1D00)</text>
+  <text x="15" y="25" class="label">Mothership Descent Trajectory (ROM $1D00)</text>
   
   <!-- Descent Guide Line -->
   <line x1="190" y1="10" x2="190" y2="150" class="path-arrow" />

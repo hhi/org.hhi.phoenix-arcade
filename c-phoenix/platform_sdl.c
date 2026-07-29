@@ -15,6 +15,8 @@
 #include "sound.h"
 #include "z80_core.h"
 #include "coverage.h"
+#include "game_constants.h"
+#include "state_init.h"
 
 // External game state and loops
 PhoenixState state = {0};
@@ -33,6 +35,9 @@ static volatile uint8_t g_vram_page = 0x00; // VRAM page selected via video regi
 SDL_sem* g_sem_vblank_go = NULL;
 SDL_sem* g_sem_frame_done = NULL;
 volatile bool g_quit = false;
+static int g_initial_alien_layout_level = -1;
+
+void platform_ram_dump_hook(void);
 
 /* ==========================================================
  * HARDWARE ABSTRACTION IMPLEMENTATIONS
@@ -174,6 +179,21 @@ void platform_audio_frame_hook(void) {
 static int game_thread_func(void* ptr) {
     (void)ptr;
     phoenix_init();
+    if (g_initial_alien_layout_level >= 0) {
+        // Capture mode runs the regular round initializer once, after the
+        // normal video/RAM setup but before the attract loop can switch RAM
+        // banks.  The render thread then captures this exact initialized
+        // state on its following frame.
+        state.GameOrAttract = 1;
+        state.GameState = GAME_STATE_INIT_ROUND;
+        state.LevelAndRound = (uint8_t)g_initial_alien_layout_level;
+        state.AliensLeft = 0x10;
+        SDL_SemWait(g_sem_vblank_go);
+        state_2_init_game_and_level_data();
+        platform_ram_dump_hook();
+        SDL_SemPost(g_sem_frame_done);
+        return 0;
+    }
     phoenix_main_loop();
     return 0;
 }
@@ -432,12 +452,39 @@ void platform_ram_dump_hook(void) {
     fflush(ram_dump_file);
 }
 
+static int initial_alien_layout_level(const char *layout) {
+    if (*layout == '$') layout++;
+
+    char *end = NULL;
+    long address = strtol(layout, &end, 16);
+    if (*layout == '\0' || *end != '\0') return -1;
+
+    // These representative round values select the six real offsets in
+    // phoenix_alien_position_pointer_table.  They are used only by the
+    // screenshot harness, not by normal gameplay.
+    switch (address) {
+        case 0x1540: return 0x02;
+        case 0x1560: return 0x00;
+        case 0x1580: return 0x14;
+        case 0x15A0: return 0x12;
+        case 0x15C0: return 0x10;
+        case 0x15E0: return 0x04;
+        default: return -1;
+    }
+}
+
 int main(int argc, char* argv[]) {
     const char* record_input_path = NULL;
     const char* runtime_call_trace_path = NULL;
     for (int i = 1; i < argc; i++) {
         if (strncmp(argv[i], "--run-frames=", 13) == 0) {
             headless_frames = atoi(argv[i] + 13);
+        } else if (strncmp(argv[i], "--capture-initial-alien-layout=", 31) == 0) {
+            g_initial_alien_layout_level = initial_alien_layout_level(argv[i] + 31);
+            if (g_initial_alien_layout_level < 0) {
+                fprintf(stderr, "Unknown initial alien layout: %s\n", argv[i] + 31);
+                return 2;
+            }
         } else if (strncmp(argv[i], "--screenshot=", 13) == 0) {
             screenshot_path = argv[i] + 13;
         } else if (strncmp(argv[i], "--dump-vram=", 12) == 0) {
@@ -465,6 +512,10 @@ int main(int argc, char* argv[]) {
     if (g_wait_for_space && g_start_delay_seconds > 0.0) {
         SDL_Log("--wait-for-space and --start-delay cannot be combined");
         return 2;
+    }
+
+    if (g_initial_alien_layout_level >= 0 && headless_frames == 0) {
+        headless_frames = 2;
     }
 
     // Interactive-only, same rule as audio/pause: headless test runs must

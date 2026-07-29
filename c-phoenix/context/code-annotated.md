@@ -512,7 +512,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### PrintCopyright:
 
 > [!NOTE]
-> **Ported to C:** [`l01e1`](../misc_logic.c#L23) in `misc_logic.c` (ASM: `01E1-01EB`)
+> **Ported to C:** [`l01e1`](../misc_logic.c#L24) in `misc_logic.c` (ASM: `01E1-01EB`)
 
 > [!NOTE]
 > **Ported to C:** [`print_copyright_lines`](../utilities.c#L96) in `utilities.c` (ASM: `01E1-01EB`)
@@ -1376,7 +1376,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 > **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `0460-049D, 067A-06AF`)
 
 > [!NOTE]
-> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L90) in `platform_sdl.c` (ASM: `0460-049D`)
+> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L95) in `platform_sdl.c` (ASM: `0460-049D`)
 
 ```asm
 0460: 21 00 50        LD      HL,$5000            ; 50xx video register
@@ -2105,7 +2105,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 > **Ported to C:** [`update_scroll_register_and_fill_background`](../hw_video_audio.c#L473) in `hw_video_audio.c` (ASM: `06F0-06F8`)
 
 > [!NOTE]
-> **Ported to C:** [`l06f0`](../misc_logic.c#L11) in `misc_logic.c` (ASM: `06F0-0701`)
+> **Ported to C:** [`l06f0`](../misc_logic.c#L12) in `misc_logic.c` (ASM: `06F0-0701`)
 
 ```asm
 06F0: CD 7A 06        CALL    $067A               ; {code.StarsScrollDown}
@@ -5976,7 +5976,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2000:
 
 > [!NOTE]
-> **Ported to C:** [`l2000_alien_wave_main_loop`](../alien_wave.c#L219) in `alien_wave.c` (ASM: `2000-202A`)
+> **Ported to C:** [`l2000_alien_wave_main_loop`](../alien_wave.c#L220) in `alien_wave.c` (ASM: `2000-202A`)
 
 ```asm
 2000: CD 76 08        CALL    $0876               ; {code.PlayerUpdate} Updates the player ship, player bullet and the shield.
@@ -6078,7 +6078,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2070:
 
 > [!NOTE]
-> **Ported to C:** [`l2070`](../player_explosion.c#L115) in `player_explosion.c` (ASM: `2070-2084`)
+> **Ported to C:** [`l2070`](../player_explosion.c#L118) in `player_explosion.c` (ASM: `2070-2084`)
 
 ```asm
 2070: 7B              LD      A,E                 
@@ -6147,7 +6147,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L20B0:
 
 > [!NOTE]
-> **Ported to C:** [`l20b0_player_ship_particles_explosion`](../player_explosion.c#L74) in `player_explosion.c` (ASM: `20B0-20E2`)
+> **Ported to C:** [`l20b0_player_ship_particles_explosion`](../player_explosion.c#L76) in `player_explosion.c` (ASM: `20B0-20E2`)
 
 ```asm
 20B0: C5              PUSH    BC                  
@@ -6218,7 +6218,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L20E8:
 
 > [!NOTE]
-> **Ported to C:** [`l20e8`](../player_explosion.c#L30) in `player_explosion.c` (ASM: `20E8-210D`)
+> **Ported to C:** [`l20e8`](../player_explosion.c#L32) in `player_explosion.c` (ASM: `20E8-210D`)
 
 ```asm
 20E8: 47              LD      B,A                 
@@ -6257,7 +6257,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L211C:
 
 > [!NOTE]
-> **Ported to C:** [`l211c`](../player_explosion.c#L15) in `player_explosion.c` (ASM: `211C-212C`)
+> **Ported to C:** [`l211c`](../player_explosion.c#L16) in `player_explosion.c` (ASM: `211C-212C`)
 
 ```asm
 211C: 21 B9 43        LD      HL,$43B9            ; {+ram.CounterB9}
@@ -6284,7 +6284,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2130:
 
 > [!NOTE]
-> **Ported to C:** [`l2130`](../alien_wave.c#L204) in `alien_wave.c` (ASM: `2130-2145`)
+> **Ported to C:** [`l2130`](../alien_wave.c#L205) in `alien_wave.c` (ASM: `2130-2145`)
 
 ```asm
 2130: 78              LD      A,B                 ; get masked counter
@@ -6308,7 +6308,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2146:
 
 > [!NOTE]
-> **Ported to C:** [`l2146`](../alien_wave.c#L192) in `alien_wave.c` (ASM: `2146-214F`)
+> **Ported to C:** [`l2146`](../alien_wave.c#L193) in `alien_wave.c` (ASM: `2146-214F`)
 
 ```asm
 2146: 78              LD      A,B                 
@@ -6326,7 +6326,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2150:
 
 > [!NOTE]
-> **Ported to C:** [`l2150`](../alien_wave.c#L133) in `alien_wave.c` (ASM: `2150-215F`)
+> **Ported to C:** [`l2150`](../alien_wave.c#L134) in `alien_wave.c` (ASM: `2150-215F`)
 
 ```asm
 2150: CD 50 0A        CALL    $0A50               ; {code.AlienDataController} draw or delete alien
@@ -6341,7 +6341,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2160:
 
 > [!NOTE]
-> **Ported to C:** [`l2160`](../alien_wave.c#L142) in `alien_wave.c` (ASM: `2160-216F`)
+> **Ported to C:** [`l2160`](../alien_wave.c#L143) in `alien_wave.c` (ASM: `2160-216F`)
 
 ```asm
 2160: CD C4 24        CALL    $24C4               ; {code.L24C4}
@@ -6357,7 +6357,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2170:
 
 > [!NOTE]
-> **Ported to C:** [`l2170`](../alien_wave.c#L152) in `alien_wave.c` (ASM: `2170-217F`)
+> **Ported to C:** [`l2170`](../alien_wave.c#L153) in `alien_wave.c` (ASM: `2170-217F`)
 
 ```asm
 2170: CD 70 0D        CALL    $0D70               ; {code.AlienAnimationUpdate}
@@ -6371,7 +6371,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2180:
 
 > [!NOTE]
-> **Ported to C:** [`l2180`](../alien_wave.c#L160) in `alien_wave.c` (ASM: `2180-218F`)
+> **Ported to C:** [`l2180`](../alien_wave.c#L161) in `alien_wave.c` (ASM: `2180-218F`)
 
 ```asm
 2180: CD C4 24        CALL    $24C4               ; {code.L24C4}
@@ -6386,7 +6386,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2190:
 
 > [!NOTE]
-> **Ported to C:** [`l2190`](../alien_wave.c#L170) in `alien_wave.c` (ASM: `2190-21A4`)
+> **Ported to C:** [`l2190`](../alien_wave.c#L171) in `alien_wave.c` (ASM: `2190-21A4`)
 
 ```asm
 2190: CD 50 0A        CALL    $0A50               ; {code.AlienDataController} draw or delete alien
@@ -6402,7 +6402,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L21A5:
 
 > [!NOTE]
-> **Ported to C:** [`l21a5`](../alien_wave.c#L181) in `alien_wave.c` (ASM: `21A5-21B9`)
+> **Ported to C:** [`l21a5`](../alien_wave.c#L182) in `alien_wave.c` (ASM: `21A5-21B9`)
 
 ```asm
 21A5: CD 1C 0D        CALL    $0D1C               ; {code.AlienMovementUpdate}
@@ -6418,7 +6418,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L21BA:
 
 > [!NOTE]
-> **Ported to C:** [`l21ba`](../alien_wave.c#L103) in `alien_wave.c` (ASM: `21BA-21CF`)
+> **Ported to C:** [`l21ba`](../alien_wave.c#L104) in `alien_wave.c` (ASM: `21BA-21CF`)
 
 ```asm
 21BA: 78              LD      A,B                 ; 
@@ -6476,7 +6476,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L2204:
 
 > [!NOTE]
-> **Ported to C:** [`l2204`](../alien_wave.c#L79) in `alien_wave.c` (ASM: `2204-222B`)
+> **Ported to C:** [`l2204`](../alien_wave.c#L80) in `alien_wave.c` (ASM: `2204-222B`)
 
 ```asm
 2204: 21 B6 43        LD      HL,$43B6            ; {+ram.M43B6}
@@ -7128,7 +7128,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L24A0:
 
 > [!NOTE]
-> **Ported to C:** [`l24a0`](../misc_logic.c#L36) in `misc_logic.c` (ASM: `24A0-24BB`)
+> **Ported to C:** [`l24a0`](../misc_logic.c#L37) in `misc_logic.c` (ASM: `24A0-24BB`)
 
 ```asm
 24A0: 3A B8 43        LD      A,($43B8)           ; {ram.LevelAndRound}
@@ -7204,7 +7204,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L24F2:
 
 > [!NOTE]
-> **Ported to C:** [`l24f2`](../misc_logic.c#L53) in `misc_logic.c` (ASM: `24F2-251C`)
+> **Ported to C:** [`l24f2`](../misc_logic.c#L55) in `misc_logic.c` (ASM: `24F2-251C`)
 
 ```asm
 24F2: CD AA 30        CALL    $30AA               ; {code.GetRandomNumber}
@@ -7904,7 +7904,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L27BD:
 
 > [!NOTE]
-> **Ported to C:** [`l27bd`](../sound_dispatcher.c#L34) in `sound_dispatcher.c` (ASM: `27BD-27EE`)
+> **Ported to C:** [`l27bd`](../sound_dispatcher.c#L35) in `sound_dispatcher.c` (ASM: `27BD-27EE`)
 
 ```asm
 27BD: 21 63 43        LD      HL,$4363            ; {+ram.ParticleExplosion}
@@ -8246,7 +8246,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3000:
 
 > [!NOTE]
-> **Ported to C:** [`l3000`](../alien_wave.c#L254) in `alien_wave.c` (ASM: `3000-3012`)
+> **Ported to C:** [`l3000`](../alien_wave.c#L255) in `alien_wave.c` (ASM: `3000-3012`)
 
 ```asm
 3000: 21 93 43        LD      HL,$4393            ; {+ram.Counter93}
@@ -8983,7 +8983,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L32B0:
 
 > [!NOTE]
-> **Ported to C:** [`l32b0`](../misc_logic.c#L71) in `misc_logic.c` (ASM: `32B0-32EB`)
+> **Ported to C:** [`l32b0`](../misc_logic.c#L73) in `misc_logic.c` (ASM: `32B0-32EB`)
 
 ```asm
 32B0: 21 50 43        LD      HL,$4350            ; {+ram.M4350}
@@ -10701,7 +10701,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A10:
 
 > [!NOTE]
-> **Ported to C:** [`l3a10`](../sound_dispatcher.c#L264) in `sound_dispatcher.c` (ASM: `3A10-3A1C`)
+> **Ported to C:** [`l3a10`](../sound_dispatcher.c#L265) in `sound_dispatcher.c` (ASM: `3A10-3A1C`)
 
 ```asm
 3A10: 21 B8 43        LD      HL,$43B8            ; {+ram.LevelAndRound}
@@ -10717,7 +10717,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A1D:
 
 > [!NOTE]
-> **Ported to C:** [`l3a1d`](../sound_dispatcher.c#L71) in `sound_dispatcher.c` (ASM: `3A1D-3A2B`)
+> **Ported to C:** [`l3a1d`](../sound_dispatcher.c#L72) in `sound_dispatcher.c` (ASM: `3A1D-3A2B`)
 
 ```asm
 3A1D: 21 69 43        LD      HL,$4369            ; {+ram.M4369}
@@ -10732,7 +10732,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A2C:
 
 > [!NOTE]
-> **Ported to C:** [`l3a2c`](../sound_dispatcher.c#L61) in `sound_dispatcher.c` (ASM: `3A2C-3A3F`)
+> **Ported to C:** [`l3a2c`](../sound_dispatcher.c#L62) in `sound_dispatcher.c` (ASM: `3A2C-3A3F`)
 
 ```asm
 3A2C: 35              DEC     (HL)                
@@ -10755,7 +10755,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A40:
 
 > [!NOTE]
-> **Ported to C:** [`l3a40`](../sound_dispatcher.c#L98) in `sound_dispatcher.c` (ASM: `3A40-3A4D`)
+> **Ported to C:** [`l3a40`](../sound_dispatcher.c#L99) in `sound_dispatcher.c` (ASM: `3A40-3A4D`)
 
 ```asm
 3A40: 2E 64           LD      L,$64               ; {ram.M4364} $4364
@@ -10770,7 +10770,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A4E:
 
 > [!NOTE]
-> **Ported to C:** [`l3a4e`](../sound_dispatcher.c#L88) in `sound_dispatcher.c` (ASM: `3A4E-3A5F`)
+> **Ported to C:** [`l3a4e`](../sound_dispatcher.c#L89) in `sound_dispatcher.c` (ASM: `3A4E-3A5F`)
 
 ```asm
 3A4E: 35              DEC     (HL)                
@@ -10802,7 +10802,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A62:
 
 > [!NOTE]
-> **Ported to C:** [`l3a62`](../sound_dispatcher.c#L119) in `sound_dispatcher.c` (ASM: `3A62-3A77`)
+> **Ported to C:** [`l3a62`](../sound_dispatcher.c#L120) in `sound_dispatcher.c` (ASM: `3A62-3A77`)
 
 ```asm
 3A62: 2E 66           LD      L,$66               ; {ram.M4366} $4366
@@ -10821,7 +10821,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A78:
 
 > [!NOTE]
-> **Ported to C:** [`l3a78`](../sound_dispatcher.c#L113) in `sound_dispatcher.c` (ASM: `3A78-3A81`)
+> **Ported to C:** [`l3a78`](../sound_dispatcher.c#L114) in `sound_dispatcher.c` (ASM: `3A78-3A81`)
 
 ```asm
 3A78: 35              DEC     (HL)                
@@ -10837,7 +10837,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A82:
 
 > [!NOTE]
-> **Ported to C:** [`l3a82`](../sound_dispatcher.c#L133) in `sound_dispatcher.c` (ASM: `3A82-3A8F`)
+> **Ported to C:** [`l3a82`](../sound_dispatcher.c#L134) in `sound_dispatcher.c` (ASM: `3A82-3A8F`)
 
 ```asm
 3A82: 21 9A 43        LD      HL,$439A            ; {+ram.Counter9A}
@@ -10855,7 +10855,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A90:
 
 > [!NOTE]
-> **Ported to C:** [`l3a90`](../sound_dispatcher.c#L142) in `sound_dispatcher.c` (ASM: `3A90-3A95`)
+> **Ported to C:** [`l3a90`](../sound_dispatcher.c#L143) in `sound_dispatcher.c` (ASM: `3A90-3A95`)
 
 ```asm
 3A90: 21 6B 43        LD      HL,$436B            ; {+ram.M436B}
@@ -10868,7 +10868,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3A98:
 
 > [!NOTE]
-> **Ported to C:** [`l3a98_scan`](../sound_dispatcher.c#L153) in `sound_dispatcher.c` (ASM: `3A98-3ACA`)
+> **Ported to C:** [`l3a98_scan`](../sound_dispatcher.c#L154) in `sound_dispatcher.c` (ASM: `3A98-3ACA`)
 
 ```asm
 3A98: 21 70 4B        LD      HL,$4B70            ; {+ram.M4B70}
@@ -10929,7 +10929,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3AD0:
 
 > [!NOTE]
-> **Ported to C:** [`l3ad0`](../sound_dispatcher.c#L185) in `sound_dispatcher.c` (ASM: `3AD0-3AF6`)
+> **Ported to C:** [`l3ad0`](../sound_dispatcher.c#L186) in `sound_dispatcher.c` (ASM: `3AD0-3AF6`)
 
 ```asm
 3AD0: 21 8E 43        LD      HL,$438E            ; {+ram.M438E}
@@ -10973,7 +10973,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3AF8:
 
 > [!NOTE]
-> **Ported to C:** [`l3af8`](../sound_dispatcher.c#L174) in `sound_dispatcher.c` (ASM: `3AF8-3B00`)
+> **Ported to C:** [`l3af8`](../sound_dispatcher.c#L175) in `sound_dispatcher.c` (ASM: `3AF8-3B00`)
 
 ```asm
 3AF8: 2E 8E           LD      L,$8E               ; {ram.M438E} $438E
@@ -10993,7 +10993,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3B02:
 
 > [!NOTE]
-> **Ported to C:** [`l3b02`](../sound_dispatcher.c#L205) in `sound_dispatcher.c` (ASM: `3B02-3B19`)
+> **Ported to C:** [`l3b02`](../sound_dispatcher.c#L206) in `sound_dispatcher.c` (ASM: `3B02-3B19`)
 
 ```asm
 3B02: 21 9A 43        LD      HL,$439A            ; {+ram.Counter9A}
@@ -11022,7 +11022,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3B1B:
 
 > [!NOTE]
-> **Ported to C:** [`l3b1b`](../sound_dispatcher.c#L223) in `sound_dispatcher.c` (ASM: `3B1B-3B27`)
+> **Ported to C:** [`l3b1b`](../sound_dispatcher.c#L224) in `sound_dispatcher.c` (ASM: `3B1B-3B27`)
 
 ```asm
 3B1B: 21 62 43        LD      HL,$4362            ; {+ram.M4362}
@@ -11037,7 +11037,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3B28:
 
 > [!NOTE]
-> **Ported to C:** [`l3b28`](../sound_dispatcher.c#L217) in `sound_dispatcher.c` (ASM: `3B28-3B31`)
+> **Ported to C:** [`l3b28`](../sound_dispatcher.c#L218) in `sound_dispatcher.c` (ASM: `3B28-3B31`)
 
 ```asm
 3B28: 35              DEC     (HL)                
@@ -11056,7 +11056,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3B33:
 
 > [!NOTE]
-> **Ported to C:** [`l3b33`](../sound_dispatcher.c#L234) in `sound_dispatcher.c` (ASM: `3B33-3B41`)
+> **Ported to C:** [`l3b33`](../sound_dispatcher.c#L235) in `sound_dispatcher.c` (ASM: `3B33-3B41`)
 
 ```asm
 3B33: 21 6A 43        LD      HL,$436A            ; {+ram.M436A}
@@ -11078,7 +11078,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L3B43:
 
 > [!NOTE]
-> **Ported to C:** [`l3b43`](../sound_dispatcher.c#L246) in `sound_dispatcher.c` (ASM: `3B43-3B5B`)
+> **Ported to C:** [`l3b43`](../sound_dispatcher.c#L247) in `sound_dispatcher.c` (ASM: `3B43-3B5B`)
 
 ```asm
 3B43: 21 A4 43        LD      HL,$43A4            ; {+ram.GameState}

@@ -1719,7 +1719,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 > **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `0460-049D, 067A-06AF`)
 
 > [!NOTE]
-> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L90) in `platform_sdl.c` (ASM: `0460-049D`)
+> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L95) in `platform_sdl.c` (ASM: `0460-049D`)
 
 ```asm
                        .ORG $0460
@@ -4820,7 +4820,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; end mark. Used at phase 0, 1, 2 and 3.
 ```
 
-### T1000:
+### T1000: [Cluster A overview SVG](../animations/07_alien_closed_loop_cluster_a.svg)
 
 ```asm
                        .DB $01, $01, $01, $01, $02, $02, $02, $02
@@ -4833,7 +4833,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 1
 ```
 
-### T1020:
+### T1020: [Pattern 01 SVG](../animations/cluster_a/pattern_01.svg)
 
 ```asm
                        .DB $10, $11, $12, $13, $10, $1D, $0D, $0E
@@ -4848,7 +4848,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 2
 ```
 
-### T1064:
+### T1064: [Pattern 02 SVG](../animations/cluster_a/pattern_02.svg)
 
 ```asm
                        .DB $0B, $1E, $19, $06, $06, $06, $06, $06
@@ -4863,7 +4863,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 3 (phase 3)
 ```
 
-### T10A8:
+### T10A8: [Pattern 03 SVG](../animations/cluster_a/pattern_03.svg)
 
 ```asm
                        .DB $10, $04, $04, $1D, $0D, $0E, $0B, $0C
@@ -4875,7 +4875,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 4
 ```
 
-### T10D4:
+### T10D4: [Pattern 04 SVG](../animations/cluster_a/pattern_04.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $0D, $0E
@@ -4887,7 +4887,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 5
 ```
 
-### T1100:
+### T1100: [Pattern 05 SVG](../animations/cluster_a/pattern_05.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $09, $09
@@ -4899,7 +4899,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 6
 ```
 
-### T1130:
+### T1130: [Pattern 06 SVG](../animations/cluster_a/pattern_06.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $0A, $0A
@@ -4911,7 +4911,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 7
 ```
 
-### T1160:
+### T1160: [Pattern 07 SVG](../animations/cluster_a/pattern_07.svg)
 
 ```asm
                        .DB $1C, $04, $04, $04, $1D, $06, $0D, $0E
@@ -4926,7 +4926,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 8
 ```
 
-### T11A4:
+### T11A4: [Pattern 08 SVG](../animations/cluster_a/pattern_08.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $0D, $0E
@@ -4938,7 +4938,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 9
 ```
 
-### T11D0:
+### T11D0: [Pattern 09 SVG](../animations/cluster_a/pattern_09.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $06, $06
@@ -4950,7 +4950,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 10
 ```
 
-### T1200:
+### T1200: [Pattern 10 SVG](../animations/cluster_a/pattern_10.svg)
 
 ```asm
                        .DB $1C, $11, $12, $13, $10, $04, $1D, $0D
@@ -4965,7 +4965,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 11
 ```
 
-### T1244:
+### T1244: [Pattern 11 SVG](../animations/cluster_a/pattern_11.svg)
 
 ```asm
                        .DB $18, $03, $03, $19, $06, $06, $06, $06
@@ -4980,7 +4980,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 12
 ```
 
-### T1288:
+### T1288: [Pattern 12 SVG](../animations/cluster_a/pattern_12.svg)
 
 ```asm
                        .DB $0B, $0C, $1A, $1D, $1E, $03, $19, $06
@@ -4995,7 +4995,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 13
 ```
 
-### T12CA:
+### T12CA: [Pattern 13 SVG](../animations/cluster_a/pattern_13.svg)
 
 ```asm
                        .DB $18, $03, $19, $06, $06, $06, $06, $06
@@ -5008,7 +5008,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 14
 ```
 
-### T1300:
+### T1300: [Pattern 14 SVG](../animations/cluster_a/pattern_14.svg)
 
 ```asm
                        .DB $0B, $0C, $0A, $0A, $09, $09, $09, $0A
@@ -5019,7 +5019,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 15
 ```
 
-### T1328:
+### T1328: [Pattern 15 SVG](../animations/cluster_a/pattern_15.svg)
 
 ```asm
                        .DB $0B, $0C, $09, $09, $0A, $09, $09, $0A
@@ -5031,7 +5031,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 16
 ```
 
-### T1354:
+### T1354: [Pattern 16 SVG](../animations/cluster_a/pattern_16.svg)
 
 ```asm
                        .DB $1C, $11, $12, $13, $10, $1D, $0D, $0E
@@ -5046,7 +5046,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 17
 ```
 
-### T139C:
+### T139C: [Pattern 17 SVG](../animations/cluster_a/pattern_17.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $0D, $0E
@@ -5059,7 +5059,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 18
 ```
 
-### T13D0:
+### T13D0: [Pattern 18 SVG](../animations/cluster_a/pattern_18.svg)
 
 ```asm
                        .DB $14, $03, $19, $0D, $0E, $0B, $0C, $0A
@@ -5262,7 +5262,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T1540:
+### T1540: [Initial layout 01 SVG](wave-screenshots/layout-01.svg)
 
 ```asm
                        .DB $50, $20     ; 0 : x,y = 50,20 (decimal 80,32)
@@ -5303,7 +5303,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T1560:
+### T1560: [Initial layout 02 SVG](wave-screenshots/layout-02.svg)
 
 ```asm
                        .DB $60, $48     ; 0
@@ -5338,7 +5338,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T1580:
+### T1580: [Initial layout 03 SVG](wave-screenshots/layout-03.svg)
 
 ```asm
                        .DB $60, $20     ; 0
@@ -5373,7 +5373,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T15A0:
+### T15A0: [Initial layout 04 SVG](wave-screenshots/layout-04.svg)
 
 ```asm
                        .DB $60, $20     ; 0
@@ -5408,7 +5408,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T15C0:
+### T15C0: [Initial layout 05 SVG](wave-screenshots/layout-05.svg)
 
 ```asm
                        .DB $60, $58     ; 0
@@ -5442,7 +5442,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; 58 - . . . . . . . . . . . . . . . . . . . . . . . . . .
 ```
 
-### T15E0:
+### T15E0: [Initial layout 06 SVG](wave-screenshots/layout-06.svg)
 
 ```asm
                        .DB $60, $20     ; 0
@@ -6243,7 +6243,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2070`](../player_explosion.c#L115) in `player_explosion.c` (ASM: `2070-2084`)
+> **Ported to C:** [`l2070`](../player_explosion.c#L118) in `player_explosion.c` (ASM: `2070-2084`)
 
 ```asm
                        .ORG $2070
@@ -6310,7 +6310,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l20b0_player_ship_particles_explosion`](../player_explosion.c#L74) in `player_explosion.c` (ASM: `20B0-20E2`)
+> **Ported to C:** [`l20b0_player_ship_particles_explosion`](../player_explosion.c#L76) in `player_explosion.c` (ASM: `20B0-20E2`)
 
 ```asm
                        .ORG $20B0
@@ -6380,7 +6380,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l20e8`](../player_explosion.c#L30) in `player_explosion.c` (ASM: `20E8-210D`)
+> **Ported to C:** [`l20e8`](../player_explosion.c#L32) in `player_explosion.c` (ASM: `20E8-210D`)
 
 ```asm
                        .ORG $20E8
@@ -6430,7 +6430,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l211c`](../player_explosion.c#L15) in `player_explosion.c` (ASM: `211C-212C`)
+> **Ported to C:** [`l211c`](../player_explosion.c#L16) in `player_explosion.c` (ASM: `211C-212C`)
 
 ```asm
                        .ORG $211C
@@ -6455,7 +6455,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2130`](../alien_wave.c#L204) in `alien_wave.c` (ASM: `2130-2145`)
+> **Ported to C:** [`l2130`](../alien_wave.c#L205) in `alien_wave.c` (ASM: `2130-2145`)
 
 ```asm
                        .ORG $2130
@@ -6486,7 +6486,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2146`](../alien_wave.c#L192) in `alien_wave.c` (ASM: `2146-214F`)
+> **Ported to C:** [`l2146`](../alien_wave.c#L193) in `alien_wave.c` (ASM: `2146-214F`)
 
 ```asm
                        .ORG $2146
@@ -6505,7 +6505,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2150`](../alien_wave.c#L133) in `alien_wave.c` (ASM: `2150-215F`)
+> **Ported to C:** [`l2150`](../alien_wave.c#L134) in `alien_wave.c` (ASM: `2150-215F`)
 
 ```asm
                        .ORG $2150
@@ -6523,7 +6523,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2160`](../alien_wave.c#L142) in `alien_wave.c` (ASM: `2160-216F`)
+> **Ported to C:** [`l2160`](../alien_wave.c#L143) in `alien_wave.c` (ASM: `2160-216F`)
 
 ```asm
                        .ORG $2160
@@ -6542,7 +6542,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2170`](../alien_wave.c#L152) in `alien_wave.c` (ASM: `2170-217F`)
+> **Ported to C:** [`l2170`](../alien_wave.c#L153) in `alien_wave.c` (ASM: `2170-217F`)
 
 ```asm
                        .ORG $2170
@@ -6559,7 +6559,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2180`](../alien_wave.c#L160) in `alien_wave.c` (ASM: `2180-218F`)
+> **Ported to C:** [`l2180`](../alien_wave.c#L161) in `alien_wave.c` (ASM: `2180-218F`)
 
 ```asm
                        .ORG $2180
@@ -6578,7 +6578,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2190`](../alien_wave.c#L170) in `alien_wave.c` (ASM: `2190-21A4`)
+> **Ported to C:** [`l2190`](../alien_wave.c#L171) in `alien_wave.c` (ASM: `2190-21A4`)
 
 ```asm
                        .ORG $2190
@@ -6596,7 +6596,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l21a5`](../alien_wave.c#L181) in `alien_wave.c` (ASM: `21A5-21B9`)
+> **Ported to C:** [`l21a5`](../alien_wave.c#L182) in `alien_wave.c` (ASM: `21A5-21B9`)
 
 ```asm
                        .ORG $21A5
@@ -6614,7 +6614,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l21ba`](../alien_wave.c#L103) in `alien_wave.c` (ASM: `21BA-21CF`)
+> **Ported to C:** [`l21ba`](../alien_wave.c#L104) in `alien_wave.c` (ASM: `21BA-21CF`)
 
 ```asm
                        .ORG $21BA
@@ -6686,7 +6686,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l2204`](../alien_wave.c#L79) in `alien_wave.c` (ASM: `2204-222B`)
+> **Ported to C:** [`l2204`](../alien_wave.c#L80) in `alien_wave.c` (ASM: `2204-222B`)
 
 ```asm
                        .ORG $2204
@@ -7452,7 +7452,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l24f2`](../misc_logic.c#L53) in `misc_logic.c` (ASM: `24F2-251C`)
+> **Ported to C:** [`l24f2`](../misc_logic.c#L55) in `misc_logic.c` (ASM: `24F2-251C`)
 
 ```asm
                        .ORG $24F2
@@ -8162,7 +8162,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l27bd`](../sound_dispatcher.c#L34) in `sound_dispatcher.c` (ASM: `27BD-27EE`)
+> **Ported to C:** [`l27bd`](../sound_dispatcher.c#L35) in `sound_dispatcher.c` (ASM: `27BD-27EE`)
 
 ```asm
                        .ORG $27BD
@@ -8334,7 +8334,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 18
 ```
 
-### T2C00:
+### T2C00: [Pattern 19 SVG](../animations/cluster_b/pattern_19.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $06, $06, $1E
@@ -8344,7 +8344,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 19
 ```
 
-### T2C34:
+### T2C34: [Pattern 20 SVG](../animations/cluster_b/pattern_20.svg)
 
 ```asm
                        .DB $05, $05, $1C, $04, $1D, $0A, $0A, $0A, $0A, $0A, $0A, $06
@@ -8356,7 +8356,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 20 (phase 3)
 ```
 
-### T2C90:
+### T2C90: [Pattern 21 SVG](../animations/cluster_b/pattern_21.svg)
 
 ```asm
                        .DB $1C, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $04, $1D
@@ -8366,7 +8366,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 21 (phase 3)
 ```
 
-### T2CC8:
+### T2CC8: [Pattern 22 SVG](../animations/cluster_b/pattern_22.svg)
 
 ```asm
                        .DB $05, $05, $05, $05, $1C, $04, $04, $04
@@ -8376,7 +8376,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 22
 ```
 
-### T2D00:
+### T2D00: [Pattern 23 SVG](../animations/cluster_b/pattern_23.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $06, $1E, $03, $03, $03, $03, $03, $03, $03, $03
@@ -8387,7 +8387,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 23 (phase 3)
 ```
 
-### T2D44:
+### T2D44: [Pattern 24 SVG](../animations/cluster_b/pattern_24.svg)
 
 ```asm
                        .DB $05, $05, $05, $18, $03, $03, $03, $03, $03, $03, $03, $03
@@ -8398,7 +8398,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 24 (phase 3)
 ```
 
-### T2D88:
+### T2D88: [Pattern 25 SVG](../animations/cluster_b/pattern_25.svg)
 
 ```asm
                        .DB $1C, $04, $04, $1D, $06, $06, $09, $0A
@@ -8408,7 +8408,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern 25 (phase 3)
 ```
 
-### T2DC0:
+### T2DC0: [Pattern 26 SVG](../animations/cluster_b/pattern_26.svg)
 
 ```asm
                        .DB $14, $03, $03, $19, $06, $0A, $0A, $09, $09, $09, $0A, $12, $13, $10, $11, $12
@@ -8422,7 +8422,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; and the 'phase' is increased by 1.
 ```
 
-### T2E00:
+### T2E00: [Pattern 27 SVG](../animations/cluster_b/pattern_27.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $02, $02, $02, $02, $0B, $0C, $0D, $0E, $01, $01, $14, $15
@@ -8430,7 +8430,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 27 (phase 3)
 ```
 
-### T2E20:
+### T2E20: [Pattern 28 SVG](../animations/cluster_b/pattern_28.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $0D, $0E, $02, $02, $02, $02, $02, $02, $02, $02
@@ -8442,7 +8442,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; and the 'phase' is increased by 1.
 ```
 
-### T2E40:
+### T2E40: [Pattern 29 SVG](../animations/cluster_b/pattern_29.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $01, $01, $01, $18, $03, $19, $06, $06, $1A, $04, $1B, $05
@@ -8451,7 +8451,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 29 (phase 3)
 ```
 
-### T2E6C:
+### T2E6C: [Pattern 30 SVG](../animations/cluster_b/pattern_30.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E
@@ -8460,7 +8460,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 30
 ```
 
-### T2E90:
+### T2E90: [Pattern 31 SVG](../animations/cluster_b/pattern_31.svg)
 
 ```asm
                        .DB $14, $15, $16, $17, $14, $15, $16, $17, $14, $03, $03, $03, $03, $03, $03, $03
@@ -8470,7 +8470,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 31
 ```
 
-### T2EC4:
+### T2EC4: [Pattern 32 SVG](../animations/cluster_b/pattern_32.svg)
 
 ```asm
                        .DB $10, $11, $12, $13, $10, $11, $12, $13, $10, $04, $04, $04
@@ -8480,7 +8480,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 32
 ```
 
-### T2F00:
+### T2F00: [Pattern 33 SVG](../animations/cluster_b/pattern_33.svg)
 
 ```asm
                        .DB $05, $1C, $04, $1D, $06, $06, $06, $06, $06, $09, $09, $09, $0A, $0A, $0A, $09
@@ -8490,7 +8490,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 33
 ```
 
-### T2F34:
+### T2F34: [Pattern 34 SVG](../animations/cluster_b/pattern_34.svg)
 
 ```asm
                        .DB $05, $18, $03, $19, $06, $06, $06, $06, $0A, $0A, $09, $09
@@ -8500,7 +8500,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 34
 ```
 
-### T2F64:
+### T2F64: [Pattern 35 SVG](../animations/cluster_b/pattern_35.svg)
 
 ```asm
                        .DB $0B, $0C, $0D, $0E, $0B, $0C, $1E, $03, $19, $06, $1E, $03
@@ -8510,7 +8510,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pattern, 35
 ```
 
-### T2FA0:
+### T2FA0: [Pattern 36 SVG](../animations/cluster_b/pattern_36.svg)
 
 ```asm
                        .DB $05, $05, $18, $03, $03, $03, $03, $03, $03, $03, $03, $19, $06, $06, $06, $06
@@ -11080,7 +11080,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3a62`](../sound_dispatcher.c#L119) in `sound_dispatcher.c` (ASM: `3A62-3A77`)
+> **Ported to C:** [`l3a62`](../sound_dispatcher.c#L120) in `sound_dispatcher.c` (ASM: `3A62-3A77`)
 
 ```asm
                        .ORG $3A62
@@ -11199,7 +11199,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3ad0`](../sound_dispatcher.c#L185) in `sound_dispatcher.c` (ASM: `3AD0-3AF6`)
+> **Ported to C:** [`l3ad0`](../sound_dispatcher.c#L186) in `sound_dispatcher.c` (ASM: `3AD0-3AF6`)
 
 ```asm
                        .ORG $3AD0
@@ -11244,7 +11244,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3af8`](../sound_dispatcher.c#L174) in `sound_dispatcher.c` (ASM: `3AF8-3B00`)
+> **Ported to C:** [`l3af8`](../sound_dispatcher.c#L175) in `sound_dispatcher.c` (ASM: `3AF8-3B00`)
 
 ```asm
                        .ORG $3AF8
@@ -11264,7 +11264,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3b02`](../sound_dispatcher.c#L205) in `sound_dispatcher.c` (ASM: `3B02-3B19`)
+> **Ported to C:** [`l3b02`](../sound_dispatcher.c#L206) in `sound_dispatcher.c` (ASM: `3B02-3B19`)
 
 ```asm
                        .ORG $3B02
@@ -11296,7 +11296,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3b1b`](../sound_dispatcher.c#L223) in `sound_dispatcher.c` (ASM: `3B1B-3B27`)
+> **Ported to C:** [`l3b1b`](../sound_dispatcher.c#L224) in `sound_dispatcher.c` (ASM: `3B1B-3B27`)
 
 ```asm
                        .ORG $3B1B
@@ -11332,7 +11332,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3b33`](../sound_dispatcher.c#L234) in `sound_dispatcher.c` (ASM: `3B33-3B41`)
+> **Ported to C:** [`l3b33`](../sound_dispatcher.c#L235) in `sound_dispatcher.c` (ASM: `3B33-3B41`)
 
 ```asm
                        .ORG $3B33
@@ -11357,7 +11357,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l3b43`](../sound_dispatcher.c#L246) in `sound_dispatcher.c` (ASM: `3B43-3B5B`)
+> **Ported to C:** [`l3b43`](../sound_dispatcher.c#L247) in `sound_dispatcher.c` (ASM: `3B43-3B5B`)
 
 ```asm
                        .ORG $3B43
