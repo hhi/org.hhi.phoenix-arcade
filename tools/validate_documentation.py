@@ -22,7 +22,7 @@ MARKDOWN_LINK_RE = re.compile(r"!?\[([^\]]*)\]\(([^)\s]+)(?:\s+[^)]*)?\)")
 SVG_COUNT_RE = re.compile(r"\b(\d+)\s+(?:individuele\s+)?SVG-(?:animaties|bestanden|patroonbestanden)\b", re.I)
 FUNCTION_RE = re.compile(r"\b([A-Za-z_]\w*)\s*\(")
 SVG_PATTERN_RE = re.compile(
-    r"Cluster ([AB]) Patroon (\d+) \(ROM \$([0-9A-F]+), (\d+) Stappen\)"
+    r"Cluster ([AB]) Pattern (\d+) \(ROM \$([0-9A-F]+), (\d+) Steps\)"
 )
 DOC_PATTERN_RE = re.compile(
     r"Patroon (\d+) \(ROM \$([0-9A-F]+), (\d+)b\s+—"

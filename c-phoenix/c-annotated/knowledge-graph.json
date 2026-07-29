@@ -7474,7 +7474,7 @@
       "name": "apply_input_script",
       "source": {
         "path": "platform_sdl.c",
-        "line": 334
+        "line": 354
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7495,7 +7495,7 @@
       "name": "bank_swap_to",
       "source": {
         "path": "platform_sdl.c",
-        "line": 61
+        "line": 66
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7516,7 +7516,7 @@
       "name": "copy_memory_bank",
       "source": {
         "path": "platform_sdl.c",
-        "line": 90
+        "line": 95
       },
       "asm_ranges": [
         {
@@ -7542,7 +7542,7 @@
       "name": "game_thread_func",
       "source": {
         "path": "platform_sdl.c",
-        "line": 174
+        "line": 179
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7563,7 +7563,7 @@
       "name": "get_phoenix_color",
       "source": {
         "path": "platform_sdl.c",
-        "line": 195
+        "line": 215
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7584,7 +7584,7 @@
       "name": "hw_is_vblank",
       "source": {
         "path": "platform_sdl.c",
-        "line": 48
+        "line": 53
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7605,7 +7605,7 @@
       "name": "hw_read_dsw",
       "source": {
         "path": "platform_sdl.c",
-        "line": 44
+        "line": 49
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7626,7 +7626,7 @@
       "name": "hw_read_inputs",
       "source": {
         "path": "platform_sdl.c",
-        "line": 40
+        "line": 45
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7647,7 +7647,7 @@
       "name": "hw_toggle_palette_bank",
       "source": {
         "path": "platform_sdl.c",
-        "line": 74
+        "line": 79
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7668,7 +7668,7 @@
       "name": "hw_write_scroll_register",
       "source": {
         "path": "platform_sdl.c",
-        "line": 138
+        "line": 143
       },
       "asm_ranges": [
         {
@@ -7694,7 +7694,7 @@
       "name": "hw_write_sound_a",
       "source": {
         "path": "platform_sdl.c",
-        "line": 142
+        "line": 147
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7715,7 +7715,7 @@
       "name": "hw_write_sound_b",
       "source": {
         "path": "platform_sdl.c",
-        "line": 146
+        "line": 151
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7736,7 +7736,28 @@
       "name": "hw_write_video_register",
       "source": {
         "path": "platform_sdl.c",
-        "line": 69
+        "line": 74
+      },
+      "asm_ranges": [],
+      "status": "confirmed",
+      "evidence": {
+        "documentation": [
+          "c-annotated/game-state-machine.md",
+          "c-annotated/hw-video-audio.md",
+          "c-annotated/platform-sdl.md",
+          "c-annotated/player-logic.md",
+          "c-annotated/sound.md",
+          "c-annotated/state-init.md"
+        ]
+      }
+    },
+    {
+      "id": "c:platform_sdl:initial_alien_layout_level",
+      "kind": "c-function",
+      "name": "initial_alien_layout_level",
+      "source": {
+        "path": "platform_sdl.c",
+        "line": 454
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7757,7 +7778,7 @@
       "name": "input_script_button_mask",
       "source": {
         "path": "platform_sdl.c",
-        "line": 279
+        "line": 299
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7778,7 +7799,7 @@
       "name": "input_script_button_name",
       "source": {
         "path": "platform_sdl.c",
-        "line": 361
+        "line": 381
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7799,7 +7820,7 @@
       "name": "load_input_script",
       "source": {
         "path": "platform_sdl.c",
-        "line": 290
+        "line": 310
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7820,7 +7841,7 @@
       "name": "main",
       "source": {
         "path": "platform_sdl.c",
-        "line": 434
+        "line": 475
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7841,7 +7862,7 @@
       "name": "platform_audio_frame_hook",
       "source": {
         "path": "platform_sdl.c",
-        "line": 159
+        "line": 164
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7862,7 +7883,7 @@
       "name": "platform_ram_dump_hook",
       "source": {
         "path": "platform_sdl.c",
-        "line": 411
+        "line": 431
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7883,7 +7904,7 @@
       "name": "record_input_event",
       "source": {
         "path": "platform_sdl.c",
-        "line": 391
+        "line": 411
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7904,7 +7925,7 @@
       "name": "start_input_recording",
       "source": {
         "path": "platform_sdl.c",
-        "line": 374
+        "line": 394
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7925,7 +7946,7 @@
       "name": "stop_input_recording",
       "source": {
         "path": "platform_sdl.c",
-        "line": 399
+        "line": 419
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7946,7 +7967,7 @@
       "name": "write_screenshot",
       "source": {
         "path": "platform_sdl.c",
-        "line": 229
+        "line": 249
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -17556,6 +17577,16 @@
     {
       "kind": "calls",
       "from": "c:platform_sdl:game_thread_func",
+      "to": "c:platform_sdl:platform_ram_dump_hook"
+    },
+    {
+      "kind": "calls",
+      "from": "c:platform_sdl:game_thread_func",
+      "to": "c:state_init:state_2_init_game_and_level_data"
+    },
+    {
+      "kind": "calls",
+      "from": "c:platform_sdl:game_thread_func",
       "to": "c:utilities:phoenix_init"
     },
     {
@@ -17602,6 +17633,11 @@
       "kind": "calls",
       "from": "c:platform_sdl:main",
       "to": "c:platform_sdl:hw_read_inputs"
+    },
+    {
+      "kind": "calls",
+      "from": "c:platform_sdl:main",
+      "to": "c:platform_sdl:initial_alien_layout_level"
     },
     {
       "kind": "calls",
@@ -18837,6 +18873,11 @@
       "kind": "handles-state",
       "from": "c:mothership_impl:l2351_mothership_animation",
       "to": "game-state:game_state_mothership_exploding"
+    },
+    {
+      "kind": "handles-state",
+      "from": "c:platform_sdl:game_thread_func",
+      "to": "game-state:game_state_init_round"
     },
     {
       "kind": "handles-state",
@@ -21567,6 +21608,11 @@
       "kind": "uses-table",
       "from": "c:mothership_impl:l2351_mothership_animation",
       "to": "table:phoenix_mothership_explosion_pointers"
+    },
+    {
+      "kind": "uses-table",
+      "from": "c:platform_sdl:initial_alien_layout_level",
+      "to": "table:phoenix_alien_position_pointer_table"
     },
     {
       "kind": "uses-table",

@@ -1,5 +1,7 @@
 # Phoenix Knowledge Graph
 
+![Phoenix Kennisgraaf Architectuur](kennisgraaf_meta_architectuur.svg)
+
 `knowledge-graph.json` is de machineleesbare kern van deze documentatieset. Hij bevat zeven soorten nodes:
 
 - `c-function` — een functie die werkelijk in de C-port staat;
