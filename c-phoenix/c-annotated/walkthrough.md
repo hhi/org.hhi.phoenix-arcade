@@ -1,0 +1,64 @@
+# Walkthrough - Knowledge Graph C & Header Annotated Documentatie Complete Oplevering
+
+Er is een volledige uitbreiding van de Knowledge Graph documentatie gerealiseerd met in totaal **59 geannoteerde markdown-documenten** onder `c-phoenix/c-annotated/` en `c-phoenix/animations/` (32 `.c` bronbestanden + 24 `.h` headerbestanden + 3 analytische gidsen).
+
+Elk C- en H-bestand in `c-phoenix/` is voorzien van een diepgaande functionele documentatie in het Nederlands, met Z80 ROM-adresbereiken, RAM-datastructuren, I/O-poorten, voorgeschreven vlieg- en trajekt-tabellen ([`animation-trajectory.md`](../animations/animation-trajectory.md)), gedetailleerde stap-voor-stap scherm-grid coördinatentabellen ([`animation-trajectory-detailed.md`](../animations/animation-trajectory-detailed.md)), en een **Knowledge Graph** van inkomende backlinks (`Aangeroepen door`) en uitgaande links (`Aanroepen`) met relatieve paden.
+
+---
+
+## Overzicht van Gegenereerde Documenten (59 Bestanden)
+
+### 🎨 Visuele Animaties & Vliegpatronen
+- [`../animations/animation-trajectory.md`](../animations/animation-trajectory.md): Diepgaande analyse van alle voorgeschreven vectoriële vliegpatronen, richtingsvectoren, Z80 ROM-clusters en AI-scripts.
+- [`../animations/animation-trajectory-detailed.md`](../animations/animation-trajectory-detailed.md): Gedetailleerde stap-voor-stap coördinatentabellen op het scherm-grid per individueel patroon (stap #, vector index, dX, dY, cumulatief X/Y).
+- [`../animations/README.md`](../animations/README.md): Visuele gids en index van alle 68 losse geanimeerde SVG-bestanden (36 alien vector-patronen, 16 vogel AI scripts, 16 vogel duik-spawns, 6 vogel-fases en moederschip-daling).
+
+### 1. Geheugenkaart, Hardware & Core Headers (5 header-documenten)
+- [`phoenix-state-h.md`](phoenix-state-h.md): Arcade RAM Geheugenkaart (`PhoenixState` struct, $4000–$4BFF), alle 832-byte schermbuffers, spelerposities, kogelslots, score-BCD adressen en status-vlaggen.
+- [`phoenix-hw-h.md`](phoenix-hw-h.md): Hardware I/O poorten (`$5000` Video/Bank, `$5800` Scroll, `$6000`/`$6800` Sound A/B, `$7000` Inputs, `$7800` DSW0).
+- [`game-constants-h.md`](game-constants-h.md): `PhoenixGameState` en `LEVEL_PATTERN_*` enums, knoppen-maskers en schild-constanten.
+- [`phoenix-tables-h.md`](phoenix-tables-h.md): Declaraties van ROM-opzoektabellen.
+- [`z80-core-h.md`](z80-core-h.md): Z80 CPU bitrotatie en hulp-macros (`RLCA`, `RRCA`, `DAA`).
+
+### 2. Gameplay & Entiteiten (8 C-bestanden + 5 H-bestanden)
+- [`alien-logic.md`](alien-logic.md) / [`alien-logic-h.md`](alien-logic-h.md): 26 functies (alien-bewegingen, animatie-timers, sprite-shaping).
+- [`alien-wave.md`](alien-wave.md): Hoofdlus voor alien-waves (level 1, 3 & B), 4-frame interleaving, sterren-scrolling.
+- [`bird-logic.md`](bird-logic.md) / [`bird-logic-h.md`](bird-logic-h.md): Hoofdlus voor vogel-waves (levels 5 & 7), vluchtpad-berekeningen.
+- [`bird-wave-behavior.md`](bird-wave-behavior.md): Vogel-toestandsmachine, ei-uitbroeden, klim-/daalfysica, duikvluchten.
+- [`birds-vertical-movement.md`](birds-vertical-movement.md): Verticale scrolling-registers (`B4BD2`), afdaalsnelheden, zwerm-scans.
+- [`mothership-impl.md`](mothership-impl.md): Moederschip tegel-inslag detectie, schild-doorboring en kern-explosie activatie.
+- [`mothership-logic.md`](mothership-logic.md) / [`mothership-logic-h.md`](mothership-logic-h.md): Wis-logica en bonusscore-berekening bij vernietiging van het moederschip.
+- [`player-logic.md`](player-logic.md) / [`player-logic-h.md`](player-logic-h.md): Spelerschip besturing, schild-activatie (5 seconden krachtveld), kogel-spawning.
+- [`player-explosion.md`](player-explosion.md): Fragment-rendering, deeltjes-spatrasters en scroll-snelheid klemmen.
+
+### 3. Botsing, Wapen & Scoring (3 C-bestanden + 1 H-bestand)
+- [`collision-detection.md`](collision-detection.md): VRAM tegel- & pixelmasker botsingen met vogels/eieren en AMSTAR anti-piracy check.
+- [`weapon-collision.md`](weapon-collision.md) / [`weapon-collision-h.md`](weapon-collision-h.md): Spelerkogels vs aliens (formatie vensters), vijandelijke bommen en speler/krachtveld botsingen.
+- [`scoring.md`](scoring.md): BCD-score optelling, High Score vergelijkingen, bonusleven-drempels en per-frame audio service.
+
+### 4. Game State Machine & Modes (7 C-bestanden + 6 H-bestanden)
+- [`game-state-machine.md`](game-state-machine.md) / [`game-state-machine-h.md`](game-state-machine-h.md): Centrale toestandsmachine (States 0 t/m 7), multiplayer beurtwissel (P1/P2) en knipperende score.
+- [`attract-mode.md`](attract-mode.md) / [`attract-mode-h.md`](attract-mode-h.md): Splash-scherm sequencer, munten/credits, startknoppen, automatische demo en intro-vogel animatie.
+- [`state-init.md`](state-init.md) / [`state-init-h.md`](state-init-h.md): Level- & game-initialisatie (State 2), alien-geheugen opschoning en DIP-switches voor levens.
+- [`state-play.md`](state-play.md) / [`state-play-h.md`](state-play-h.md): Level dispatcher voor 12 levelfases (aliens fade-in, spiraalfill, vogels, moederschip).
+- [`state-endings.md`](state-endings.md) / [`state-endings-h.md`](state-endings-h.md): Spelersexplosie (State 4), Game Over (State 5), Moederschipexplosie (State 6) en Scoreweergave (State 7).
+- [`init-global-level-data.md`](init-global-level-data.md): Kopieert 12 configuratiebytes per levelpatroon naar RAM.
+- [`misc-logic.md`](misc-logic.md): Achtergrond-sterrenstelsels, willekeurige bommen op speler en vogel-RAM structuur initialisatie.
+
+### 5. Hardware, Rendering & Audio (7 C-bestanden + 7 H-bestanden)
+- [`hw-video-audio.md`](hw-video-audio.md) / [`hw-video-audio-h.md`](hw-video-audio-h.md): Main loop entry point (`RESET`), 60Hz VBlank synchronisatie, RAM- & VRAM-opschoning.
+- [`sprite-rendering.md`](sprite-rendering.md) / [`sprite-rendering-h.md`](sprite-rendering-h.md): Update-engine voor 1x1, 2x1, 1x2 en 2x2 tegelmatrix sprites (Bit4 & Bit3 controllers).
+- [`sound.md`](sound.md) / [`sound-h.md`](sound-h.md): Audio mixer & 44.1kHz frame renderer voor TMS, discrete effecten en ruis.
+- [`sound-discrete.md`](sound-discrete.md) / [`sound-discrete-h.md`](sound-discrete-h.md): Emulatie van 555-multivibratoren, RC-circuits, C24/C25 ruisenveloppen en 18-bit LFSR.
+- [`sound-dispatcher.md`](sound-dispatcher.md): Z80 per-frame sound dispatcher (`$3A10`), sirenes, intro-melodie (*Romance de Amor*).
+- [`tms36xx.md`](tms36xx.md) / [`tms36xx-h.md`](tms36xx-h.md): Texas Instruments TMS3615 / MM6221AA orgelsynthesizer chip emulatie.
+- [`mame-lofi-resampler.md`](mame-lofi-resampler.md) / [`mame-lofi-resampler-h.md`](mame-lofi-resampler-h.md): 4-punts kubische interpolatie (cubic resampler) naar 44.1kHz.
+
+### 6. Tabellen, Utilities, Platform & Systeemondersteuning (5 C-bestanden + 5 H-bestanden)
+- [`phoenix-tables.md`](phoenix-tables.md): Geëxtraheerde Arcade ROM opzoektabellen en vectoriële vliegpatronen.
+- [`utilities.md`](utilities.md) / [`utilities-h.md`](utilities-h.md): RAM/VRAM abstracties (`mem_read`/`mem_write`), BCD-print routines en 90° geroteerde VRAM-functies (`right_one_column`, `left_one_column`).
+- [`platform-sdl.md`](platform-sdl.md): SDL2 vensterbeheer, input-polling, 60Hz vblank semaforen en VRAM-bankswapping.
+- [`coverage.md`](coverage.md) / [`coverage-h.md`](coverage-h.md): Runtime-instrumentatie en JSON-statistieken export voor lockstep-testen.
+- [`rom-compat-stubs.md`](rom-compat-stubs.md): ROM-compatibiliteit stubs en anti-piraterij controle op "AMSTAR" copyrighttekst.
+- [`runtime-call-trace.md`](runtime-call-trace.md): Binaire profiling hooks (`__cyg_profile_func_enter`) meegeschreven.
+- [`phoenix-render-assets-h.md`](phoenix-render-assets-h.md): Tegel-assets en kleurenpaletten.

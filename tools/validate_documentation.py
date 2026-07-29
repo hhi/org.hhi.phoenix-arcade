@@ -105,15 +105,15 @@ def validate_c_function_links(root: Path, documents: list[Path]) -> list[str]:
 
 def validate_svg_count(root: Path) -> list[str]:
     animation_root = root / "animations"
-    readme = animation_root / "nl" / "README.md"
+    readme = animation_root / "README.md"
     if not readme.is_file():
-        return ["animations/nl/README.md: missing"]
+        return ["animations/README.md: missing"]
     actual = len(list(animation_root.rglob("*.svg")))
     stated = [int(value) for value in SVG_COUNT_RE.findall(readme.read_text(encoding="utf-8"))]
     if not stated:
-        return ["animations/nl/README.md: no SVG asset count found"]
+        return ["animations/README.md: no SVG asset count found"]
     return [
-        f"animations/nl/README.md: states {value} SVG assets, found {actual}"
+        f"animations/README.md: states {value} SVG assets, found {actual}"
         for value in stated
         if value != actual
     ]
@@ -121,9 +121,9 @@ def validate_svg_count(root: Path) -> list[str]:
 
 def validate_pattern_metadata(root: Path) -> list[str]:
     animations = root / "animations"
-    trajectory = animations / "nl" / "animation-trajectory.md"
+    trajectory = animations / "animation-trajectory.md"
     if not trajectory.is_file():
-        return ["animations/nl/animation-trajectory.md: missing"]
+        return ["animations/animation-trajectory.md: missing"]
 
     documented = {
         int(number): (address, int(steps))
@@ -142,7 +142,7 @@ def validate_pattern_metadata(root: Path) -> list[str]:
     for number, (address, steps) in sorted(documented.items()):
         actual = svg_patterns.get(number)
         if actual is None:
-            problems.append(f"animations/nl/animation-trajectory.md: pattern {number:02d} has no SVG metadata")
+            problems.append(f"animation-trajectory.md: pattern {number:02d} has no SVG metadata")
         elif actual[:2] != (address, steps):
             problems.append(
                 f"pattern {number:02d}: Markdown says ${address}, {steps} steps; "
@@ -150,7 +150,7 @@ def validate_pattern_metadata(root: Path) -> list[str]:
             )
     for number, (_, _, svg) in sorted(svg_patterns.items()):
         if number not in documented:
-            problems.append(f"{svg.relative_to(root)}: no matching pattern entry in animations/nl/animation-trajectory.md")
+            problems.append(f"{svg.relative_to(root)}: no matching pattern entry in animation-trajectory.md")
     return problems
 
 
@@ -159,7 +159,7 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=Path("c-phoenix"), help="Phoenix source root")
     args = parser.parse_args()
     root = args.root.resolve()
-    documents = sorted((root / "c-annotated").rglob("*.md")) + sorted((root / "animations").rglob("*.md"))
+    documents = sorted((root / "c-annotated").glob("*.md")) + sorted((root / "animations").glob("*.md"))
     if not documents:
         raise SystemExit(f"No documentation found below {root}")
 

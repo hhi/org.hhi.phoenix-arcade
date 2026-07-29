@@ -25,10 +25,6 @@ next to the files it describes:
   play" workflow.
 - [context/traces/README.md](context/traces/README.md) - curated trace cases
   and policy for what should or should not be kept in Git.
-- [c-annotated/README.md](c-annotated/README.md) - bilingual, source-linked
-  knowledge base for C, ASM, RAM, ROM patterns, tables, states, and claims.
-- [animations/README.md](animations/README.md) - bilingual visual archive for
-  bird animation phases and ROM-driven movement trajectories.
 
 Build
 -----

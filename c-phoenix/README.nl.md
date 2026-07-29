@@ -27,11 +27,6 @@ de bijbehorende bestanden:
   spelen"-workflow.
 - [context/traces/README.nl.md](context/traces/README.nl.md) - gecureerde
   tracecases en Git-beleid.
-- [c-annotated/README.md](c-annotated/README.md) - tweetalige,
-  brongekoppelde knowledge base voor C, ASM, RAM, ROM-patronen, tabellen,
-  states en claims.
-- [animations/README.md](animations/README.md) - tweetalig visueel archief
-  voor vogelfases en ROM-gedreven bewegingstrajecten.
 
 Bouwen
 ------

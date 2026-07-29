@@ -16,18 +16,6 @@ The demo guide is the repository's recommended starting point for the
 end-to-end Phoenix experience. Return here for project-level setup, ROM
 preparation, and maintenance commands.
 
-## Study the C Port
-
-The C port has a source-linked knowledge base and a visual movement archive.
-They connect C functions, annotated Z80 routines, RAM slots, ROM patterns,
-states, tables, claims, and SVG trajectory views.
-
-- [C-Phoenix knowledge base](c-phoenix/c-annotated/README.md) — choose Dutch
-  or English; includes the machine-readable graph and its validators.
-- [Animation and trajectory archive](c-phoenix/animations/README.md) — choose
-  Dutch or English; covers bird animation phases and ROM-driven movement
-  patterns.
-
 ## Choose Your Starting Point
 
 | If you want to… | Start here |
@@ -38,8 +26,6 @@ states, tables, claims, and SVG trajectory views.
 | Play the native, high-resolution C2 presentation | `make c2-run` |
 | Run the classic C port | `cd c-phoenix && make run` |
 | Run the Java emulator | `cd jphoenix-emulator-port && make run` |
-| Study the C-port knowledge base | [Open C-annotated documentation](c-phoenix/c-annotated/README.md) |
-| Explore ROM movement patterns | [Open animations and trajectories](c-phoenix/animations/README.md) |
 | Generate and view the interactive ASM documentation | `make c-asm-view` |
 | Generate and view the C-Phoenix comparison tracer | `make c-tracer-view` |
 | Generate and view the JPhoenix demo tracer | `make j-tracer-view` |

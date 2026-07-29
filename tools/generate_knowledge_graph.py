@@ -29,7 +29,7 @@ FUNCTION_RE = re.compile(
 ASM_RE = re.compile(r"\[ASM:\s*([0-9A-Fa-f]{4})(?:-([0-9A-Fa-f]{4}))?\]")
 CALL_RE = re.compile(r"\b([A-Za-z_]\w*)\s*\(")
 RAM_RE = re.compile(r"(?:\$|0x)([4][0-9A-Fa-f]{3})\b")
-MARKDOWN_C_LINK_RE = re.compile(r"\]\((?:\.\./)+([^/)]+\.c)(?:#[^)]+)?\)")
+MARKDOWN_C_LINK_RE = re.compile(r"\]\(\.\./([^/)]+\.c)(?:#[^)]+)?\)")
 SVG_PATTERN_RE = re.compile(
     r"Cluster ([AB]) Patroon (\d+) \(ROM \$([0-9A-F]+), (\d+) Stappen\)"
 )
@@ -95,7 +95,7 @@ def document_evidence(root: Path) -> tuple[dict[str, list[str]], dict[str, list[
     """Map C files and RAM slots to the documentation that mentions them."""
     c_docs: dict[str, list[str]] = defaultdict(list)
     ram_docs: dict[str, list[str]] = defaultdict(list)
-    for document in sorted((root / "c-annotated").rglob("*.md")) + sorted((root / "animations").rglob("*.md")):
+    for document in sorted((root / "c-annotated").glob("*.md")) + sorted((root / "animations").glob("*.md")):
         relative = document.relative_to(root).as_posix()
         text = document.read_text(encoding="utf-8")
         for source in MARKDOWN_C_LINK_RE.findall(text):
