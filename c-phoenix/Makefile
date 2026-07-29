@@ -80,7 +80,7 @@ TRACER_VIEW_PORT ?= 8766
 TRACE_VIEW_OUTPUT ?= $(VISUAL_TRACE_OUTPUT)
 TRACE_VIEW_DIR ?= $(dir $(TRACE_VIEW_OUTPUT))
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only wave-screenshots help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only knowledge-graph-visual wave-screenshots help
 
 all: $(TARGET) verify-rom-free
 
@@ -211,6 +211,7 @@ help:
 	@echo "  make interactive-asm  Regenerate interactive Phoenix ASM documentation"
 	@echo "  make interactive-asm-view Generate ASM documentation and serve it locally"
 	@echo "  make interactive-asm-view-only Serve existing ASM documentation locally"
+	@echo "  make knowledge-graph-visual Regenerate the knowledge graph architecture SVG"
 	@echo "  make docs             Regenerate mapping and graph documentation"
 	@echo "  make clean            Remove object files and $(TARGET)"
 	@echo "  make help             Show this help"
@@ -303,6 +304,9 @@ interactive-asm-view-only:
 wave-screenshots: $(TARGET)
 	@$(PYTHON) tools/capture_initial_alien_waves.py --binary $(TARGET)
 
+knowledge-graph-visual:
+	@$(PYTHON) tools/generate_knowledge_graph_visual.py
+
 docs:
 	@echo "Generating architecture mappings and graphs..."
 	@python3 tools/generate_mappings.py
@@ -317,4 +321,5 @@ docs:
 	@python3 tools/generate_execution_tree_callgraph.py
 	@python3 tools/generate_coverage_callgraph.py
 	@python3 tools/generate_stub_hunter_callgraph.py
+	@python3 tools/generate_knowledge_graph_visual.py
 	@echo "All documentation and graphs successfully generated in context/ !"

@@ -30,6 +30,7 @@ remain discoverable rather than being implicit scratch files.
 | Tool | Purpose | Result/location |
 | --- | --- | --- |
 | `generate_classic_render_assets.py` | Decodes validated graphics and colour PROMs for the classic SDL renderer. | Tracked `phoenix_render_assets.h`; build-time asset, not gameplay ROM access. |
+| `generate_knowledge_graph_visual.py` | Renders the knowledge-graph architecture overview from the current graph metadata. | Tracked `c-annotated/kennisgraaf_meta_architectuur.svg`; run `make knowledge-graph-visual`. |
 | `migrate_artifacts.py` | Normalizes links and locations in curated trace artifacts. | Updated files under `context/traces/`. |
 | `melody_dump.c` | Small C diagnostic for sound-table inspection. | Console diagnostic output; not part of normal builds. |
 
