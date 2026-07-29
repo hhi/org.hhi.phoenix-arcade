@@ -33,17 +33,18 @@ Elke actieve entiteit op het scherm gebruikt een specifieke geheugenstructuur in
 ### **Vector-transformatie & Indexering**
 Een RAM-pointer (bijv. op offset `$4B50`) leest per frame een stap-byte uit het ROM. Deze byte fungeert als index in de richtingstabel [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
 
-$$
-\operatorname{VectorAddress} = \mathtt{0x1700} + \left(\operatorname{StepByte} \mathbin{\&} \mathtt{0x1F}\right) \times 2
-$$
+```math
+\mathrm{VectorAddress} = \mathtt{0x1700} + (\mathtt{StepByte}\ \mathrm{AND}\ \mathtt{0x1F}) \times 2
+```
 
 De gelezen twee bytes leveren het paarsgewijze richtingsverschil $(\Delta X, \Delta Y)$ op:
-$$
-\begin{aligned}
-X_{\mathrm{nieuw}} &= X_{\mathrm{oud}} + \Delta X \\
-Y_{\mathrm{nieuw}} &= Y_{\mathrm{oud}} + \Delta Y
-\end{aligned}
-$$
+```math
+X_{\mathrm{nieuw}} = X_{\mathrm{oud}} + \Delta X
+```
+
+```math
+Y_{\mathrm{nieuw}} = Y_{\mathrm{oud}} + \Delta Y
+```
 
 ---
 
