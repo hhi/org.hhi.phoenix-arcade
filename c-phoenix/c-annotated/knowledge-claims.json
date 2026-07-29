@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "claims": [
+    {
+      "id": "claim:bird-process-loop",
+      "statement": "process_birds is the C-port entry point for the bird-wave update loop.",
+      "status": "confirmed",
+      "sources": ["bird_logic.c#L27-L67", "c-annotated/bird-logic.md#process_birds"],
+      "relates_to": ["c:bird_logic:process_birds", "asm:3400-3436", "asm:3438-344D"]
+    },
+    {
+      "id": "claim:bird-fade-in-phase-5",
+      "statement": "LEVEL_PATTERN_BIRDS_FADE_IN_5 dispatches the bird fade-in phase.",
+      "status": "confirmed",
+      "sources": ["game_constants.h#L26", "state_play.c#L247"],
+      "relates_to": ["game-state:level_pattern_birds_fade_in_5"]
+    },
+    {
+      "id": "claim:ram-4b70-bird-records",
+      "statement": "The bird routines iterate records from 0x4B70 through 0x4B8F in 8-byte steps.",
+      "status": "confirmed",
+      "sources": ["bird_logic.c#L81-L87", "bird_wave_behavior.c#L251-L255"],
+      "relates_to": ["ram:$4B70", "c:bird_logic:draw_first_4_bird_objects", "c:bird_wave_behavior:update_first_four_birds"]
+    },
+    {
+      "id": "claim:pattern-01-metadata",
+      "statement": "Cluster A pattern 01 starts at ROM $1020 and has 64 visualized steps.",
+      "status": "derived",
+      "sources": ["phoenix_tables.c#L73", "animations/cluster_a/pattern_01.svg"],
+      "relates_to": ["rom-pattern:01", "table:phoenix_alien_movement_cluster_a"]
+    },
+    {
+      "id": "claim:direction-vector-table",
+      "statement": "phoenix_alien_direction_vectors is the ROM direction-delta table at $1700–$173F.",
+      "status": "confirmed",
+      "sources": ["phoenix_tables.h#L157-L162", "phoenix_tables.c#L227-L231"],
+      "relates_to": ["table:phoenix_alien_direction_vectors"]
+    }
+  ]
+}

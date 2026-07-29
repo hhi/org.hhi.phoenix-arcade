@@ -1,0 +1,32 @@
+<svg width="380" height="180" viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="background:#050510; border-radius:8px;">
+  <style>
+    .ship-body { fill:#00FFCC; }
+    .ship-core { fill:#FF0055; }
+    .path-arrow { fill:none; stroke:#FF0055; stroke-width:2; stroke-dasharray:4 4; opacity: 0.5; }
+    .label { fill: #8888AA; font-family: monospace; font-size: 11px; }
+
+    @keyframes mothershipDescent {
+      0% { transform: translate(65px, -30px); }
+      70% { transform: translate(65px, 60px); }
+      85% { transform: translate(65px, 60px); }
+      100% { transform: translate(65px, -30px); }
+    }
+    .anim-mothership { animation: mothershipDescent 8s infinite ease-in-out; }
+  </style>
+
+  <text x="15" y="25" class="label">Moederschip Daal-Traject (ROM $1D00)</text>
+  
+  <!-- Descent Guide Line -->
+  <line x1="190" y1="10" x2="190" y2="150" class="path-arrow" />
+
+  <!-- Descending Mothership -->
+  <g class="anim-mothership">
+    <!-- Outer Hull -->
+    <rect x="0" y="0" width="250" height="16" class="ship-body" />
+    <rect x="25" y="16" width="200" height="16" class="ship-body" />
+    <!-- Shield Belt -->
+    <rect x="50" y="32" width="150" height="12" class="ship-body" />
+    <!-- Core Center -->
+    <rect x="105" y="44" width="40" height="16" class="ship-core" />
+  </g>
+</svg>

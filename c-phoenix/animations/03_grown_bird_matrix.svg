@@ -1,0 +1,29 @@
+<svg width="340" height="160" viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg" style="background:#050510; border-radius:8px;">
+  <style>
+    .large-wing { fill: #00FF66; }
+    .large-core { fill: #FFFF00; }
+    .label { fill: #8888AA; font-family: monospace; font-size: 11px; }
+
+    @keyframes grownGlide {
+      0%, 100% { transform: translate(95px, 45px) scale(1) rotate(0deg); }
+      25% { transform: translate(95px, 38px) scale(1.03) rotate(-2deg); }
+      75% { transform: translate(95px, 48px) scale(0.98) rotate(2deg); }
+    }
+    @keyframes coreGlow {
+      0%, 100% { fill: #FFFF00; }
+      50% { fill: #FFBB00; }
+    }
+    .anim-grown { animation: grownGlide 4.5s infinite ease-in-out; }
+    .anim-core { animation: coreGlow 2.5s infinite ease-in-out; }
+  </style>
+  <text x="15" y="25" class="label">Volgroeide Vogel (4x4 Matrix Spanwijdte)</text>
+  <g class="anim-grown">
+    <!-- Wingspan -->
+    <rect x="0" y="8" width="24" height="8" class="large-wing" />
+    <rect x="104" y="8" width="24" height="8" class="large-wing" />
+    <rect x="16" y="16" width="96" height="16" class="large-wing" />
+    <!-- Core -->
+    <rect x="48" y="32" width="32" height="24" class="large-core anim-core" />
+    <rect x="56" y="56" width="16" height="16" class="large-core anim-core" />
+  </g>
+</svg>

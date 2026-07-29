@@ -1,0 +1,49 @@
+<svg width="420" height="150" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg" style="background:#050510; border-radius:8px;">
+  <style>
+    .bird-body { fill: #FF0055; }
+    .bird-wing { fill: #FF5588; }
+    .label { fill: #8888AA; font-family: monospace; font-size: 11px; }
+
+    @keyframes smoothBobbing {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes smoothWingFlapA {
+      0%, 45% { opacity: 1; transform: scaleY(1); }
+      50%, 95% { opacity: 0; transform: scaleY(0.4); }
+      100% { opacity: 1; transform: scaleY(1); }
+    }
+    @keyframes smoothWingFlapB {
+      0%, 45% { opacity: 0; transform: scaleY(0.4); }
+      50%, 95% { opacity: 1; transform: scaleY(1); }
+      100% { opacity: 0; transform: scaleY(0.4); }
+    }
+
+    .group-a { animation: smoothBobbing 1.8s infinite ease-in-out; }
+    .group-b { animation: smoothBobbing 1.8s infinite ease-in-out; }
+    .frame-a { animation: smoothWingFlapA 1.8s infinite ease-in-out; transform-origin: center; }
+    .frame-b { animation: smoothWingFlapB 1.8s infinite ease-in-out; transform-origin: center; }
+  </style>
+
+  <!-- Frame A -->
+  <text x="20" y="25" class="label">Frame A: Vleugels Omhoog</text>
+  <g class="group-a" transform="translate(45, 45)">
+    <g class="frame-a">
+      <rect x="0" y="0" width="8" height="16" class="bird-wing" />
+      <rect x="40" y="0" width="8" height="16" class="bird-wing" />
+      <rect x="8" y="16" width="32" height="16" class="bird-body" />
+      <rect x="16" y="32" width="16" height="8" class="bird-body" />
+    </g>
+  </g>
+
+  <!-- Frame B -->
+  <text x="230" y="25" class="label">Frame B: Vleugels Omlaag</text>
+  <g class="group-b" transform="translate(255, 45)">
+    <g class="frame-b">
+      <rect x="16" y="0" width="16" height="8" class="bird-body" />
+      <rect x="8" y="8" width="32" height="16" class="bird-body" />
+      <rect x="0" y="24" width="8" height="16" class="bird-wing" />
+      <rect x="40" y="24" width="8" height="16" class="bird-wing" />
+    </g>
+  </g>
+</svg>

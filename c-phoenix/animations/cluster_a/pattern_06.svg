@@ -1,0 +1,227 @@
+<svg width="960" height="1180" viewBox="0 0 960 1180" xmlns="http://www.w3.org/2000/svg" style="background:#040A06; border-radius:8px;">
+  <style>
+    .grid-line { fill:none; stroke:#003B26; stroke-width:1.0; stroke-dasharray:3 3; opacity:0.50; }
+    .axis-main-line { fill:none; stroke:#00838F; stroke-width:1.2; stroke-dasharray:4 4; opacity:0.60; }
+    .axis-label { fill: #007A4D; font-family: monospace; font-size: 11px; font-weight: bold; }
+    .origin-label { fill: #4DD0E1; font-family: monospace; font-size: 11px; font-weight: bold; }
+    .path { fill:none; stroke:#00B8D4; stroke-width:1.6; stroke-dasharray:4 4; opacity:0.75; }
+    .step-dot { fill:#00FFCC; stroke:#040A06; stroke-width:1.8; cursor:pointer; }
+    .step-dot:hover { fill:#FFFFFF; stroke:#FF00AA; stroke-width:3.5; r:8.5; }
+    .step-num { fill: #88C4A3; font-family: monospace; font-size: 12px; font-weight: bold; pointer-events:none; }
+    .start-dot { fill:#00E676; stroke:#FFFFFF; stroke-width:2.5; cursor:pointer; }
+    .start-text { fill:#00E676; font-family: monospace; font-size: 13px; font-weight: bold; pointer-events:none; }
+    .alien-main { fill:#00FFCC; stroke:#FFFFFF; stroke-width:1; }
+    .alien-wing { fill:#FF00AA; }
+    .alien-eye { fill:#FFFF00; }
+    .title-text { fill: #00C875; font-family: monospace; font-size: 17px; font-weight: bold; }
+    .portrait-badge { fill: #4DD0E1; font-family: monospace; font-size: 13px; font-weight: bold; }
+  </style>
+
+  <!-- Title & Cyan Origin Grid Header -->
+  <text x="35" y="45" class="title-text">Cluster A Patroon 06 (ROM $1130, 43 Stappen)</text>
+  <text x="35" y="80" class="portrait-badge">📍 Optimaal Bereik: Oorsprong X=0 / Y=0 | Exact Bereik X:[-40,+0], Y:[+0,+44]</text>
+  
+  <!-- LAYER 1: Phoenix Screen Grid Overlay -->
+  <line x1="95.0" y1="180" x2="95.0" y2="1135" class="grid-line" /><text x="81.0" y="165" class="axis-label">X=-40</text><line x1="254.0" y1="180" x2="254.0" y2="1135" class="grid-line" /><text x="240.0" y="165" class="axis-label">X=-32</text><line x1="413.0" y1="180" x2="413.0" y2="1135" class="grid-line" /><text x="399.0" y="165" class="axis-label">X=-24</text><line x1="572.0" y1="180" x2="572.0" y2="1135" class="grid-line" /><text x="558.0" y="165" class="axis-label">X=-16</text><line x1="731.0" y1="180" x2="731.0" y2="1135" class="grid-line" /><text x="717.0" y="165" class="axis-label">X=-8</text><line x1="890.0" y1="180" x2="890.0" y2="1135" class="axis-main-line" /><text x="876.0" y="165" class="origin-label">X=+0</text><line x1="70" y1="222.8" x2="915" y2="222.8" class="axis-main-line" /><text x="15" y="227.8" class="origin-label">Y=+0</text><line x1="70" y1="381.8" x2="915" y2="381.8" class="grid-line" /><text x="15" y="386.8" class="axis-label">Y=+8</text><line x1="70" y1="540.8" x2="915" y2="540.8" class="grid-line" /><text x="15" y="545.8" class="axis-label">Y=+16</text><line x1="70" y1="699.8" x2="915" y2="699.8" class="grid-line" /><text x="15" y="704.8" class="axis-label">Y=+24</text><line x1="70" y1="858.8" x2="915" y2="858.8" class="grid-line" /><text x="15" y="863.8" class="axis-label">Y=+32</text><line x1="70" y1="1017.8" x2="915" y2="1017.8" class="grid-line" /><text x="15" y="1022.8" class="axis-label">Y=+40</text>
+  
+  <!-- LAYER 2: Prescribed Vector Path Line -->
+  <path id="patPath" d="M 890.0,222.8 L 890.0,302.2 L 890.0,381.8 L 890.0,461.2 L 890.0,540.8 L 890.0,620.2 L 890.0,699.8 L 810.5,739.5 L 731.0,779.2 L 651.5,819.0 L 572.0,858.8 L 651.5,898.5 L 731.0,938.2 L 651.5,978.0 L 572.0,1017.8 L 651.5,1057.5 L 572.0,1097.2 L 492.5,1097.2 L 413.0,1097.2 L 333.5,1097.2 L 254.0,1057.5 L 174.5,1017.8 L 95.0,978.0 L 174.5,898.5 L 254.0,858.8 L 333.5,819.0 L 413.0,779.2 L 492.5,739.5 L 492.5,660.0 L 413.0,580.5 L 333.5,580.5 L 254.0,660.0 L 254.0,739.5 L 333.5,819.0 L 413.0,819.0 L 492.5,739.5 L 572.0,699.8 L 651.5,660.0 L 731.0,620.2 L 810.5,580.5 L 810.5,501.0 L 810.5,421.5 L 810.5,342.0 L 810.5,262.5" class="path" />
+  
+  <!-- LAYER 3: GLOWING GREEN PATH TRAIL (Renders EXACTLY on path_d and extends STRICTLY BEHIND the alien bug!) -->
+  <path d="M 890.0,222.8 L 890.0,302.2 L 890.0,381.8 L 890.0,461.2 L 890.0,540.8 L 890.0,620.2 L 890.0,699.8 L 810.5,739.5 L 731.0,779.2 L 651.5,819.0 L 572.0,858.8 L 651.5,898.5 L 731.0,938.2 L 651.5,978.0 L 572.0,1017.8 L 651.5,1057.5 L 572.0,1097.2 L 492.5,1097.2 L 413.0,1097.2 L 333.5,1097.2 L 254.0,1057.5 L 174.5,1017.8 L 95.0,978.0 L 174.5,898.5 L 254.0,858.8 L 333.5,819.0 L 413.0,779.2 L 492.5,739.5 L 492.5,660.0 L 413.0,580.5 L 333.5,580.5 L 254.0,660.0 L 254.0,739.5 L 333.5,819.0 L 413.0,819.0 L 492.5,739.5 L 572.0,699.8 L 651.5,660.0 L 731.0,620.2 L 810.5,580.5 L 810.5,501.0 L 810.5,421.5 L 810.5,342.0 L 810.5,262.5" stroke="#00E676" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.90" style="filter:drop-shadow(0 0 6px #00FFCC); stroke-dasharray:130.0 3780.2;">
+    <animate attributeName="stroke-dashoffset" values="130.0; -3650.2" dur="7.5s" repeatCount="indefinite" />
+  </path>
+
+  <!-- LAYER 4: Step Dots & Numbers Along Trajectory -->
+  <g class="step-group">
+      <title>Stap #0 | ROM Byte: 0x00 | Vector dX: +0, dY: +0 | Relatieve Positie: (X=+0, Y=+0)</title>
+      <circle cx="890.0" cy="222.8" r="8.5" class="start-dot" />
+      <text x="902.0" y="213.8" class="start-text">#0</text>
+    </g><g class="step-group">
+      <title>Stap #1 | ROM Byte: 0x0B | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+4)</title>
+      <circle cx="890.0" cy="302.2" r="5.5" class="step-dot" />
+      <text x="898.0" y="295.2" class="step-num">#1</text>
+    </g><g class="step-group">
+      <title>Stap #2 | ROM Byte: 0x0C | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+8)</title>
+      <circle cx="890.0" cy="381.8" r="5.5" class="step-dot" />
+      <text x="898.0" y="374.8" class="step-num">#2</text>
+    </g><g class="step-group">
+      <title>Stap #3 | ROM Byte: 0x0D | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+12)</title>
+      <circle cx="890.0" cy="461.2" r="5.5" class="step-dot" />
+      <text x="898.0" y="454.2" class="step-num">#3</text>
+    </g><g class="step-group">
+      <title>Stap #4 | ROM Byte: 0x0E | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+16)</title>
+      <circle cx="890.0" cy="540.8" r="5.5" class="step-dot" />
+      <text x="898.0" y="533.8" class="step-num">#4</text>
+    </g><g class="step-group">
+      <title>Stap #5 | ROM Byte: 0x0B | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+20)</title>
+      <circle cx="890.0" cy="620.2" r="5.5" class="step-dot" />
+      <text x="898.0" y="613.2" class="step-num">#5</text>
+    </g><g class="step-group">
+      <title>Stap #6 | ROM Byte: 0x0C | Vector dX: +0, dY: +4 | Relatieve Positie: (X=+0, Y=+24)</title>
+      <circle cx="890.0" cy="699.8" r="5.5" class="step-dot" />
+      <text x="898.0" y="692.8" class="step-num">#6</text>
+    </g><g class="step-group">
+      <title>Stap #7 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-4, Y=+26)</title>
+      <circle cx="810.5" cy="739.5" r="5.5" class="step-dot" />
+      <text x="818.5" y="732.5" class="step-num">#7</text>
+    </g><g class="step-group">
+      <title>Stap #8 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-8, Y=+28)</title>
+      <circle cx="731.0" cy="779.2" r="5.5" class="step-dot" />
+      <text x="739.0" y="772.2" class="step-num">#8</text>
+    </g><g class="step-group">
+      <title>Stap #9 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-12, Y=+30)</title>
+      <circle cx="651.5" cy="819.0" r="5.5" class="step-dot" />
+      <text x="659.5" y="812.0" class="step-num">#9</text>
+    </g><g class="step-group">
+      <title>Stap #10 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-16, Y=+32)</title>
+      <circle cx="572.0" cy="858.8" r="5.5" class="step-dot" />
+      <text x="580.0" y="851.8" class="step-num">#10</text>
+    </g><g class="step-group">
+      <title>Stap #11 | ROM Byte: 0x09 | Vector dX: +4, dY: +2 | Relatieve Positie: (X=-12, Y=+34)</title>
+      <circle cx="651.5" cy="898.5" r="5.5" class="step-dot" />
+      <text x="659.5" y="891.5" class="step-num">#11</text>
+    </g><g class="step-group">
+      <title>Stap #12 | ROM Byte: 0x09 | Vector dX: +4, dY: +2 | Relatieve Positie: (X=-8, Y=+36)</title>
+      <circle cx="731.0" cy="938.2" r="5.5" class="step-dot" />
+      <text x="739.0" y="931.2" class="step-num">#12</text>
+    </g><g class="step-group">
+      <title>Stap #13 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-12, Y=+38)</title>
+      <circle cx="651.5" cy="978.0" r="5.5" class="step-dot" />
+      <text x="659.5" y="971.0" class="step-num">#13</text>
+    </g><g class="step-group">
+      <title>Stap #14 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-16, Y=+40)</title>
+      <circle cx="572.0" cy="1017.8" r="5.5" class="step-dot" />
+      <text x="580.0" y="1010.8" class="step-num">#14</text>
+    </g><g class="step-group">
+      <title>Stap #15 | ROM Byte: 0x09 | Vector dX: +4, dY: +2 | Relatieve Positie: (X=-12, Y=+42)</title>
+      <circle cx="651.5" cy="1057.5" r="5.5" class="step-dot" />
+      <text x="659.5" y="1050.5" class="step-num">#15</text>
+    </g><g class="step-group">
+      <title>Stap #16 | ROM Byte: 0x0A | Vector dX: -4, dY: +2 | Relatieve Positie: (X=-16, Y=+44)</title>
+      <circle cx="572.0" cy="1097.2" r="5.5" class="step-dot" />
+      <text x="580.0" y="1090.2" class="step-num">#16</text>
+    </g><g class="step-group">
+      <title>Stap #17 | ROM Byte: 0x12 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=-20, Y=+44)</title>
+      <circle cx="492.5" cy="1097.2" r="5.5" class="step-dot" />
+      <text x="500.5" y="1090.2" class="step-num">#17</text>
+    </g><g class="step-group">
+      <title>Stap #18 | ROM Byte: 0x13 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=-24, Y=+44)</title>
+      <circle cx="413.0" cy="1097.2" r="5.5" class="step-dot" />
+      <text x="421.0" y="1090.2" class="step-num">#18</text>
+    </g><g class="step-group">
+      <title>Stap #19 | ROM Byte: 0x10 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=-28, Y=+44)</title>
+      <circle cx="333.5" cy="1097.2" r="5.5" class="step-dot" />
+      <text x="341.5" y="1090.2" class="step-num">#19</text>
+    </g><g class="step-group">
+      <title>Stap #20 | ROM Byte: 0x08 | Vector dX: -4, dY: -2 | Relatieve Positie: (X=-32, Y=+42)</title>
+      <circle cx="254.0" cy="1057.5" r="5.5" class="step-dot" />
+      <text x="262.0" y="1050.5" class="step-num">#20</text>
+    </g><g class="step-group">
+      <title>Stap #21 | ROM Byte: 0x08 | Vector dX: -4, dY: -2 | Relatieve Positie: (X=-36, Y=+40)</title>
+      <circle cx="174.5" cy="1017.8" r="5.5" class="step-dot" />
+      <text x="182.5" y="1010.8" class="step-num">#21</text>
+    </g><g class="step-group">
+      <title>Stap #22 | ROM Byte: 0x08 | Vector dX: -4, dY: -2 | Relatieve Positie: (X=-40, Y=+38)</title>
+      <circle cx="95.0" cy="978.0" r="5.5" class="step-dot" />
+      <text x="103.0" y="971.0" class="step-num">#22</text>
+    </g><g class="step-group">
+      <title>Stap #23 | ROM Byte: 0x18 | Vector dX: +4, dY: -4 | Relatieve Positie: (X=-36, Y=+34)</title>
+      <circle cx="174.5" cy="898.5" r="5.5" class="step-dot" />
+      <text x="182.5" y="891.5" class="step-num">#23</text>
+    </g><g class="step-group">
+      <title>Stap #24 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-32, Y=+32)</title>
+      <circle cx="254.0" cy="858.8" r="5.5" class="step-dot" />
+      <text x="262.0" y="851.8" class="step-num">#24</text>
+    </g><g class="step-group">
+      <title>Stap #25 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-28, Y=+30)</title>
+      <circle cx="333.5" cy="819.0" r="5.5" class="step-dot" />
+      <text x="341.5" y="812.0" class="step-num">#25</text>
+    </g><g class="step-group">
+      <title>Stap #26 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-24, Y=+28)</title>
+      <circle cx="413.0" cy="779.2" r="5.5" class="step-dot" />
+      <text x="421.0" y="772.2" class="step-num">#26</text>
+    </g><g class="step-group">
+      <title>Stap #27 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-20, Y=+26)</title>
+      <circle cx="492.5" cy="739.5" r="5.5" class="step-dot" />
+      <text x="500.5" y="732.5" class="step-num">#27</text>
+    </g><g class="step-group">
+      <title>Stap #28 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-20, Y=+22)</title>
+      <circle cx="492.5" cy="660.0" r="5.5" class="step-dot" />
+      <text x="500.5" y="653.0" class="step-num">#28</text>
+    </g><g class="step-group">
+      <title>Stap #29 | ROM Byte: 0x1C | Vector dX: -4, dY: -4 | Relatieve Positie: (X=-24, Y=+18)</title>
+      <circle cx="413.0" cy="580.5" r="5.5" class="step-dot" />
+      <text x="421.0" y="573.5" class="step-num">#29</text>
+    </g><g class="step-group">
+      <title>Stap #30 | ROM Byte: 0x04 | Vector dX: -4, dY: +0 | Relatieve Positie: (X=-28, Y=+18)</title>
+      <circle cx="333.5" cy="580.5" r="5.5" class="step-dot" />
+      <text x="341.5" y="573.5" class="step-num">#30</text>
+    </g><g class="step-group">
+      <title>Stap #31 | ROM Byte: 0x1D | Vector dX: -4, dY: +4 | Relatieve Positie: (X=-32, Y=+22)</title>
+      <circle cx="254.0" cy="660.0" r="5.5" class="step-dot" />
+      <text x="262.0" y="653.0" class="step-num">#31</text>
+    </g><g class="step-group">
+      <title>Stap #32 | ROM Byte: 0x06 | Vector dX: +0, dY: +4 | Relatieve Positie: (X=-32, Y=+26)</title>
+      <circle cx="254.0" cy="739.5" r="5.5" class="step-dot" />
+      <text x="262.0" y="732.5" class="step-num">#32</text>
+    </g><g class="step-group">
+      <title>Stap #33 | ROM Byte: 0x1E | Vector dX: +4, dY: +4 | Relatieve Positie: (X=-28, Y=+30)</title>
+      <circle cx="333.5" cy="819.0" r="5.5" class="step-dot" />
+      <text x="341.5" y="812.0" class="step-num">#33</text>
+    </g><g class="step-group">
+      <title>Stap #34 | ROM Byte: 0x03 | Vector dX: +4, dY: +0 | Relatieve Positie: (X=-24, Y=+30)</title>
+      <circle cx="413.0" cy="819.0" r="5.5" class="step-dot" />
+      <text x="421.0" y="812.0" class="step-num">#34</text>
+    </g><g class="step-group">
+      <title>Stap #35 | ROM Byte: 0x1F | Vector dX: +4, dY: -4 | Relatieve Positie: (X=-20, Y=+26)</title>
+      <circle cx="492.5" cy="739.5" r="5.5" class="step-dot" />
+      <text x="500.5" y="732.5" class="step-num">#35</text>
+    </g><g class="step-group">
+      <title>Stap #36 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-16, Y=+24)</title>
+      <circle cx="572.0" cy="699.8" r="5.5" class="step-dot" />
+      <text x="580.0" y="692.8" class="step-num">#36</text>
+    </g><g class="step-group">
+      <title>Stap #37 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-12, Y=+22)</title>
+      <circle cx="651.5" cy="660.0" r="5.5" class="step-dot" />
+      <text x="659.5" y="653.0" class="step-num">#37</text>
+    </g><g class="step-group">
+      <title>Stap #38 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-8, Y=+20)</title>
+      <circle cx="731.0" cy="620.2" r="5.5" class="step-dot" />
+      <text x="739.0" y="613.2" class="step-num">#38</text>
+    </g><g class="step-group">
+      <title>Stap #39 | ROM Byte: 0x07 | Vector dX: +4, dY: -2 | Relatieve Positie: (X=-4, Y=+18)</title>
+      <circle cx="810.5" cy="580.5" r="5.5" class="step-dot" />
+      <text x="818.5" y="573.5" class="step-num">#39</text>
+    </g><g class="step-group">
+      <title>Stap #40 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-4, Y=+14)</title>
+      <circle cx="810.5" cy="501.0" r="5.5" class="step-dot" />
+      <text x="818.5" y="494.0" class="step-num">#40</text>
+    </g><g class="step-group">
+      <title>Stap #41 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-4, Y=+10)</title>
+      <circle cx="810.5" cy="421.5" r="5.5" class="step-dot" />
+      <text x="818.5" y="414.5" class="step-num">#41</text>
+    </g><g class="step-group">
+      <title>Stap #42 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-4, Y=+6)</title>
+      <circle cx="810.5" cy="342.0" r="5.5" class="step-dot" />
+      <text x="818.5" y="335.0" class="step-num">#42</text>
+    </g><g class="step-group">
+      <title>Stap #43 | ROM Byte: 0x05 | Vector dX: +0, dY: -4 | Relatieve Positie: (X=-4, Y=+2)</title>
+      <circle cx="810.5" cy="262.5" r="5.5" class="step-dot" />
+      <text x="818.5" y="255.5" class="step-num">#43</text>
+    </g>
+  
+  <!-- LAYER 5: Authentic 8-Bit Phoenix Alien Bug Moving Sprite -->
+  <g>
+    <animateMotion path="M 890.0,222.8 L 890.0,302.2 L 890.0,381.8 L 890.0,461.2 L 890.0,540.8 L 890.0,620.2 L 890.0,699.8 L 810.5,739.5 L 731.0,779.2 L 651.5,819.0 L 572.0,858.8 L 651.5,898.5 L 731.0,938.2 L 651.5,978.0 L 572.0,1017.8 L 651.5,1057.5 L 572.0,1097.2 L 492.5,1097.2 L 413.0,1097.2 L 333.5,1097.2 L 254.0,1057.5 L 174.5,1017.8 L 95.0,978.0 L 174.5,898.5 L 254.0,858.8 L 333.5,819.0 L 413.0,779.2 L 492.5,739.5 L 492.5,660.0 L 413.0,580.5 L 333.5,580.5 L 254.0,660.0 L 254.0,739.5 L 333.5,819.0 L 413.0,819.0 L 492.5,739.5 L 572.0,699.8 L 651.5,660.0 L 731.0,620.2 L 810.5,580.5 L 810.5,501.0 L 810.5,421.5 L 810.5,342.0 L 810.5,262.5" dur="7.5s" begin="0s" repeatCount="indefinite" rotate="auto" />
+    
+    <!-- Authentic Phoenix Alien Bug Sprite (Positioned facing forward at origin x=0, y=0) -->
+    <g transform="translate(-10, -10) scale(0.9)">
+      <path d="M 6,2 L 4,0 L 2,2 M 18,2 L 20,0 L 22,2" stroke="#00FFCC" stroke-width="1.5" fill="none" />
+      <path d="M 4,4 L 20,4 L 22,10 L 18,18 L 12,20 L 6,18 L 2,10 Z" class="alien-main" />
+      <path d="M 0,8 L 4,4 L 4,14 L 0,16 Z M 24,8 L 20,4 L 20,14 L 24,16 Z" class="alien-wing" />
+      <circle cx="8" cy="9" r="2" class="alien-eye" />
+      <circle cx="16" cy="9" r="2" class="alien-eye" />
+    </g>
+  </g>
+</svg>
