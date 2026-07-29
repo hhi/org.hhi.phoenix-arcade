@@ -33,13 +33,17 @@ Each active entity on screen utilizes a specific memory layout in Arcade RAM (`$
 ### **Vector Transformation & Indexing**
 A RAM pointer (e.g. at offset `$4B50`) reads a step byte from ROM per frame. This byte acts as an index into the direction table [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
 
-$$\text{VectorAddress} = \$1700 + (\text{StepByte} \mathbin{\&} \text{0x1F}) \times 2$$
+$$
+\operatorname{VectorAddress} = \mathtt{0x1700} + \left(\operatorname{StepByte} \mathbin{\&} \mathtt{0x1F}\right) \times 2
+$$
 
 Reading these two bytes yields the pairwise directional delta $(\Delta X, \Delta Y)$:
-$$\begin{aligned}
-X_{\text{new}} &= X_{\text{old}} + \Delta X \\
-Y_{\text{new}} &= Y_{\text{old}} + \Delta Y
-\end{aligned}$$
+$$
+\begin{aligned}
+X_{\mathrm{new}} &= X_{\mathrm{old}} + \Delta X \\
+Y_{\mathrm{new}} &= Y_{\mathrm{old}} + \Delta Y
+\end{aligned}
+$$
 
 ---
 
