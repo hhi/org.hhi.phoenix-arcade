@@ -2,6 +2,7 @@
 """Capture the six initial alien layouts with live RAM-coordinate overlays."""
 
 import argparse
+import base64
 import json
 import os
 import struct
@@ -82,12 +83,13 @@ def write_png(path, width, height, pixels):
 
 
 def write_svg_wrapper(path, png_name, width, height, layout):
+    encoded_png = base64.b64encode(path.with_name(png_name).read_bytes()).decode("ascii")
     path.write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
         f'viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">'
         f'<title id="title">Phoenix initial alien layout ${layout:04X}</title>'
         '<desc id="desc">Live SDL capture with alien number and RAM coordinate overlays.</desc>'
-        f'<image href="{png_name}" width="{width}" height="{height}"/>'
+        f'<image href="data:image/png;base64,{encoded_png}" width="{width}" height="{height}"/>'
         '</svg>\n',
         encoding="utf-8",
     )

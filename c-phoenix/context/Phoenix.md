@@ -5219,7 +5219,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; Pointer to alien movement pattern table.
 ```
 
-### T1520:
+### T1520: [Initial layout 01 SVG](wave-screenshots/layout-01.svg)
 
 ```asm
                        .MSFIRST
@@ -5262,7 +5262,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T1540: [Initial layout 01 SVG](wave-screenshots/layout-01.svg)
+### T1540: [Initial layout 02 SVG](wave-screenshots/layout-02.svg)
 
 ```asm
                        .DB $50, $20     ; 0 : x,y = 50,20 (decimal 80,32)
@@ -5303,7 +5303,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T1560: [Initial layout 02 SVG](wave-screenshots/layout-02.svg)
+### T1560: [Initial layout 03 SVG](wave-screenshots/layout-03.svg)
 
 ```asm
                        .DB $60, $48     ; 0
@@ -5338,7 +5338,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T1580: [Initial layout 03 SVG](wave-screenshots/layout-03.svg)
+### T1580: [Initial layout 04 SVG](wave-screenshots/layout-04.svg)
 
 ```asm
                        .DB $60, $20     ; 0
@@ -5373,7 +5373,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T15A0: [Initial layout 04 SVG](wave-screenshots/layout-04.svg)
+### T15A0: [Initial layout 05 SVG](wave-screenshots/layout-05.svg)
 
 ```asm
                        .DB $60, $20     ; 0
@@ -5408,7 +5408,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;
 ```
 
-### T15C0: [Initial layout 05 SVG](wave-screenshots/layout-05.svg)
+### T15C0: [Initial layout 06 SVG](wave-screenshots/layout-06.svg)
 
 ```asm
                        .DB $60, $58     ; 0
@@ -5442,7 +5442,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ; 58 - . . . . . . . . . . . . . . . . . . . . . . . . . .
 ```
 
-### T15E0: [Initial layout 06 SVG](wave-screenshots/layout-06.svg)
+### T15E0:
 
 ```asm
                        .DB $60, $20     ; 0

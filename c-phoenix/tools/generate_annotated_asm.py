@@ -39,7 +39,7 @@ for label, pattern in zip(
     )
 
 for label, layout in zip(
-    ("T1540", "T1560", "T1580", "T15A0", "T15C0", "T15E0"),
+    ("T1520", "T1540", "T1560", "T1580", "T15A0", "T15C0"),
     range(1, 7),
 ):
     ANIMATION_SVG_BY_LABEL[label] = (
