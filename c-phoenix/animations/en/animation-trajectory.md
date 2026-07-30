@@ -49,11 +49,11 @@ The animated SVG below demonstrates the simultaneous operation of the entire Arc
 
 #### **Knowledge Graph Links**
 * **Relevant C Source Files:**
-  - [`phoenix_tables.c`](../../phoenix_tables.c) $\rightarrow$ [`phoenix-tables.md`](../../c-annotated/en/phoenix-tables.md)
-  - [`alien_logic.c`](../../alien_logic.c) $\rightarrow$ [`alien-logic.md`](../../c-annotated/en/alien-logic.md)
-  - [`bird_logic.c`](../../bird_logic.c) $\rightarrow$ [`bird-logic.md`](../../c-annotated/en/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) $\rightarrow$ [`bird-wave-behavior.md`](../../c-annotated/en/bird-wave-behavior.md)
-  - [`attract_mode.c`](../../attract_mode.c) $\rightarrow$ [`attract-mode.md`](../../c-annotated/en/attract-mode.md)
+  - [`phoenix_tables.c`](../../phoenix_tables.c) → [`phoenix-tables.md`](../../c-annotated/en/phoenix-tables.md)
+  - [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](../../c-annotated/en/alien-logic.md)
+  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/en/bird-logic.md)
+  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/en/bird-wave-behavior.md)
+  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/en/attract-mode.md)
 
 ---
 
@@ -63,8 +63,8 @@ Vector integration of the ROM patterns described below distinguishes **two movem
 
 | Property | 🔄 Closed Loop Patterns | ↗️ Open Trajectory Patterns |
 |---|---|---|
-| **Net Displacement** | $\sum \Delta X = 0 \quad \text{and} \quad \sum \Delta Y = 0$ | $\sum \Delta X \neq 0 \quad \text{or} \quad \sum \Delta Y \neq 0$ |
-| **Shape & Path** | The entity leaves its formation origin $(X_0, Y_0)$, completes a circular, oval, or figure-8 loop, and **returns exactly to $(X_0, Y_0)$**. | The entity executes a screen-wide displacement or breakout sprint across the screen (e.g. downward or diagonally). |
+| **Net Displacement** | ΣΔX = 0 and ΣΔY = 0 | ΣΔX ≠ 0 or ΣΔY ≠ 0 |
+| **Shape & Path** | The entity leaves its formation origin (X0, Y0), completes a circular, oval, or figure-8 loop, and **returns exactly to (X0, Y0)**. | The entity executes a screen-wide displacement or breakout sprint across the screen (e.g. downward or diagonally). |
 | **Typical Patterns** | Cluster A Patterns `01`, `02`, `07`, `10`, `11`, `12` & Cluster B Pattern `23`. | Cluster A Patterns `03`, `04`, `05`, `06`, `08`, `09`, `13–18` & Cluster B Patterns `19–22`, `24–36`. |
 | **End-of-Loop Logic** | At the `0x00` terminator, the pattern restarts seamlessly from the beginning at the same anchor address. | At the `0x00` terminator or screen boundary, the game engine triggers a breakout repositioning ([`l3028`](../../c-annotated/en/alien-logic.md#l3028)) or re-orientation ([`l3672_aim`](../../c-annotated/en/bird-wave-behavior.md#l3672_aim)). |
 
@@ -102,7 +102,7 @@ The structure in this document aligns with the 4 physical game entity subsystems
 ### **Detailed Cluster A Analysis**
 - **ROM Address Range:** `$1000–$13FF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L73).
 - **Structure:** 18 closed-loop & open-trajectory patterns (`T1020` through `T13D0`), each consisting of vector indices terminated by `0x00` and padded with `0xFF`.
-- **Closed vs Open:** Patterns `01`, `02`, `07`, `10`, `11`, `12` are **Closed Loops** ($\sum \Delta = (0,0)$). Patterns `03`, `04`, `05`, `06`, `08`, `09`, `13–18` are **Open Trajectories**.
+- **Closed vs Open:** Patterns `01`, `02`, `07`, `10`, `11`, `12` are **Closed Loops** (ΣΔ = (0,0)). Patterns `03`, `04`, `05`, `06`, `08`, `09`, `13–18` are **Open Trajectories**.
 
 ### **Cluster A Overview Animation**
 ![Alien Cluster A Overview Animation](../07_alien_closed_loop_cluster_a.svg)
@@ -161,7 +161,7 @@ The structure in this document aligns with the 4 physical game entity subsystems
 ### **Detailed Cluster B Analysis**
 - **ROM Address Range:** `$2C00–$2FFF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L423).
 - **Structure:** 18 patterns (patterns 19 through 36) primarily consisting of open breakout trajectories for diving aliens and mothership escort waves.
-- **Closed vs Open:** Pattern `23` is a **Closed Loop** ($\sum \Delta = (0,0)$). Patterns `19–22`, `24–36` are **Open Trajectories** with net displacement across the screen.
+- **Closed vs Open:** Pattern `23` is a **Closed Loop** (ΣΔ = (0,0)). Patterns `19–22`, `24–36` are **Open Trajectories** with net displacement across the screen.
 
 ### **Cluster B Overview Animation**
 ![Alien Cluster B Overview Animation](../08_alien_breakout_cluster_b.svg)

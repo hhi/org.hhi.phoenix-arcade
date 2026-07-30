@@ -132,11 +132,11 @@ Aangeroepen in de rendering-lus zolang aliens aan het invliegen/verschijnen zijn
 
 #### **Stap-voor-stap werking**
 Inspecteert de algemene timer `state.CounterB4` en retourneert de sprite-tegel ID op basis van drempelwaarden:
-- `a >= 0x11` $\rightarrow$ `0x6C`
-- `a >= 0x0D` $\rightarrow$ `0x6D`
-- `a >= 0x09` $\rightarrow$ `0x6E`
-- `a >= 0x05` $\rightarrow$ `0x6F`
-- Anders $\rightarrow$ `0x68`
+- `a >= 0x11` → `0x6C`
+- `a >= 0x0D` → `0x6D`
+- `a >= 0x09` → `0x6E`
+- `a >= 0x05` → `0x6F`
+- Anders → `0x68`
 
 ---
 

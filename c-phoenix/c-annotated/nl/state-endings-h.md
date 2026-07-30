@@ -12,4 +12,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`state_endings.h`](.
 - `l0b15(void)`: Verlaagt spelerlevens en regelt Game Over.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`state_endings.c`](../../state_endings.c) $\rightarrow$ [`state-endings.md`](state-endings.md)
+* **Overeenkomstige C-implementatie:** [`state_endings.c`](../../state_endings.c) → [`state-endings.md`](state-endings.md)

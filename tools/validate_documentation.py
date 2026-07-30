@@ -190,6 +190,38 @@ def validate_english_locale_quality(root: Path, documents: list[Path]) -> list[s
     return problems
 
 
+def validate_renderer_independent_markdown(root: Path, documents: list[Path]) -> list[str]:
+    """Reject LaTex syntax that GitHub Markdown may render inconsistently.
+
+    Dollar-prefixed ROM addresses (for example ``$1700``) are deliberate
+    source notation and therefore allowed.  The check only rejects LaTex
+    delimiters and macros; documentation should use plain text, code spans,
+    or Unicode symbols instead.
+    """
+    forbidden = (
+        "$$",
+        "$\\",
+        r"\begin{",
+        r"\operatorname",
+        r"\mathbin",
+        r"\Delta",
+        r"\sum",
+        r"\times",
+        r"\mathrm",
+        r"\mathtt",
+        "$(",
+    )
+    problems: list[str] = []
+    for document in documents:
+        text = document.read_text(encoding="utf-8")
+        for token in forbidden:
+            if token in text:
+                problems.append(
+                    f"{document.relative_to(root)}: renderer-dependent LaTex syntax: {token}"
+                )
+    return problems
+
+
 def validate_repository_entrypoints(root: Path) -> list[str]:
     """Require both repository landing pages to expose the two study topics."""
     repository_root = root.parent
@@ -257,6 +289,7 @@ def main() -> int:
     problems.extend(validate_svg_count(root))
     problems.extend(validate_pattern_metadata(root))
     problems.extend(validate_english_locale_quality(root, documents))
+    problems.extend(validate_renderer_independent_markdown(root, documents))
     problems.extend(validate_repository_entrypoints(root))
     problems.extend(validate_trajectory_vector_explanation(root))
     if problems:

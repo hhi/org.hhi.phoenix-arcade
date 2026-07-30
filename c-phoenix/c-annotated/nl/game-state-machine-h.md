@@ -8,4 +8,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`game_state_machine.
 - `game_state_machine(void)`: Hoofdfunctie van de globale toestandsmachine.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`game_state_machine.c`](../../game_state_machine.c) $\rightarrow$ [`game-state-machine.md`](game-state-machine.md)
+* **Overeenkomstige C-implementatie:** [`game_state_machine.c`](../../game_state_machine.c) → [`game-state-machine.md`](game-state-machine.md)

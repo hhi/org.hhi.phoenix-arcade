@@ -16,7 +16,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 - **Origin (0, 0):** Top-left of the screen.
 - **X-axis (0 through 255):** Horizontal position from left to right.
 - **Y-axis (0 through 223):** Vertical position from top to bottom.
-- **Delta Step ($\Delta X, \Delta Y$):** Pairwise displacement from `phoenix_alien_direction_vectors` (ROM `$1700–$173F`).
+- **Delta Step (ΔX, ΔY):** Pairwise displacement from `phoenix_alien_direction_vectors` (ROM `$1700–$173F`).
 
 ---
 
@@ -28,7 +28,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x10` | Vec `10` | `-4` | `+0` | `-4` | `+0` |
@@ -96,7 +96,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x12` | Vec `12` | `-4` | `+0` | `+4` | `+0` |
 | 64 | `0x13` | Vec `13` | `-4` | `+0` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
@@ -106,7 +106,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -174,17 +174,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x18` | Vec `18` | `+4` | `-4` | `-4` | `+4` |
 | 64 | `0x1F` | Vec `1F` | `+4` | `-4` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
-### Pattern 03 — ROM $10A8 (40 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 03 — ROM $10A8 (40 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_03.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x10` | Vec `10` | `-4` | `+0` | `-4` | `+0` |
@@ -228,17 +228,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 39 | `0x12` | Vec `12` | `-4` | `+0` | `-20` | `+0` |
 | 40 | `0x13` | Vec `13` | `-4` | `+0` | `-24` | `+0` |
 
-**Net Displacement:** $\Delta X = -24$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -24, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 04 — ROM $10D4 (40 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 04 — ROM $10D4 (40 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_04.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -282,17 +282,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 39 | `0x04` | Vec `04` | `-4` | `+0` | `-20` | `+4` |
 | 40 | `0x1B` | Vec `1B` | `-4` | `-4` | `-24` | `+0` |
 
-**Net Displacement:** $\Delta X = -24$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -24, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 05 — ROM $1100 (43 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 05 — ROM $1100 (43 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_05.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -339,17 +339,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 42 | `0x05` | Vec `05` | `+0` | `-4` | `+4` | `+6` |
 | 43 | `0x05` | Vec `05` | `+0` | `-4` | `+4` | `+2` |
 
-**Net Displacement:** $\Delta X = +4$, $\Delta Y = +2$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +4, ΔY = +2 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 06 — ROM $1130 (43 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 06 — ROM $1130 (43 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_06.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -396,7 +396,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 42 | `0x05` | Vec `05` | `+0` | `-4` | `-4` | `+6` |
 | 43 | `0x05` | Vec `05` | `+0` | `-4` | `-4` | `+2` |
 
-**Net Displacement:** $\Delta X = -4$, $\Delta Y = +2$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -4, ΔY = +2 — **Status:** `↗️ Open Trajectory`
 
 ---
 
@@ -406,7 +406,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -474,17 +474,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x1A` | Vec `1A` | `-4` | `+4` | `+4` | `+4` |
 | 64 | `0x1B` | Vec `1B` | `-4` | `-4` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
-### Pattern 08 — ROM $11A4 (40 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 08 — ROM $11A4 (40 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_08.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -528,17 +528,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 39 | `0x18` | Vec `18` | `+4` | `-4` | `+20` | `+4` |
 | 40 | `0x1F` | Vec `1F` | `+4` | `-4` | `+24` | `+0` |
 
-**Net Displacement:** $\Delta X = +24$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +24, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 09 — ROM $11D0 (45 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 09 — ROM $11D0 (45 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_09.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -587,7 +587,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 44 | `0x05` | Vec `05` | `+0` | `-4` | `-12` | `+2` |
 | 45 | `0x05` | Vec `05` | `+0` | `-4` | `-12` | `-2` |
 
-**Net Displacement:** $\Delta X = -12$, $\Delta Y = -2$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -12, ΔY = -2 — **Status:** `↗️ Open Trajectory`
 
 ---
 
@@ -597,7 +597,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -665,7 +665,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x04` | Vec `04` | `-4` | `+0` | `+4` | `+4` |
 | 64 | `0x1B` | Vec `1B` | `-4` | `-4` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
@@ -675,7 +675,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x18` | Vec `18` | `+4` | `-4` | `+4` | `-4` |
@@ -743,7 +743,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x1E` | Vec `1E` | `+4` | `+4` | `-4` | `+4` |
 | 64 | `0x1F` | Vec `1F` | `+4` | `-4` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
@@ -753,7 +753,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -821,17 +821,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `+4` |
 | 64 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
-### Pattern 13 — ROM $12CA (53 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 13 — ROM $12CA (53 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_13.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x18` | Vec `18` | `+4` | `-4` | `+4` | `-4` |
@@ -888,17 +888,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 52 | `0x18` | Vec `18` | `+4` | `-4` | `+16` | `+26` |
 | 53 | `0x1F` | Vec `1F` | `+4` | `-4` | `+20` | `+22` |
 
-**Net Displacement:** $\Delta X = +20$, $\Delta Y = +22$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +20, ΔY = +22 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 14 — ROM $1300 (36 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 14 — ROM $1300 (36 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_14.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -938,17 +938,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 35 | `0x12` | Vec `12` | `-4` | `+0` | `+4` | `+4` |
 | 36 | `0x13` | Vec `13` | `-4` | `+0` | `+0` | `+4` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +4$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +0, ΔY = +4 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 15 — ROM $1328 (38 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 15 — ROM $1328 (38 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_15.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -990,17 +990,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 37 | `0x07` | Vec `07` | `+4` | `-2` | `-12` | `+2` |
 | 38 | `0x07` | Vec `07` | `+4` | `-2` | `-8` | `+0` |
 
-**Net Displacement:** $\Delta X = -8$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -8, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 16 — ROM $1354 (69 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 16 — ROM $1354 (69 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_16.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -1073,17 +1073,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 68 | `0x12` | Vec `12` | `-4` | `+0` | `-4` | `+6` |
 | 69 | `0x13` | Vec `13` | `-4` | `+0` | `-8` | `+6` |
 
-**Net Displacement:** $\Delta X = -8$, $\Delta Y = +6$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -8, ΔY = +6 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 17 — ROM $139C (49 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 17 — ROM $139C (49 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_17.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1136,17 +1136,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 48 | `0x07` | Vec `07` | `+4` | `-2` | `-32` | `+32` |
 | 49 | `0x07` | Vec `07` | `+4` | `-2` | `-28` | `+30` |
 
-**Net Displacement:** $\Delta X = -28$, $\Delta Y = +30$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -28, ΔY = +30 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 18 — ROM $13D0 (43 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 18 — ROM $13D0 (43 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_a/pattern_18.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x14` | Vec `14` | `+4` | `+0` | `+4` | `+0` |
@@ -1193,19 +1193,19 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 42 | `0x05` | Vec `05` | `+0` | `-4` | `+20` | `+2` |
 | 43 | `0x05` | Vec `05` | `+0` | `-4` | `+20` | `-2` |
 
-**Net Displacement:** $\Delta X = +20$, $\Delta Y = -2$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +20, ΔY = -2 — **Status:** `↗️ Open Trajectory`
 
 ---
 
 ## 3. Alien Cluster B Patterns — Step-by-Step Tables (Patterns 19 through 36)
 
-### Pattern 19 — ROM $2C00 (48 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 19 — ROM $2C00 (48 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_19.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1257,17 +1257,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 47 | `0x07` | Vec `07` | `+4` | `-2` | `-12` | `+6` |
 | 48 | `0x07` | Vec `07` | `+4` | `-2` | `-8` | `+4` |
 
-**Net Displacement:** $\Delta X = -8$, $\Delta Y = +4$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -8, ΔY = +4 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 20 — ROM $2C34 (86 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 20 — ROM $2C34 (86 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_20.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -1357,17 +1357,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 85 | `0x07` | Vec `07` | `+4` | `-2` | `+2` | `-10` |
 | 86 | `0x07` | Vec `07` | `+4` | `-2` | `+6` | `-12` |
 
-**Net Displacement:** $\Delta X = +6$, $\Delta Y = -12$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +6, ΔY = -12 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 21 — ROM $2C90 (53 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 21 — ROM $2C90 (53 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_21.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -1424,17 +1424,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 52 | `0x08` | Vec `08` | `-4` | `-2` | `-24` | `+12` |
 | 53 | `0x07` | Vec `07` | `+4` | `-2` | `-20` | `+10` |
 
-**Net Displacement:** $\Delta X = -20$, $\Delta Y = +10$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -20, ΔY = +10 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 22 — ROM $2CC8 (54 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 22 — ROM $2CC8 (54 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_22.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -1492,7 +1492,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 53 | `0x05` | Vec `05` | `+0` | `-4` | `-16` | `-16` |
 | 54 | `0x05` | Vec `05` | `+0` | `-4` | `-16` | `-20` |
 
-**Net Displacement:** $\Delta X = -16$, $\Delta Y = -20$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -16, ΔY = -20 — **Status:** `↗️ Open Trajectory`
 
 ---
 
@@ -1502,7 +1502,7 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1570,17 +1570,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x04` | Vec `04` | `-4` | `+0` | `+4` | `+4` |
 | 64 | `0x1B` | Vec `1B` | `-4` | `-4` | `+0` | `+0` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Closed Loop`
+**Net Displacement:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Closed Loop`
 
 ---
 
-### Pattern 24 — ROM $2D44 (64 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 24 — ROM $2D44 (64 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_24.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -1648,17 +1648,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 63 | `0x05` | Vec `05` | `+0` | `-4` | `+16` | `+4` |
 | 64 | `0x05` | Vec `05` | `+0` | `-4` | `+16` | `+0` |
 
-**Net Displacement:** $\Delta X = +16$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +16, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 25 — ROM $2D88 (52 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 25 — ROM $2D88 (52 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_25.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -1714,17 +1714,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 51 | `0x04` | Vec `04` | `-4` | `+0` | `-12` | `+4` |
 | 52 | `0x1B` | Vec `1B` | `-4` | `-4` | `-16` | `+0` |
 
-**Net Displacement:** $\Delta X = -16$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -16, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 26 — ROM $2DC0 (50 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 26 — ROM $2DC0 (50 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_26.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x14` | Vec `14` | `+4` | `+0` | `+4` | `+0` |
@@ -1778,17 +1778,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 49 | `0x0D` | Vec `0D` | `+0` | `+4` | `-16` | `+0` |
 | 50 | `0x0E` | Vec `0E` | `+0` | `+4` | `-16` | `+4` |
 
-**Net Displacement:** $\Delta X = -16$, $\Delta Y = +4$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -16, ΔY = +4 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 27 — ROM $2E00 (28 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 27 — ROM $2E00 (28 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_27.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1820,17 +1820,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 27 | `0x02` | Vec `02` | `-1` | `+0` | `+13` | `+16` |
 | 28 | `0x02` | Vec `02` | `-1` | `+0` | `+12` | `+16` |
 
-**Net Displacement:** $\Delta X = +12$, $\Delta Y = +16$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +12, ΔY = +16 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 28 — ROM $2E20 (28 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 28 — ROM $2E20 (28 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_28.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1862,17 +1862,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 27 | `0x05` | Vec `05` | `+0` | `-4` | `-5` | `+0` |
 | 28 | `0x01` | Vec `01` | `+1` | `+0` | `-4` | `+0` |
 
-**Net Displacement:** $\Delta X = -4$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -4, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 29 — ROM $2E40 (40 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 29 — ROM $2E40 (40 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_29.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1916,17 +1916,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 39 | `0x01` | Vec `01` | `+1` | `+0` | `-25` | `+16` |
 | 40 | `0x01` | Vec `01` | `+1` | `+0` | `-24` | `+16` |
 
-**Net Displacement:** $\Delta X = -24$, $\Delta Y = +16$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -24, ΔY = +16 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 30 — ROM $2E6C (32 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 30 — ROM $2E6C (32 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_30.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1962,17 +1962,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 31 | `0x08` | Vec `08` | `-4` | `-2` | `-4` | `+18` |
 | 32 | `0x07` | Vec `07` | `+4` | `-2` | `+0` | `+16` |
 
-**Net Displacement:** $\Delta X = +0$, $\Delta Y = +16$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +0, ΔY = +16 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 31 — ROM $2E90 (49 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 31 — ROM $2E90 (49 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_31.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x14` | Vec `14` | `+4` | `+0` | `+4` | `+0` |
@@ -2025,17 +2025,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 48 | `0x12` | Vec `12` | `-4` | `+0` | `+24` | `+2` |
 | 49 | `0x13` | Vec `13` | `-4` | `+0` | `+20` | `+2` |
 
-**Net Displacement:** $\Delta X = +20$, $\Delta Y = +2$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +20, ΔY = +2 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 32 — ROM $2EC4 (48 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 32 — ROM $2EC4 (48 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_32.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x10` | Vec `10` | `-4` | `+0` | `-4` | `+0` |
@@ -2087,17 +2087,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 47 | `0x07` | Vec `07` | `+4` | `-2` | `-28` | `+2` |
 | 48 | `0x07` | Vec `07` | `+4` | `-2` | `-24` | `+0` |
 
-**Net Displacement:** $\Delta X = -24$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -24, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 33 — ROM $2F00 (48 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 33 — ROM $2F00 (48 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_33.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -2149,17 +2149,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 47 | `0x08` | Vec `08` | `-4` | `-2` | `+28` | `+2` |
 | 48 | `0x08` | Vec `08` | `-4` | `-2` | `+24` | `+0` |
 
-**Net Displacement:** $\Delta X = +24$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +24, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 34 — ROM $2F34 (46 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 34 — ROM $2F34 (46 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_34.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -2209,17 +2209,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 45 | `0x07` | Vec `07` | `+4` | `-2` | `-20` | `+2` |
 | 46 | `0x07` | Vec `07` | `+4` | `-2` | `-16` | `+0` |
 
-**Net Displacement:** $\Delta X = -16$, $\Delta Y = +0$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = -16, ΔY = +0 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 35 — ROM $2F64 (50 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 35 — ROM $2F64 (50 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_35.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -2273,17 +2273,17 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 49 | `0x08` | Vec `08` | `-4` | `-2` | `+44` | `+30` |
 | 50 | `0x08` | Vec `08` | `-4` | `-2` | `+40` | `+28` |
 
-**Net Displacement:** $\Delta X = +40$, $\Delta Y = +28$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +40, ΔY = +28 — **Status:** `↗️ Open Trajectory`
 
 ---
 
-### Pattern 36 — ROM $2FA0 (94 Bytes) — ↗️ Open Trajectory (Open Trajectoryory)
+### Pattern 36 — ROM $2FA0 (94 Bytes) — ↗️ Open Trajectory
 
 ![Pattern](../cluster_b/pattern_36.svg)
 
 #### **Step-by-Step Coordinate Table on Screen Grid**
 
-| Step # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulative $X$ | Cumulative $Y$ |
+| Step # | Byte | Vector Index | ΔX | ΔY | Cumulative $X$ | Cumulative $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -2381,6 +2381,6 @@ In the *Phoenix* arcade hardware, the screen consists of a **32x32 tile grid (25
 | 93 | `0x08` | Vec `08` | `-4` | `-2` | `+43` | `+16` |
 | 94 | `0x08` | Vec `08` | `-4` | `-2` | `+39` | `+14` |
 
-**Net Displacement:** $\Delta X = +39$, $\Delta Y = +14$ — **Status:** `↗️ Open Trajectory (Open Trajectoryory)`
+**Net Displacement:** ΔX = +39, ΔY = +14 — **Status:** `↗️ Open Trajectory`
 
 ---

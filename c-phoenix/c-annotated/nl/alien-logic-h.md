@@ -10,4 +10,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`alien_logic.h`](../
 - `handle_animations_for_killed_aliens(void)`: Werkt actieve explosieslots en bonusscore-animaties bij.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`alien_logic.c`](../../alien_logic.c) $\rightarrow$ [`alien-logic.md`](alien-logic.md)
+* **Overeenkomstige C-implementatie:** [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](alien-logic.md)

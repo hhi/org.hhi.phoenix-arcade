@@ -11,4 +11,4 @@ This document contains the annotated header declarations for [`weapon_collision.
 - `check_player_ship_collision(void)`: Direct collision scan of aliens against the player ship or force field.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`weapon_collision.c`](../../weapon_collision.c) $\rightarrow$ [`weapon-collision.md`](weapon-collision.md)
+* **Corresponding C Implementation:** [`weapon_collision.c`](../../weapon_collision.c) → [`weapon-collision.md`](weapon-collision.md)

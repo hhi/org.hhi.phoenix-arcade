@@ -9,4 +9,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`bird_logic.h`](../.
 - `bird_flight_path(void)`: Berekent vogel-trajecten en bewegingen.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`bird_logic.c`](../../bird_logic.c) $\rightarrow$ [`bird-logic.md`](bird-logic.md)
+* **Overeenkomstige C-implementatie:** [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](bird-logic.md)

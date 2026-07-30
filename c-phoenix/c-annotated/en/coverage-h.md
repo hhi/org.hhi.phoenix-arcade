@@ -8,4 +8,4 @@ This document contains the annotated header declarations for [`coverage.h`](../.
 - `coverage_hit(const char* func)`: Execution coverage logger.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`coverage.c`](../../coverage.c) $\rightarrow$ [`coverage.md`](coverage.md)
+* **Corresponding C Implementation:** [`coverage.c`](../../coverage.c) → [`coverage.md`](coverage.md)

@@ -10,4 +10,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`attract_mode.h`](..
 - `clear_fore_and_background(void)`: Wist het scherm en initialiseert de attract-mode variabelen.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`attract_mode.c`](../../attract_mode.c) $\rightarrow$ [`attract-mode.md`](attract-mode.md)
+* **Overeenkomstige C-implementatie:** [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](attract-mode.md)

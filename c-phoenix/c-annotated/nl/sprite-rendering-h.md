@@ -10,4 +10,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`sprite_rendering.h`
 - `bit3_controller(...)`: Tekent nieuwe VRAM-tegels.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`sprite_rendering.c`](../../sprite_rendering.c) $\rightarrow$ [`sprite-rendering.md`](sprite-rendering.md)
+* **Overeenkomstige C-implementatie:** [`sprite_rendering.c`](../../sprite_rendering.c) → [`sprite-rendering.md`](sprite-rendering.md)

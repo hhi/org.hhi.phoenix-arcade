@@ -10,4 +10,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`mame_lofi_resampler
 - `mame_lofi_resampler_next(...)`: Berekent de volgende hersamplede waarde.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c) $\rightarrow$ [`mame-lofi-resampler.md`](mame-lofi-resampler.md)
+* **Overeenkomstige C-implementatie:** [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c) → [`mame-lofi-resampler.md`](mame-lofi-resampler.md)

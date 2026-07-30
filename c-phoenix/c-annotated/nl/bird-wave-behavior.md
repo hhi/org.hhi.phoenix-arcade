@@ -1,6 +1,6 @@
 # Bird Wave Behavior (`bird_wave_behavior.c`) - C-Annotated Knowledge Graph Documentatie
 
-Dit document bevat een geannoteerde analyse van alle functies in [`bird_wave_behavior.c`](../../bird_wave_behavior.c). Deze module implementeert de complexe vliegpatronen, de groeitransformaties (ei $\rightarrow$ kleine vogel $\rightarrow$ grote vogel), duikvluchtaanvallen en botsingen met de speler voor de vogel-levels.
+Dit document bevat een geannoteerde analyse van alle functies in [`bird_wave_behavior.c`](../../bird_wave_behavior.c). Deze module implementeert de complexe vliegpatronen, de groeitransformaties (ei → kleine vogel → grote vogel), duikvluchtaanvallen en botsingen met de speler voor de vogel-levels.
 
 ---
 
@@ -68,8 +68,8 @@ De functies `l35e0_descend` (Z80 ROM: `$35E0–$3624`) en `l3628_climb` (Z80 ROM
 ### `l36d2_grow`, `l36ea_grow` & `l370a_grow_or_dive`
 #### **Beschrijving**
 Deze functies (Z80 ROM: `$36D2–$373E`) verzorgen het opgroeien van een vogel zodra zijn ontwikkeltimer `BM(4)` 0 bereikt:
-- **Ei $\rightarrow$ Kleine Vogel:** `l36d2_grow` initialiseert het eerste kleine vogelstadium.
-- **Kleine Vogel $\rightarrow$ Volgroeide Vogel:** `l36ea_grow` promoveert de vogel naar een volgroeide vogel.
+- **Ei → Kleine Vogel:** `l36d2_grow` initialiseert het eerste kleine vogelstadium.
+- **Kleine Vogel → Volgroeide Vogel:** `l36ea_grow` promoveert de vogel naar een volgroeide vogel.
 - **Duikvlucht-transformatie:** `l370a_grow_or_dive` controleert via een willekeurige poort (`state.M436F`) of de vogel direct in een agressieve duikvlucht transformeert.
 
 ---

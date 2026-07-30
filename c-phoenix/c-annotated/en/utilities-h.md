@@ -9,4 +9,4 @@ This document contains the annotated header declarations for [`utilities.h`](../
 - `mem_write(uint16_t addr, uint8_t val)`: Memory write wrapper.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`utilities.c`](../../utilities.c) $\rightarrow$ [`utilities.md`](utilities.md)
+* **Corresponding C Implementation:** [`utilities.c`](../../utilities.c) → [`utilities.md`](utilities.md)

@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`weapon_collision.h`
 - `check_player_ship_collision(void)`: Directe botsings-scan van aliens tegen het spelerschip/krachtveld.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`weapon_collision.c`](../../weapon_collision.c) $\rightarrow$ [`weapon-collision.md`](weapon-collision.md)
+* **Overeenkomstige C-implementatie:** [`weapon_collision.c`](../../weapon_collision.c) → [`weapon-collision.md`](weapon-collision.md)

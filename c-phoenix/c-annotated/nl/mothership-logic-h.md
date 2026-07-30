@@ -10,4 +10,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`mothership_logic.h`
 - `mothership_core_hit_check(uint16_t de)`: Berekent de bonusscore bij een fatale kern-treffer.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`mothership_logic.c`](../../mothership_logic.c) $\rightarrow$ [`mothership-logic.md`](mothership-logic.md)
+* **Overeenkomstige C-implementatie:** [`mothership_logic.c`](../../mothership_logic.c) → [`mothership-logic.md`](mothership-logic.md)

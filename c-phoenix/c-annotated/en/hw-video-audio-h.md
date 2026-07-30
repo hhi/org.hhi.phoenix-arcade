@@ -8,4 +8,4 @@ This document contains the annotated header declarations for [`hw_video_audio.h`
 - `vblank_interrupt_handler(void)`: VBlank interrupt routine (60Hz).
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`hw_video_audio.c`](../../hw_video_audio.c) $\rightarrow$ [`hw-video-audio.md`](hw-video-audio.md)
+* **Corresponding C Implementation:** [`hw_video_audio.c`](../../hw_video_audio.c) → [`hw-video-audio.md`](hw-video-audio.md)

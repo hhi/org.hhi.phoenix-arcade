@@ -10,4 +10,4 @@ This document contains the annotated header declarations for [`alien_logic.h`](.
 - `handle_animations_for_killed_aliens(void)`: Updates active explosion slots and bonus score animations.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`alien_logic.c`](../../alien_logic.c) $\rightarrow$ [`alien-logic.md`](alien-logic.md)
+* **Corresponding C Implementation:** [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](alien-logic.md)

@@ -12,4 +12,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`utilities.h`](../..
 - `mem_read(uint16_t addr)` / `mem_write(uint16_t addr, uint8_t val)`: RAM lees-/schrijfbeveiliging.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`utilities.c`](../../utilities.c) $\rightarrow$ [`utilities.md`](utilities.md)
+* **Overeenkomstige C-implementatie:** [`utilities.c`](../../utilities.c) → [`utilities.md`](utilities.md)

@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`tms36xx.h`](../../t
 - `tms36xx_render_internal_sample(TMS36XX* tms)`: Rendert 1 interne sample op 23.8kHz.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`tms36xx.c`](../../tms36xx.c) $\rightarrow$ [`tms36xx.md`](tms36xx.md)
+* **Overeenkomstige C-implementatie:** [`tms36xx.c`](../../tms36xx.c) → [`tms36xx.md`](tms36xx.md)

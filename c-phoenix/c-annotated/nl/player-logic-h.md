@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`player_logic.h`](..
 - `draw_shields(void)`: Rendering van het speler-krachtveld.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`player_logic.c`](../../player_logic.c) $\rightarrow$ [`player-logic.md`](player-logic.md)
+* **Overeenkomstige C-implementatie:** [`player_logic.c`](../../player_logic.c) → [`player-logic.md`](player-logic.md)

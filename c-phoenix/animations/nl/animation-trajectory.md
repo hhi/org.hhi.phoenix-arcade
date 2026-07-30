@@ -49,11 +49,11 @@ Onderstaande geanimeerde SVG toont de gelijktijdige werking van het hele Arcade 
 
 #### **Knowledge Graph Koppelingen**
 * **Relevante C-bestanden:**
-  - [`phoenix_tables.c`](../../phoenix_tables.c) $\rightarrow$ [`phoenix-tables.md`](../../c-annotated/nl/phoenix-tables.md)
-  - [`alien_logic.c`](../../alien_logic.c) $\rightarrow$ [`alien-logic.md`](../../c-annotated/nl/alien-logic.md)
-  - [`bird_logic.c`](../../bird_logic.c) $\rightarrow$ [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) $\rightarrow$ [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
-  - [`attract_mode.c`](../../attract_mode.c) $\rightarrow$ [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)
+  - [`phoenix_tables.c`](../../phoenix_tables.c) → [`phoenix-tables.md`](../../c-annotated/nl/phoenix-tables.md)
+  - [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](../../c-annotated/nl/alien-logic.md)
+  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
+  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
+  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)
 
 ---
 
@@ -63,8 +63,8 @@ De vector-integratie van de hieronder behandelde ROM-patronen onderscheidt **twe
 
 | Eigenschap | 🔄 Gesloten Lus Patronen (Closed Loops) | ↗️ Open Traject Patronen (Open Trajectories) |
 |---|---|---|
-| **Netto Verplaatsing** | $\sum \Delta X = 0 \quad \text{en} \quad \sum \Delta Y = 0$ | $\sum \Delta X \neq 0 \quad \text{of} \quad \sum \Delta Y \neq 0$ |
-| **Vorm & Traject** | De entiteit verlaat zijn formatiepositie $(X_0, Y_0)$, maakt een cirkel-, ovaal- of 8-vormige lus, en **keert exact terug op $(X_0, Y_0)$**. | De entiteit voert een verplaatsing of breakout-sprint uit over het scherm (bijv. naar beneden of schuin zijwaarts). |
+| **Netto Verplaatsing** | ΣΔX = 0 en ΣΔY = 0 | ΣΔX ≠ 0 of ΣΔY ≠ 0 |
+| **Vorm & Traject** | De entiteit verlaat zijn formatiepositie (X0, Y0), maakt een cirkel-, ovaal- of 8-vormige lus, en **keert exact terug op (X0, Y0)**. | De entiteit voert een verplaatsing of breakout-sprint uit over het scherm (bijv. naar beneden of schuin zijwaarts). |
 | **Typische Patronen** | Cluster A Patronen `01`, `02`, `07`, `10`, `11`, `12` & Cluster B Patroon `23`. | Cluster A Patronen `03`, `04`, `05`, `06`, `08`, `09`, `13–18` & Cluster B Patronen `19–22`, `24–36`. |
 | **Einde-Lus Verwerking** | Bij de `0x00` terminator start het patroon naadloos opnieuw vanaf het begin op hetzelfde ankeradres. | Bij de `0x00` terminator of schermrand activeert de game-engine een breakout-herpositionering ([`l3028`](../../c-annotated/nl/alien-logic.md#l3028)) of her-oriëntatie ([`l3672_aim`](../../c-annotated/nl/bird-wave-behavior.md#l3672_aim)). |
 
@@ -102,7 +102,7 @@ De indeling in dit document volgt exact de 4 fysieke game-entiteit subsystemen v
 ### **Gedetailleerde Analyse Cluster A**
 - **ROM Adresbereik:** `$1000–$13FF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L73).
 - **Structurele Opbouw:** 18 gesloten-lus & open traject patronen (`T1020` t/m `T13D0`), elk bestaand uit een reeks van vector-indices afgesloten met `0x00` en opgevuld met `0xFF`.
-- **Gesloten vs Open:** Patronen `01`, `02`, `07`, `10`, `11`, `12` zijn **Gesloten Lussen** ($\sum \Delta = (0,0)$). Patronen `03`, `04`, `05`, `06`, `08`, `09`, `13–18` zijn **Open Trajecten**.
+- **Gesloten vs Open:** Patronen `01`, `02`, `07`, `10`, `11`, `12` zijn **Gesloten Lussen** (ΣΔ = (0,0)). Patronen `03`, `04`, `05`, `06`, `08`, `09`, `13–18` zijn **Open Trajecten**.
 
 ### **Overzichts-animatie Cluster A**
 ![Alien Cluster A Overzichts-Animatie](../07_alien_closed_loop_cluster_a.svg)
@@ -161,7 +161,7 @@ De indeling in dit document volgt exact de 4 fysieke game-entiteit subsystemen v
 ### **Gedetailleerde Analyse Cluster B**
 - **ROM Adresbereik:** `$2C00–$2FFF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L423).
 - **Structurele Opbouw:** 18 patronen (patronen 19 t/m 36) voornamelijk bestaand uit open breakout-trajecten voor losbrekende aliens en moederschip-escortwaves.
-- **Gesloten vs Open:** Patroon `23` is een **Gesloten Lus** ($\sum \Delta = (0,0)$). Patronen `19–22`, `24–36` zijn **Open Trajecten** met netto verplaatsingen over het scherm.
+- **Gesloten vs Open:** Patroon `23` is een **Gesloten Lus** (ΣΔ = (0,0)). Patronen `19–22`, `24–36` zijn **Open Trajecten** met netto verplaatsingen over het scherm.
 
 ### **Overzichts-animatie Cluster B**
 ![Alien Cluster B Overzichts-Animatie](../08_alien_breakout_cluster_b.svg)

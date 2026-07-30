@@ -9,4 +9,4 @@ This document contains the annotated header declarations for [`bird_logic.h`](..
 - `bird_flight_path(void)`: Vector calculation for diving bird attacks.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`bird_logic.c`](../../bird_logic.c) $\rightarrow$ [`bird-logic.md`](bird-logic.md)
+* **Corresponding C Implementation:** [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](bird-logic.md)

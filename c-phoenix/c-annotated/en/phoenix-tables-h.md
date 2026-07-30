@@ -8,4 +8,4 @@ This document contains the annotated header declarations for [`phoenix_tables.h`
 - Declarations for ROM tables including alien movement vectors, hit windows, and bird AI scripts.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`phoenix_tables.c`](../../phoenix_tables.c) $\rightarrow$ [`phoenix-tables.md`](phoenix-tables.md)
+* **Corresponding C Implementation:** [`phoenix_tables.c`](../../phoenix_tables.c) → [`phoenix-tables.md`](phoenix-tables.md)

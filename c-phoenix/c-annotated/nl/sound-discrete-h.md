@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`sound_discrete.h`](
 - `sound_discrete_noise(...)`: Genereert ruis voor explosie-effecten.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`sound_discrete.c`](../../sound_discrete.c) $\rightarrow$ [`sound-discrete.md`](sound-discrete.md)
+* **Overeenkomstige C-implementatie:** [`sound_discrete.c`](../../sound_discrete.c) → [`sound-discrete.md`](sound-discrete.md)

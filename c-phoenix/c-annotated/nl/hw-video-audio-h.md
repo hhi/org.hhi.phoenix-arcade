@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`hw_video_audio.h`](
 - `update_lives_screen(void)`: Ververst de levensweergave op het scherm.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`hw_video_audio.c`](../../hw_video_audio.c) $\rightarrow$ [`hw-video-audio.md`](hw-video-audio.md)
+* **Overeenkomstige C-implementatie:** [`hw_video_audio.c`](../../hw_video_audio.c) → [`hw-video-audio.md`](hw-video-audio.md)

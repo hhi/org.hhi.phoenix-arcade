@@ -8,4 +8,4 @@ This document contains the annotated header declarations for [`state_init.h`](..
 - `state_init_start_round(void)`: Level startup and round initialization routine.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`state_init.c`](../../state_init.c) $\rightarrow$ [`state-init.md`](state-init.md)
+* **Corresponding C Implementation:** [`state_init.c`](../../state_init.c) → [`state-init.md`](state-init.md)

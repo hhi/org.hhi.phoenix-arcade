@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`sound.h`](../../sou
 - `sound_render_frame(int16_t* out)`: Rendert 1 frame audio (ca. 735 samples bij 44.1kHz).
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`sound.c`](../../sound.c) $\rightarrow$ [`sound.md`](sound.md)
+* **Overeenkomstige C-implementatie:** [`sound.c`](../../sound.c) → [`sound.md`](sound.md)

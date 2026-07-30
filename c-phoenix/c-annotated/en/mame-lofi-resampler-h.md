@@ -8,4 +8,4 @@ This document contains the annotated header declarations for [`mame_lofi_resampl
 - `resample_cubic(void)`: 4-point cubic polynomial resampler for audio.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c) $\rightarrow$ [`mame-lofi-resampler.md`](mame-lofi-resampler.md)
+* **Corresponding C Implementation:** [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c) → [`mame-lofi-resampler.md`](mame-lofi-resampler.md)

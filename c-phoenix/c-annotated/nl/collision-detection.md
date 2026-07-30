@@ -39,7 +39,7 @@ collision_detection_for_birds();
 #### **Stap-voor-stap werking**
 1. **Kogelcontrole:** Breek af als de spelerkogel inactief is (`PlayerBulletState & 0x08 == 0`).
 2. **VRAM-cel berekenen:** Houdt rekening met de verticale scroll-positie van de vogel-laag (`state.B4BD2`) om de VRAM-cel op te zoeken.
-3. **Vogel-tegel drempel:** Controleert of de tegelwaarde $\ge 0x90$ is (tegelwaarden onder 0x90 zijn achtergrond).
+3. **Vogel-tegel drempel:** Controleert of de tegelwaarde ≥ 0x90 is (tegelwaarden onder 0x90 zijn achtergrond).
 4. **Pixelmasker:** Raadpleegt `phoenix_bullet_pixel_masks` op basis van de exacte X-pixeloffset binnen de cel.
 5. **Inslag verwerken:** Roept [`l3844_small_bird_hit`](#l3844_small_bird_hit) aan voor kleine vogels en [`l38bc_large_hit`](#l38bc_large_hit) voor grote vogels/eieren.
 

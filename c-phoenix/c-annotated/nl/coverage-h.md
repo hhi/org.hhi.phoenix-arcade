@@ -11,4 +11,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`coverage.h`](../../
 - `coverage_observe_frame(int frame, const PhoenixState* s)`: Meting per frame.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`coverage.c`](../../coverage.c) $\rightarrow$ [`coverage.md`](coverage.md)
+* **Overeenkomstige C-implementatie:** [`coverage.c`](../../coverage.c) → [`coverage.md`](coverage.md)

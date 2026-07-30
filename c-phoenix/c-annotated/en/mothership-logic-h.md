@@ -9,4 +9,4 @@ This document contains the annotated header declarations for [`mothership_logic.
 - `erase_mothership(void)`: Erases the mothership graphics from VRAM.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`mothership_logic.c`](../../mothership_logic.c) $\rightarrow$ [`mothership-logic.md`](mothership-logic.md)
+* **Corresponding C Implementation:** [`mothership_logic.c`](../../mothership_logic.c) → [`mothership-logic.md`](mothership-logic.md)

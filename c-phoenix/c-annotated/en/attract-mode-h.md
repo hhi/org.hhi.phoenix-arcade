@@ -10,4 +10,4 @@ This document contains the annotated header declarations for [`attract_mode.h`](
 - `draw_intro_bird_animation_frame(void)`: Intro bird animation renderer.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`attract_mode.c`](../../attract_mode.c) $\rightarrow$ [`attract-mode.md`](attract-mode.md)
+* **Corresponding C Implementation:** [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](attract-mode.md)

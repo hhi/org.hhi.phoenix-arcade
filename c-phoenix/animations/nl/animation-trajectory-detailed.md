@@ -17,7 +17,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 - **Origine (0, 0):** Links-bovenin het scherm.
 - **X-as (0 t/m 255):** Horizontale positie van links naar rechts.
 - **Y-as (0 t/m 223):** Verticale positie van boven naar beneden.
-- **Delta Step ($\Delta X, \Delta Y$):** Paarsgewijze verplaatsing uit `phoenix_alien_direction_vectors` (ROM `$1700–$173F`).
+- **Delta Step (ΔX, ΔY):** Paarsgewijze verplaatsing uit `phoenix_alien_direction_vectors` (ROM `$1700–$173F`).
 
 ---
 
@@ -29,7 +29,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x10` | Vec `10` | `-4` | `+0` | `-4` | `+0` |
@@ -97,7 +97,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x12` | Vec `12` | `-4` | `+0` | `+4` | `+0` |
 | 64 | `0x13` | Vec `13` | `-4` | `+0` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -107,7 +107,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -175,7 +175,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x18` | Vec `18` | `+4` | `-4` | `-4` | `+4` |
 | 64 | `0x1F` | Vec `1F` | `+4` | `-4` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -185,7 +185,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x10` | Vec `10` | `-4` | `+0` | `-4` | `+0` |
@@ -229,7 +229,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 39 | `0x12` | Vec `12` | `-4` | `+0` | `-20` | `+0` |
 | 40 | `0x13` | Vec `13` | `-4` | `+0` | `-24` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -24$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -24, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -239,7 +239,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -283,7 +283,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 39 | `0x04` | Vec `04` | `-4` | `+0` | `-20` | `+4` |
 | 40 | `0x1B` | Vec `1B` | `-4` | `-4` | `-24` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -24$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -24, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -293,7 +293,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -340,7 +340,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 42 | `0x05` | Vec `05` | `+0` | `-4` | `+4` | `+6` |
 | 43 | `0x05` | Vec `05` | `+0` | `-4` | `+4` | `+2` |
 
-**Netto Verplaatsing:** $\Delta X = +4$, $\Delta Y = +2$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +4, ΔY = +2 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -350,7 +350,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -397,7 +397,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 42 | `0x05` | Vec `05` | `+0` | `-4` | `-4` | `+6` |
 | 43 | `0x05` | Vec `05` | `+0` | `-4` | `-4` | `+2` |
 
-**Netto Verplaatsing:** $\Delta X = -4$, $\Delta Y = +2$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -4, ΔY = +2 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -407,7 +407,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -475,7 +475,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x1A` | Vec `1A` | `-4` | `+4` | `+4` | `+4` |
 | 64 | `0x1B` | Vec `1B` | `-4` | `-4` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -485,7 +485,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -529,7 +529,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 39 | `0x18` | Vec `18` | `+4` | `-4` | `+20` | `+4` |
 | 40 | `0x1F` | Vec `1F` | `+4` | `-4` | `+24` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +24$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +24, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -539,7 +539,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -588,7 +588,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 44 | `0x05` | Vec `05` | `+0` | `-4` | `-12` | `+2` |
 | 45 | `0x05` | Vec `05` | `+0` | `-4` | `-12` | `-2` |
 
-**Netto Verplaatsing:** $\Delta X = -12$, $\Delta Y = -2$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -12, ΔY = -2 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -598,7 +598,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -666,7 +666,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x04` | Vec `04` | `-4` | `+0` | `+4` | `+4` |
 | 64 | `0x1B` | Vec `1B` | `-4` | `-4` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -676,7 +676,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x18` | Vec `18` | `+4` | `-4` | `+4` | `-4` |
@@ -744,7 +744,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x1E` | Vec `1E` | `+4` | `+4` | `-4` | `+4` |
 | 64 | `0x1F` | Vec `1F` | `+4` | `-4` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -754,7 +754,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -822,7 +822,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `+4` |
 | 64 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -832,7 +832,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x18` | Vec `18` | `+4` | `-4` | `+4` | `-4` |
@@ -889,7 +889,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 52 | `0x18` | Vec `18` | `+4` | `-4` | `+16` | `+26` |
 | 53 | `0x1F` | Vec `1F` | `+4` | `-4` | `+20` | `+22` |
 
-**Netto Verplaatsing:** $\Delta X = +20$, $\Delta Y = +22$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +20, ΔY = +22 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -899,7 +899,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -939,7 +939,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 35 | `0x12` | Vec `12` | `-4` | `+0` | `+4` | `+4` |
 | 36 | `0x13` | Vec `13` | `-4` | `+0` | `+0` | `+4` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +4$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +4 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -949,7 +949,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -991,7 +991,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 37 | `0x07` | Vec `07` | `+4` | `-2` | `-12` | `+2` |
 | 38 | `0x07` | Vec `07` | `+4` | `-2` | `-8` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -8$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -8, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1001,7 +1001,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -1074,7 +1074,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 68 | `0x12` | Vec `12` | `-4` | `+0` | `-4` | `+6` |
 | 69 | `0x13` | Vec `13` | `-4` | `+0` | `-8` | `+6` |
 
-**Netto Verplaatsing:** $\Delta X = -8$, $\Delta Y = +6$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -8, ΔY = +6 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1084,7 +1084,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1137,7 +1137,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 48 | `0x07` | Vec `07` | `+4` | `-2` | `-32` | `+32` |
 | 49 | `0x07` | Vec `07` | `+4` | `-2` | `-28` | `+30` |
 
-**Netto Verplaatsing:** $\Delta X = -28$, $\Delta Y = +30$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -28, ΔY = +30 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1147,7 +1147,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x14` | Vec `14` | `+4` | `+0` | `+4` | `+0` |
@@ -1194,7 +1194,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 42 | `0x05` | Vec `05` | `+0` | `-4` | `+20` | `+2` |
 | 43 | `0x05` | Vec `05` | `+0` | `-4` | `+20` | `-2` |
 
-**Netto Verplaatsing:** $\Delta X = +20$, $\Delta Y = -2$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +20, ΔY = -2 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1206,7 +1206,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1258,7 +1258,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 47 | `0x07` | Vec `07` | `+4` | `-2` | `-12` | `+6` |
 | 48 | `0x07` | Vec `07` | `+4` | `-2` | `-8` | `+4` |
 
-**Netto Verplaatsing:** $\Delta X = -8$, $\Delta Y = +4$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -8, ΔY = +4 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1268,7 +1268,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -1358,7 +1358,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 85 | `0x07` | Vec `07` | `+4` | `-2` | `+2` | `-10` |
 | 86 | `0x07` | Vec `07` | `+4` | `-2` | `+6` | `-12` |
 
-**Netto Verplaatsing:** $\Delta X = +6$, $\Delta Y = -12$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +6, ΔY = -12 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1368,7 +1368,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -1425,7 +1425,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 52 | `0x08` | Vec `08` | `-4` | `-2` | `-24` | `+12` |
 | 53 | `0x07` | Vec `07` | `+4` | `-2` | `-20` | `+10` |
 
-**Netto Verplaatsing:** $\Delta X = -20$, $\Delta Y = +10$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -20, ΔY = +10 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1435,7 +1435,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -1493,7 +1493,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 53 | `0x05` | Vec `05` | `+0` | `-4` | `-16` | `-16` |
 | 54 | `0x05` | Vec `05` | `+0` | `-4` | `-16` | `-20` |
 
-**Netto Verplaatsing:** $\Delta X = -16$, $\Delta Y = -20$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -16, ΔY = -20 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1503,7 +1503,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1571,7 +1571,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x04` | Vec `04` | `-4` | `+0` | `+4` | `+4` |
 | 64 | `0x1B` | Vec `1B` | `-4` | `-4` | `+0` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +0$ — **Status:** `🔄 Gesloten Lus (Closed Loop)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +0 — **Status:** `🔄 Gesloten Lus (Closed Loop)`
 
 ---
 
@@ -1581,7 +1581,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -1649,7 +1649,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 63 | `0x05` | Vec `05` | `+0` | `-4` | `+16` | `+4` |
 | 64 | `0x05` | Vec `05` | `+0` | `-4` | `+16` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +16$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +16, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1659,7 +1659,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x1C` | Vec `1C` | `-4` | `-4` | `-4` | `-4` |
@@ -1715,7 +1715,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 51 | `0x04` | Vec `04` | `-4` | `+0` | `-12` | `+4` |
 | 52 | `0x1B` | Vec `1B` | `-4` | `-4` | `-16` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -16$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -16, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1725,7 +1725,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x14` | Vec `14` | `+4` | `+0` | `+4` | `+0` |
@@ -1779,7 +1779,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 49 | `0x0D` | Vec `0D` | `+0` | `+4` | `-16` | `+0` |
 | 50 | `0x0E` | Vec `0E` | `+0` | `+4` | `-16` | `+4` |
 
-**Netto Verplaatsing:** $\Delta X = -16$, $\Delta Y = +4$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -16, ΔY = +4 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1789,7 +1789,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1821,7 +1821,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 27 | `0x02` | Vec `02` | `-1` | `+0` | `+13` | `+16` |
 | 28 | `0x02` | Vec `02` | `-1` | `+0` | `+12` | `+16` |
 
-**Netto Verplaatsing:** $\Delta X = +12$, $\Delta Y = +16$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +12, ΔY = +16 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1831,7 +1831,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1863,7 +1863,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 27 | `0x05` | Vec `05` | `+0` | `-4` | `-5` | `+0` |
 | 28 | `0x01` | Vec `01` | `+1` | `+0` | `-4` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -4$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -4, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1873,7 +1873,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1917,7 +1917,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 39 | `0x01` | Vec `01` | `+1` | `+0` | `-25` | `+16` |
 | 40 | `0x01` | Vec `01` | `+1` | `+0` | `-24` | `+16` |
 
-**Netto Verplaatsing:** $\Delta X = -24$, $\Delta Y = +16$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -24, ΔY = +16 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1927,7 +1927,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -1963,7 +1963,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 31 | `0x08` | Vec `08` | `-4` | `-2` | `-4` | `+18` |
 | 32 | `0x07` | Vec `07` | `+4` | `-2` | `+0` | `+16` |
 
-**Netto Verplaatsing:** $\Delta X = +0$, $\Delta Y = +16$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +0, ΔY = +16 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -1973,7 +1973,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x14` | Vec `14` | `+4` | `+0` | `+4` | `+0` |
@@ -2026,7 +2026,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 48 | `0x12` | Vec `12` | `-4` | `+0` | `+24` | `+2` |
 | 49 | `0x13` | Vec `13` | `-4` | `+0` | `+20` | `+2` |
 
-**Netto Verplaatsing:** $\Delta X = +20$, $\Delta Y = +2$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +20, ΔY = +2 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -2036,7 +2036,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x10` | Vec `10` | `-4` | `+0` | `-4` | `+0` |
@@ -2088,7 +2088,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 47 | `0x07` | Vec `07` | `+4` | `-2` | `-28` | `+2` |
 | 48 | `0x07` | Vec `07` | `+4` | `-2` | `-24` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -24$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -24, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -2098,7 +2098,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -2150,7 +2150,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 47 | `0x08` | Vec `08` | `-4` | `-2` | `+28` | `+2` |
 | 48 | `0x08` | Vec `08` | `-4` | `-2` | `+24` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = +24$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +24, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -2160,7 +2160,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -2210,7 +2210,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 45 | `0x07` | Vec `07` | `+4` | `-2` | `-20` | `+2` |
 | 46 | `0x07` | Vec `07` | `+4` | `-2` | `-16` | `+0` |
 
-**Netto Verplaatsing:** $\Delta X = -16$, $\Delta Y = +0$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = -16, ΔY = +0 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -2220,7 +2220,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x0B` | Vec `0B` | `+0` | `+4` | `+0` | `+4` |
@@ -2274,7 +2274,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 49 | `0x08` | Vec `08` | `-4` | `-2` | `+44` | `+30` |
 | 50 | `0x08` | Vec `08` | `-4` | `-2` | `+40` | `+28` |
 
-**Netto Verplaatsing:** $\Delta X = +40$, $\Delta Y = +28$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +40, ΔY = +28 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 
@@ -2284,7 +2284,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 
 #### **Stap-voor-Stap Coördinatentabel op het Scherm-Grid**
 
-| Stap # | Byte | Vector Index | $\Delta X$ | $\Delta Y$ | Cumulatief $X$ | Cumulatief $Y$ |
+| Stap # | Byte | Vector Index | ΔX | ΔY | Cumulatief $X$ | Cumulatief $Y$ |
 |---|---|---|---|---|---|---|
 | 0 (Start) | `0x00` | - | `0` | `0` | `0` | `0` |
 | 1 | `0x05` | Vec `05` | `+0` | `-4` | `+0` | `-4` |
@@ -2382,7 +2382,7 @@ In de *Phoenix* arcadehardware is het scherm opgebouwd uit een **32x32 tegel-gri
 | 93 | `0x08` | Vec `08` | `-4` | `-2` | `+43` | `+16` |
 | 94 | `0x08` | Vec `08` | `-4` | `-2` | `+39` | `+14` |
 
-**Netto Verplaatsing:** $\Delta X = +39$, $\Delta Y = +14$ — **Status:** `↗️ Open Traject (Open Trajectory)`
+**Netto Verplaatsing:** ΔX = +39, ΔY = +14 — **Status:** `↗️ Open Traject (Open Trajectory)`
 
 ---
 

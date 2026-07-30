@@ -8,4 +8,4 @@ This document contains the annotated header declarations for [`game_state_machin
 - `game_state_machine(void)`: Main game state machine loop function.
 
 #### **Knowledge Graph Links**
-* **Corresponding C Implementation:** [`game_state_machine.c`](../../game_state_machine.c) $\rightarrow$ [`game-state-machine.md`](game-state-machine.md)
+* **Corresponding C Implementation:** [`game_state_machine.c`](../../game_state_machine.c) → [`game-state-machine.md`](game-state-machine.md)

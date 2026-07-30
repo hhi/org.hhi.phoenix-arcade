@@ -21,11 +21,11 @@ In levels 5 and 7 of *Phoenix*, birds are controlled via a dynamic state machine
 
 #### **Knowledge Graph Links**
 * **Relevant C Source Files:**
-  - [`bird_logic.c`](../../bird_logic.c) $\rightarrow$ [`bird-logic.md`](../../c-annotated/en/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) $\rightarrow$ [`bird-wave-behavior.md`](../../c-annotated/en/bird-wave-behavior.md)
-  - [`birds_vertical_movement.c`](../../birds_vertical_movement.c) $\rightarrow$ [`birds-vertical-movement.md`](../../c-annotated/en/birds-vertical-movement.md)
-  - [`collision_detection.c`](../../collision_detection.c) $\rightarrow$ [`collision-detection.md`](../../c-annotated/en/collision-detection.md)
-  - [`attract_mode.c`](../../attract_mode.c) $\rightarrow$ [`attract-mode.md`](../../c-annotated/en/attract-mode.md)
+  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/en/bird-logic.md)
+  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/en/bird-wave-behavior.md)
+  - [`birds_vertical_movement.c`](../../birds_vertical_movement.c) → [`birds-vertical-movement.md`](../../c-annotated/en/birds-vertical-movement.md)
+  - [`collision_detection.c`](../../collision_detection.c) → [`collision-detection.md`](../../c-annotated/en/collision-detection.md)
+  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/en/attract-mode.md)
 
 ---
 

@@ -10,4 +10,4 @@ Dit document bevat de geannoteerde header-declaraties voor [`state_init.h`](../.
 - `get_player_lives_from_dip(void)`: Leest het aantal levens uit de DIP-switches.
 
 #### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`state_init.c`](../../state_init.c) $\rightarrow$ [`state-init.md`](state-init.md)
+* **Overeenkomstige C-implementatie:** [`state_init.c`](../../state_init.c) → [`state-init.md`](state-init.md)

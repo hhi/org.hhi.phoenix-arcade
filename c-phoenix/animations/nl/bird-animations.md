@@ -21,11 +21,11 @@ In levels 5 en 7 van *Phoenix* worden de vogels aangestuurd via een dynamische t
 
 #### **Knowledge Graph Koppelingen**
 * **Relevante C-bestanden:**
-  - [`bird_logic.c`](../../bird_logic.c) $\rightarrow$ [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) $\rightarrow$ [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
-  - [`birds_vertical_movement.c`](../../birds_vertical_movement.c) $\rightarrow$ [`birds-vertical-movement.md`](../../c-annotated/nl/birds-vertical-movement.md)
-  - [`collision_detection.c`](../../collision_detection.c) $\rightarrow$ [`collision-detection.md`](../../c-annotated/nl/collision-detection.md)
-  - [`attract_mode.c`](../../attract_mode.c) $\rightarrow$ [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)
+  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
+  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
+  - [`birds_vertical_movement.c`](../../birds_vertical_movement.c) → [`birds-vertical-movement.md`](../../c-annotated/nl/birds-vertical-movement.md)
+  - [`collision_detection.c`](../../collision_detection.c) → [`collision-detection.md`](../../c-annotated/nl/collision-detection.md)
+  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)
 
 ---
 
