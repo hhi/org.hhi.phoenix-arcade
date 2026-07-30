@@ -1265,6 +1265,9 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 
 ### GameStateMachine:
 
+> [!NOTE]
+> **Ported to C:** [`game_state_machine`](../game_state_machine.c#L32) in `game_state_machine.c` (ASM: `0400-041D`)
+
 ```asm
 0400: 21 0E 04        LD      HL,$040E            ; {+code.T040E} Jump table
 0403: 3A A4 43        LD      A,($43A4)           ; {ram.GameState}
@@ -1371,9 +1374,6 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ```
 
 ### CopyMemoryBank:
-
-> [!NOTE]
-> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `0460-049D, 067A-06AF`)
 
 > [!NOTE]
 > **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L95) in `platform_sdl.c` (ASM: `0460-049D`)
@@ -1641,6 +1641,9 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ```
 
 ### InitPlayerDataStructure:
+
+> [!NOTE]
+> **Ported to C:** [`init_player_data_structure`](../state_init.c#L26) in `state_init.c` (ASM: `0547-055A`)
 
 ```asm
 0547: 21 60 05        LD      HL,$0560            ; {+code.T0560}
@@ -1980,6 +1983,9 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ```
 
 ### StarsScrollDown:
+
+> [!NOTE]
+> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `067A-06AF`)
 
 ```asm
 067A: 21 B9 43        LD      HL,$43B9            ; {+ram.CounterB9}
@@ -3560,6 +3566,9 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 
 ### L0C00:
 
+> [!NOTE]
+> **Ported to C:** [`l0c00_kill_score`](../weapon_collision.c#L209) in `weapon_collision.c` (ASM: `0C00-0C23`)
+
 ```asm
 0C00: E5              PUSH    HL                  
 0C01: 7D              LD      A,L                 
@@ -4119,10 +4128,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L0E10:
 
 > [!NOTE]
-> **Ported to C:** [`l0c00_kill_score`](../weapon_collision.c#L214) in `weapon_collision.c` (ASM: `0E10-0E6B, 0E70-0E9D, 0C00-0C23`)
-
-> [!NOTE]
-> **Ported to C:** [`l0e10`](../weapon_collision.c#L233) in `weapon_collision.c` (ASM: `0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0`)
+> **Ported to C:** [`l0e10`](../weapon_collision.c#L228) in `weapon_collision.c` (ASM: `0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0`)
 
 ```asm
 0E10: 0A              LD      A,(BC)              ; ?
@@ -4274,7 +4280,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L0EA4:
 
 > [!NOTE]
-> **Ported to C:** [`l0ea4_with_score`](../weapon_collision.c#L301) in `weapon_collision.c` (ASM: `0EA4-0EE5`)
+> **Ported to C:** [`l0ea4_with_score`](../weapon_collision.c#L296) in `weapon_collision.c` (ASM: `0EA4-0EE5`)
 
 ```asm
 0EA4: 2B              DEC     HL                  
@@ -4360,7 +4366,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L0F00:
 
 > [!NOTE]
-> **Ported to C:** [`l0f00_check_alien_with_player_collision`](../weapon_collision.c#L380) in `weapon_collision.c` (ASM: `0F00-0F33, 0F38-0F4E, 0F74-0FB9`)
+> **Ported to C:** [`l0f00_check_alien_with_player_collision`](../weapon_collision.c#L375) in `weapon_collision.c` (ASM: `0F00-0F33, 0F38-0F4E, 0F74-0FB9`)
 
 ```asm
 0F00: 21 A6 43        LD      HL,$43A6            ; {+ram.ShieldCount}
@@ -4440,7 +4446,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L0F56:
 
 > [!NOTE]
-> **Ported to C:** [`l0f56_screen_ram_collision`](../weapon_collision.c#L352) in `weapon_collision.c` (ASM: `0F56-0F71`)
+> **Ported to C:** [`l0f56_screen_ram_collision`](../weapon_collision.c#L347) in `weapon_collision.c` (ASM: `0F56-0F71`)
 
 ```asm
 0F56: C5              PUSH    BC                  ; 
@@ -5974,9 +5980,6 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ```
 
 ### L2000:
-
-> [!NOTE]
-> **Ported to C:** [`l2000_alien_wave_main_loop`](../alien_wave.c#L220) in `alien_wave.c` (ASM: `2000-202A`)
 
 ```asm
 2000: CD 76 08        CALL    $0876               ; {code.PlayerUpdate} Updates the player ship, player bullet and the shield.

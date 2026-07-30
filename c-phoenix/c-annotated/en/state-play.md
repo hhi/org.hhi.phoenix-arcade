@@ -13,4 +13,4 @@ This document contains an annotated analysis of all functions in [`state_play.c`
 
 ### `state_play_dispatcher`
 #### **Description**
-The function [`state_play_dispatcher`](../../state_play.c#L45-L110) (Z80 ROM: `$01A0–$0200`) checks `LevelAndRound` to route execution to `alien_wave_main_loop`, `process_birds`, or `mothership_tile_hit_check`.
+The function [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16) (Z80 ROM: `$01A0–$0200`) checks `LevelAndRound` to route execution to `alien_wave_main_loop`, `process_birds`, or `mothership_tile_hit_check`.

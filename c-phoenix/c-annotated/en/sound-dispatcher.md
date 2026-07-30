@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`sound_dispatc
 
 ## 1. Sound Routine Dispatcher
 
-### `l3a10_sound_dispatcher`
+### `l3a10`
 #### **Description**
-The function [`l3a10_sound_dispatcher`](../../sound_dispatcher.c#L45-L95) (Z80 ROM: `$3A10–$3A80`) evaluates sound control registers ($5800–$7800) to trigger explosion noises, sirens, and laser pitch shifts.
+The function [`l3a10`](../../sound_dispatcher.c#L265) (Z80 ROM: `$3A10–$3A80`) evaluates sound control registers ($5800–$7800) to trigger explosion noises, sirens, and laser pitch shifts.

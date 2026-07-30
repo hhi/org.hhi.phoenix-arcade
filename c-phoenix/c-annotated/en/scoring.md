@@ -20,6 +20,6 @@ The function [`add_score`](../../scoring.c#L35-L85) (Z80 ROM: `$08C0–$0910`) a
 
 ## 2. High Score & Extra Life Thresholds
 
-### `check_high_score`
+### `update_hi_score`
 #### **Description**
-The function [`check_high_score`](../../scoring.c#L95-L135) (Z80 ROM: `$0920–$0950`) compares current score against all-time High Score, updating High Score RAM registers if exceeded.
+The function [`update_hi_score`](../../scoring.c#L39) (Z80 ROM: `$02F0–$032D`) compares current score against all-time High Score, updating High Score RAM registers if exceeded.

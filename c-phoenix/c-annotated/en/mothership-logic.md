@@ -22,4 +22,4 @@ The function [`mothership_descent_logic`](../../mothership_logic.c#L30-L75) (Z80
 
 ### `erase_mothership`
 #### **Description**
-The function [`erase_mothership`](../../mothership_logic.c#L85-L120) (Z80 ROM: `$1E50–$1E80`) clears all 26x9 mothership tile graphics from background VRAM when defeated or reset.
+The function [`erase_mothership`](../../mothership_logic.c#L85-L120) (Z80 ROM: `$246A–$2475`) clears all 26x9 mothership tile graphics from background VRAM when defeated or reset.

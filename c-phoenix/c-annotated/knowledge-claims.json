@@ -37,6 +37,52 @@
       "relates_to": ["table:phoenix_alien_direction_vectors"]
     },
     {
+      "id": "claim:game-state-dispatch-complete",
+      "statement": "game_state_machine switches on state.GameState and dispatches each of the eight GAME_STATE_* constants defined in game_constants.h to exactly one handler, with no state left unhandled and no handler reachable from two states.",
+      "status": "confirmed",
+      "sources": [
+        "game_state_machine.c#L32-L45",
+        "game_constants.h#L6-L14",
+        "c-annotated/nl/game-state-machine.md#game_state_machine"
+      ],
+      "relates_to": [
+        "c:game_state_machine:game_state_machine",
+        "asm:0400-041D"
+      ]
+    },
+    {
+      "id": "claim:level-pattern-dispatch",
+      "statement": "state_3_normal_game_play masks state.LevelAndRound with LEVEL_PATTERN_MASK (0x0F) and routes the twelve defined level patterns onto six distinct handlers -- fade-in patterns 0 and 2 share one handler, active-alien patterns 1, 3 and B share another, and spiral patterns 4, 6 and 8 a third -- while indices 0x0C through 0x0F are deliberately inert, matching the 'not used in this context' note on ROM table T0814.",
+      "status": "confirmed",
+      "sources": [
+        "state_play.c#L237-L261",
+        "game_constants.h#L20",
+        "c-annotated/nl/state-play.md#state_3_normal_game_play"
+      ],
+      "relates_to": [
+        "c:state_play:state_3_normal_game_play",
+        "asm:0800-0833",
+        "game-state:level_pattern_birds_fade_in_5",
+        "game-state:level_pattern_aliens_active_b"
+      ]
+    },
+    {
+      "id": "claim:main-loop-attract-split",
+      "statement": "phoenix_main_loop is the reset-vector entry point and its per-frame loop branches on state.GameOrAttract: when zero it mutes the TMS36XX on both sound ports before choosing between prompt_for_start_game and splash_and_demo on the coin count, and otherwise runs game_state_machine followed by update_scores_and_sound.",
+      "status": "confirmed",
+      "sources": [
+        "hw_video_audio.c#L123-L149",
+        "c-annotated/nl/hw-video-audio.md#phoenix_main_loop"
+      ],
+      "relates_to": [
+        "c:hw_video_audio:phoenix_main_loop",
+        "asm:0000-004F",
+        "c:game_state_machine:game_state_machine",
+        "c:attract_mode:splash_and_demo",
+        "c:attract_mode:prompt_for_start_game"
+      ]
+    },
+    {
       "id": "claim:vector-offset-formula",
       "statement": "alien_movement_update derives the direction-vector index by rotating the pattern step byte left one bit (RLCA), equivalent to the documented vector_offset = step_byte × 2, before indexing phoenix_alien_direction_vectors for delta_x and delta_y.",
       "status": "confirmed",

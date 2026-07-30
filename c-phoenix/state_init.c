@@ -22,8 +22,8 @@ extern void l32b0(void);
 // (21 July 2026) to remove the unmerged-duplicate risk.
 extern void init_global_level_data(void);
 
+// [ASM: 0547-055A]
 static void init_player_data_structure(void) {
-    // [ASM: 0547-055A]
     memcpy(&state.PlayerState, phoenix_player_init_data, 32);
     memset(&state.OldPlayerShipMSB, 0, 32);
 }

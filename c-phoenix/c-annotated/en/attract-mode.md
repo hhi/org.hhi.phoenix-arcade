@@ -28,9 +28,9 @@ The function [`splash_and_demo`](../../attract_mode.c#L32-L107) (Z80 ROM: `$00E3
 
 ## 2. Coin & Credit Management
 
-### `check_coin_inputs`
+### `prompt_for_start_game` & `decrement_coins`
 #### **Description**
-The function [`check_coin_inputs`](../../attract_mode.c#L120-L155) (Z80 ROM: `$0150–$0180`) monitors arcade coin chute inputs ($5000 I/O port) and increments credit counters.
+The function [`prompt_for_start_game`](../../attract_mode.c#L293) (Z80 ROM: `$0288–$02EE`) shows the start prompt once credits are present, and [`decrement_coins`](../../attract_mode.c#L366) (Z80 ROM: `$02CB–$02EF`) deducts the credits when a game begins. Coin chute input itself is read by [`check_coin_event`](scoring.md#check_coin_event) in `scoring.c`.
 
 ---
 

@@ -14,4 +14,4 @@ This document contains an annotated analysis of all functions in [`state_endings
 
 ### `handle_player_explosion_state`
 #### **Description**
-The function [`handle_player_explosion_state`](../../state_endings.c#L45-L95) (Z80 ROM: `$02A0–$0300`) renders player ship fragment disintegration patterns over 64 VBlank frames.
+The function [`state_4_player_ship_explosion`](state-endings.md#state_4_player_ship_explosion) — [`state_endings.c#L33`](../../state_endings.c#L33) (Z80 ROM: `$02A0–$0300`) renders player ship fragment disintegration patterns over 64 VBlank frames.

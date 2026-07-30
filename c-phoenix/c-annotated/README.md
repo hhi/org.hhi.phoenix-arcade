@@ -8,7 +8,12 @@ Kies uw gewenste taal / Choose your preferred language:
 ---
 
 ### Gedeelde Machine Graph & Instellingen / Shared Machine Graph & Settings
+- 📖 [`knowledge-base-guide.md`](knowledge-base-guide.md) — **Begin hier.** Waar de kennisbank voor dient, welk node-type wanneer, wat een claim is, en welke controles het geheel bewaken. / **Start here.** What the knowledge base is for, which node type to use, what a claim is, and which checks keep it honest.
 - 📊 [`knowledge-graph.md`](knowledge-graph.md) — Gedeelde Knowledge Graph specificatie & architectuur.
 - 🤖 [`knowledge-graph.json`](knowledge-graph.json) — Gedeelde machineleesbare kennisgrafiek.
 - 🤝 [`knowledge-claims.json`](knowledge-claims.json) — Gedeeld claimregister.
 - 🔮 [`.obsidian/`](.obsidian/) — Gedeelde Obsidian Vault instellingen en Graph View Color Groups.
+
+### Visuele Overzichten / Visual Overviews
+- 🇳🇱 [`kennisgraaf_meta_architectuur.svg`](kennisgraaf_meta_architectuur.svg) · 🇬🇧 [`knowledge_graph_meta_architecture.svg`](knowledge_graph_meta_architecture.svg) — Statische architectuur: de lagen van Z80-hardware tot Obsidian. / Static architecture: the layers from Z80 hardware to Obsidian.
+- 🇳🇱 [`kennisbank_verificatieketen.svg`](kennisbank_verificatieketen.svg) · 🇬🇧 [`knowledge_base_pipeline.svg`](knowledge_base_pipeline.svg) — Verificatieketen: bron → generatoren → artefacten → controles. / Verification pipeline: sources → generators → artifacts → checks.

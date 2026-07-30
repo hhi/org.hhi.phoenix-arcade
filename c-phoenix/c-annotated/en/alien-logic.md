@@ -31,7 +31,7 @@ init_alien_control_states();
   - [`init_alien_control_states_05fa`](#init_alien_control_states_05fa) — [`alien_logic.c:L24`](../../alien_logic.c#L24)
   - `phoenix_alien_control_init_values` — [`phoenix_tables.c:L265`](../../phoenix_tables.c#L265)
 * **Called By (Incoming Calls / Backlinks):**
-  - [`state_init_start_round`](state-init.md#state_init_start_round) — [`state_init.c:L45`](../../state_init.c#L45)
+  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
 
 #### **Step-by-Step Functionality**
 1. **Determine Index:** Calculates the lookup index via `state.LevelAndRound & 0x0F`.
@@ -88,7 +88,7 @@ init_alien_positions();
   - `phoenix_alien_position_pointer_table` — [`phoenix_tables.c`](../../phoenix_tables.c)
   - `phoenix_alien_position_layout_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
 * **Called By (Incoming Calls / Backlinks):**
-  - [`state_init_start_round`](state-init.md#state_init_start_round) — [`state_init.c:L46`](../../state_init.c#L46)
+  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
 
 #### **Step-by-Step Functionality**
 1. **Determine Layout Page:** Calculates index `(state.LevelAndRound >> 1) & 0x0F` and looks up starting address/offset in `phoenix_alien_position_pointer_table` within page `phoenix_alien_position_layout_page`.
@@ -101,14 +101,14 @@ init_alien_positions();
 
 ### `handle_animations_for_killed_aliens`
 #### **Description**
-The function [`handle_animations_for_killed_aliens`](../../alien_logic.c#L260-L315) (Z80 ROM: `$0680–$0712`) updates active explosion slots and bonus score animations for aliens destroyed by player fire.
+The function [`handle_animations_for_killed_aliens`](../../alien_logic.c#L260-L315) (Z80 ROM: `$0FC0–$0FFF`) updates active explosion slots and bonus score animations for aliens destroyed by player fire.
 
 #### **Knowledge Graph Links**
 * **Calls (Outgoing Calls):**
   - [`draw_explosion_particles`](#draw_explosion_particles) — [`alien_logic.c:L310`](../../alien_logic.c#L310)
   - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L295`](../../alien_logic.c#L295)
 * **Called By (Incoming Calls / Backlinks):**
-  - [`alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop) — [`alien_wave.c:L45`](../../alien_wave.c#L45)
+  - [`l2000_alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop) — [`alien_wave.c#L220`](../../alien_wave.c#L220)
 
 #### **Step-by-Step Functionality**
 1. **Iterate Explosion Slots:** Scans the active explosion slot array in RAM (`0x4370–$437F`).

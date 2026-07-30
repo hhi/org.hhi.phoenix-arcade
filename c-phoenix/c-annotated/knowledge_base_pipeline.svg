@@ -1,0 +1,162 @@
+<svg width="1040" height="860" viewBox="0 0 1040 860" xmlns="http://www.w3.org/2000/svg" style="background:#050C08; border-radius:12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;">
+  <defs>
+    <linearGradient id="hdrGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00FFCC" />
+      <stop offset="50%" stop-color="#D500F9" />
+      <stop offset="100%" stop-color="#00E5FF" />
+    </linearGradient>
+    <linearGradient id="srcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A261D" /><stop offset="100%" stop-color="#0D1A10" />
+    </linearGradient>
+    <linearGradient id="genGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D1236" /><stop offset="100%" stop-color="#17081E" />
+    </linearGradient>
+    <linearGradient id="artGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142634" /><stop offset="100%" stop-color="#0A1520" />
+    </linearGradient>
+    <linearGradient id="valGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2D25" /><stop offset="100%" stop-color="#061813" />
+    </linearGradient>
+    <marker id="aCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#00FFCC" /></marker>
+    <marker id="aPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#D500F9" /></marker>
+    <marker id="aYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFCC00" /></marker>
+    <marker id="aRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#FF6E6E" /></marker>
+  </defs>
+
+  <style>
+    .title { font-size: 21px; font-weight: 800; fill: url(#hdrGrad); letter-spacing: 1px; }
+    .subtitle { font-size: 12px; font-weight: 600; fill: #88C4A3; letter-spacing: 1px; }
+    .box-title { font-size: 13px; font-weight: 700; }
+    .node-label { font-size: 12px; font-weight: 600; fill: #FFFFFF; }
+    .sub-label { font-size: 10.5px; font-family: monospace; fill: #A0C0B0; }
+    .edge-label { font-size: 9.5px; font-family: monospace; font-weight: bold; fill: #00FFCC; }
+    .code-text { font-size: 10.5px; font-family: monospace; fill: #00E5FF; }
+    .num { font-size: 15px; font-weight: 800; fill: #FFCC00; font-family: monospace; }
+  </style>
+
+  <text x="36" y="38" class="title">PHOENIX KNOWLEDGE BASE — VERIFICATION PIPELINE</text>
+  <text x="36" y="60" class="subtitle">SOURCES → GENERATORS → ARTIFACTS → CHECKS  ·  WHAT FOLLOWS MECHANICALLY vs. WHAT A HUMAN CONFIRMS</text>
+
+  <!-- ============ TIER 1: SOURCES ============ -->
+  <rect x="36" y="80" width="968" height="112" rx="10" fill="url(#srcGrad)" stroke="#00E676" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.9" />
+  <text x="54" y="104" class="box-title" fill="#00E676">1. SOURCES OF TRUTH  (evidence priority: Z80 ASM/ROM → C-port → documentation → visual)</text>
+
+  <rect x="54" y="116" width="300" height="62" rx="6" fill="#04180A" stroke="#00E676" stroke-width="1.2" />
+  <text x="68" y="136" class="node-label">context/Phoenix.asm</text>
+  <text x="68" y="153" class="sub-label">Z80 ROM disassembly, $0000–$3FFF</text>
+  <text x="68" y="169" class="sub-label">ic45–ic52 chip regions</text>
+
+  <rect x="370" y="116" width="300" height="62" rx="6" fill="#04180A" stroke="#00E676" stroke-width="1.2" />
+  <text x="384" y="136" class="node-label">c-phoenix/*.c  ·  *.h</text>
+  <text x="384" y="153" class="sub-label">[ASM: xxxx-yyyy] above each declaration</text>
+  <text x="384" y="169" class="sub-label">33 .c  ·  24 .h</text>
+
+  <rect x="686" y="116" width="300" height="62" rx="6" fill="#04180A" stroke="#00E676" stroke-width="1.2" />
+  <text x="700" y="136" class="node-label">knowledge-claims.json</text>
+  <text x="700" y="153" class="sub-label" fill="#FFCC00">HAND-WRITTEN — the only place where</text>
+  <text x="700" y="169" class="sub-label" fill="#FFCC00">human interpretation may enter</text>
+
+  <!-- ============ TIER 2: GENERATORS ============ -->
+  <rect x="36" y="214" width="968" height="96" rx="10" fill="url(#genGrad)" stroke="#D500F9" stroke-width="1.5" opacity="0.9" />
+  <text x="54" y="238" class="box-title" fill="#D500F9">2. GENERATORS  (deterministic — never hand-edit the output)</text>
+
+  <rect x="54" y="250" width="458" height="46" rx="6" fill="#14051B" stroke="#D500F9" stroke-width="1.1" />
+  <text x="68" y="269" class="code-text" fill="#E080FF">c-annotated/tools/generate_knowledge_graph.py</text>
+  <text x="68" y="286" class="sub-label">extracts nodes + relations from the C sources, reads claims passively</text>
+
+  <rect x="528" y="250" width="458" height="46" rx="6" fill="#14051B" stroke="#D500F9" stroke-width="1.1" />
+  <text x="542" y="269" class="code-text" fill="#E080FF">tools/generate_annotated_asm.py</text>
+  <text x="542" y="286" class="sub-label">maps ASM labels to C functions → "Ported to C" per routine</text>
+
+  <!-- ============ TIER 3: ARTIFACTS ============ -->
+  <rect x="36" y="332" width="968" height="176" rx="10" fill="url(#artGrad)" stroke="#00E5FF" stroke-width="1.5" opacity="0.9" />
+  <text x="54" y="356" class="box-title" fill="#00E5FF">3. ARTIFACTS</text>
+
+  <!-- graph json -->
+  <rect x="54" y="368" width="458" height="126" rx="6" fill="#061624" stroke="#00E5FF" stroke-width="1.1" />
+  <text x="68" y="388" class="node-label">knowledge-graph.json</text>
+  <text x="68" y="406" class="num">735 nodes  ·  850 relations</text>
+  <text x="68" y="426" class="sub-label" fill="#7FE3FF">MECHANICALLY COMPLETE (6 types):</text>
+  <text x="68" y="442" class="code-text">c-function 333 · asm-routine 236 · ram-slot 51</text>
+  <text x="68" y="457" class="code-text">table-asset 50 · rom-pattern 36 · game-state 20</text>
+  <text x="68" y="477" class="sub-label" fill="#FFCC00">HUMAN-CONFIRMED:  claim 9  →  24 asserts relations</text>
+
+  <!-- crossref + docs -->
+  <rect x="528" y="368" width="458" height="126" rx="6" fill="#061624" stroke="#00E5FF" stroke-width="1.1" />
+  <text x="542" y="388" class="node-label">context/Phoenix.md</text>
+  <text x="542" y="406" class="sub-label">149 "Ported to C" routines — derived, so by construction</text>
+  <text x="542" y="421" class="sub-label">only real symbols: an independent cross-check</text>
+  <text x="542" y="447" class="node-label">c-annotated/en · nl  +  animations/</text>
+  <text x="542" y="465" class="sub-label">116 annotated documents (58 en · 58 nl)</text>
+  <text x="542" y="481" class="sub-label">78 SVG assets (flight patterns, animations)</text>
+
+  <!-- ============ TIER 4: VALIDATORS ============ -->
+  <rect x="36" y="530" width="968" height="228" rx="10" fill="url(#valGrad)" stroke="#00FFCC" stroke-width="1.5" opacity="0.9" />
+  <text x="54" y="554" class="box-title" fill="#00FFCC">4. CHECKS  —  `make kg-check` (runs inside `make verify`)</text>
+
+  <!-- structural -->
+  <rect x="54" y="566" width="300" height="176" rx="6" fill="#041812" stroke="#00FFCC" stroke-width="1" />
+  <text x="68" y="586" class="sub-label" fill="#80FFE4">STRUCTURE</text>
+  <text x="68" y="608" class="code-text" fill="#00FFCC">validate_knowledge_graph.py</text>
+  <text x="68" y="624" class="sub-label">unique ids · valid kinds/status</text>
+  <text x="68" y="639" class="sub-label">relation endpoints exist</text>
+  <text x="68" y="654" class="sub-label">claim sources exist on disk</text>
+  <text x="68" y="678" class="code-text" fill="#00FFCC">check_knowledge_graph_drift.py</text>
+  <text x="68" y="694" class="sub-label">graph == fresh regeneration?</text>
+  <text x="68" y="718" class="sub-label" fill="#FF6E6E">cannot see a wrong fact —</text>
+  <text x="68" y="732" class="sub-label" fill="#FF6E6E">only a malformed one</text>
+
+  <!-- content -->
+  <rect x="370" y="566" width="300" height="176" rx="6" fill="#041812" stroke="#00FFCC" stroke-width="1" />
+  <text x="384" y="586" class="sub-label" fill="#80FFE4">CONTENT  (each caught something real)</text>
+  <text x="384" y="608" class="code-text" fill="#00FFCC">check_asm_annotations.py</text>
+  <text x="384" y="623" class="sub-label">tags the generator cannot see</text>
+  <text x="384" y="645" class="code-text" fill="#00FFCC">check_prose_rom_ranges.py</text>
+  <text x="384" y="660" class="sub-label">prose address vs. annotation</text>
+  <text x="384" y="682" class="code-text" fill="#00FFCC">check_symbol_links.py</text>
+  <text x="384" y="697" class="sub-label">fabricated function names</text>
+  <text x="384" y="719" class="code-text" fill="#00FFCC">check_against_asm_crossref.py</text>
+  <text x="384" y="734" class="sub-label">Phoenix.md gone stale?</text>
+
+  <!-- growth -->
+  <rect x="686" y="566" width="300" height="176" rx="6" fill="#041812" stroke="#FFCC00" stroke-width="1" />
+  <text x="700" y="586" class="sub-label" fill="#FFE082">GROWTH  (informational, non-blocking)</text>
+  <text x="700" y="608" class="code-text" fill="#FFCC00">report_claim_coverage.py</text>
+  <text x="700" y="624" class="sub-label">verified vs. inventory,</text>
+  <text x="700" y="639" class="sub-label">counted separately per node type</text>
+  <text x="700" y="663" class="code-text" fill="#FFCC00">propose_claims.py --mode candidates</text>
+  <text x="700" y="679" class="sub-label">worklist: functions with both prose</text>
+  <text x="700" y="694" class="sub-label">and an ASM annotation — where the</text>
+  <text x="700" y="709" class="sub-label">documentation can silently drift</text>
+  <text x="700" y="733" class="sub-label" fill="#FFCC00">writes no statement: that is the work</text>
+
+  <!-- ============ ARROWS ============ -->
+  <line x1="204" y1="178" x2="204" y2="250" stroke="#D500F9" stroke-width="2" marker-end="url(#aPurple)" />
+  <line x1="520" y1="178" x2="290" y2="250" stroke="#D500F9" stroke-width="1.6" marker-end="url(#aPurple)" />
+  <line x1="560" y1="178" x2="700" y2="250" stroke="#D500F9" stroke-width="1.6" marker-end="url(#aPurple)" />
+  <line x1="836" y1="178" x2="380" y2="250" stroke="#FFCC00" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#aYellow)" />
+  <text x="640" y="206" class="edge-label" fill="#FFCC00">read passively</text>
+
+  <line x1="283" y1="296" x2="283" y2="368" stroke="#00E5FF" stroke-width="2" marker-end="url(#aCyan)" />
+  <text x="292" y="330" class="edge-label">generates</text>
+  <line x1="757" y1="296" x2="757" y2="368" stroke="#00E5FF" stroke-width="2" marker-end="url(#aCyan)" />
+  <text x="766" y="330" class="edge-label">generates</text>
+
+  <line x1="204" y1="494" x2="204" y2="566" stroke="#00FFCC" stroke-width="2" marker-end="url(#aCyan)" />
+  <line x1="420" y1="494" x2="500" y2="566" stroke="#00FFCC" stroke-width="1.6" marker-end="url(#aCyan)" />
+  <line x1="700" y1="494" x2="560" y2="566" stroke="#00FFCC" stroke-width="1.6" marker-end="url(#aCyan)" />
+  <line x1="880" y1="494" x2="836" y2="566" stroke="#FFCC00" stroke-width="1.6" marker-end="url(#aYellow)" />
+
+  <!-- feedback loop: crossref checks the docs -->
+  <path d="M 986 431 C 1016 431 1016 300 700 300" fill="none" stroke="#FF6E6E" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#aRed)" />
+  <text x="880" y="352" class="edge-label" fill="#FF6E6E">cross-checks the documents</text>
+
+  <!-- FOOTER -->
+  <rect x="36" y="778" width="968" height="52" rx="8" fill="#09140C" stroke="#00FFCC" stroke-width="1" />
+  <text x="54" y="800" class="sub-label" font-size="11.5px" fill="#00FFCC">CORE SPLIT: the graph says WHAT EXISTS (extraction, complete) — the claim register says WHAT WE KNOW FOR CERTAIN (judgement, selective).</text>
+  <text x="54" y="818" class="sub-label" font-size="11.5px" fill="#88C4A3">A claim pays off where no script can enforce the agreement. Where a validator can, the validator is the better investment.</text>
+</svg>

@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`sound_discret
 
 ## 1. Discrete Analog Circuit Emulation
 
-### `discrete_sound_update`
+### `sound_discrete_step`
 #### **Description**
-The function [`discrete_sound_update`](../../sound_discrete.c#L45-L95) calculates capacitor voltage discharge steps for custom analog sound hardware.
+The function [`sound_discrete_step`](../../sound_discrete.c#L428) advances the modelled 555 multivibrators and RC networks by one sample, computing the capacitor discharge steps of the discrete sound hardware.

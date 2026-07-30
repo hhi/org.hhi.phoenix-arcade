@@ -35,7 +35,7 @@ l2000_alien_wave_main_loop();
   - [`l2130`](#l2130) — [`alien_wave.c:L235`](../../alien_wave.c#L235)
   - [`l2146`](#l2146) — [`alien_wave.c:L246`](../../alien_wave.c#L246)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c#L105`](../../state_play.c#L105)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Geheugen- & Structuur-context**
 - `state.M435F`: Frame-teller die 0..3 interleaved sub-frames aanstuurt (`state.M435F & 0x03`).

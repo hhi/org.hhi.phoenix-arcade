@@ -35,7 +35,7 @@ l2000_alien_wave_main_loop();
   - [`l2190`](#l2190) — [`alien_wave.c:L80`](../../alien_wave.c#L80)
   - [`l21ba`](#l21ba) — [`alien_wave.c:L85`](../../alien_wave.c#L85)
 * **Called By (Incoming Calls / Backlinks):**
-  - [`state_play_dispatcher`](state-play.md#state_play_dispatcher) — [`state_play.c:L52`](../../state_play.c#L52)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Step-by-Step Functionality**
 1. **Player & Collisions:** Processes player controls via [`player_update`](player-logic.md#player_update) and updates explosions via [`handle_animations_for_killed_aliens`](alien-logic.md#handle_animations_for_killed_aliens).

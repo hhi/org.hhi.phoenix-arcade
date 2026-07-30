@@ -53,7 +53,7 @@ De functie [`update_counters_for_mothership_explosion`](../../mothership_impl.c#
 * **Aanroepen (Outgoing Calls):**
   - `hw_write_scroll_register` — [`hw_video_audio.c`](../../hw_video_audio.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c`](../../state_play.c)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Stap-voor-stap werking**
 1. **Scroll-uitlijning:** Lijnt `state.CounterB9` uit op 8-pixel grenzen (`& 0xF8`) en roept `hw_write_scroll_register` aan.

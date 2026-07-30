@@ -1616,6 +1616,11 @@ DSW0                   .EQU $7800       ;DIP switch settings
                        LD      (HL),E              ; set BirdsLeft to 8
                        RET                         ;
 
+```
+> [!NOTE]
+> **Ported to C:** [`game_state_machine`](../game_state_machine.c#L32) in `game_state_machine.c` (ASM: `0400-041D`)
+
+```asm
                        .ORG $0400
 ;*****************************************************************************
 ;* Game state machine.
@@ -1715,9 +1720,6 @@ DSW0                   .EQU $7800       ;DIP switch settings
                        RET                         ;
 
 ```
-> [!NOTE]
-> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `0460-049D, 067A-06AF`)
-
 > [!NOTE]
 > **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L95) in `platform_sdl.c` (ASM: `0460-049D`)
 
@@ -1975,6 +1977,11 @@ DSW0                   .EQU $7800       ;DIP switch settings
                        CALL    InitAlienPositions  ; load alien screen coordinates (X,Y grid), for a new level and round
                        RET                         ;
 
+```
+> [!NOTE]
+> **Ported to C:** [`init_player_data_structure`](../state_init.c#L26) in `state_init.c` (ASM: `0547-055A`)
+
+```asm
                        .ORG $0547
 ;*****************************************************************************
 ;* Copy 32 byte from $0560 to $43C0 Player and bullets data structure (grid)
@@ -2266,6 +2273,11 @@ DSW0                   .EQU $7800       ;DIP switch settings
                        JP      NZ,L0667            ; loop for all AliensLeft
                        RET                         ;
 
+```
+> [!NOTE]
+> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `067A-06AF`)
+
+```asm
                        .ORG $067A
 ;*****************************************************************************
 ;* Scroll down the background screen one pixel.
@@ -3765,6 +3777,11 @@ DSW0                   .EQU $7800       ;DIP switch settings
                        CALL    Draw2x2             ;
                        RET                         ;
 
+```
+> [!NOTE]
+> **Ported to C:** [`l0c00_kill_score`](../weapon_collision.c#L209) in `weapon_collision.c` (ASM: `0C00-0C23`)
+
+```asm
                        .ORG $0C00
 ;*****************************************************************************
 ;* Score/bonus selector for a shot flying alien:
@@ -4285,10 +4302,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l0c00_kill_score`](../weapon_collision.c#L214) in `weapon_collision.c` (ASM: `0E10-0E6B, 0E70-0E9D, 0C00-0C23`)
-
-> [!NOTE]
-> **Ported to C:** [`l0e10`](../weapon_collision.c#L233) in `weapon_collision.c` (ASM: `0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0`)
+> **Ported to C:** [`l0e10`](../weapon_collision.c#L228) in `weapon_collision.c` (ASM: `0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0`)
 
 ```asm
                        .ORG $0E10
@@ -4537,7 +4551,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l0f00_check_alien_with_player_collision`](../weapon_collision.c#L380) in `weapon_collision.c` (ASM: `0F00-0F33, 0F38-0F4E, 0F74-0FB9`)
+> **Ported to C:** [`l0f00_check_alien_with_player_collision`](../weapon_collision.c#L375) in `weapon_collision.c` (ASM: `0F00-0F33, 0F38-0F4E, 0F74-0FB9`)
 
 ```asm
                        .ORG $0F00
@@ -4638,7 +4652,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`l0f56_screen_ram_collision`](../weapon_collision.c#L352) in `weapon_collision.c` (ASM: `0F56-0F71`)
+> **Ported to C:** [`l0f56_screen_ram_collision`](../weapon_collision.c#L347) in `weapon_collision.c` (ASM: `0F56-0F71`)
 
 ```asm
                        .ORG $0F56

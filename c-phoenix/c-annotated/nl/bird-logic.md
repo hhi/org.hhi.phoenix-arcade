@@ -41,7 +41,7 @@ process_birds();
   - `process_enemy_bombs` — [`weapon_collision.c#L17`](../../weapon_collision.c#L17)
   - [`handle_animations_for_killed_aliens`](alien-logic.md#handle_animations_for_killed_aliens) — [`alien_logic.c#L195`](../../alien_logic.c#L195)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c#L110`](../../state_play.c#L110)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Geheugen- & Structuur-context**
 - `state.BirdsLeft`: Aantal resterende levende vogels.
@@ -66,7 +66,7 @@ De functie [`bird_flight_path`](../../bird_logic.c#L69-L73) verwerkt de geometri
   - [`coverage_hit`](coverage.md#coverage_hit) — [`coverage.c:L12`](../../coverage.c#L12)
   - [`collision_detection_for_birds`](collision-detection.md#collision_detection_for_birds) — [`collision_detection.c`](../../collision_detection.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c#L112`](../../state_play.c#L112)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 ---
 

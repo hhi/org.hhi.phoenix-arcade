@@ -20,7 +20,7 @@ De functie [`mothership_descent_logic`](../../mothership_logic.c#L12-L15) roept 
 * **Aanroepen (Outgoing Calls):**
   - [`l2351_mothership_animation`](mothership-impl.md#l2351_mothership_animation) — [`mothership_impl.c#L12`](../../mothership_impl.c#L12)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c`](../../state_play.c)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 ---
 
@@ -32,7 +32,7 @@ De functie [`erase_mothership`](../../mothership_logic.c#L22-L30) (Z80 ROM: `$24
 * **Aanroepen (Outgoing Calls):**
   - `draw_image_c_by_b` — [`sprite_rendering.c`](../../sprite_rendering.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c`](../../state_play.c)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Stap-voor-stap werking**
 Herstelt het achtergrond-sterrenveld op schermadres `0x4AC6` door 20 kolommen bij 9 rijen (`0x14` x `0x09`) te overschrijven met de achtergrondtegels van ROM `0x1C00` via `draw_image_c_by_b(0x1C00, 0x4AC6, 0x09, 0x14)`.

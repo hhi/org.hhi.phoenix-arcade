@@ -14,14 +14,14 @@ This document contains an annotated analysis of all functions in [`bird_logic.c`
 
 ### `process_birds`
 #### **Description**
-The function [`process_birds`](../../bird_logic.c#L45-L110) (Z80 ROM: `$30D0–$3140`) updates all active bird slots in VRAM and RAM during levels 5 and 7.
+The function [`process_birds`](../../bird_logic.c#L45-L110) (Z80 ROM: `$3400–$344D`) updates all active bird slots in VRAM and RAM during levels 5 and 7.
 
 #### **Knowledge Graph Links**
 * **Calls (Outgoing Calls):**
   - [`update_bird_behavior`](bird-wave-behavior.md#update_bird_behavior) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
   - [`bird_flight_path`](#bird_flight_path) — [`bird_logic.c:L85`](../../bird_logic.c#L85)
 * **Called By (Incoming Calls / Backlinks):**
-  - [`state_play_dispatcher`](state-play.md#state_play_dispatcher) — [`state_play.c:L75`](../../state_play.c#L75)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 ---
 

@@ -9,7 +9,7 @@ hand-edited) and should be treated as a build failure before the drift gets
 any older.
 
 Usage:
-    python3 tools/check_knowledge_graph_drift.py
+    python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
 """
 
 from __future__ import annotations
@@ -72,7 +72,7 @@ def main() -> int:
     if removed_rel:
         print(f"  relations only in committed file: {len(removed_rel)}")
     print()
-    print("Run `python3 tools/generate_knowledge_graph.py` and commit the result.")
+    print("Run `python3 c-phoenix/c-annotated/tools/generate_knowledge_graph.py` and commit the result.")
     return 1
 
 

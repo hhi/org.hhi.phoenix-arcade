@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`sprite_render
 
 ## 1. Sprite Matrix Rendering
 
-### `draw_sprite_matrix`
+### `update_screen_objects`
 #### **Description**
-The function [`draw_sprite_matrix`](../../sprite_rendering.c#L45-L95) (Z80 ROM: `$0400–$0480`) converts 8x8 pixel tile data from ROM into VRAM memory cells.
+The function [`update_screen_objects`](../../sprite_rendering.c#L215) (Z80 ROM: `$0718–$071F`) writes an object's tile data into the VRAM cells addressed by its screen-RAM record, dispatching through [`bit4_controller`](#bit4_controller) and [`bit3_controller`](#bit3_controller).

@@ -28,8 +28,8 @@ extern void copy_memory_bank(uint8_t from_bank, uint8_t to_bank);
 static void set_bits_video_register(void);
 static void l07f0(void);
 
+// [ASM: 0400-041D]
 void game_state_machine(void) {
-    // [ASM: 0400-041D]
     coverage_hit("game_state_machine");
     switch (state.GameState) {
         case GAME_STATE_NEW_GAME: coverage_hit("state_0_new_game_start"); state_0_new_game_start(); break;

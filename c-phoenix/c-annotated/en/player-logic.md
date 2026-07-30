@@ -15,7 +15,7 @@ This document contains an annotated analysis of all functions in [`player_logic.
 
 ### `player_update`
 #### **Description**
-The function [`player_update`](../../player_logic.c#L45-L110) (Z80 ROM: `$0A20–$0A90`) reads player input ports ($5000) and updates player ship X position on screen (`$43C0`).
+The function [`player_update`](../../player_logic.c#L45-L110) (Z80 ROM: `$0876–$0885`) reads player input ports ($5000) and updates player ship X position on screen (`$43C0`).
 
 #### **Knowledge Graph Links**
 * **Called By (Incoming Calls / Backlinks):**
@@ -25,9 +25,9 @@ The function [`player_update`](../../player_logic.c#L45-L110) (Z80 ROM: `$0A20�
 
 ## 2. Force Field Shield Activation
 
-### `update_player_shield`
+### `draw_shields`
 #### **Description**
-The function [`update_player_shield`](../../player_logic.c#L125-L165) (Z80 ROM: `$0AA0–$0AD0`) manages the 5-second shield timer `ShieldCount`. When active, it protects the player ship from collisions and enemy fire.
+The function [`draw_shields`](../../player_logic.c#L294) (Z80 ROM: `$0AA0–$0AC1`) draws the shield in the damage state selected by `ShieldCount`. When active, it protects the player ship from collisions and enemy fire.
 
 ---
 
@@ -35,4 +35,4 @@ The function [`update_player_shield`](../../player_logic.c#L125-L165) (Z80 ROM: 
 
 ### `spawn_player_bullet`
 #### **Description**
-The function [`spawn_player_bullet`](../../player_logic.c#L180-L220) (Z80 ROM: `$0AE0–$0B20`) spawns player bullet objects in RAM when fire button inputs are detected.
+The function [`spawn_player_bullet`](../../player_logic.c#L180-L220) (Z80 ROM: `$093D–$0961`) spawns player bullet objects in RAM when fire button inputs are detected.

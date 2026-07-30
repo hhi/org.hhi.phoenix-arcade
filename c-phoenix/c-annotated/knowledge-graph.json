@@ -473,6 +473,19 @@
       "status": "confirmed"
     },
     {
+      "id": "asm:0400-041D",
+      "kind": "asm-routine",
+      "name": "ASM $0400–$041D",
+      "asm": {
+        "start": "$0400",
+        "end": "$041D"
+      },
+      "evidence": {
+        "source": "C [ASM: ...] annotations"
+      },
+      "status": "confirmed"
+    },
+    {
       "id": "asm:041E-042E",
       "kind": "asm-routine",
       "name": "ASM $041E–$042E",
@@ -609,6 +622,19 @@
       "asm": {
         "start": "$0532",
         "end": "$0543"
+      },
+      "evidence": {
+        "source": "C [ASM: ...] annotations"
+      },
+      "status": "confirmed"
+    },
+    {
+      "id": "asm:0547-055A",
+      "kind": "asm-routine",
+      "name": "ASM $0547–$055A",
+      "asm": {
+        "start": "$0547",
+        "end": "$055A"
       },
       "evidence": {
         "source": "C [ASM: ...] annotations"
@@ -3091,6 +3117,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3127,6 +3155,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3163,6 +3193,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3199,6 +3231,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3235,6 +3269,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3271,6 +3307,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3307,6 +3345,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3343,6 +3383,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3379,6 +3421,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3415,6 +3459,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3451,6 +3497,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3487,6 +3535,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3523,6 +3573,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3563,6 +3615,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3599,6 +3653,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3643,6 +3699,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3679,6 +3737,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3719,6 +3779,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3759,6 +3821,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3795,6 +3859,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3831,6 +3897,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3867,6 +3935,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3903,6 +3973,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3939,6 +4011,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -3975,6 +4049,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -4011,6 +4087,8 @@
           "c-annotated/en/alien-logic-h.md",
           "c-annotated/en/alien-logic.md",
           "c-annotated/en/alien-wave.md",
+          "c-annotated/en/game-state-machine.md",
+          "c-annotated/en/state-init.md",
           "c-annotated/nl/alien-logic-h.md",
           "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
@@ -4044,7 +4122,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4075,7 +4152,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4106,7 +4182,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4137,7 +4212,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4168,7 +4242,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4199,7 +4272,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4230,7 +4302,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4261,7 +4332,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4292,7 +4362,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4323,7 +4392,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4354,7 +4422,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4385,7 +4452,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -4416,7 +4482,6 @@
           "c-annotated/en/alien-wave.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/en/weapon-collision.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/collision-detection.md",
           "c-annotated/nl/misc-logic.md",
@@ -6237,9 +6302,14 @@
       "name": "game_state_machine",
       "source": {
         "path": "game_state_machine.c",
-        "line": 30
+        "line": 32
       },
-      "asm_ranges": [],
+      "asm_ranges": [
+        {
+          "start": "0400",
+          "end": "041D"
+        }
+      ],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -10629,11 +10699,8 @@
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -10662,11 +10729,8 @@
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -10695,11 +10759,8 @@
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -10717,17 +10778,19 @@
       "name": "init_player_data_structure",
       "source": {
         "path": "state_init.c",
-        "line": 24
+        "line": 26
       },
-      "asm_ranges": [],
+      "asm_ranges": [
+        {
+          "start": "0547",
+          "end": "055A"
+        }
+      ],
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -10756,11 +10819,8 @@
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -10789,11 +10849,8 @@
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -10822,11 +10879,8 @@
       "status": "confirmed",
       "evidence": {
         "documentation": [
-          "c-annotated/en/alien-logic.md",
-          "c-annotated/en/game-state-machine.md",
           "c-annotated/en/state-init-h.md",
           "c-annotated/en/state-init.md",
-          "c-annotated/nl/alien-logic.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
@@ -12871,6 +12925,64 @@
         ],
         "relates_to": [
           "table:phoenix_alien_direction_vectors"
+        ]
+      },
+      "status": "confirmed"
+    },
+    {
+      "id": "claim:game-state-dispatch-complete",
+      "kind": "claim",
+      "name": "game_state_machine switches on state.GameState and dispatches each of the eight GAME_STATE_* constants defined in game_constants.h to exactly one handler, with no state left unhandled and no handler reachable from two states.",
+      "claim": {
+        "statement": "game_state_machine switches on state.GameState and dispatches each of the eight GAME_STATE_* constants defined in game_constants.h to exactly one handler, with no state left unhandled and no handler reachable from two states.",
+        "sources": [
+          "game_state_machine.c#L32-L45",
+          "game_constants.h#L6-L14",
+          "c-annotated/nl/game-state-machine.md#game_state_machine"
+        ],
+        "relates_to": [
+          "c:game_state_machine:game_state_machine",
+          "asm:0400-041D"
+        ]
+      },
+      "status": "confirmed"
+    },
+    {
+      "id": "claim:level-pattern-dispatch",
+      "kind": "claim",
+      "name": "state_3_normal_game_play masks state.LevelAndRound with LEVEL_PATTERN_MASK (0x0F) and routes the twelve defined level patterns onto six distinct handlers -- fade-in patterns 0 and 2 share one handler, active-alien patterns 1, 3 and B share another, and spiral patterns 4, 6 and 8 a third -- while indices 0x0C through 0x0F are deliberately inert, matching the 'not used in this context' note on ROM table T0814.",
+      "claim": {
+        "statement": "state_3_normal_game_play masks state.LevelAndRound with LEVEL_PATTERN_MASK (0x0F) and routes the twelve defined level patterns onto six distinct handlers -- fade-in patterns 0 and 2 share one handler, active-alien patterns 1, 3 and B share another, and spiral patterns 4, 6 and 8 a third -- while indices 0x0C through 0x0F are deliberately inert, matching the 'not used in this context' note on ROM table T0814.",
+        "sources": [
+          "state_play.c#L237-L261",
+          "game_constants.h#L20",
+          "c-annotated/nl/state-play.md#state_3_normal_game_play"
+        ],
+        "relates_to": [
+          "c:state_play:state_3_normal_game_play",
+          "asm:0800-0833",
+          "game-state:level_pattern_birds_fade_in_5",
+          "game-state:level_pattern_aliens_active_b"
+        ]
+      },
+      "status": "confirmed"
+    },
+    {
+      "id": "claim:main-loop-attract-split",
+      "kind": "claim",
+      "name": "phoenix_main_loop is the reset-vector entry point and its per-frame loop branches on state.GameOrAttract: when zero it mutes the TMS36XX on both sound ports before choosing between prompt_for_start_game and splash_and_demo on the coin count, and otherwise runs game_state_machine followed by update_scores_and_sound.",
+      "claim": {
+        "statement": "phoenix_main_loop is the reset-vector entry point and its per-frame loop branches on state.GameOrAttract: when zero it mutes the TMS36XX on both sound ports before choosing between prompt_for_start_game and splash_and_demo on the coin count, and otherwise runs game_state_machine followed by update_scores_and_sound.",
+        "sources": [
+          "hw_video_audio.c#L123-L149",
+          "c-annotated/nl/hw-video-audio.md#phoenix_main_loop"
+        ],
+        "relates_to": [
+          "c:hw_video_audio:phoenix_main_loop",
+          "asm:0000-004F",
+          "c:game_state_machine:game_state_machine",
+          "c:attract_mode:splash_and_demo",
+          "c:attract_mode:prompt_for_start_game"
         ]
       },
       "status": "confirmed"
@@ -15605,6 +15717,61 @@
       "kind": "asserts",
       "from": "claim:direction-vector-table",
       "to": "table:phoenix_alien_direction_vectors"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:game-state-dispatch-complete",
+      "to": "asm:0400-041D"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:game-state-dispatch-complete",
+      "to": "c:game_state_machine:game_state_machine"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:level-pattern-dispatch",
+      "to": "asm:0800-0833"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:level-pattern-dispatch",
+      "to": "c:state_play:state_3_normal_game_play"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:level-pattern-dispatch",
+      "to": "game-state:level_pattern_aliens_active_b"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:level-pattern-dispatch",
+      "to": "game-state:level_pattern_birds_fade_in_5"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:main-loop-attract-split",
+      "to": "asm:0000-004F"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:main-loop-attract-split",
+      "to": "c:attract_mode:prompt_for_start_game"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:main-loop-attract-split",
+      "to": "c:attract_mode:splash_and_demo"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:main-loop-attract-split",
+      "to": "c:game_state_machine:game_state_machine"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:main-loop-attract-split",
+      "to": "c:hw_video_audio:phoenix_main_loop"
     },
     {
       "kind": "asserts",
@@ -18818,6 +18985,11 @@
     },
     {
       "kind": "implements",
+      "from": "c:game_state_machine:game_state_machine",
+      "to": "asm:0400-041D"
+    },
+    {
+      "kind": "implements",
       "from": "c:game_state_machine:l04a0_change_player_at_attract_mode",
       "to": "asm:04A0-04AB"
     },
@@ -19250,6 +19422,11 @@
       "kind": "implements",
       "from": "c:state_init:init_alien_movement_pointers",
       "to": "asm:0506-0514"
+    },
+    {
+      "kind": "implements",
+      "from": "c:state_init:init_player_data_structure",
+      "to": "asm:0547-055A"
     },
     {
       "kind": "implements",

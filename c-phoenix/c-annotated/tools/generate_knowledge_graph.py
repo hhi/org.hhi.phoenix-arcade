@@ -8,7 +8,7 @@ explanations remain in Markdown; their paths are attached as evidence rather
 than being converted into facts.
 
 Usage:
-    python3 tools/generate_knowledge_graph.py
+    python3 c-phoenix/c-annotated/tools/generate_knowledge_graph.py
 """
 
 from __future__ import annotations
@@ -215,16 +215,21 @@ def claim_nodes(root: Path) -> list[dict]:
     raw_claims = json.loads(CLAIMS.read_text(encoding="utf-8"))["claims"]
     nodes: list[dict] = []
     for claim in raw_claims:
+        body = {
+            "statement": claim["statement"],
+            "sources": claim["sources"],
+            "relates_to": claim["relates_to"],
+        }
+        # Claims that merely restate an extracted fact carry kind="inventory";
+        # anything else is a human verification and stays the default.
+        if claim.get("kind"):
+            body["kind"] = claim["kind"]
         nodes.append(
             {
                 "id": claim["id"],
                 "kind": "claim",
                 "name": claim["statement"],
-                "claim": {
-                    "statement": claim["statement"],
-                    "sources": claim["sources"],
-                    "relates_to": claim["relates_to"],
-                },
+                "claim": body,
                 "status": claim["status"],
             }
         )

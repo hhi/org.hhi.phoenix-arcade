@@ -2,7 +2,7 @@
 """Validate the generated c-phoenix knowledge graph.
 
 Usage:
-    python3 tools/validate_knowledge_graph.py
+    python3 c-phoenix/c-annotated/tools/validate_knowledge_graph.py
 """
 
 from __future__ import annotations

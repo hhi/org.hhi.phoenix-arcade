@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`tms36xx.c`](.
 
 ## 1. TMS3615 Synthesizer Emulation
 
-### `tms36xx_update`
+### `tms36xx_render_internal_sample`
 #### **Description**
-The function [`tms36xx_update`](../../tms36xx.c#L45-L95) synthesizes organ footages (8', 4', 2') and decay envelopes for arcade background melodies.
+The function [`tms36xx_render_internal_sample`](../../tms36xx.c#L260) synthesises the organ footages (8', 4', 2') and applies the per-voice decay envelopes for the arcade background melodies.

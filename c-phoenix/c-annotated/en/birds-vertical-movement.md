@@ -11,9 +11,9 @@ This document contains an annotated analysis of all functions in [`birds_vertica
 
 ## 1. Vertical Scroll Registers & Formation Descent
 
-### `update_birds_vertical_movement`
+### `birds_vertical_movement_update`
 #### **Description**
-The function [`update_birds_vertical_movement`](../../birds_vertical_movement.c#L30-L75) (Z80 ROM: `$34D0–$3510`) updates vertical scroll registers (`B4BD2`) and shifts bird formation rows downward.
+The function [`birds_vertical_movement_update`](../../birds_vertical_movement.c#L112) (Z80 ROM: `$2600–$2664`) updates vertical scroll registers (`B4BD2`) and shifts bird formation rows downward.
 
 #### **Knowledge Graph Links**
 * **Called By (Incoming Calls / Backlinks):**

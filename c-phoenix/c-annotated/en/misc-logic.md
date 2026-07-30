@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`misc_logic.c`
 
 ## 1. Starfield & Random Bomb Triggers
 
-### `update_starfield`
+### `l06f0`
 #### **Description**
-The function [`update_starfield`](../../misc_logic.c#L30-L75) scrolls starfield background layers during gameplay.
+The function [`l06f0`](../../misc_logic.c#L12) scrolls starfield background layers during gameplay.

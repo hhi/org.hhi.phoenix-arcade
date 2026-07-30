@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`platform_sdl.
 
 ## 1. SDL2 Window & Event Loop
 
-### `platform_init`
+### `main`
 #### **Description**
-The function [`platform_init`](../../platform_sdl.c#L45-L95) creates the SDL2 window renderer, initializes keyboard key maps, and starts 44.1kHz audio streaming.
+The function [`main`](../../platform_sdl.c#L476) creates the SDL2 window and renderer, initialises the keyboard key map, and starts 44.1kHz audio streaming before entering [`phoenix_main_loop`](hw-video-audio.md#phoenix_main_loop).

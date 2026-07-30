@@ -130,7 +130,7 @@ svg_content = """<svg width="1000" height="780" viewBox="0 0 1000 780" xmlns="ht
   <text x="75" y="565" class="sub-label" fill="#E080FF">{{RELATION_KIND_COUNT}} Relatietypen ("relations"):</text>
   <text x="75" y="583" class="code-text" fill="#D500F9">• implements | • calls | • uses-table</text>
   <text x="75" y="599" class="code-text" fill="#D500F9">• handles-state | • asserts</text>
-  <text x="75" y="625" class="sub-label" fill="#00FFCC">Generator: python3 tools/generate_knowledge_graph.py</text>
+  <text x="75" y="625" class="sub-label" fill="#00FFCC">Generator: python3 c-annotated/tools/generate_knowledge_graph.py</text>
 
   <!-- TIER 4: HUMAN OBSIDIAN MARKDOWN VAULT & ANIMATIONS -->
   <rect x="515" y="425" width="445" height="235" rx="10" fill="url(#layerMD)" stroke="#00FFCC" stroke-width="1.5" opacity="0.9" />

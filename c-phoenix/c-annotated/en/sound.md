@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`sound.c`](../
 
 ## 1. Audio Mixing & Sample Generation
 
-### `sound_update`
+### `sound_render_frame`
 #### **Description**
-The function [`sound_update`](../../sound.c#L45-L95) mixes discrete synthesis channels, noise generators, and TMS3615 organ tones into 16-bit PCM audio buffers.
+The function [`sound_render_frame`](../../sound.c#L161) mixes discrete synthesis channels, noise generators, and TMS3615 organ tones into 16-bit PCM audio buffers.

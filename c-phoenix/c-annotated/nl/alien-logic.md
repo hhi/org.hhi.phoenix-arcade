@@ -31,7 +31,7 @@ init_alien_control_states();
   - [`init_alien_control_states_05fa`](#init_alien_control_states_05fa) — [`alien_logic.c:L24`](../../alien_logic.c#L24)
   - `phoenix_alien_control_init_values` — [`phoenix_tables.c:L265`](../../phoenix_tables.c#L265)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_init_start_round`](state-init.md#state_init_start_round) — [`state_init.c:L45`](../../state_init.c#L45)
+  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
 
 #### **Stap-voor-stap werking**
 1. **Index bepalen:** Berekent de opzoek-index via `state.LevelAndRound & 0x0F`.
@@ -88,7 +88,7 @@ init_alien_positions();
   - `phoenix_alien_position_pointer_table` — [`phoenix_tables.c`](../../phoenix_tables.c)
   - `phoenix_alien_position_layout_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_init_start_round`](state-init.md#state_init_start_round) — [`state_init.c:L46`](../../state_init.c#L46)
+  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
 
 #### **Stap-voor-stap werking**
 1. **Layout-pagina bepalen:** Berekent de index `(state.LevelAndRound >> 1) & 0x0F` en zoekt in `phoenix_alien_position_pointer_table` het startadres/offset binnen de layoutpagina `phoenix_alien_position_layout_page` op.
@@ -109,7 +109,7 @@ Aangeroepen tijdens de voorbereiding van een alien-golf.
   - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
   - `phoenix_alien_layout_pointers` — [`phoenix_tables.c`](../../phoenix_tables.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_init_start_round`](state-init.md#state_init_start_round) — [`state_init.c:L47`](../../state_init.c#L47)
+  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
 
 #### **Stap-voor-stap werking**
 1. **Patroonadres ophalen:** Berekent de index via `state.LevelAndRound & 0x0F` en haalt het 16-bit patroonpointeradres `(d, e)` op uit `phoenix_alien_layout_pointers`.
@@ -128,7 +128,7 @@ Aangeroepen in de rendering-lus zolang aliens aan het invliegen/verschijnen zijn
 * **Aanroepen (Outgoing Calls):**
   - Geen (inspecteert `state.CounterB4`)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L35`](../../alien_wave.c#L35)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 Inspecteert de algemene timer `state.CounterB4` en retourneert de sprite-tegel ID op basis van drempelwaarden:
@@ -162,7 +162,7 @@ void handle_animations_for_killed_aliens(void) {
   - [`l0fd8`](#l0fd8) — [`alien_logic.c:L196-L197`](../../alien_logic.c#L196-L197)
   - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L198-L199`](../../alien_logic.c#L198-L199)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c:L120`](../../state_play.c#L120)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 ---
 
@@ -338,7 +338,7 @@ alien_data_controller();
 * **Aanroepen (Outgoing Calls):**
   - `update_screen_objects` — [`hw_video_audio.c`](../../hw_video_audio.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c:L125`](../../state_play.c#L125)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Stap-voor-stap werking**
 Doorloopt een lus van 20 iteraties (voor 16 aliens + extra entiteiten) over twee parallelle geheugenbuffers:
@@ -360,7 +360,7 @@ Aangeroepen voorafgaand aan het tekenen van het scherm.
   - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
   - `get_screen_ram_address` — [`hw_video_audio.c`](../../hw_video_audio.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c:L126`](../../state_play.c#L126)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Stap-voor-stap werking**
 1. **Lusspectrum:** Doorloopt 20 slots vanaf `bc = 0x4B70` en `de = 0x4BB3`.
@@ -386,7 +386,7 @@ Aangeroepen in de bewegingsfase van de game loop.
   - `phoenix_alien_direction_vectors` — [`phoenix_tables.c`](../../phoenix_tables.c)
   - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L40`](../../alien_wave.c#L40)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **Lusspectrum:** Scant 16 aliens (`0x4B50 + i*2` voor patroonpointer, `0x4B70 + i*4` voor coördinaten).
@@ -411,7 +411,7 @@ Aangeroepen in de animatiefase van de game loop.
   - `phoenix_alien_shape_offset_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
   - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L41`](../../alien_wave.c#L41)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **Lusspectrum:** Scant 16 aliens (`bc = 0x4B70`, `hl = 0x4B50`).
@@ -438,7 +438,7 @@ Aangeroepen door de breakout scheduler bij vliegroute-veranderingen.
 * **Aanroepen (Outgoing Calls):**
   - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L42`](../../alien_wave.c#L42)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **LSB roteren:** Slaat het oude LSB op in `state.M4356` en verhoogt `state.M4395` modulo 16 (`(old_lsb + 1) & 0x0F`).
@@ -481,7 +481,7 @@ Periodiek aangeroepen vanuit de game loop.
 * **Aanroepen (Outgoing Calls):**
   - [`l3074_breakout_delay`](#l3074_breakout_delay) — [`alien_logic.c:L550`](../../alien_logic.c#L550)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L43`](../../alien_wave.c#L43)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **Grenzen testen:** Breekt direct af indien er reeds 3 of meer aliens in de breakout-golf vliegen (`state.M4357 >= 3`) of als er een pass actief is (`state.M4350 >= 4`).
@@ -503,7 +503,7 @@ Periodiek aangeroepen vanuit de game loop.
 * **Aanroepen (Outgoing Calls):**
   - [`l3074_breakout_delay`](#l3074_breakout_delay) — [`alien_logic.c:L580`](../../alien_logic.c#L580)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L44`](../../alien_wave.c#L44)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **Bom-timers aftellen:** Telt drie per-bom aftelslots af (`state.M4359`, `state.M435A`, `state.M435B`).
@@ -524,7 +524,7 @@ Onderdeel van de 6-fasen state machine voor patroonherrichting.
 * **Aanroepen (Outgoing Calls):**
   - [`get_random_number`](utilities.md#get_random_number) — [`utilities.c:L15`](../../utilities.c#L15)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L45`](../../alien_wave.c#L45)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 Indien `state.M4350 == 1`, schakelt de functie over naar fase 2 (`state.M4350 = 2`). Berekent het aantal te scannen patroonparen `state.M4353` op basis van het rondenummer (`((LevelAndRound >> 2) & 0x0F) + 5`, begrensd op 5) verminderd met het aantal vliegende aliens `M4357` en een willekeurige waarde.
@@ -543,7 +543,7 @@ Onderdeel van de 6-fasen state machine.
   - [`get_random_number`](utilities.md#get_random_number) — [`utilities.c:L15`](../../utilities.c#L15)
   - [`mem_read`](utilities.md#mem_read) — [`utilities.c:L22`](../../utilities.c#L22)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L46`](../../alien_wave.c#L46)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 Indien `state.M4350 == 2`, zoekt de functie vanaf een willekeurige alien-index door het geheugen naar de eerste actieve alien waarvan het bewegingspatroon nog overeenkomt met het oude patroon `state.M4394:M4356`. Slaat de gevonden positie op in `state.M4354` en schakelt over naar fase 3 (`state.M4350 = 3`).
@@ -564,7 +564,7 @@ Onderdeel van de 6-fasen state machine.
   - `phoenix_alien_pattern_selectors` — [`phoenix_tables.c`](../../phoenix_tables.c)
   - `phoenix_alien_closed_loop_pointers` — [`phoenix_tables.c`](../../phoenix_tables.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L47`](../../alien_wave.c#L47)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **Alien posities uitlezen:** Haalt de X- en Y-coördinaten op van de gekozen alien (`state.M4354`).
@@ -585,7 +585,7 @@ Onderdeel van de 6-fasen state machine.
 * **Aanroepen (Outgoing Calls):**
   - [`mem_read`](utilities.md#mem_read) — [`utilities.c:L22`](../../utilities.c#L22)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L48`](../../alien_wave.c#L48)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 Controleert of *alle* actieve aliens op het veld reeds op het oude patroon `M4394:M4356` vliegen. Indien zelfs maar één actieve alien een afwijkend patroon heeft, breekt de functie direct af. Als alle aliens gesynchroniseerd zijn, wordt fase 6 ingesteld (`state.M4350 = 6`).
@@ -608,7 +608,7 @@ l2560();
 * **Aanroepen (Outgoing Calls):**
   - [`l2596`](#l2596) — [`alien_logic.c:L790`](../../alien_logic.c#L790)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`alien_wave_update`](alien-wave.md#alien_wave_update) — [`alien_wave.c:L50`](../../alien_wave.c#L50)
+  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
 
 #### **Stap-voor-stap werking**
 1. **RAM-blok selecteren:** Selecteert de te scannen RAM-basis (`0x4B70` of `0x4B90`) afhankelijk van frame-teller bit `state.Counter93 & 0x01`.

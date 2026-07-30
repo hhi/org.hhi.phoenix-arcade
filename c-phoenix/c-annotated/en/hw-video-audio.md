@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`hw_video_audi
 
 ## 1. VBlank Interrupt & Main Loop
 
-### `vblank_interrupt_handler`
+### `phoenix_main_loop`
 #### **Description**
-The function [`vblank_interrupt_handler`](../../hw_video_audio.c#L45-L95) (Z80 ROM: `$0000–$0038`) triggers 60 times per second to update VRAM video pages `$4000–$433F` and sound dispatchers.
+The function [`phoenix_main_loop`](../../hw_video_audio.c#L123) (Z80 ROM: `$0000–$004F`) triggers 60 times per second to update VRAM video pages `$4000–$433F` and sound dispatchers.

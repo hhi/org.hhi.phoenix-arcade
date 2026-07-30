@@ -47,7 +47,7 @@ De functie [`update_scores_and_sound`](../../scoring.c#L93-L195) (Z80 ROM: `$270
   - `sound_set_frame_sample_index` — [`sound.c`](../../sound.c)
   - `l3a10` — [`sound_dispatcher.c`](../../sound_dispatcher.c)
 * **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c`](../../state_play.c)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 #### **Stap-voor-stap werking**
 1. **Queued Scores toekennen:** Scant de score-buffers `state.M4370..M437F` (4 slots van 4 bytes) en roept [`add_score`](#add_score) aan voor verwerkte punten.

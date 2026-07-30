@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`player_explos
 
 ## 1. Player Explosion Fragment Rendering
 
-### `draw_player_explosion_frame`
+### `l20b0_player_ship_particles_explosion`
 #### **Description**
-The function [`draw_player_explosion_frame`](../../player_explosion.c#L35-L85) renders expanding particle clouds for player destruction sequences.
+The function [`l20b0_player_ship_particles_explosion`](../../player_explosion.c#L76) (Z80 ROM: `$20B0–$20E2`) renders the expanding particle cloud of the player destruction sequence.

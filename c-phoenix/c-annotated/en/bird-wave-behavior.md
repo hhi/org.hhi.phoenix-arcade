@@ -15,7 +15,7 @@ This document contains an annotated analysis of all functions in [`bird_wave_beh
 
 ### `update_bird_behavior`
 #### **Description**
-The function [`update_bird_behavior`](../../bird_wave_behavior.c#L35-L95) (Z80 ROM: `$35E0–$3635`) evaluates active bird AI scripts from table `phoenix_bird_behaviour_scripts` (ROM `$3F00–$3F7F`).
+The function [`update_bird_behavior`](../../bird_wave_behavior.c#L35-L95) (Z80 ROM: `$35B0–$35DB`) evaluates active bird AI scripts from table `phoenix_bird_behaviour_scripts` (ROM `$3F00–$3F7F`).
 
 #### **Knowledge Graph Links**
 * **Calls (Outgoing Calls):**
@@ -27,14 +27,14 @@ The function [`update_bird_behavior`](../../bird_wave_behavior.c#L35-L95) (Z80 R
 
 ## 2. Egg Hatching & Growth Logic
 
-### `l3250_egg_hatching`
+### `update_bird_behavior`
 #### **Description**
-The function [`l3250_egg_hatching`](../../bird_wave_behavior.c#L110-L150) (Z80 ROM: `$3250–$3278`) transforms an egg tile into a small bird sprite upon hit or timer expiration.
+The function [`update_bird_behavior`](../../bird_wave_behavior.c#L218) (Z80 ROM: `$35B0–$35DB`) advances one bird through its behaviour script, including the egg-to-bird transformation, by dispatching on the script entry held in the bird record.
 
 ---
 
 ## 3. Dive Bombing & Swoop Attacks
 
-### `l3210_bird_dive_bomb`
+### `l370a_grow_or_dive`
 #### **Description**
-The function [`l3210_bird_dive_bomb`](../../bird_wave_behavior.c#L165-L210) (Z80 ROM: `$3210–$3245`) triggers dive-bombing swoop attacks targeted at player ship coordinates.
+The function [`l370a_grow_or_dive`](../../bird_wave_behavior.c#L195) rolls the random gate (`M436F`) that turns a growing bird into a diving one; the spawn decision itself lives in [`try_spawn_bird_dive_bomb`](bird-logic.md#try_spawn_bird_dive_bomb).

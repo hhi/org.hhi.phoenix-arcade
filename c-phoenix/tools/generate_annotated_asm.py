@@ -220,7 +220,14 @@ def main():
                         'sort_key': sort_key
                     })
                 current_asm = []
-            elif line.strip() == '' or line.startswith('//') or line.startswith('/*') or line.startswith(' *') or line.startswith('*/'):
+            elif line.strip() == '':
+                # A blank line ends the comment block. Without this, tags kept
+                # accumulating across separate blocks, so a cross-reference note
+                # such as "// Translates CopyMemoryBank [ASM: 0460-049D] -- real
+                # implementation lives in platform_sdl.c" was attributed to the
+                # next function down the file as well as to its real owner.
+                current_asm = []
+            elif line.startswith('//') or line.startswith('/*') or line.startswith(' *') or line.startswith('*/'):
                 pass
             else:
                 if not func_match:

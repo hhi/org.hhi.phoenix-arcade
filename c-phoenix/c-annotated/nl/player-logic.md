@@ -36,7 +36,7 @@ player_update();
 * **Aangeroepen door (Incoming Calls / Backlinks):**
   - [`l2000_alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop) — [`alien_wave.c#L222`](../../alien_wave.c#L222)
   - [`process_birds`](bird-logic.md#process_birds) — [`bird_logic.c#L29`](../../bird_logic.c#L29)
-  - [`state_play_frame_update`](state-play.md#state_play_frame_update) — [`state_play.c`](../../state_play.c)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
 
 ---
 

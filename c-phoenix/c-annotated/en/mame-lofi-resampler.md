@@ -11,6 +11,6 @@ This document contains an annotated analysis of all functions in [`mame_lofi_res
 
 ## 1. Cubic Resampler Logic
 
-### `resample_cubic`
+### `mame_lofi_resampler_next`
 #### **Description**
-The function [`resample_cubic`](../../mame_lofi_resampler.c#L35-L75) interpolates raw audio streams to match target platform sample rates.
+The function [`mame_lofi_resampler_next`](../../mame_lofi_resampler.c#L66) interpolates raw audio streams to match target platform sample rates.
