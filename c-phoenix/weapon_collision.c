@@ -200,11 +200,6 @@ void l0e02_unused(void) {
     l0e10(0x43CC, 0x43EE);
 }
 /*
- * Translates L0E10, L0E39, L0E58, L0E70, L0E90
- * Player bullet collision detection
- * [ASM: 0E10-0E6B] and [ASM: 0E70-0E9D]
- */
-/*
  * Translates L0C00
  * Score for killing an out-of-formation alien: 040 normally, 200 (plus
  * the bonus explosion flag) when its movement pattern is in step 7-8

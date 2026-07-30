@@ -616,32 +616,6 @@
       "status": "confirmed"
     },
     {
-      "id": "asm:0547-055A",
-      "kind": "asm-routine",
-      "name": "ASM $0547–$055A",
-      "asm": {
-        "start": "$0547",
-        "end": "$055A"
-      },
-      "evidence": {
-        "source": "C [ASM: ...] annotations"
-      },
-      "status": "confirmed"
-    },
-    {
-      "id": "asm:0580-0595",
-      "kind": "asm-routine",
-      "name": "ASM $0580–$0595",
-      "asm": {
-        "start": "$0580",
-        "end": "$0595"
-      },
-      "evidence": {
-        "source": "C [ASM: ...] annotations"
-      },
-      "status": "confirmed"
-    },
-    {
       "id": "asm:05D8-05DF",
       "kind": "asm-routine",
       "name": "ASM $05D8–$05DF",
@@ -1409,19 +1383,6 @@
       "status": "confirmed"
     },
     {
-      "id": "asm:0E10-0E6B",
-      "kind": "asm-routine",
-      "name": "ASM $0E10–$0E6B",
-      "asm": {
-        "start": "$0E10",
-        "end": "$0E6B"
-      },
-      "evidence": {
-        "source": "C [ASM: ...] annotations"
-      },
-      "status": "confirmed"
-    },
-    {
       "id": "asm:0E39-0E6B",
       "kind": "asm-routine",
       "name": "ASM $0E39–$0E6B",
@@ -1441,19 +1402,6 @@
       "asm": {
         "start": "$0E58",
         "end": "$0E6B"
-      },
-      "evidence": {
-        "source": "C [ASM: ...] annotations"
-      },
-      "status": "confirmed"
-    },
-    {
-      "id": "asm:0E70-0E9D",
-      "kind": "asm-routine",
-      "name": "ASM $0E70–$0E9D",
-      "asm": {
-        "start": "$0E70",
-        "end": "$0E9D"
       },
       "evidence": {
         "source": "C [ASM: ...] annotations"
@@ -3165,10 +3113,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0650",
-          "end": "0679"
-        },
-        {
           "start": "0A50",
           "end": "0A6B"
         }
@@ -3241,10 +3185,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0610",
-          "end": "0638"
-        },
-        {
           "start": "0650",
           "end": "0679"
         }
@@ -3280,10 +3220,6 @@
         "line": 31
       },
       "asm_ranges": [
-        {
-          "start": "05EC",
-          "end": "05F9"
-        },
         {
           "start": "085A",
           "end": "0871"
@@ -3321,10 +3257,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0A50",
-          "end": "0A6B"
-        },
-        {
           "start": "0A6C",
           "end": "0A99"
         }
@@ -3360,10 +3292,6 @@
         "line": 195
       },
       "asm_ranges": [
-        {
-          "start": "3758",
-          "end": "37CC"
-        },
         {
           "start": "0FC0",
           "end": "0FFF"
@@ -3437,10 +3365,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0FC0",
-          "end": "0FFF"
-        },
-        {
           "start": "05FA",
           "end": "060D"
         }
@@ -3476,14 +3400,6 @@
         "line": 224
       },
       "asm_ranges": [
-        {
-          "start": "0FC0",
-          "end": "0FFF"
-        },
-        {
-          "start": "05FA",
-          "end": "060D"
-        },
         {
           "start": "0610",
           "end": "0638"
@@ -3521,14 +3437,6 @@
       },
       "asm_ranges": [
         {
-          "start": "05EC",
-          "end": "05F9"
-        },
-        {
-          "start": "085A",
-          "end": "0871"
-        },
-        {
           "start": "0FD8",
           "end": "0FEF"
         }
@@ -3564,10 +3472,6 @@
         "line": 778
       },
       "asm_ranges": [
-        {
-          "start": "2596",
-          "end": "25B6"
-        },
         {
           "start": "2560",
           "end": "2595"
@@ -3605,10 +3509,6 @@
       },
       "asm_ranges": [
         {
-          "start": "322C",
-          "end": "325E"
-        },
-        {
           "start": "2596",
           "end": "25B6"
         }
@@ -3644,10 +3544,6 @@
         "line": 528
       },
       "asm_ranges": [
-        {
-          "start": "3074",
-          "end": "30A8"
-        },
         {
           "start": "3028",
           "end": "3059"
@@ -3804,10 +3700,6 @@
         "line": 629
       },
       "asm_ranges": [
-        {
-          "start": "3124",
-          "end": "314E"
-        },
         {
           "start": "315A",
           "end": "318E"
@@ -3997,10 +3889,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3796",
-          "end": "37AA"
-        },
-        {
           "start": "3772",
           "end": "3792"
         }
@@ -4037,10 +3925,6 @@
       },
       "asm_ranges": [
         {
-          "start": "37CC",
-          "end": "37E5"
-        },
-        {
           "start": "3796",
           "end": "37AA"
         }
@@ -4076,10 +3960,6 @@
         "line": 135
       },
       "asm_ranges": [
-        {
-          "start": "3772",
-          "end": "3792"
-        },
         {
           "start": "37B0",
           "end": "37C6"
@@ -4153,22 +4033,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2190",
-          "end": "21A4"
-        },
-        {
-          "start": "21A5",
-          "end": "21B9"
-        },
-        {
-          "start": "2146",
-          "end": "214F"
-        },
-        {
-          "start": "2130",
-          "end": "2145"
-        },
-        {
           "start": "2000",
           "end": "202A"
         }
@@ -4200,22 +4064,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2180",
-          "end": "218F"
-        },
-        {
-          "start": "2190",
-          "end": "21A4"
-        },
-        {
-          "start": "21A5",
-          "end": "21B9"
-        },
-        {
-          "start": "2146",
-          "end": "214F"
-        },
-        {
           "start": "2130",
           "end": "2145"
         }
@@ -4246,22 +4094,6 @@
         "line": 193
       },
       "asm_ranges": [
-        {
-          "start": "2170",
-          "end": "217F"
-        },
-        {
-          "start": "2180",
-          "end": "218F"
-        },
-        {
-          "start": "2190",
-          "end": "21A4"
-        },
-        {
-          "start": "21A5",
-          "end": "21B9"
-        },
         {
           "start": "2146",
           "end": "214F"
@@ -4325,10 +4157,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2150",
-          "end": "215F"
-        },
-        {
           "start": "2160",
           "end": "216F"
         }
@@ -4359,14 +4187,6 @@
         "line": 153
       },
       "asm_ranges": [
-        {
-          "start": "2150",
-          "end": "215F"
-        },
-        {
-          "start": "2160",
-          "end": "216F"
-        },
         {
           "start": "2170",
           "end": "217F"
@@ -4399,18 +4219,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2150",
-          "end": "215F"
-        },
-        {
-          "start": "2160",
-          "end": "216F"
-        },
-        {
-          "start": "2170",
-          "end": "217F"
-        },
-        {
           "start": "2180",
           "end": "218F"
         }
@@ -4441,22 +4249,6 @@
         "line": 171
       },
       "asm_ranges": [
-        {
-          "start": "2150",
-          "end": "215F"
-        },
-        {
-          "start": "2160",
-          "end": "216F"
-        },
-        {
-          "start": "2170",
-          "end": "217F"
-        },
-        {
-          "start": "2180",
-          "end": "218F"
-        },
         {
           "start": "2190",
           "end": "21A4"
@@ -4489,26 +4281,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2150",
-          "end": "215F"
-        },
-        {
-          "start": "2160",
-          "end": "216F"
-        },
-        {
-          "start": "2170",
-          "end": "217F"
-        },
-        {
-          "start": "2180",
-          "end": "218F"
-        },
-        {
-          "start": "2190",
-          "end": "21A4"
-        },
-        {
           "start": "21A5",
           "end": "21B9"
         }
@@ -4539,10 +4311,6 @@
         "line": 104
       },
       "asm_ranges": [
-        {
-          "start": "2204",
-          "end": "222B"
-        },
         {
           "start": "21BA",
           "end": "21CF"
@@ -4637,10 +4405,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2000",
-          "end": "202A"
-        },
-        {
           "start": "3000",
           "end": "3012"
         }
@@ -4671,10 +4435,6 @@
         "line": 252
       },
       "asm_ranges": [
-        {
-          "start": "0078",
-          "end": "007D"
-        },
         {
           "start": "03B0",
           "end": "03FD"
@@ -4746,10 +4506,6 @@
       },
       "asm_ranges": [
         {
-          "start": "03B0",
-          "end": "03FD"
-        },
-        {
           "start": "17E0",
           "end": "17ED"
         }
@@ -4818,12 +4574,7 @@
         "path": "attract_mode.c",
         "line": 449
       },
-      "asm_ranges": [
-        {
-          "start": "0BCA",
-          "end": "0BF1"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -4854,10 +4605,6 @@
         "line": 557
       },
       "asm_ranges": [
-        {
-          "start": "350C",
-          "end": "355D"
-        },
         {
           "start": "34DE",
           "end": "350B"
@@ -4927,12 +4674,7 @@
         "path": "attract_mode.c",
         "line": 604
       },
-      "asm_ranges": [
-        {
-          "start": "1EE0",
-          "end": "1EFA"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -5099,10 +4841,6 @@
       },
       "asm_ranges": [
         {
-          "start": "34DE",
-          "end": "350B"
-        },
-        {
           "start": "1EE0",
           "end": "1EFA"
         }
@@ -5138,10 +4876,6 @@
       },
       "asm_ranges": [
         {
-          "start": "17E0",
-          "end": "17ED"
-        },
-        {
           "start": "0288",
           "end": "02EE"
         }
@@ -5176,10 +4910,6 @@
         "line": 198
       },
       "asm_ranges": [
-        {
-          "start": "0173",
-          "end": "0195"
-        },
         {
           "start": "0196",
           "end": "01CD"
@@ -5363,10 +5093,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3474",
-          "end": "3485"
-        },
-        {
           "start": "3486",
           "end": "3497"
         }
@@ -5449,10 +5175,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3930",
-          "end": "395B"
-        },
-        {
           "start": "3980",
           "end": "39FD"
         }
@@ -5485,10 +5207,6 @@
       },
       "asm_ranges": [
         {
-          "start": "366A",
-          "end": "3671"
-        },
-        {
           "start": "35E0",
           "end": "3624"
         }
@@ -5520,10 +5238,6 @@
         "line": 85
       },
       "asm_ranges": [
-        {
-          "start": "3695",
-          "end": "36BB"
-        },
         {
           "start": "3628",
           "end": "3666"
@@ -5589,10 +5303,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3744",
-          "end": "3754"
-        },
-        {
           "start": "3672",
           "end": "3692"
         }
@@ -5624,14 +5334,6 @@
         "line": 65
       },
       "asm_ranges": [
-        {
-          "start": "3744",
-          "end": "3754"
-        },
-        {
-          "start": "3672",
-          "end": "3692"
-        },
         {
           "start": "3695",
           "end": "36BB"
@@ -5697,10 +5399,6 @@
       },
       "asm_ranges": [
         {
-          "start": "36C0",
-          "end": "36C9"
-        },
-        {
           "start": "36D2",
           "end": "36E6"
         }
@@ -5732,14 +5430,6 @@
         "line": 186
       },
       "asm_ranges": [
-        {
-          "start": "36C0",
-          "end": "36C9"
-        },
-        {
-          "start": "36D2",
-          "end": "36E6"
-        },
         {
           "start": "36EA",
           "end": "3706"
@@ -5773,14 +5463,6 @@
       },
       "asm_ranges": [
         {
-          "start": "36D2",
-          "end": "36E6"
-        },
-        {
-          "start": "36EA",
-          "end": "3706"
-        },
-        {
           "start": "370A",
           "end": "373E"
         }
@@ -5813,10 +5495,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3452",
-          "end": "345B"
-        },
-        {
           "start": "3744",
           "end": "3754"
         }
@@ -5848,10 +5526,6 @@
         "line": 337
       },
       "asm_ranges": [
-        {
-          "start": "3A00",
-          "end": "3A0F"
-        },
         {
           "start": "395C",
           "end": "397B"
@@ -5917,14 +5591,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3498",
-          "end": "34A9"
-        },
-        {
-          "start": "34AA",
-          "end": "34BB"
-        },
-        {
           "start": "3560",
           "end": "359F"
         }
@@ -5957,10 +5623,6 @@
       },
       "asm_ranges": [
         {
-          "start": "395C",
-          "end": "397B"
-        },
-        {
           "start": "3930",
           "end": "395B"
         }
@@ -5992,14 +5654,6 @@
         "line": 218
       },
       "asm_ranges": [
-        {
-          "start": "36EA",
-          "end": "3706"
-        },
-        {
-          "start": "370A",
-          "end": "373E"
-        },
         {
           "start": "35B0",
           "end": "35DB"
@@ -6097,10 +5751,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3498",
-          "end": "34A9"
-        },
-        {
           "start": "34AA",
           "end": "34BB"
         }
@@ -6183,10 +5833,6 @@
       },
       "asm_ranges": [
         {
-          "start": "26D0",
-          "end": "26FD"
-        },
-        {
           "start": "26AA",
           "end": "26CC"
         },
@@ -6220,10 +5866,6 @@
       },
       "asm_ranges": [
         {
-          "start": "2668",
-          "end": "26A7"
-        },
-        {
           "start": "26D0",
           "end": "26FD"
         }
@@ -6248,10 +5890,6 @@
         "line": 38
       },
       "asm_ranges": [
-        {
-          "start": "38A1",
-          "end": "38B5"
-        },
         {
           "start": "38F8",
           "end": "391B"
@@ -6340,10 +5978,6 @@
         "line": 56
       },
       "asm_ranges": [
-        {
-          "start": "38F8",
-          "end": "391B"
-        },
         {
           "start": "3844",
           "end": "388D"
@@ -6662,10 +6296,6 @@
       },
       "asm_ranges": [
         {
-          "start": "04A0",
-          "end": "04AB"
-        },
-        {
           "start": "07F0",
           "end": "07FA"
         }
@@ -6694,12 +6324,7 @@
         "path": "game_state_machine.c",
         "line": 107
       },
-      "asm_ranges": [
-        {
-          "start": "04A0",
-          "end": "04AB"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -6759,14 +6384,6 @@
         "line": 132
       },
       "asm_ranges": [
-        {
-          "start": "04A0",
-          "end": "04AB"
-        },
-        {
-          "start": "07F0",
-          "end": "07FA"
-        },
         {
           "start": "04AC",
           "end": "04E4"
@@ -6929,10 +6546,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0000",
-          "end": "004F"
-        },
-        {
           "start": "03A0",
           "end": "03AF"
         }
@@ -6973,14 +6586,6 @@
         "line": 237
       },
       "asm_ranges": [
-        {
-          "start": "0367",
-          "end": "0376"
-        },
-        {
-          "start": "0377",
-          "end": "037D"
-        },
         {
           "start": "0380",
           "end": "039D"
@@ -7105,10 +6710,6 @@
       },
       "asm_ranges": [
         {
-          "start": "006B",
-          "end": "0077"
-        },
-        {
           "start": "0050",
           "end": "006A"
         }
@@ -7150,10 +6751,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0050",
-          "end": "006A"
-        },
-        {
           "start": "0000",
           "end": "004F"
         }
@@ -7193,12 +6790,7 @@
         "path": "hw_video_audio.c",
         "line": 481
       },
-      "asm_ranges": [
-        {
-          "start": "06F0",
-          "end": "06F8"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -7234,12 +6826,7 @@
         "path": "hw_video_audio.c",
         "line": 480
       },
-      "asm_ranges": [
-        {
-          "start": "06F0",
-          "end": "06F8"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -7275,12 +6862,7 @@
         "path": "hw_video_audio.c",
         "line": 166
       },
-      "asm_ranges": [
-        {
-          "start": "03A0",
-          "end": "03AF"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -7317,18 +6899,6 @@
         "line": 252
       },
       "asm_ranges": [
-        {
-          "start": "0367",
-          "end": "0376"
-        },
-        {
-          "start": "0377",
-          "end": "037D"
-        },
-        {
-          "start": "0380",
-          "end": "039D"
-        },
         {
           "start": "041E",
           "end": "042E"
@@ -7371,14 +6941,6 @@
       },
       "asm_ranges": [
         {
-          "start": "041E",
-          "end": "042E"
-        },
-        {
-          "start": "0460",
-          "end": "049D"
-        },
-        {
           "start": "067A",
           "end": "06AF"
         }
@@ -7418,12 +6980,7 @@
         "path": "hw_video_audio.c",
         "line": 179
       },
-      "asm_ranges": [
-        {
-          "start": "03A0",
-          "end": "03AF"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -7460,10 +7017,6 @@
         "line": 216
       },
       "asm_ranges": [
-        {
-          "start": "032E",
-          "end": "034E"
-        },
         {
           "start": "0367",
           "end": "0376"
@@ -7546,14 +7099,6 @@
         "line": 228
       },
       "asm_ranges": [
-        {
-          "start": "032E",
-          "end": "034E"
-        },
-        {
-          "start": "0367",
-          "end": "0376"
-        },
         {
           "start": "0377",
           "end": "037D"
@@ -7737,10 +7282,6 @@
       },
       "asm_ranges": [
         {
-          "start": "06F0",
-          "end": "0701"
-        },
-        {
           "start": "01E1",
           "end": "01EB"
         }
@@ -7785,14 +7326,6 @@
       },
       "asm_ranges": [
         {
-          "start": "06F0",
-          "end": "0701"
-        },
-        {
-          "start": "01E1",
-          "end": "01EB"
-        },
-        {
           "start": "24A0",
           "end": "24BB"
         }
@@ -7815,14 +7348,6 @@
       },
       "asm_ranges": [
         {
-          "start": "01E1",
-          "end": "01EB"
-        },
-        {
-          "start": "24A0",
-          "end": "24BB"
-        },
-        {
           "start": "24F2",
           "end": "251C"
         }
@@ -7844,10 +7369,6 @@
         "line": 73
       },
       "asm_ranges": [
-        {
-          "start": "24F2",
-          "end": "251C"
-        },
         {
           "start": "32B0",
           "end": "32EB"
@@ -7951,12 +7472,7 @@
         "path": "mothership_logic.c",
         "line": 31
       },
-      "asm_ranges": [
-        {
-          "start": "246A",
-          "end": "2475"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -7980,10 +7496,6 @@
         "line": 48
       },
       "asm_ranges": [
-        {
-          "start": "246A",
-          "end": "2475"
-        },
         {
           "start": "2520",
           "end": "254F"
@@ -8237,12 +7749,7 @@
         "path": "platform_sdl.c",
         "line": 143
       },
-      "asm_ranges": [
-        {
-          "start": "0460",
-          "end": "049D"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -8649,10 +8156,6 @@
       },
       "asm_ranges": [
         {
-          "start": "211C",
-          "end": "212C"
-        },
-        {
           "start": "20E8",
           "end": "210D"
         }
@@ -8703,10 +8206,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0876",
-          "end": "0885"
-        },
-        {
           "start": "0886",
           "end": "0897"
         }
@@ -8737,10 +8236,6 @@
         "line": 294
       },
       "asm_ranges": [
-        {
-          "start": "0B48",
-          "end": "0B5A"
-        },
         {
           "start": "0AA0",
           "end": "0AC1"
@@ -8773,10 +8268,6 @@
       },
       "asm_ranges": [
         {
-          "start": "097A",
-          "end": "0995"
-        },
-        {
           "start": "0930",
           "end": "093C"
         }
@@ -8807,10 +8298,6 @@
         "line": 189
       },
       "asm_ranges": [
-        {
-          "start": "0930",
-          "end": "093C"
-        },
         {
           "start": "0926",
           "end": "092E"
@@ -8874,10 +8361,6 @@
       },
       "asm_ranges": [
         {
-          "start": "08A0",
-          "end": "08B7"
-        },
-        {
           "start": "08C4",
           "end": "08F3"
         }
@@ -8908,10 +8391,6 @@
         "line": 250
       },
       "asm_ranges": [
-        {
-          "start": "0964",
-          "end": "0975"
-        },
         {
           "start": "0700",
           "end": "0717"
@@ -8975,14 +8454,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0964",
-          "end": "0975"
-        },
-        {
-          "start": "0700",
-          "end": "0717"
-        },
-        {
           "start": "0B48",
           "end": "0B5A"
         }
@@ -9013,10 +8484,6 @@
         "line": 203
       },
       "asm_ranges": [
-        {
-          "start": "0926",
-          "end": "092E"
-        },
         {
           "start": "093D",
           "end": "0961"
@@ -9080,14 +8547,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0900",
-          "end": "0921"
-        },
-        {
-          "start": "0926",
-          "end": "092E"
-        },
-        {
           "start": "08A0",
           "end": "08B7"
         }
@@ -9118,14 +8577,6 @@
         "line": 66
       },
       "asm_ranges": [
-        {
-          "start": "0876",
-          "end": "0885"
-        },
-        {
-          "start": "0886",
-          "end": "0897"
-        },
         {
           "start": "0900",
           "end": "0921"
@@ -9184,10 +8635,6 @@
       },
       "asm_ranges": [
         {
-          "start": "00B6",
-          "end": "00B7"
-        },
-        {
           "start": "14E0",
           "end": "14FD"
         }
@@ -9209,14 +8656,6 @@
         "line": 22
       },
       "asm_ranges": [
-        {
-          "start": "00B6",
-          "end": "00B7"
-        },
-        {
-          "start": "14E0",
-          "end": "14FD"
-        },
         {
           "start": "1DF0",
           "end": "1DFF"
@@ -10373,10 +9812,6 @@
       },
       "asm_ranges": [
         {
-          "start": "23D6",
-          "end": "23FB"
-        },
-        {
           "start": "27BD",
           "end": "27EE"
         }
@@ -10401,18 +9836,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3B1B",
-          "end": "3B27"
-        },
-        {
-          "start": "3B33",
-          "end": "3B41"
-        },
-        {
-          "start": "3B43",
-          "end": "3B5B"
-        },
-        {
           "start": "3A10",
           "end": "3A1C"
         }
@@ -10436,10 +9859,6 @@
         "line": 72
       },
       "asm_ranges": [
-        {
-          "start": "3A2C",
-          "end": "3A3F"
-        },
         {
           "start": "3A1D",
           "end": "3A2B"
@@ -10489,18 +9908,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3A2C",
-          "end": "3A3F"
-        },
-        {
-          "start": "3A1D",
-          "end": "3A2B"
-        },
-        {
-          "start": "3A4E",
-          "end": "3A5F"
-        },
-        {
           "start": "3A40",
           "end": "3A4D"
         }
@@ -10524,14 +9931,6 @@
         "line": 89
       },
       "asm_ranges": [
-        {
-          "start": "3A2C",
-          "end": "3A3F"
-        },
-        {
-          "start": "3A1D",
-          "end": "3A2B"
-        },
         {
           "start": "3A4E",
           "end": "3A5F"
@@ -10557,18 +9956,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3A4E",
-          "end": "3A5F"
-        },
-        {
-          "start": "3A40",
-          "end": "3A4D"
-        },
-        {
-          "start": "3A78",
-          "end": "3A81"
-        },
-        {
           "start": "3A62",
           "end": "3A77"
         }
@@ -10592,18 +9979,6 @@
         "line": 114
       },
       "asm_ranges": [
-        {
-          "start": "3A1D",
-          "end": "3A2B"
-        },
-        {
-          "start": "3A4E",
-          "end": "3A5F"
-        },
-        {
-          "start": "3A40",
-          "end": "3A4D"
-        },
         {
           "start": "3A78",
           "end": "3A81"
@@ -10629,18 +10004,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3A40",
-          "end": "3A4D"
-        },
-        {
-          "start": "3A78",
-          "end": "3A81"
-        },
-        {
-          "start": "3A62",
-          "end": "3A77"
-        },
-        {
           "start": "3A82",
           "end": "3A8F"
         }
@@ -10664,18 +10027,6 @@
         "line": 143
       },
       "asm_ranges": [
-        {
-          "start": "3A78",
-          "end": "3A81"
-        },
-        {
-          "start": "3A62",
-          "end": "3A77"
-        },
-        {
-          "start": "3A82",
-          "end": "3A8F"
-        },
         {
           "start": "3A90",
           "end": "3A95"
@@ -10701,18 +10052,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3A62",
-          "end": "3A77"
-        },
-        {
-          "start": "3A82",
-          "end": "3A8F"
-        },
-        {
-          "start": "3A90",
-          "end": "3A95"
-        },
-        {
           "start": "3A98",
           "end": "3ACA"
         }
@@ -10736,10 +10075,6 @@
         "line": 186
       },
       "asm_ranges": [
-        {
-          "start": "3AF8",
-          "end": "3B00"
-        },
         {
           "start": "3AD0",
           "end": "3AF6"
@@ -10765,10 +10100,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3A98",
-          "end": "3ACA"
-        },
-        {
           "start": "3AF8",
           "end": "3B00"
         }
@@ -10792,10 +10123,6 @@
         "line": 206
       },
       "asm_ranges": [
-        {
-          "start": "3AD0",
-          "end": "3AF6"
-        },
         {
           "start": "3B02",
           "end": "3B19"
@@ -10821,14 +10148,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3B02",
-          "end": "3B19"
-        },
-        {
-          "start": "3B28",
-          "end": "3B31"
-        },
-        {
           "start": "3B1B",
           "end": "3B27"
         }
@@ -10852,10 +10171,6 @@
         "line": 218
       },
       "asm_ranges": [
-        {
-          "start": "3B02",
-          "end": "3B19"
-        },
         {
           "start": "3B28",
           "end": "3B31"
@@ -10881,18 +10196,6 @@
       },
       "asm_ranges": [
         {
-          "start": "3B02",
-          "end": "3B19"
-        },
-        {
-          "start": "3B28",
-          "end": "3B31"
-        },
-        {
-          "start": "3B1B",
-          "end": "3B27"
-        },
-        {
           "start": "3B33",
           "end": "3B41"
         }
@@ -10916,18 +10219,6 @@
         "line": 247
       },
       "asm_ranges": [
-        {
-          "start": "3B28",
-          "end": "3B31"
-        },
-        {
-          "start": "3B1B",
-          "end": "3B27"
-        },
-        {
-          "start": "3B33",
-          "end": "3B41"
-        },
         {
           "start": "3B43",
           "end": "3B5B"
@@ -10971,10 +10262,6 @@
         "line": 179
       },
       "asm_ranges": [
-        {
-          "start": "0720",
-          "end": "073F"
-        },
         {
           "start": "0740",
           "end": "07EE"
@@ -11082,10 +10369,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0740",
-          "end": "07EE"
-        },
-        {
           "start": "0718",
           "end": "071F"
         }
@@ -11115,10 +10398,6 @@
       },
       "asm_ranges": [
         {
-          "start": "244C",
-          "end": "2469"
-        },
-        {
           "start": "0B15",
           "end": "0B2D"
         }
@@ -11147,10 +10426,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0B15",
-          "end": "0B2D"
-        },
-        {
           "start": "0BA0",
           "end": "0BB2"
         }
@@ -11178,10 +10453,6 @@
         "line": 256
       },
       "asm_ranges": [
-        {
-          "start": "0BA0",
-          "end": "0BB2"
-        },
         {
           "start": "0BBA",
           "end": "0BC4"
@@ -11267,10 +10538,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0AEA",
-          "end": "0B0F"
-        },
-        {
           "start": "0B60",
           "end": "0B9D"
         }
@@ -11298,10 +10565,6 @@
         "line": 126
       },
       "asm_ranges": [
-        {
-          "start": "2552",
-          "end": "255D"
-        },
         {
           "start": "2400",
           "end": "244B"
@@ -11359,14 +10622,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0526",
-          "end": "0531"
-        },
-        {
-          "start": "0515",
-          "end": "0531"
-        },
-        {
           "start": "0350",
           "end": "0366"
         }
@@ -11399,14 +10654,6 @@
         "line": 33
       },
       "asm_ranges": [
-        {
-          "start": "0580",
-          "end": "0595"
-        },
-        {
-          "start": "0547",
-          "end": "055A"
-        },
         {
           "start": "0532",
           "end": "0543"
@@ -11441,14 +10688,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0547",
-          "end": "055A"
-        },
-        {
-          "start": "0532",
-          "end": "0543"
-        },
-        {
           "start": "0506",
           "end": "0514"
         }
@@ -11480,12 +10719,7 @@
         "path": "state_init.c",
         "line": 24
       },
-      "asm_ranges": [
-        {
-          "start": "0580",
-          "end": "0595"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -11514,18 +10748,6 @@
         "line": 56
       },
       "asm_ranges": [
-        {
-          "start": "0547",
-          "end": "055A"
-        },
-        {
-          "start": "0532",
-          "end": "0543"
-        },
-        {
-          "start": "0506",
-          "end": "0514"
-        },
         {
           "start": "0526",
           "end": "0531"
@@ -11560,14 +10782,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0506",
-          "end": "0514"
-        },
-        {
-          "start": "0526",
-          "end": "0531"
-        },
-        {
           "start": "0515",
           "end": "0531"
         }
@@ -11600,10 +10814,6 @@
         "line": 120
       },
       "asm_ranges": [
-        {
-          "start": "0350",
-          "end": "0366"
-        },
         {
           "start": "02F0",
           "end": "032D"
@@ -11710,10 +10920,6 @@
       },
       "asm_ranges": [
         {
-          "start": "22CA",
-          "end": "22DD"
-        },
-        {
           "start": "0834",
           "end": "0859"
         }
@@ -11815,12 +11021,7 @@
         "path": "state_play.c",
         "line": 149
       },
-      "asm_ranges": [
-        {
-          "start": "2230",
-          "end": "225F"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -11889,10 +11090,6 @@
       },
       "asm_ranges": [
         {
-          "start": "22B4",
-          "end": "22C5"
-        },
-        {
           "start": "22CA",
           "end": "22DD"
         }
@@ -11928,10 +11125,6 @@
         "line": 237
       },
       "asm_ranges": [
-        {
-          "start": "0834",
-          "end": "0859"
-        },
         {
           "start": "0800",
           "end": "0833"
@@ -12109,14 +11302,6 @@
       },
       "asm_ranges": [
         {
-          "start": "09A0",
-          "end": "09B5"
-        },
-        {
-          "start": "0200",
-          "end": "0205"
-        },
-        {
           "start": "0206",
           "end": "020E"
         }
@@ -12155,14 +11340,6 @@
       },
       "asm_ranges": [
         {
-          "start": "09BA",
-          "end": "09D1"
-        },
-        {
-          "start": "09A0",
-          "end": "09B5"
-        },
-        {
           "start": "0200",
           "end": "0205"
         }
@@ -12200,14 +11377,6 @@
         "line": 321
       },
       "asm_ranges": [
-        {
-          "start": "0210",
-          "end": "0216"
-        },
-        {
-          "start": "0217",
-          "end": "021D"
-        },
         {
           "start": "0220",
           "end": "0232"
@@ -12285,18 +11454,6 @@
       },
       "asm_ranges": [
         {
-          "start": "06E8",
-          "end": "06ED"
-        },
-        {
-          "start": "01E1",
-          "end": "01EB"
-        },
-        {
-          "start": "01ED",
-          "end": "01F7"
-        },
-        {
           "start": "05D8",
           "end": "05DF"
         }
@@ -12335,14 +11492,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0200",
-          "end": "0205"
-        },
-        {
-          "start": "0206",
-          "end": "020E"
-        },
-        {
           "start": "0258",
           "end": "025F"
         }
@@ -12380,14 +11529,6 @@
         "line": 137
       },
       "asm_ranges": [
-        {
-          "start": "01ED",
-          "end": "01F7"
-        },
-        {
-          "start": "05D8",
-          "end": "05DF"
-        },
         {
           "start": "05E0",
           "end": "05E8"
@@ -12465,14 +11606,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0270",
-          "end": "0276"
-        },
-        {
-          "start": "0277",
-          "end": "027D"
-        },
-        {
           "start": "0AD6",
           "end": "0AE9"
         }
@@ -12510,14 +11643,6 @@
         "line": 107
       },
       "asm_ranges": [
-        {
-          "start": "06E8",
-          "end": "06ED"
-        },
-        {
-          "start": "01E1",
-          "end": "01EB"
-        },
         {
           "start": "01ED",
           "end": "01F7"
@@ -12557,10 +11682,6 @@
       },
       "asm_ranges": [
         {
-          "start": "04FB",
-          "end": "0505"
-        },
-        {
           "start": "30AA",
           "end": "30B8"
         }
@@ -12598,18 +11719,6 @@
         "line": 163
       },
       "asm_ranges": [
-        {
-          "start": "05D8",
-          "end": "05DF"
-        },
-        {
-          "start": "05E0",
-          "end": "05E8"
-        },
-        {
-          "start": "0236",
-          "end": "0252"
-        },
         {
           "start": "09BA",
           "end": "09D1"
@@ -12649,14 +11758,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0236",
-          "end": "0252"
-        },
-        {
-          "start": "09BA",
-          "end": "09D1"
-        },
-        {
           "start": "09A0",
           "end": "09B5"
         }
@@ -12694,14 +11795,6 @@
         "line": 244
       },
       "asm_ranges": [
-        {
-          "start": "0206",
-          "end": "020E"
-        },
-        {
-          "start": "0258",
-          "end": "025F"
-        },
         {
           "start": "0260",
           "end": "0267"
@@ -12741,14 +11834,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0258",
-          "end": "025F"
-        },
-        {
-          "start": "0260",
-          "end": "0267"
-        },
-        {
           "start": "0270",
           "end": "0276"
         }
@@ -12786,14 +11871,6 @@
         "line": 270
       },
       "asm_ranges": [
-        {
-          "start": "0260",
-          "end": "0267"
-        },
-        {
-          "start": "0270",
-          "end": "0276"
-        },
         {
           "start": "0277",
           "end": "027D"
@@ -12833,10 +11910,6 @@
       },
       "asm_ranges": [
         {
-          "start": "30AA",
-          "end": "30B8"
-        },
-        {
           "start": "25B7",
           "end": "25FD"
         }
@@ -12875,10 +11948,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0AD6",
-          "end": "0AE9"
-        },
-        {
           "start": "0210",
           "end": "0216"
         }
@@ -12915,12 +11984,7 @@
         "path": "utilities.c",
         "line": 375
       },
-      "asm_ranges": [
-        {
-          "start": "04FB",
-          "end": "0505"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -12954,14 +12018,6 @@
         "line": 96
       },
       "asm_ranges": [
-        {
-          "start": "01D0",
-          "end": "01E0"
-        },
-        {
-          "start": "06E8",
-          "end": "06ED"
-        },
         {
           "start": "01E1",
           "end": "01EB"
@@ -13001,10 +12057,6 @@
       },
       "asm_ranges": [
         {
-          "start": "00BB",
-          "end": "00C3"
-        },
-        {
           "start": "00C4",
           "end": "00E1"
         }
@@ -13042,10 +12094,6 @@
         "line": 87
       },
       "asm_ranges": [
-        {
-          "start": "01D0",
-          "end": "01E0"
-        },
         {
           "start": "06E8",
           "end": "06ED"
@@ -13085,10 +12133,6 @@
       },
       "asm_ranges": [
         {
-          "start": "00C4",
-          "end": "00E1"
-        },
-        {
           "start": "01D0",
           "end": "01E0"
         }
@@ -13127,14 +12171,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0AD6",
-          "end": "0AE9"
-        },
-        {
-          "start": "0210",
-          "end": "0216"
-        },
-        {
           "start": "0217",
           "end": "021D"
         }
@@ -13172,14 +12208,6 @@
         "line": 153
       },
       "asm_ranges": [
-        {
-          "start": "05D8",
-          "end": "05DF"
-        },
-        {
-          "start": "05E0",
-          "end": "05E8"
-        },
         {
           "start": "0236",
           "end": "0252"
@@ -13251,16 +12279,7 @@
         "path": "weapon_collision.c",
         "line": 172
       },
-      "asm_ranges": [
-        {
-          "start": "0CD8",
-          "end": "0CEF"
-        },
-        {
-          "start": "0C40",
-          "end": "0C51"
-        }
-      ],
+      "asm_ranges": [],
       "status": "confirmed",
       "evidence": {
         "documentation": [
@@ -13319,14 +12338,6 @@
         "line": 148
       },
       "asm_ranges": [
-        {
-          "start": "0C56",
-          "end": "0C67"
-        },
-        {
-          "start": "0C6B",
-          "end": "0C80"
-        },
         {
           "start": "0CD8",
           "end": "0CEF"
@@ -13396,10 +12407,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0C56",
-          "end": "0C67"
-        },
-        {
           "start": "0C6B",
           "end": "0C80"
         }
@@ -13464,25 +12471,9 @@
       "name": "l0c00_kill_score",
       "source": {
         "path": "weapon_collision.c",
-        "line": 214
+        "line": 209
       },
       "asm_ranges": [
-        {
-          "start": "0DF0",
-          "end": "0E01"
-        },
-        {
-          "start": "0E02",
-          "end": "0E0B"
-        },
-        {
-          "start": "0E10",
-          "end": "0E6B"
-        },
-        {
-          "start": "0E70",
-          "end": "0E9D"
-        },
         {
           "start": "0C00",
           "end": "0C23"
@@ -13518,10 +12509,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0CC4",
-          "end": "0CD3"
-        },
-        {
           "start": "0C84",
           "end": "0CB3"
         }
@@ -13555,10 +12542,6 @@
         "line": 30
       },
       "asm_ranges": [
-        {
-          "start": "096E",
-          "end": "0975"
-        },
         {
           "start": "0CB4",
           "end": "0CD4"
@@ -13594,14 +12577,6 @@
       },
       "asm_ranges": [
         {
-          "start": "096E",
-          "end": "0975"
-        },
-        {
-          "start": "0CB4",
-          "end": "0CD4"
-        },
-        {
           "start": "0CC4",
           "end": "0CD3"
         }
@@ -13636,10 +12611,6 @@
       },
       "asm_ranges": [
         {
-          "start": "0DF0",
-          "end": "0E01"
-        },
-        {
           "start": "0E02",
           "end": "0E0B"
         }
@@ -13670,21 +12641,9 @@
       "name": "l0e10",
       "source": {
         "path": "weapon_collision.c",
-        "line": 233
+        "line": 228
       },
       "asm_ranges": [
-        {
-          "start": "0E10",
-          "end": "0E6B"
-        },
-        {
-          "start": "0E70",
-          "end": "0E9D"
-        },
-        {
-          "start": "0C00",
-          "end": "0C23"
-        },
         {
           "start": "0E10",
           "end": "0E36"
@@ -13728,7 +12687,7 @@
       "name": "l0ea4_with_score",
       "source": {
         "path": "weapon_collision.c",
-        "line": 301
+        "line": 296
       },
       "asm_ranges": [
         {
@@ -13762,7 +12721,7 @@
       "name": "l0f00_check_alien_with_player_collision",
       "source": {
         "path": "weapon_collision.c",
-        "line": 380
+        "line": 375
       },
       "asm_ranges": [
         {
@@ -13804,7 +12763,7 @@
       "name": "l0f56_screen_ram_collision",
       "source": {
         "path": "weapon_collision.c",
-        "line": 352
+        "line": 347
       },
       "asm_ranges": [
         {
@@ -13841,14 +12800,6 @@
         "line": 163
       },
       "asm_ranges": [
-        {
-          "start": "0C6B",
-          "end": "0C80"
-        },
-        {
-          "start": "0CD8",
-          "end": "0CEF"
-        },
         {
           "start": "0C40",
           "end": "0C51"
@@ -13955,6 +12906,25 @@
           "ram:$4B70",
           "c:bird_logic:draw_first_4_bird_objects",
           "c:bird_wave_behavior:update_first_four_birds"
+        ]
+      },
+      "status": "confirmed"
+    },
+    {
+      "id": "claim:vector-offset-formula",
+      "kind": "claim",
+      "name": "alien_movement_update derives the direction-vector index by rotating the pattern step byte left one bit (RLCA), equivalent to the documented vector_offset = step_byte × 2, before indexing phoenix_alien_direction_vectors for delta_x and delta_y.",
+      "claim": {
+        "statement": "alien_movement_update derives the direction-vector index by rotating the pattern step byte left one bit (RLCA), equivalent to the documented vector_offset = step_byte × 2, before indexing phoenix_alien_direction_vectors for delta_x and delta_y.",
+        "sources": [
+          "alien_logic.c#L348-L366",
+          "animations/nl/animation-trajectory.md#L36-L38",
+          "animations/en/animation-trajectory.md#L36-L38"
+        ],
+        "relates_to": [
+          "c:alien_logic:alien_movement_update",
+          "asm:0D1C-0D67",
+          "table:phoenix_alien_direction_vectors"
         ]
       },
       "status": "confirmed"
@@ -15624,18 +14594,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "2C00",
-          "end": "2FFF"
-        },
-        {
-          "start": "3300",
-          "end": "3307"
-        },
-        {
-          "start": "3310",
-          "end": "332F"
-        },
-        {
           "start": "3330",
           "end": "33FF"
         }
@@ -15655,14 +14613,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1000",
-          "end": "13FF"
-        },
-        {
-          "start": "1400",
-          "end": "1500"
-        },
         {
           "start": "1500",
           "end": "151F"
@@ -15684,18 +14634,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1500",
-          "end": "15FF"
-        },
-        {
-          "start": "1520",
-          "end": "153F"
-        },
-        {
-          "start": "1600",
-          "end": "16FF"
-        },
-        {
           "start": "1700",
           "end": "173F"
         }
@@ -15715,14 +14653,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "2800",
-          "end": "2BFF"
-        },
-        {
-          "start": "2C00",
-          "end": "2FFF"
-        },
         {
           "start": "3300",
           "end": "3307"
@@ -15744,30 +14674,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1520",
-          "end": "153F"
-        },
-        {
-          "start": "1600",
-          "end": "16FF"
-        },
-        {
-          "start": "1700",
-          "end": "173F"
-        },
-        {
-          "start": "1740",
-          "end": "175F"
-        },
-        {
-          "start": "1760",
-          "end": "1767"
-        },
-        {
-          "start": "1770",
-          "end": "17AF"
-        },
-        {
           "start": "17B0",
           "end": "17B7"
         }
@@ -15787,14 +14693,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1500",
-          "end": "151F"
-        },
-        {
-          "start": "1500",
-          "end": "15FF"
-        },
         {
           "start": "1520",
           "end": "153F"
@@ -15816,30 +14714,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "0598",
-          "end": "05A7"
-        },
-        {
-          "start": "05A8",
-          "end": "05D7"
-        },
-        {
-          "start": "063A",
-          "end": "0649"
-        },
-        {
-          "start": "0A00",
-          "end": "0A3F"
-        },
-        {
-          "start": "0A40",
-          "end": "0A4B"
-        },
-        {
-          "start": "0B38",
-          "end": "0B47"
-        },
-        {
           "start": "1000",
           "end": "13FF"
         }
@@ -15859,18 +14733,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1F00",
-          "end": "1FFF"
-        },
-        {
-          "start": "233A",
-          "end": "2359"
-        },
-        {
-          "start": "2800",
-          "end": "2BFF"
-        },
         {
           "start": "2C00",
           "end": "2FFF"
@@ -15892,18 +14754,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "2800",
-          "end": "2BFF"
-        },
-        {
-          "start": "2C00",
-          "end": "2FFF"
-        },
-        {
-          "start": "3300",
-          "end": "3307"
-        },
-        {
           "start": "3310",
           "end": "332F"
         }
@@ -15923,14 +14773,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1400",
-          "end": "1500"
-        },
-        {
-          "start": "1500",
-          "end": "151F"
-        },
         {
           "start": "1500",
           "end": "15FF"
@@ -15952,18 +14794,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "0560",
-          "end": "057F"
-        },
-        {
-          "start": "0598",
-          "end": "05A7"
-        },
-        {
-          "start": "05A8",
-          "end": "05D7"
-        },
-        {
           "start": "063A",
           "end": "0649"
         }
@@ -15983,18 +14813,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1500",
-          "end": "151F"
-        },
-        {
-          "start": "1500",
-          "end": "15FF"
-        },
-        {
-          "start": "1520",
-          "end": "153F"
-        },
         {
           "start": "1600",
           "end": "16FF"
@@ -16016,18 +14834,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "198C",
-          "end": "198C"
-        },
-        {
-          "start": "1B40",
-          "end": "1B9F"
-        },
-        {
-          "start": "1BA0",
-          "end": "1BBF"
-        },
-        {
           "start": "1BC0",
           "end": "1BFF"
         }
@@ -16047,30 +14853,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1700",
-          "end": "173F"
-        },
-        {
-          "start": "1740",
-          "end": "175F"
-        },
-        {
-          "start": "1760",
-          "end": "1767"
-        },
-        {
-          "start": "1770",
-          "end": "17AF"
-        },
-        {
-          "start": "17B0",
-          "end": "17B7"
-        },
-        {
-          "start": "17B8",
-          "end": "17FF"
-        },
         {
           "start": "1800",
           "end": "185F"
@@ -16092,42 +14874,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
-          "start": "3E00",
-          "end": "3E7F"
-        },
-        {
-          "start": "3E80",
-          "end": "3EBF"
-        },
-        {
-          "start": "3EC0",
-          "end": "3ECF"
-        },
-        {
-          "start": "3ED0",
-          "end": "3EDF"
-        },
-        {
-          "start": "3EE0",
-          "end": "3EFF"
-        },
-        {
           "start": "3F00",
           "end": "3F7F"
         }
@@ -16147,34 +14893,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
-          "start": "3E00",
-          "end": "3E7F"
-        },
-        {
-          "start": "3E80",
-          "end": "3EBF"
-        },
-        {
-          "start": "3EC0",
-          "end": "3ECF"
-        },
-        {
-          "start": "3ED0",
-          "end": "3EDF"
-        },
-        {
-          "start": "3EE0",
-          "end": "3EFF"
-        },
-        {
-          "start": "3F00",
-          "end": "3F7F"
-        },
         {
           "start": "3F80",
           "end": "3FFF"
@@ -16196,38 +14914,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
-          "start": "3E00",
-          "end": "3E7F"
-        },
-        {
-          "start": "3E80",
-          "end": "3EBF"
-        },
-        {
-          "start": "3EC0",
-          "end": "3ECF"
-        },
-        {
-          "start": "3ED0",
-          "end": "3EDF"
-        },
-        {
           "start": "3EE0",
           "end": "3EFF"
         }
@@ -16247,14 +14933,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "3C00",
-          "end": "3DB7"
-        },
-        {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
         {
           "start": "3DC0",
           "end": "3DDF"
@@ -16276,30 +14954,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
-          "start": "3E00",
-          "end": "3E7F"
-        },
-        {
-          "start": "3E80",
-          "end": "3EBF"
-        },
-        {
           "start": "3EC0",
           "end": "3ECF"
         }
@@ -16319,14 +14973,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1800",
-          "end": "185F"
-        },
-        {
-          "start": "1860",
-          "end": "1B5F"
-        },
         {
           "start": "198C",
           "end": "198C"
@@ -16348,26 +14994,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
-          "start": "3E00",
-          "end": "3E7F"
-        },
-        {
           "start": "3E80",
           "end": "3EBF"
         }
@@ -16387,22 +15013,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "2C00",
-          "end": "2FFF"
-        },
-        {
-          "start": "3300",
-          "end": "3307"
-        },
-        {
-          "start": "3310",
-          "end": "332F"
-        },
-        {
-          "start": "3330",
-          "end": "33FF"
-        },
         {
           "start": "3B00",
           "end": "3BFF"
@@ -16424,34 +15034,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
-          "start": "3E00",
-          "end": "3E7F"
-        },
-        {
-          "start": "3E80",
-          "end": "3EBF"
-        },
-        {
-          "start": "3EC0",
-          "end": "3ECF"
-        },
-        {
           "start": "3ED0",
           "end": "3EDF"
         }
@@ -16471,22 +15053,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "3310",
-          "end": "332F"
-        },
-        {
-          "start": "3330",
-          "end": "33FF"
-        },
-        {
-          "start": "3B00",
-          "end": "3BFF"
-        },
-        {
-          "start": "3C00",
-          "end": "3C0B"
-        },
         {
           "start": "3C00",
           "end": "3DB7"
@@ -16508,22 +15074,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
-          "start": "3E00",
-          "end": "3E07"
-        },
-        {
           "start": "3E00",
           "end": "3E7F"
         }
@@ -16543,18 +15093,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "3C00",
-          "end": "3DB7"
-        },
-        {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
         {
           "start": "3DE0",
           "end": "3DFF"
@@ -16576,18 +15114,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "3DB8",
-          "end": "3DBF"
-        },
-        {
-          "start": "3DC0",
-          "end": "3DDF"
-        },
-        {
-          "start": "3DE0",
-          "end": "3DFF"
-        },
-        {
           "start": "3E00",
           "end": "3E07"
         }
@@ -16607,14 +15133,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "3C00",
-          "end": "3C0B"
-        },
-        {
-          "start": "3C00",
-          "end": "3DB7"
-        },
         {
           "start": "3DB8",
           "end": "3DBF"
@@ -16636,14 +15154,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1F00",
-          "end": "1FFF"
-        },
-        {
-          "start": "233A",
-          "end": "2359"
-        },
-        {
           "start": "2800",
           "end": "2BFF"
         }
@@ -16663,18 +15173,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1520",
-          "end": "153F"
-        },
-        {
-          "start": "1600",
-          "end": "16FF"
-        },
-        {
-          "start": "1700",
-          "end": "173F"
-        },
         {
           "start": "1740",
           "end": "175F"
@@ -16696,14 +15194,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1E20",
-          "end": "1EDF"
-        },
-        {
-          "start": "1F00",
-          "end": "1FFF"
-        },
-        {
           "start": "233A",
           "end": "2359"
         }
@@ -16723,14 +15213,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "0560",
-          "end": "057F"
-        },
-        {
-          "start": "0598",
-          "end": "05A7"
-        },
         {
           "start": "05A8",
           "end": "05D7"
@@ -16752,10 +15234,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "0560",
-          "end": "057F"
-        },
-        {
           "start": "0598",
           "end": "05A7"
         }
@@ -16775,18 +15253,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1800",
-          "end": "185F"
-        },
-        {
-          "start": "1860",
-          "end": "1B5F"
-        },
-        {
-          "start": "198C",
-          "end": "198C"
-        },
         {
           "start": "1B40",
           "end": "1B9F"
@@ -16808,10 +15274,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1C00",
-          "end": "1CFF"
-        },
-        {
           "start": "1D00",
           "end": "1DFF"
         }
@@ -16832,14 +15294,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1D00",
-          "end": "1DFF"
-        },
-        {
-          "start": "1E00",
-          "end": "1E1F"
-        },
-        {
           "start": "1E20",
           "end": "1EDF"
         }
@@ -16859,14 +15313,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1C00",
-          "end": "1CFF"
-        },
-        {
-          "start": "1D00",
-          "end": "1DFF"
-        },
         {
           "start": "1E00",
           "end": "1E1F"
@@ -16908,30 +15354,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "0560",
-          "end": "057F"
-        },
-        {
-          "start": "0598",
-          "end": "05A7"
-        },
-        {
-          "start": "05A8",
-          "end": "05D7"
-        },
-        {
-          "start": "063A",
-          "end": "0649"
-        },
-        {
-          "start": "0A00",
-          "end": "0A3F"
-        },
-        {
-          "start": "0A40",
-          "end": "0A4B"
-        },
-        {
           "start": "0B38",
           "end": "0B47"
         }
@@ -16951,18 +15373,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1860",
-          "end": "1B5F"
-        },
-        {
-          "start": "198C",
-          "end": "198C"
-        },
-        {
-          "start": "1B40",
-          "end": "1B9F"
-        },
         {
           "start": "1BA0",
           "end": "1BBF"
@@ -16984,22 +15394,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1520",
-          "end": "153F"
-        },
-        {
-          "start": "1600",
-          "end": "16FF"
-        },
-        {
-          "start": "1700",
-          "end": "173F"
-        },
-        {
-          "start": "1740",
-          "end": "175F"
-        },
-        {
           "start": "1760",
           "end": "1767"
         }
@@ -17019,26 +15413,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1760",
-          "end": "1767"
-        },
-        {
-          "start": "1770",
-          "end": "17AF"
-        },
-        {
-          "start": "17B0",
-          "end": "17B7"
-        },
-        {
-          "start": "17B8",
-          "end": "17FF"
-        },
-        {
-          "start": "1800",
-          "end": "185F"
-        },
         {
           "start": "1860",
           "end": "1B5F"
@@ -17060,26 +15434,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "0560",
-          "end": "057F"
-        },
-        {
-          "start": "0598",
-          "end": "05A7"
-        },
-        {
-          "start": "05A8",
-          "end": "05D7"
-        },
-        {
-          "start": "063A",
-          "end": "0649"
-        },
-        {
-          "start": "0A00",
-          "end": "0A3F"
-        },
-        {
           "start": "0A40",
           "end": "0A4B"
         }
@@ -17099,22 +15453,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "3300",
-          "end": "3307"
-        },
-        {
-          "start": "3310",
-          "end": "332F"
-        },
-        {
-          "start": "3330",
-          "end": "33FF"
-        },
-        {
-          "start": "3B00",
-          "end": "3BFF"
-        },
         {
           "start": "3C00",
           "end": "3C0B"
@@ -17136,22 +15474,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "0560",
-          "end": "057F"
-        },
-        {
-          "start": "0598",
-          "end": "05A7"
-        },
-        {
-          "start": "05A8",
-          "end": "05D7"
-        },
-        {
-          "start": "063A",
-          "end": "0649"
-        },
-        {
           "start": "0A00",
           "end": "0A3F"
         }
@@ -17171,34 +15493,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "1520",
-          "end": "153F"
-        },
-        {
-          "start": "1600",
-          "end": "16FF"
-        },
-        {
-          "start": "1700",
-          "end": "173F"
-        },
-        {
-          "start": "1740",
-          "end": "175F"
-        },
-        {
-          "start": "1760",
-          "end": "1767"
-        },
-        {
-          "start": "1770",
-          "end": "17AF"
-        },
-        {
-          "start": "17B0",
-          "end": "17B7"
-        },
         {
           "start": "17B8",
           "end": "17FF"
@@ -17220,26 +15514,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1520",
-          "end": "153F"
-        },
-        {
-          "start": "1600",
-          "end": "16FF"
-        },
-        {
-          "start": "1700",
-          "end": "173F"
-        },
-        {
-          "start": "1740",
-          "end": "175F"
-        },
-        {
-          "start": "1760",
-          "end": "1767"
-        },
-        {
           "start": "1770",
           "end": "17AF"
         }
@@ -17259,22 +15533,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "0A00",
-          "end": "0A3F"
-        },
-        {
-          "start": "0A40",
-          "end": "0A4B"
-        },
-        {
-          "start": "0B38",
-          "end": "0B47"
-        },
-        {
-          "start": "1000",
-          "end": "13FF"
-        },
         {
           "start": "1400",
           "end": "1500"
@@ -17296,14 +15554,6 @@
       "status": "confirmed",
       "asm_ranges": [
         {
-          "start": "1E00",
-          "end": "1E1F"
-        },
-        {
-          "start": "1E20",
-          "end": "1EDF"
-        },
-        {
           "start": "1F00",
           "end": "1FFF"
         }
@@ -17323,22 +15573,6 @@
       },
       "status": "confirmed",
       "asm_ranges": [
-        {
-          "start": "198C",
-          "end": "198C"
-        },
-        {
-          "start": "1B40",
-          "end": "1B9F"
-        },
-        {
-          "start": "1BA0",
-          "end": "1BBF"
-        },
-        {
-          "start": "1BC0",
-          "end": "1BFF"
-        },
         {
           "start": "1C00",
           "end": "1CFF"
@@ -17396,6 +15630,21 @@
       "kind": "asserts",
       "from": "claim:ram-4b70-bird-records",
       "to": "ram:$4B70"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:vector-offset-formula",
+      "to": "asm:0D1C-0D67"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:vector-offset-formula",
+      "to": "c:alien_logic:alien_movement_update"
+    },
+    {
+      "kind": "asserts",
+      "from": "claim:vector-offset-formula",
+      "to": "table:phoenix_alien_direction_vectors"
     },
     {
       "kind": "calls",
@@ -20095,11 +18344,6 @@
     {
       "kind": "implements",
       "from": "c:alien_logic:alien_data_controller",
-      "to": "asm:0650-0679"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:alien_data_controller",
       "to": "asm:0A50-0A6B"
     },
     {
@@ -20110,27 +18354,12 @@
     {
       "kind": "implements",
       "from": "c:alien_logic:copy_init_values_for_16_aliens",
-      "to": "asm:0610-0638"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:copy_init_values_for_16_aliens",
       "to": "asm:0650-0679"
     },
     {
       "kind": "implements",
       "from": "c:alien_logic:get_animation_chrs_aliens_fade_in",
-      "to": "asm:05EC-05F9"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:get_animation_chrs_aliens_fade_in",
       "to": "asm:085A-0871"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:get_screen_ram_address_for_all_aliens",
-      "to": "asm:0A50-0A6B"
     },
     {
       "kind": "implements",
@@ -20144,11 +18373,6 @@
     },
     {
       "kind": "implements",
-      "from": "c:alien_logic:handle_animations_for_killed_aliens",
-      "to": "asm:3758-37CC"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_logic:init_alien_control_states",
       "to": "asm:05EC-05F9"
     },
@@ -20159,33 +18383,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:alien_logic:init_alien_control_states_05fa",
-      "to": "asm:0FC0-0FFF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:init_alien_positions",
-      "to": "asm:05FA-060D"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_logic:init_alien_positions",
       "to": "asm:0610-0638"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:init_alien_positions",
-      "to": "asm:0FC0-0FFF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l0fd8",
-      "to": "asm:05EC-05F9"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l0fd8",
-      "to": "asm:085A-0871"
     },
     {
       "kind": "implements",
@@ -20199,18 +18398,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:alien_logic:l2560",
-      "to": "asm:2596-25B6"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_logic:l2596",
       "to": "asm:2596-25B6"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l2596",
-      "to": "asm:322C-325E"
     },
     {
       "kind": "implements",
@@ -20221,11 +18410,6 @@
       "kind": "implements",
       "from": "c:alien_logic:l3028",
       "to": "asm:305C-306D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l3028",
-      "to": "asm:3074-30A8"
     },
     {
       "kind": "implements",
@@ -20250,11 +18434,6 @@
     {
       "kind": "implements",
       "from": "c:alien_logic:l3124",
-      "to": "asm:3124-314E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l315a",
       "to": "asm:3124-314E"
     },
     {
@@ -20299,23 +18478,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:alien_logic:l3758_bonus_explosion_right",
-      "to": "asm:3796-37AA"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_logic:l3796_bonus_explosion_left",
       "to": "asm:3796-37AA"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l3796_bonus_explosion_left",
-      "to": "asm:37CC-37E5"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_logic:l37b0_print_bonus_score",
-      "to": "asm:3772-3792"
     },
     {
       "kind": "implements",
@@ -20334,73 +18498,13 @@
     },
     {
       "kind": "implements",
-      "from": "c:alien_wave:l2000_alien_wave_main_loop",
-      "to": "asm:2130-2145"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2000_alien_wave_main_loop",
-      "to": "asm:2146-214F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2000_alien_wave_main_loop",
-      "to": "asm:2190-21A4"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2000_alien_wave_main_loop",
-      "to": "asm:21A5-21B9"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_wave:l2130",
       "to": "asm:2130-2145"
     },
     {
       "kind": "implements",
-      "from": "c:alien_wave:l2130",
-      "to": "asm:2146-214F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2130",
-      "to": "asm:2180-218F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2130",
-      "to": "asm:2190-21A4"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2130",
-      "to": "asm:21A5-21B9"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_wave:l2146",
       "to": "asm:2146-214F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2146",
-      "to": "asm:2170-217F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2146",
-      "to": "asm:2180-218F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2146",
-      "to": "asm:2190-21A4"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2146",
-      "to": "asm:21A5-21B9"
     },
     {
       "kind": "implements",
@@ -20410,21 +18514,6 @@
     {
       "kind": "implements",
       "from": "c:alien_wave:l2160",
-      "to": "asm:2150-215F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2160",
-      "to": "asm:2160-216F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2170",
-      "to": "asm:2150-215F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2170",
       "to": "asm:2160-216F"
     },
     {
@@ -20435,71 +18524,11 @@
     {
       "kind": "implements",
       "from": "c:alien_wave:l2180",
-      "to": "asm:2150-215F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2180",
-      "to": "asm:2160-216F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2180",
-      "to": "asm:2170-217F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2180",
       "to": "asm:2180-218F"
     },
     {
       "kind": "implements",
       "from": "c:alien_wave:l2190",
-      "to": "asm:2150-215F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2190",
-      "to": "asm:2160-216F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2190",
-      "to": "asm:2170-217F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2190",
-      "to": "asm:2180-218F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l2190",
-      "to": "asm:2190-21A4"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l21a5",
-      "to": "asm:2150-215F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l21a5",
-      "to": "asm:2160-216F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l21a5",
-      "to": "asm:2170-217F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l21a5",
-      "to": "asm:2180-218F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l21a5",
       "to": "asm:2190-21A4"
     },
     {
@@ -20514,11 +18543,6 @@
     },
     {
       "kind": "implements",
-      "from": "c:alien_wave:l21ba",
-      "to": "asm:2204-222B"
-    },
-    {
-      "kind": "implements",
       "from": "c:alien_wave:l2204",
       "to": "asm:2204-222B"
     },
@@ -20530,17 +18554,7 @@
     {
       "kind": "implements",
       "from": "c:alien_wave:l3000",
-      "to": "asm:2000-202A"
-    },
-    {
-      "kind": "implements",
-      "from": "c:alien_wave:l3000",
       "to": "asm:3000-3012"
-    },
-    {
-      "kind": "implements",
-      "from": "c:attract_mode:check_demo_mode_player_and_alien",
-      "to": "asm:0078-007D"
     },
     {
       "kind": "implements",
@@ -20555,11 +18569,6 @@
     {
       "kind": "implements",
       "from": "c:attract_mode:coin_checking",
-      "to": "asm:03B0-03FD"
-    },
-    {
-      "kind": "implements",
-      "from": "c:attract_mode:coin_checking",
       "to": "asm:17E0-17ED"
     },
     {
@@ -20569,28 +18578,13 @@
     },
     {
       "kind": "implements",
-      "from": "c:attract_mode:drawNx2",
-      "to": "asm:0BCA-0BF1"
-    },
-    {
-      "kind": "implements",
       "from": "c:attract_mode:draw_bird_shape_34de",
       "to": "asm:34DE-350B"
     },
     {
       "kind": "implements",
-      "from": "c:attract_mode:draw_bird_shape_34de",
-      "to": "asm:350C-355D"
-    },
-    {
-      "kind": "implements",
       "from": "c:attract_mode:draw_bird_shape_350c",
       "to": "asm:350C-355D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:attract_mode:draw_intro_bird_animation_frame",
-      "to": "asm:1EE0-1EFA"
     },
     {
       "kind": "implements",
@@ -20614,23 +18608,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:attract_mode:l1ee0",
-      "to": "asm:34DE-350B"
-    },
-    {
-      "kind": "implements",
       "from": "c:attract_mode:prompt_for_start_game",
       "to": "asm:0288-02EE"
-    },
-    {
-      "kind": "implements",
-      "from": "c:attract_mode:prompt_for_start_game",
-      "to": "asm:17E0-17ED"
-    },
-    {
-      "kind": "implements",
-      "from": "c:attract_mode:slow_print_score_average_table",
-      "to": "asm:0173-0195"
     },
     {
       "kind": "implements",
@@ -20660,11 +18639,6 @@
     {
       "kind": "implements",
       "from": "c:bird_logic:draw_second_4_bird_objects",
-      "to": "asm:3474-3485"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_logic:draw_second_4_bird_objects",
       "to": "asm:3486-3497"
     },
     {
@@ -20680,11 +18654,6 @@
     {
       "kind": "implements",
       "from": "c:bird_wave_behavior:check_bird_formation_player_collision",
-      "to": "asm:3930-395B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:check_bird_formation_player_collision",
       "to": "asm:3980-39FD"
     },
     {
@@ -20694,18 +18663,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:bird_wave_behavior:l35e0_descend",
-      "to": "asm:366A-3671"
-    },
-    {
-      "kind": "implements",
       "from": "c:bird_wave_behavior:l3628_climb",
       "to": "asm:3628-3666"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l3628_climb",
-      "to": "asm:3695-36BB"
     },
     {
       "kind": "implements",
@@ -20719,23 +18678,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:bird_wave_behavior:l3672_aim",
-      "to": "asm:3744-3754"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l3695_aim_up",
-      "to": "asm:3672-3692"
-    },
-    {
-      "kind": "implements",
       "from": "c:bird_wave_behavior:l3695_aim_up",
       "to": "asm:3695-36BB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l3695_aim_up",
-      "to": "asm:3744-3754"
     },
     {
       "kind": "implements",
@@ -20745,47 +18689,17 @@
     {
       "kind": "implements",
       "from": "c:bird_wave_behavior:l36d2_grow",
-      "to": "asm:36C0-36C9"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l36d2_grow",
       "to": "asm:36D2-36E6"
     },
     {
       "kind": "implements",
       "from": "c:bird_wave_behavior:l36ea_grow",
-      "to": "asm:36C0-36C9"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l36ea_grow",
-      "to": "asm:36D2-36E6"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l36ea_grow",
-      "to": "asm:36EA-3706"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l370a_grow_or_dive",
-      "to": "asm:36D2-36E6"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l370a_grow_or_dive",
       "to": "asm:36EA-3706"
     },
     {
       "kind": "implements",
       "from": "c:bird_wave_behavior:l370a_grow_or_dive",
       "to": "asm:370A-373E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:l3744_restart",
-      "to": "asm:3452-345B"
     },
     {
       "kind": "implements",
@@ -20799,23 +18713,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:bird_wave_behavior:l395c",
-      "to": "asm:3A00-3A0F"
-    },
-    {
-      "kind": "implements",
       "from": "c:bird_wave_behavior:l3a00",
       "to": "asm:3A00-3A0F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:refresh_bird_flight_parameters",
-      "to": "asm:3498-34A9"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:refresh_bird_flight_parameters",
-      "to": "asm:34AA-34BB"
     },
     {
       "kind": "implements",
@@ -20829,23 +18728,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:bird_wave_behavior:try_spawn_bird_dive_bomb",
-      "to": "asm:395C-397B"
-    },
-    {
-      "kind": "implements",
       "from": "c:bird_wave_behavior:update_bird_behavior",
       "to": "asm:35B0-35DB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:update_bird_behavior",
-      "to": "asm:36EA-3706"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:update_bird_behavior",
-      "to": "asm:370A-373E"
     },
     {
       "kind": "implements",
@@ -20856,11 +18740,6 @@
       "kind": "implements",
       "from": "c:bird_wave_behavior:update_second_bird_bank",
       "to": "asm:3452-345B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:bird_wave_behavior:update_second_four_birds",
-      "to": "asm:3498-34A9"
     },
     {
       "kind": "implements",
@@ -20894,23 +18773,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:birds_vertical_movement:l26aa",
-      "to": "asm:26D0-26FD"
-    },
-    {
-      "kind": "implements",
-      "from": "c:birds_vertical_movement:l26d0",
-      "to": "asm:2668-26A7"
-    },
-    {
-      "kind": "implements",
       "from": "c:birds_vertical_movement:l26d0",
       "to": "asm:26D0-26FD"
-    },
-    {
-      "kind": "implements",
-      "from": "c:collision_detection:bird_explosion_slot",
-      "to": "asm:38A1-38B5"
     },
     {
       "kind": "implements",
@@ -20944,11 +18808,6 @@
     },
     {
       "kind": "implements",
-      "from": "c:collision_detection:l3844_small_bird_hit",
-      "to": "asm:38F8-391B"
-    },
-    {
-      "kind": "implements",
       "from": "c:collision_detection:l38a1_erase_bird",
       "to": "asm:38A1-38B5"
     },
@@ -20965,17 +18824,7 @@
     {
       "kind": "implements",
       "from": "c:game_state_machine:l07f0",
-      "to": "asm:04A0-04AB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:game_state_machine:l07f0",
       "to": "asm:07F0-07FA"
-    },
-    {
-      "kind": "implements",
-      "from": "c:game_state_machine:set_bits_video_register",
-      "to": "asm:04A0-04AB"
     },
     {
       "kind": "implements",
@@ -20985,11 +18834,6 @@
     {
       "kind": "implements",
       "from": "c:game_state_machine:state_0_new_game_start",
-      "to": "asm:04A0-04AB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:game_state_machine:state_1_flashing_score",
       "to": "asm:04A0-04AB"
     },
     {
@@ -21009,11 +18853,6 @@
     },
     {
       "kind": "implements",
-      "from": "c:game_state_machine:state_1_flashing_score",
-      "to": "asm:07F0-07FA"
-    },
-    {
-      "kind": "implements",
       "from": "c:hw_video_audio:add_galaxies_to_background",
       "to": "asm:2040-208A"
     },
@@ -21030,22 +18869,7 @@
     {
       "kind": "implements",
       "from": "c:hw_video_audio:clear_background",
-      "to": "asm:0000-004F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:clear_background",
       "to": "asm:03A0-03AF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:clear_foreground",
-      "to": "asm:0367-0376"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:clear_foreground",
-      "to": "asm:0377-037D"
     },
     {
       "kind": "implements",
@@ -21069,78 +18893,18 @@
     },
     {
       "kind": "implements",
-      "from": "c:hw_video_audio:init_sound_screen",
-      "to": "asm:006B-0077"
-    },
-    {
-      "kind": "implements",
       "from": "c:hw_video_audio:phoenix_main_loop",
       "to": "asm:0000-004F"
     },
     {
       "kind": "implements",
-      "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "asm:0050-006A"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:read_dsw0",
-      "to": "asm:06F0-06F8"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:read_in0",
-      "to": "asm:06F0-06F8"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:render_sprites",
-      "to": "asm:03A0-03AF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:set_bits_video_register",
-      "to": "asm:0367-0376"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:set_bits_video_register",
-      "to": "asm:0377-037D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:set_bits_video_register",
-      "to": "asm:0380-039D"
-    },
-    {
-      "kind": "implements",
       "from": "c:hw_video_audio:set_bits_video_register",
       "to": "asm:041E-042E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:stars_scroll_down",
-      "to": "asm:041E-042E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:stars_scroll_down",
-      "to": "asm:0460-049D"
     },
     {
       "kind": "implements",
       "from": "c:hw_video_audio:stars_scroll_down",
       "to": "asm:067A-06AF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:update_audio_registers",
-      "to": "asm:03A0-03AF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:update_lives_screen",
-      "to": "asm:032E-034E"
     },
     {
       "kind": "implements",
@@ -21151,16 +18915,6 @@
       "kind": "implements",
       "from": "c:hw_video_audio:update_scroll_register_and_fill_background",
       "to": "asm:06F0-06F8"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:update_sound_control_ram",
-      "to": "asm:032E-034E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:hw_video_audio:update_sound_control_ram",
-      "to": "asm:0367-0376"
     },
     {
       "kind": "implements",
@@ -21179,47 +18933,17 @@
     },
     {
       "kind": "implements",
-      "from": "c:misc_logic:l01e1",
-      "to": "asm:06F0-0701"
-    },
-    {
-      "kind": "implements",
       "from": "c:misc_logic:l06f0",
       "to": "asm:06F0-0701"
     },
     {
       "kind": "implements",
       "from": "c:misc_logic:l24a0",
-      "to": "asm:01E1-01EB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:misc_logic:l24a0",
-      "to": "asm:06F0-0701"
-    },
-    {
-      "kind": "implements",
-      "from": "c:misc_logic:l24a0",
       "to": "asm:24A0-24BB"
     },
     {
       "kind": "implements",
       "from": "c:misc_logic:l24f2",
-      "to": "asm:01E1-01EB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:misc_logic:l24f2",
-      "to": "asm:24A0-24BB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:misc_logic:l24f2",
-      "to": "asm:24F2-251C"
-    },
-    {
-      "kind": "implements",
-      "from": "c:misc_logic:l32b0",
       "to": "asm:24F2-251C"
     },
     {
@@ -21244,27 +18968,12 @@
     },
     {
       "kind": "implements",
-      "from": "c:mothership_logic:mothership_barrier_collision",
-      "to": "asm:246A-2475"
-    },
-    {
-      "kind": "implements",
-      "from": "c:mothership_logic:mothership_core_hit_check",
-      "to": "asm:246A-2475"
-    },
-    {
-      "kind": "implements",
       "from": "c:mothership_logic:mothership_core_hit_check",
       "to": "asm:2520-254F"
     },
     {
       "kind": "implements",
       "from": "c:platform_sdl:copy_memory_bank",
-      "to": "asm:0460-049D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:platform_sdl:hw_write_scroll_register",
       "to": "asm:0460-049D"
     },
     {
@@ -21289,18 +18998,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:player_explosion:l20e8",
-      "to": "asm:211C-212C"
-    },
-    {
-      "kind": "implements",
       "from": "c:player_explosion:l211c",
       "to": "asm:211C-212C"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:copy_current_to_old_player_data",
-      "to": "asm:0876-0885"
     },
     {
       "kind": "implements",
@@ -21314,18 +19013,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:player_logic:draw_shields",
-      "to": "asm:0B48-0B5A"
-    },
-    {
-      "kind": "implements",
       "from": "c:player_logic:get_assigned_player_bullet_tile",
       "to": "asm:0930-093C"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:get_assigned_player_bullet_tile",
-      "to": "asm:097A-0995"
     },
     {
       "kind": "implements",
@@ -21334,18 +19023,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:player_logic:get_player_ship_animation_frame_values",
-      "to": "asm:0930-093C"
-    },
-    {
-      "kind": "implements",
       "from": "c:player_logic:map_player_ship_position",
       "to": "asm:097A-0995"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:move_player",
-      "to": "asm:08A0-08B7"
     },
     {
       "kind": "implements",
@@ -21359,33 +19038,13 @@
     },
     {
       "kind": "implements",
-      "from": "c:player_logic:player_data_controller",
-      "to": "asm:0964-0975"
-    },
-    {
-      "kind": "implements",
       "from": "c:player_logic:player_update",
       "to": "asm:0876-0885"
     },
     {
       "kind": "implements",
       "from": "c:player_logic:shields_expired",
-      "to": "asm:0700-0717"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:shields_expired",
-      "to": "asm:0964-0975"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:shields_expired",
       "to": "asm:0B48-0B5A"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:spawn_player_bullet",
-      "to": "asm:0926-092E"
     },
     {
       "kind": "implements",
@@ -21401,26 +19060,6 @@
       "kind": "implements",
       "from": "c:player_logic:update_player_position_bullet_shield",
       "to": "asm:08A0-08B7"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:update_player_position_bullet_shield",
-      "to": "asm:0900-0921"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:update_player_position_bullet_shield",
-      "to": "asm:0926-092E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:update_player_ship_x",
-      "to": "asm:0876-0885"
-    },
-    {
-      "kind": "implements",
-      "from": "c:player_logic:update_player_ship_x",
-      "to": "asm:0886-0897"
     },
     {
       "kind": "implements",
@@ -21440,21 +19079,6 @@
     {
       "kind": "implements",
       "from": "c:rom_compat_stubs:l14e0",
-      "to": "asm:00B6-00B7"
-    },
-    {
-      "kind": "implements",
-      "from": "c:rom_compat_stubs:l14e0",
-      "to": "asm:14E0-14FD"
-    },
-    {
-      "kind": "implements",
-      "from": "c:rom_compat_stubs:l1df0",
-      "to": "asm:00B6-00B7"
-    },
-    {
-      "kind": "implements",
-      "from": "c:rom_compat_stubs:l1df0",
       "to": "asm:14E0-14FD"
     },
     {
@@ -21470,11 +19094,6 @@
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l27bd",
-      "to": "asm:23D6-23FB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l27bd",
       "to": "asm:27BD-27EE"
     },
     {
@@ -21484,28 +19103,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:sound_dispatcher:l3a10",
-      "to": "asm:3B1B-3B27"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a10",
-      "to": "asm:3B33-3B41"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a10",
-      "to": "asm:3B43-3B5B"
-    },
-    {
-      "kind": "implements",
       "from": "c:sound_dispatcher:l3a1d",
       "to": "asm:3A1D-3A2B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a1d",
-      "to": "asm:3A2C-3A3F"
     },
     {
       "kind": "implements",
@@ -21515,46 +19114,11 @@
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l3a40",
-      "to": "asm:3A1D-3A2B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a40",
-      "to": "asm:3A2C-3A3F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a40",
       "to": "asm:3A40-3A4D"
     },
     {
       "kind": "implements",
-      "from": "c:sound_dispatcher:l3a40",
-      "to": "asm:3A4E-3A5F"
-    },
-    {
-      "kind": "implements",
       "from": "c:sound_dispatcher:l3a4e",
-      "to": "asm:3A1D-3A2B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a4e",
-      "to": "asm:3A2C-3A3F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a4e",
-      "to": "asm:3A4E-3A5F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a62",
-      "to": "asm:3A40-3A4D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a62",
       "to": "asm:3A4E-3A5F"
     },
     {
@@ -21564,42 +19128,7 @@
     },
     {
       "kind": "implements",
-      "from": "c:sound_dispatcher:l3a62",
-      "to": "asm:3A78-3A81"
-    },
-    {
-      "kind": "implements",
       "from": "c:sound_dispatcher:l3a78",
-      "to": "asm:3A1D-3A2B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a78",
-      "to": "asm:3A40-3A4D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a78",
-      "to": "asm:3A4E-3A5F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a78",
-      "to": "asm:3A78-3A81"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a82",
-      "to": "asm:3A40-3A4D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a82",
-      "to": "asm:3A62-3A77"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a82",
       "to": "asm:3A78-3A81"
     },
     {
@@ -21610,36 +19139,6 @@
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l3a90",
-      "to": "asm:3A62-3A77"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a90",
-      "to": "asm:3A78-3A81"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a90",
-      "to": "asm:3A82-3A8F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a90",
-      "to": "asm:3A90-3A95"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a98_scan",
-      "to": "asm:3A62-3A77"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a98_scan",
-      "to": "asm:3A82-3A8F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3a98_scan",
       "to": "asm:3A90-3A95"
     },
     {
@@ -21654,48 +19153,18 @@
     },
     {
       "kind": "implements",
-      "from": "c:sound_dispatcher:l3ad0",
-      "to": "asm:3AF8-3B00"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3af8",
-      "to": "asm:3A98-3ACA"
-    },
-    {
-      "kind": "implements",
       "from": "c:sound_dispatcher:l3af8",
       "to": "asm:3AF8-3B00"
     },
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l3b02",
-      "to": "asm:3AD0-3AF6"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b02",
-      "to": "asm:3B02-3B19"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b1b",
       "to": "asm:3B02-3B19"
     },
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l3b1b",
       "to": "asm:3B1B-3B27"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b1b",
-      "to": "asm:3B28-3B31"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b28",
-      "to": "asm:3B02-3B19"
     },
     {
       "kind": "implements",
@@ -21705,47 +19174,12 @@
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l3b33",
-      "to": "asm:3B02-3B19"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b33",
-      "to": "asm:3B1B-3B27"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b33",
-      "to": "asm:3B28-3B31"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b33",
-      "to": "asm:3B33-3B41"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b43",
-      "to": "asm:3B1B-3B27"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b43",
-      "to": "asm:3B28-3B31"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sound_dispatcher:l3b43",
       "to": "asm:3B33-3B41"
     },
     {
       "kind": "implements",
       "from": "c:sound_dispatcher:l3b43",
       "to": "asm:3B43-3B5B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:sprite_rendering:bit3_controller",
-      "to": "asm:0720-073F"
     },
     {
       "kind": "implements",
@@ -21764,32 +19198,12 @@
     },
     {
       "kind": "implements",
-      "from": "c:sprite_rendering:update_screen_objects",
-      "to": "asm:0740-07EE"
-    },
-    {
-      "kind": "implements",
       "from": "c:state_endings:l0b15",
       "to": "asm:0B15-0B2D"
     },
     {
       "kind": "implements",
-      "from": "c:state_endings:l0b15",
-      "to": "asm:244C-2469"
-    },
-    {
-      "kind": "implements",
       "from": "c:state_endings:l0ba0",
-      "to": "asm:0B15-0B2D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_endings:l0ba0",
-      "to": "asm:0BA0-0BB2"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_endings:l0bba",
       "to": "asm:0BA0-0BB2"
     },
     {
@@ -21810,22 +19224,12 @@
     {
       "kind": "implements",
       "from": "c:state_endings:state_5_game_over_text",
-      "to": "asm:0AEA-0B0F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_endings:state_5_game_over_text",
       "to": "asm:0B60-0B9D"
     },
     {
       "kind": "implements",
       "from": "c:state_endings:state_6_mother_ship_explosion",
       "to": "asm:2400-244B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_endings:state_6_mother_ship_explosion",
-      "to": "asm:2552-255D"
     },
     {
       "kind": "implements",
@@ -21839,93 +19243,28 @@
     },
     {
       "kind": "implements",
-      "from": "c:state_init:get_player_lives_from_dip",
-      "to": "asm:0515-0531"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:get_player_lives_from_dip",
-      "to": "asm:0526-0531"
-    },
-    {
-      "kind": "implements",
       "from": "c:state_init:init_alien_data_new_level",
       "to": "asm:0532-0543"
     },
     {
       "kind": "implements",
-      "from": "c:state_init:init_alien_data_new_level",
-      "to": "asm:0547-055A"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:init_alien_data_new_level",
-      "to": "asm:0580-0595"
-    },
-    {
-      "kind": "implements",
       "from": "c:state_init:init_alien_movement_pointers",
-      "to": "asm:0506-0514"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:init_alien_movement_pointers",
-      "to": "asm:0532-0543"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:init_alien_movement_pointers",
-      "to": "asm:0547-055A"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:init_player_data_structure",
-      "to": "asm:0580-0595"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:l0526",
       "to": "asm:0506-0514"
     },
     {
       "kind": "implements",
       "from": "c:state_init:l0526",
       "to": "asm:0526-0531"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:l0526",
-      "to": "asm:0532-0543"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:l0526",
-      "to": "asm:0547-055A"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:state_2_init_game_and_level_data",
-      "to": "asm:0506-0514"
     },
     {
       "kind": "implements",
       "from": "c:state_init:state_2_init_game_and_level_data",
       "to": "asm:0515-0531"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:state_2_init_game_and_level_data",
-      "to": "asm:0526-0531"
     },
     {
       "kind": "implements",
       "from": "c:state_init:update_hi_score",
       "to": "asm:02F0-032D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_init:update_hi_score",
-      "to": "asm:0350-0366"
     },
     {
       "kind": "implements",
@@ -21944,27 +19283,12 @@
     },
     {
       "kind": "implements",
-      "from": "c:state_play:level_0_and_2_aliens_fade_in",
-      "to": "asm:22CA-22DD"
-    },
-    {
-      "kind": "implements",
       "from": "c:state_play:level_4_6_8_spiral_fill",
       "to": "asm:2230-225F"
     },
     {
       "kind": "implements",
-      "from": "c:state_play:level_5_7_birds_fade_in",
-      "to": "asm:2230-225F"
-    },
-    {
-      "kind": "implements",
       "from": "c:state_play:level_9_mothership_fade_in",
-      "to": "asm:22B4-22C5"
-    },
-    {
-      "kind": "implements",
-      "from": "c:state_play:level_A_mothership_and_aliens_fade_in",
       "to": "asm:22B4-22C5"
     },
     {
@@ -21979,48 +19303,13 @@
     },
     {
       "kind": "implements",
-      "from": "c:state_play:state_3_normal_game_play",
-      "to": "asm:0834-0859"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:add_bc_to_mem",
-      "to": "asm:0200-0205"
-    },
-    {
-      "kind": "implements",
       "from": "c:utilities:add_bc_to_mem",
       "to": "asm:0206-020E"
     },
     {
       "kind": "implements",
-      "from": "c:utilities:add_bc_to_mem",
-      "to": "asm:09A0-09B5"
-    },
-    {
-      "kind": "implements",
       "from": "c:utilities:add_one_to_mem",
       "to": "asm:0200-0205"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:add_one_to_mem",
-      "to": "asm:09A0-09B5"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:add_one_to_mem",
-      "to": "asm:09BA-09D1"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:add_to_score",
-      "to": "asm:0210-0216"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:add_to_score",
-      "to": "asm:0217-021D"
     },
     {
       "kind": "implements",
@@ -22035,47 +19324,12 @@
     {
       "kind": "implements",
       "from": "c:utilities:clear_b_bytes_at_hl",
-      "to": "asm:01E1-01EB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:clear_b_bytes_at_hl",
-      "to": "asm:01ED-01F7"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:clear_b_bytes_at_hl",
       "to": "asm:05D8-05DF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:clear_b_bytes_at_hl",
-      "to": "asm:06E8-06ED"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:compare_bc_to_mem",
-      "to": "asm:0200-0205"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:compare_bc_to_mem",
-      "to": "asm:0206-020E"
     },
     {
       "kind": "implements",
       "from": "c:utilities:compare_bc_to_mem",
       "to": "asm:0258-025F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:copy_b_bytes_hl_to_de",
-      "to": "asm:01ED-01F7"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:copy_b_bytes_hl_to_de",
-      "to": "asm:05D8-05DF"
     },
     {
       "kind": "implements",
@@ -22090,37 +19344,12 @@
     {
       "kind": "implements",
       "from": "c:utilities:draw_image_c_by_b",
-      "to": "asm:0270-0276"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:draw_image_c_by_b",
-      "to": "asm:0277-027D"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:draw_image_c_by_b",
       "to": "asm:0AD6-0AE9"
     },
     {
       "kind": "implements",
       "from": "c:utilities:draw_row",
-      "to": "asm:01E1-01EB"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:draw_row",
       "to": "asm:01ED-01F7"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:draw_row",
-      "to": "asm:06E8-06ED"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:get_random_number",
-      "to": "asm:04FB-0505"
     },
     {
       "kind": "implements",
@@ -22130,27 +19359,7 @@
     {
       "kind": "implements",
       "from": "c:utilities:get_screen_ram_address",
-      "to": "asm:0236-0252"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:get_screen_ram_address",
-      "to": "asm:05D8-05DF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:get_screen_ram_address",
-      "to": "asm:05E0-05E8"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:get_screen_ram_address",
       "to": "asm:09BA-09D1"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:get_screen_ram_address_for_player_ship",
-      "to": "asm:0236-0252"
     },
     {
       "kind": "implements",
@@ -22159,47 +19368,12 @@
     },
     {
       "kind": "implements",
-      "from": "c:utilities:get_screen_ram_address_for_player_ship",
-      "to": "asm:09BA-09D1"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:l0260_subtract_if_enough",
-      "to": "asm:0206-020E"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:l0260_subtract_if_enough",
-      "to": "asm:0258-025F"
-    },
-    {
-      "kind": "implements",
       "from": "c:utilities:l0260_subtract_if_enough",
       "to": "asm:0260-0267"
     },
     {
       "kind": "implements",
       "from": "c:utilities:l0270_subtract_from_memory",
-      "to": "asm:0258-025F"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:l0270_subtract_from_memory",
-      "to": "asm:0260-0267"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:l0270_subtract_from_memory",
-      "to": "asm:0270-0276"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:l0277_subtract_to_memory",
-      "to": "asm:0260-0267"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:l0277_subtract_to_memory",
       "to": "asm:0270-0276"
     },
     {
@@ -22214,28 +19388,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:utilities:l25b7",
-      "to": "asm:30AA-30B8"
-    },
-    {
-      "kind": "implements",
       "from": "c:utilities:left_one_column",
       "to": "asm:0210-0216"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:left_one_column",
-      "to": "asm:0AD6-0AE9"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:phoenix_init",
-      "to": "asm:04FB-0505"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:print_copyright_lines",
-      "to": "asm:01D0-01E0"
     },
     {
       "kind": "implements",
@@ -22244,23 +19398,8 @@
     },
     {
       "kind": "implements",
-      "from": "c:utilities:print_copyright_lines",
-      "to": "asm:06E8-06ED"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:print_number",
-      "to": "asm:00BB-00C3"
-    },
-    {
-      "kind": "implements",
       "from": "c:utilities:print_number",
       "to": "asm:00C4-00E1"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:print_score_column",
-      "to": "asm:01D0-01E0"
     },
     {
       "kind": "implements",
@@ -22270,17 +19409,7 @@
     {
       "kind": "implements",
       "from": "c:utilities:print_text_lines",
-      "to": "asm:00C4-00E1"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:print_text_lines",
       "to": "asm:01D0-01E0"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:right_one_column",
-      "to": "asm:0210-0216"
     },
     {
       "kind": "implements",
@@ -22289,48 +19418,13 @@
     },
     {
       "kind": "implements",
-      "from": "c:utilities:right_one_column",
-      "to": "asm:0AD6-0AE9"
-    },
-    {
-      "kind": "implements",
       "from": "c:utilities:unused_bcd_subtracter",
       "to": "asm:0236-0252"
     },
     {
       "kind": "implements",
-      "from": "c:utilities:unused_bcd_subtracter",
-      "to": "asm:05D8-05DF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:utilities:unused_bcd_subtracter",
-      "to": "asm:05E0-05E8"
-    },
-    {
-      "kind": "implements",
       "from": "c:weapon_collision:check_enemy_bullet_to_player_collision",
       "to": "asm:0DF0-0E01"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:check_player_ship_collision",
-      "to": "asm:0C40-0C51"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:check_player_ship_collision",
-      "to": "asm:0CD8-0CEF"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:enemy_bullet_data_controller",
-      "to": "asm:0C56-0C67"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:enemy_bullet_data_controller",
-      "to": "asm:0C6B-0C80"
     },
     {
       "kind": "implements",
@@ -22340,11 +19434,6 @@
     {
       "kind": "implements",
       "from": "c:weapon_collision:enemy_bullet_movement_and_animation",
-      "to": "asm:0C56-0C67"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:get_screen_ram_address_for_enemy_bullets",
       "to": "asm:0C56-0C67"
     },
     {
@@ -22364,63 +19453,18 @@
     },
     {
       "kind": "implements",
-      "from": "c:weapon_collision:l0c00_kill_score",
-      "to": "asm:0DF0-0E01"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0c00_kill_score",
-      "to": "asm:0E02-0E0B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0c00_kill_score",
-      "to": "asm:0E10-0E6B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0c00_kill_score",
-      "to": "asm:0E70-0E9D"
-    },
-    {
-      "kind": "implements",
       "from": "c:weapon_collision:l0c84_enemy_bullet_movement",
       "to": "asm:0C84-0CB3"
     },
     {
       "kind": "implements",
-      "from": "c:weapon_collision:l0c84_enemy_bullet_movement",
-      "to": "asm:0CC4-0CD3"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0cb4_check_bullet_hit_player",
-      "to": "asm:096E-0975"
-    },
-    {
-      "kind": "implements",
       "from": "c:weapon_collision:l0cb4_check_bullet_hit_player",
       "to": "asm:0CB4-0CD4"
     },
     {
       "kind": "implements",
       "from": "c:weapon_collision:l0cc4_player_killed",
-      "to": "asm:096E-0975"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0cc4_player_killed",
-      "to": "asm:0CB4-0CD4"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0cc4_player_killed",
       "to": "asm:0CC4-0CD3"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0e02_unused",
-      "to": "asm:0DF0-0E01"
     },
     {
       "kind": "implements",
@@ -22430,17 +19474,7 @@
     {
       "kind": "implements",
       "from": "c:weapon_collision:l0e10",
-      "to": "asm:0C00-0C23"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0e10",
       "to": "asm:0E10-0E36"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0e10",
-      "to": "asm:0E10-0E6B"
     },
     {
       "kind": "implements",
@@ -22451,11 +19485,6 @@
       "kind": "implements",
       "from": "c:weapon_collision:l0e10",
       "to": "asm:0E58-0E6B"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:l0e10",
-      "to": "asm:0E70-0E9D"
     },
     {
       "kind": "implements",
@@ -22491,16 +19520,6 @@
       "kind": "implements",
       "from": "c:weapon_collision:process_enemy_bombs",
       "to": "asm:0C40-0C51"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:process_enemy_bombs",
-      "to": "asm:0C6B-0C80"
-    },
-    {
-      "kind": "implements",
-      "from": "c:weapon_collision:process_enemy_bombs",
-      "to": "asm:0CD8-0CEF"
     },
     {
       "kind": "uses-table",

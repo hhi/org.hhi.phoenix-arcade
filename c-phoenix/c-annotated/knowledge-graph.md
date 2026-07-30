@@ -53,9 +53,13 @@ De graph legt alleen automatisch afleidbare relaties vast:
 ## Updating and Validating / Bijwerken en Controleren
 
 ```sh
-python3 tools/generate_knowledge_graph.py
-python3 tools/validate_knowledge_graph.py
+python3 c-phoenix/c-annotated/tools/generate_knowledge_graph.py
+python3 c-phoenix/c-annotated/tools/validate_knowledge_graph.py
+python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
+python3 c-phoenix/c-annotated/tools/report_claim_coverage.py
 python3 tools/validate_documentation.py
 ```
+
+Or, from the repository root: `make kg-generate`, `make kg-check`, `make kg-coverage`, `make documentation-check`.
 
 Evidence priority is: **Z80 ASM/ROM → C-port → annotated documentation → visual assets**. `confirmed` means directly present in the C port or C-ASM annotation; `derived` means calculated from tables or SVG metadata; `documented` means referenced in existing documentation without semantic interpretation.

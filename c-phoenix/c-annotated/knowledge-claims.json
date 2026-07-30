@@ -35,6 +35,21 @@
       "status": "confirmed",
       "sources": ["phoenix_tables.h#L157-L162", "phoenix_tables.c#L227-L231"],
       "relates_to": ["table:phoenix_alien_direction_vectors"]
+    },
+    {
+      "id": "claim:vector-offset-formula",
+      "statement": "alien_movement_update derives the direction-vector index by rotating the pattern step byte left one bit (RLCA), equivalent to the documented vector_offset = step_byte × 2, before indexing phoenix_alien_direction_vectors for delta_x and delta_y.",
+      "status": "confirmed",
+      "sources": [
+        "alien_logic.c#L348-L366",
+        "animations/nl/animation-trajectory.md#L36-L38",
+        "animations/en/animation-trajectory.md#L36-L38"
+      ],
+      "relates_to": [
+        "c:alien_logic:alien_movement_update",
+        "asm:0D1C-0D67",
+        "table:phoenix_alien_direction_vectors"
+      ]
     }
   ]
 }

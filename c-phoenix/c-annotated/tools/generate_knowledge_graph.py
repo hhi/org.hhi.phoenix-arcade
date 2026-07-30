@@ -55,6 +55,39 @@ def function_body(text: str, start: int) -> str:
     raise ValueError("Unterminated C function body")
 
 
+def annotation_block(text: str, start: int) -> str:
+    """Return the `/* ... */` comment block immediately above a declaration.
+
+    ASM ranges must come from the documentation block that directly precedes
+    the declaration and from nowhere else. Scanning a fixed character window
+    backwards (the previous approach) silently reached across earlier
+    declarations and attributed their ranges to the wrong node, so this
+    walks back exactly one comment block instead: everything before the
+    block's opening `/*` belongs to a different routine by definition.
+
+    Both comment styles used in this port are recognised: a `/* ... */`
+    block, and a contiguous run of `//` lines. The run stops at the first
+    line that is not a `//` comment, so a preceding declaration or body
+    always terminates it.
+
+    Returns an empty string when the declaration has no comment directly
+    above it, which correctly yields no ASM ranges at all.
+    """
+    head = text[:start].rstrip()
+    if head.endswith("*/"):
+        opening = head.rfind("/*")
+        return head[opening:] if opening != -1 else ""
+
+    lines = head.splitlines()
+    collected: list[str] = []
+    for line in reversed(lines):
+        if line.lstrip().startswith("//"):
+            collected.append(line)
+            continue
+        break
+    return "\n".join(reversed(collected))
+
+
 def function_id(path: Path, name: str) -> str:
     return f"c:{path.stem}:{name}"
 
@@ -72,7 +105,7 @@ def source_functions(root: Path) -> tuple[list[dict], dict[str, list[str]], dict
             # ASM ranges are taken only from the documentation block directly
             # above the definition, avoiding an accidental association with an
             # earlier routine in the same file.
-            prefix = text[max(0, text.rfind("\n\n", 0, match.start()) - 800):match.start()]
+            prefix = annotation_block(text, match.start())
             asm_ranges = []
             for start, end in ASM_RE.findall(prefix):
                 asm_ranges.append({"start": start.upper(), "end": (end or start).upper()})
@@ -136,7 +169,7 @@ def table_asset_nodes(root: Path) -> list[dict]:
     nodes: list[dict] = []
     for match in TABLE_RE.finditer(text):
         name, size = match.groups()
-        preceding = text[max(0, text.rfind("\n\n", 0, match.start()) - 2400):match.start()]
+        preceding = annotation_block(text, match.start())
         ranges = [{"start": start.upper(), "end": (end or start).upper()} for start, end in ASM_RE.findall(preceding)]
         node = {
             "id": f"table:{name}",

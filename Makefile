@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check kg-check kg-generate kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -31,6 +31,9 @@ help:
 	@echo "  make c2-test      Run C2-Phoenix semantic contract tests"
 	@echo "  make j-test       Run JPhoenix verification"
 	@echo "  make verify       Build and verify both projects"
+	@echo "  make kg-check     Validate the knowledge graph and check it for drift against the source"
+	@echo "  make kg-generate  Regenerate c-phoenix/c-annotated/knowledge-graph.json"
+	@echo "  make kg-coverage  Report claim coverage of the knowledge graph (non-blocking)"
 	@echo "  make links        Verify local Markdown links"
 	@echo "  make large-files  Audit repository file sizes"
 	@echo "  make public-audit Report private-only material before a public export"
@@ -108,10 +111,30 @@ c2-test:
 j-test:
 	$(MAKE) -C jphoenix-emulator-port verify
 
-verify: c-build j-build c-test c2-test j-test documentation-check links large-files
+verify: c-build j-build c-test c2-test j-test documentation-check kg-check links large-files
 
 documentation-check:
 	python3 tools/validate_documentation.py
+
+# Structural integrity of the knowledge graph, plus a check that it was
+# actually regenerated after the last source change. kg-check is part of
+# `verify`; kg-coverage is informational and deliberately left out of it.
+# These tools live under c-phoenix/c-annotated/tools because they operate
+# exclusively on data that already lives in c-annotated (unlike
+# validate_documentation.py, which also covers animations/ and the
+# repository-root READMEs and therefore stays in the monorepo-wide tools/).
+kg-check:
+	python3 c-phoenix/c-annotated/tools/validate_knowledge_graph.py
+	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
+
+kg-generate:
+	python3 c-phoenix/c-annotated/tools/generate_knowledge_graph.py
+
+kg-drift:
+	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
+
+kg-coverage:
+	python3 c-phoenix/c-annotated/tools/report_claim_coverage.py
 
 links:
 	python3 tools/check_markdown_links.py .
