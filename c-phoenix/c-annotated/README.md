@@ -8,6 +8,7 @@ Kies uw gewenste taal / Choose your preferred language:
 ---
 
 ### Gedeelde Machine Graph & Instellingen / Shared Machine Graph & Settings
+- 🧭 [`topic-index.md`](topic-index.md) — **Onderwerpscatalogus**: routines, ROM-bereiken en tabellen gegroepeerd naar onderwerp in plaats van naar bestand. Gegenereerd uit de graph. / **Subject catalogue**: routines, ROM ranges and tables grouped by topic rather than by file. Generated from the graph.
 - 📖 [`knowledge-base-guide.md`](knowledge-base-guide.md) — **Begin hier.** Waar de kennisbank voor dient, welk node-type wanneer, wat een claim is, en welke controles het geheel bewaken. / **Start here.** What the knowledge base is for, which node type to use, what a claim is, and which checks keep it honest.
 - 📊 [`knowledge-graph.md`](knowledge-graph.md) — Gedeelde Knowledge Graph specificatie & architectuur.
 - 🤖 [`knowledge-graph.json`](knowledge-graph.json) — Gedeelde machineleesbare kennisgrafiek.

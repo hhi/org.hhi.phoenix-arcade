@@ -12886,8 +12886,8 @@
       "claim": {
         "statement": "LEVEL_PATTERN_BIRDS_FADE_IN_5 dispatches the bird fade-in phase.",
         "sources": [
-          "game_constants.h#L26",
-          "state_play.c#L247"
+          "game_constants.h#\"LEVEL_PATTERN_BIRDS_FADE_IN_5\"",
+          "state_play.c#\"case LEVEL_PATTERN_BIRDS_FADE_IN_5:\""
         ],
         "relates_to": [
           "game-state:level_pattern_birds_fade_in_5"
@@ -12955,7 +12955,7 @@
         "statement": "state_3_normal_game_play masks state.LevelAndRound with LEVEL_PATTERN_MASK (0x0F) and routes the twelve defined level patterns onto six distinct handlers -- fade-in patterns 0 and 2 share one handler, active-alien patterns 1, 3 and B share another, and spiral patterns 4, 6 and 8 a third -- while indices 0x0C through 0x0F are deliberately inert, matching the 'not used in this context' note on ROM table T0814.",
         "sources": [
           "state_play.c#L237-L261",
-          "game_constants.h#L20",
+          "game_constants.h#\"LEVEL_PATTERN_MASK = 0x0F\"",
           "c-annotated/nl/state-play.md#state_3_normal_game_play"
         ],
         "relates_to": [
@@ -13011,8 +13011,8 @@
       "claim": {
         "statement": "The bird routines iterate records from 0x4B70 through 0x4B8F in 8-byte steps.",
         "sources": [
-          "bird_logic.c#L81-L87",
-          "bird_wave_behavior.c#L251-L255"
+          "bird_logic.c#\"void draw_first_4_bird_objects(void) {\"",
+          "bird_wave_behavior.c#\"void update_first_four_birds(void)\""
         ],
         "relates_to": [
           "ram:$4B70",
@@ -13029,9 +13029,9 @@
       "claim": {
         "statement": "alien_movement_update derives the direction-vector index by rotating the pattern step byte left one bit (RLCA), equivalent to the documented vector_offset = step_byte × 2, before indexing phoenix_alien_direction_vectors for delta_x and delta_y.",
         "sources": [
-          "alien_logic.c#L348-L366",
-          "animations/nl/animation-trajectory.md#L36-L38",
-          "animations/en/animation-trajectory.md#L36-L38"
+          "alien_logic.c#\"(idx << 1) | (idx >> 7)\"",
+          "animations/nl/animation-trajectory.md#\"`vector_offset = step_byte × 2`\"",
+          "animations/en/animation-trajectory.md#\"`vector_offset = step_byte × 2`\""
         ],
         "relates_to": [
           "c:alien_logic:alien_movement_update",

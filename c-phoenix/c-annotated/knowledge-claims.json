@@ -5,36 +5,99 @@
       "id": "claim:bird-process-loop",
       "statement": "process_birds is the C-port entry point for the bird-wave update loop.",
       "status": "confirmed",
-      "sources": ["bird_logic.c#L27-L67", "c-annotated/nl/bird-logic.md#process_birds"],
-      "relates_to": ["c:bird_logic:process_birds", "asm:3400-3436", "asm:3438-344D"]
+      "sources": [
+        "bird_logic.c#L27-L67",
+        "c-annotated/nl/bird-logic.md#process_birds"
+      ],
+      "relates_to": [
+        "c:bird_logic:process_birds",
+        "asm:3400-3436",
+        "asm:3438-344D"
+      ]
     },
     {
       "id": "claim:bird-fade-in-phase-5",
       "statement": "LEVEL_PATTERN_BIRDS_FADE_IN_5 dispatches the bird fade-in phase.",
       "status": "confirmed",
-      "sources": ["game_constants.h#L26", "state_play.c#L247"],
-      "relates_to": ["game-state:level_pattern_birds_fade_in_5"]
+      "sources": [
+        "game_constants.h#\"LEVEL_PATTERN_BIRDS_FADE_IN_5\"",
+        "state_play.c#\"case LEVEL_PATTERN_BIRDS_FADE_IN_5:\""
+      ],
+      "relates_to": [
+        "game-state:level_pattern_birds_fade_in_5"
+      ]
     },
     {
       "id": "claim:ram-4b70-bird-records",
       "statement": "The bird routines iterate records from 0x4B70 through 0x4B8F in 8-byte steps.",
       "status": "confirmed",
-      "sources": ["bird_logic.c#L81-L87", "bird_wave_behavior.c#L251-L255"],
-      "relates_to": ["ram:$4B70", "c:bird_logic:draw_first_4_bird_objects", "c:bird_wave_behavior:update_first_four_birds"]
+      "sources": [
+        "bird_logic.c#\"void draw_first_4_bird_objects(void) {\"",
+        "bird_wave_behavior.c#\"void update_first_four_birds(void)\""
+      ],
+      "relates_to": [
+        "ram:$4B70",
+        "c:bird_logic:draw_first_4_bird_objects",
+        "c:bird_wave_behavior:update_first_four_birds"
+      ],
+      "assertion": {
+        "counts": [
+          {
+            "file": "bird_logic.c",
+            "pattern": "addr = 0x4B70",
+            "expect": 1
+          },
+          {
+            "file": "bird_logic.c",
+            "pattern": "addr < 0x4B90",
+            "expect": 1
+          },
+          {
+            "file": "bird_wave_behavior.c",
+            "pattern": "hl = 0x4B70; hl < 0x4B90; hl \\+= 8",
+            "expect": 1
+          }
+        ]
+      }
     },
     {
       "id": "claim:pattern-01-metadata",
       "statement": "Cluster A pattern 01 starts at ROM $1020 and has 64 visualized steps.",
       "status": "derived",
-      "sources": ["phoenix_tables.c#L73", "animations/cluster_a/pattern_01.svg"],
-      "relates_to": ["rom-pattern:01", "table:phoenix_alien_movement_cluster_a"]
+      "sources": [
+        "phoenix_tables.c#L73",
+        "animations/cluster_a/pattern_01.svg"
+      ],
+      "relates_to": [
+        "rom-pattern:01",
+        "table:phoenix_alien_movement_cluster_a"
+      ]
     },
     {
       "id": "claim:direction-vector-table",
       "statement": "phoenix_alien_direction_vectors is the ROM direction-delta table at $1700–$173F.",
       "status": "confirmed",
-      "sources": ["phoenix_tables.h#L157-L162", "phoenix_tables.c#L227-L231"],
-      "relates_to": ["table:phoenix_alien_direction_vectors"]
+      "sources": [
+        "phoenix_tables.h#L157-L162",
+        "phoenix_tables.c#L227-L231"
+      ],
+      "relates_to": [
+        "table:phoenix_alien_direction_vectors"
+      ],
+      "assertion": {
+        "counts": [
+          {
+            "file": "phoenix_tables.h",
+            "pattern": "\\[ASM: 1700-173F\\]",
+            "expect": 1
+          },
+          {
+            "file": "phoenix_tables.c",
+            "pattern": "phoenix_alien_direction_vectors\\[0x40\\]",
+            "expect": 1
+          }
+        ]
+      }
     },
     {
       "id": "claim:game-state-dispatch-complete",
@@ -48,7 +111,28 @@
       "relates_to": [
         "c:game_state_machine:game_state_machine",
         "asm:0400-041D"
-      ]
+      ],
+      "assertion": {
+        "counts": [
+          {
+            "file": "game_constants.h",
+            "pattern": "GAME_STATE_[A-Z_]+\\s*=",
+            "expect": 8
+          },
+          {
+            "file": "game_state_machine.c",
+            "pattern": "case GAME_STATE_",
+            "expect": 8
+          }
+        ],
+        "distinct": [
+          {
+            "file": "game_state_machine.c",
+            "pattern": "case GAME_STATE_[A-Z0-9_]+:[^;]*;\\s*([a-z_0-9]+)\\(\\);",
+            "expect": 8
+          }
+        ]
+      }
     },
     {
       "id": "claim:level-pattern-dispatch",
@@ -56,7 +140,7 @@
       "status": "confirmed",
       "sources": [
         "state_play.c#L237-L261",
-        "game_constants.h#L20",
+        "game_constants.h#\"LEVEL_PATTERN_MASK = 0x0F\"",
         "c-annotated/nl/state-play.md#state_3_normal_game_play"
       ],
       "relates_to": [
@@ -64,7 +148,23 @@
         "asm:0800-0833",
         "game-state:level_pattern_birds_fade_in_5",
         "game-state:level_pattern_aliens_active_b"
-      ]
+      ],
+      "assertion": {
+        "counts": [
+          {
+            "file": "state_play.c",
+            "pattern": "case LEVEL_PATTERN_",
+            "expect": 12
+          }
+        ],
+        "distinct": [
+          {
+            "file": "state_play.c",
+            "pattern": "case LEVEL_PATTERN_[A-Z0-9_]+:\\s*([a-zA-Z_0-9]+)\\(\\);",
+            "expect": 6
+          }
+        ]
+      }
     },
     {
       "id": "claim:main-loop-attract-split",
@@ -87,9 +187,9 @@
       "statement": "alien_movement_update derives the direction-vector index by rotating the pattern step byte left one bit (RLCA), equivalent to the documented vector_offset = step_byte × 2, before indexing phoenix_alien_direction_vectors for delta_x and delta_y.",
       "status": "confirmed",
       "sources": [
-        "alien_logic.c#L348-L366",
-        "animations/nl/animation-trajectory.md#L36-L38",
-        "animations/en/animation-trajectory.md#L36-L38"
+        "alien_logic.c#\"(idx << 1) | (idx >> 7)\"",
+        "animations/nl/animation-trajectory.md#\"`vector_offset = step_byte × 2`\"",
+        "animations/en/animation-trajectory.md#\"`vector_offset = step_byte × 2`\""
       ],
       "relates_to": [
         "c:alien_logic:alien_movement_update",

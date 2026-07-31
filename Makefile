@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -35,6 +35,8 @@ help:
 	@echo "  make kg-annotations Report [ASM: ...] tags the generator cannot see"
 	@echo "  make kg-generate  Regenerate c-phoenix/c-annotated/knowledge-graph.json"
 	@echo "  make kg-visual    Regenerate the knowledge-graph architecture SVGs"
+	@echo "  make kg-claims    Re-verify claim sources and machine-checkable assertions"
+	@echo "  make kg-topics    Regenerate the topic-oriented index from the graph"
 	@echo "  make kg-coverage  Report claim coverage of the knowledge graph (non-blocking)"
 	@echo "  make links        Verify local Markdown links"
 	@echo "  make large-files  Audit repository file sizes"
@@ -131,7 +133,10 @@ kg-check:
 	python3 c-phoenix/c-annotated/tools/check_symbol_links.py
 	python3 c-phoenix/c-annotated/tools/check_against_asm_crossref.py
 	python3 c-phoenix/c-annotated/tools/validate_knowledge_graph.py
+	python3 c-phoenix/c-annotated/tools/check_claim_sources.py
+	python3 c-phoenix/c-annotated/tools/check_claim_assertions.py
 	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
+	python3 c-phoenix/c-annotated/tools/generate_topic_index.py --check
 
 kg-annotations:
 	python3 c-phoenix/c-annotated/tools/check_asm_annotations.py
@@ -148,8 +153,19 @@ kg-generate:
 kg-visual:
 	$(MAKE) -C c-phoenix knowledge-graph-visual
 
+# Subject catalogue beside the file-oriented README: topic names are
+# curated in the script, membership is derived from the graph.
+kg-topics:
+	python3 c-phoenix/c-annotated/tools/generate_topic_index.py
+
 kg-drift:
 	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
+
+# Claims are the only hand-written layer, so they get their own target:
+# --strict also nags about line-range locators that would be safer as anchors.
+kg-claims:
+	python3 c-phoenix/c-annotated/tools/check_claim_sources.py --strict
+	python3 c-phoenix/c-annotated/tools/check_claim_assertions.py --verbose
 
 kg-coverage:
 	python3 c-phoenix/c-annotated/tools/report_claim_coverage.py

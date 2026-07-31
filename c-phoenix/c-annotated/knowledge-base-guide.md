@@ -110,6 +110,54 @@ inflate the figure that is supposed to mean *a human checked this*.
 - `derived` — calculated from tables or SVG metadata;
 - `documented` — referenced in documentation without semantic interpretation.
 
+### Two kinds of claim, and how each is kept honest
+
+Not every judgement is equally re-checkable, and the register treats the two
+cases differently.
+
+**Countable claims** assert something a script can re-derive: *eight state
+constants, each dispatched to exactly one handler*. Such a claim should not
+rest on "someone checked it once", so it carries an optional `assertion`
+object which `check_claim_assertions.py` re-evaluates on every run:
+
+```json
+"assertion": {
+  "counts":   [{"file": "game_constants.h", "pattern": "GAME_STATE_[A-Z_]+\\s*=", "expect": 8}],
+  "distinct": [{"file": "state_play.c", "pattern": "case LEVEL_PATTERN_[A-Z0-9_]+:\\s*([a-zA-Z_0-9]+)\\(\\);", "expect": 6}]
+}
+```
+
+Only two operators exist, and deliberately so. An assertion is itself code,
+and four separate scripts in this repository were found to share one look-back
+bug; an assertion too complex to eyeball has merely moved the trust problem.
+Anything beyond counting belongs in a purpose-built check.
+
+**Semantic claims** assert an equivalence no script can evaluate — that an
+RLCA rotate means the same as a multiplication by two. These carry no
+assertion and rest on human verification. That is a legitimate state, not a
+gap to be closed by force.
+
+### Citing a source: anchors over line numbers
+
+Three locator forms are accepted after the `#`:
+
+| Form | Example | Behaviour |
+|---|---|---|
+| Line range | `alien_logic.c#L348-L366` | Fragile — shifts on any edit above it |
+| Anchor text | `alien_logic.c#"(idx << 1) \| (idx >> 7)"` | Survives line shifts; fails when the construct changes |
+| Heading | `bird-logic.md#process_birds` | Checked against the document's headings |
+
+Prefer an anchor when citing a *specific construct*: a line range only records
+where the evidence was, an anchor records what it was, and fails precisely
+when that thing changes — which is the event worth hearing about. A line range
+remains appropriate for citing a *block*, such as a whole function body or an
+enum, and `check_claim_sources.py --strict` lists those as advice, never as an
+error.
+
+Moving two ASM annotations during this session shifted every line below them
+in `game_state_machine.c` and `state_init.c`. Nothing broke, but only because
+the ranges happened to be checked by hand afterwards.
+
 ### Where a claim is worth writing
 
 Use `propose_claims.py --mode candidates`. It lists functions that are both

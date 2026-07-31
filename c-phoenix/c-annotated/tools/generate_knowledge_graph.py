@@ -124,12 +124,20 @@ def source_functions(root: Path) -> tuple[list[dict], dict[str, list[str]], dict
     return nodes, name_to_ids, bodies
 
 
+# Documents generated *from* this graph must not be read back in as evidence
+# for it: the graph would then depend on its own output, and every
+# regeneration would produce a different result from the last.
+GENERATED_DOCS = {"c-annotated/topic-index.md"}
+
+
 def document_evidence(root: Path) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
     """Map C files and RAM slots to the documentation that mentions them."""
     c_docs: dict[str, list[str]] = defaultdict(list)
     ram_docs: dict[str, list[str]] = defaultdict(list)
     for document in sorted((root / "c-annotated").rglob("*.md")) + sorted((root / "animations").rglob("*.md")):
         relative = document.relative_to(root).as_posix()
+        if relative in GENERATED_DOCS:
+            continue
         text = document.read_text(encoding="utf-8")
         for source in MARKDOWN_C_LINK_RE.findall(text):
             c_docs[source].append(relative)

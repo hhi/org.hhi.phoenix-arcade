@@ -25,12 +25,15 @@ Nederlands: zie [§ Naslag](#-naslag).
 | Script | Role | Exit 1 on | In `make verify` |
 |---|---|---|:-:|
 | `generate_knowledge_graph.py` | generator | — (writes) | no |
+| `generate_topic_index.py` | generator | `--check`: index stale | yes |
 | `validate_knowledge_graph.py` | structure | malformed graph | yes |
 | `check_knowledge_graph_drift.py` | structure | graph ≠ regeneration | yes |
 | `check_asm_annotations.py` | content | unreachable `[ASM:]` tag | yes |
 | `check_prose_rom_ranges.py` | content | prose cites wrong ROM | yes |
 | `check_symbol_links.py` | content | link to non-existent symbol | yes |
 | `check_against_asm_crossref.py` | content | `Phoenix.md` stale | yes |
+| `check_claim_sources.py` | content | locator no longer resolves | yes |
+| `check_claim_assertions.py` | content | a countable claim became false | yes |
 | `report_claim_coverage.py` | growth | only with `--fail-under` | no |
 | `propose_claims.py` | growth | never | no |
 
@@ -80,6 +83,26 @@ than a wrong one.
 
 Run it after any change to a `.c` or `.h` file, and commit the result — or
 the drift check will fail.
+
+---
+
+### `generate_topic_index.py`
+
+Renders `../topic-index.md`: a subject catalogue beside the file-oriented
+README. Topic *names* are curated in the script — "what is this about?" is not
+derivable — but membership is: nodes matching a topic's seed terms, split into
+*on topic* and *one relation away*, so a neighbour is never presented as
+subject matter.
+
+`--check` fails when the committed index differs from a fresh render, and runs
+inside `make kg-check`; `make kg-topics` regenerates it.
+
+Two traps this hit while being built, both worth knowing before editing it.
+The index links to `.c` files, so the graph generator initially read it back
+as documentation evidence — a derived document feeding the graph it derives
+from. It is excluded via `GENERATED_DOCS` in `generate_knowledge_graph.py`.
+And sorting on name alone was unstable, because `update_hi_score` exists in
+both `scoring.c` and `state_init.c`; the sort key is `(name, id)`.
 
 ---
 
@@ -171,6 +194,35 @@ can only contain real symbols — which makes it the fastest way to find which
 routine truly occupies a given ROM range.
 
 *Failure:* run `make c-asm-docs` and commit the regenerated file.
+
+---
+
+### `check_claim_sources.py`
+
+Verifies that every locator after a source's `#` still resolves. Line ranges
+must not extend past the end of the file; anchor strings must still occur, and
+occurring more than once is reported as ambiguous evidence; Markdown headings
+must still exist.
+
+`--strict` additionally lists claims that cite a line range where an anchor
+would be safer. That listing is advice and never fails the run — a line range
+is a legitimate way to cite a whole function body, and a check that is
+permanently red teaches people to ignore it.
+
+*Failure:* the cited evidence moved or disappeared. Re-read the source, then
+either update the locator or reconsider the claim.
+
+### `check_claim_assertions.py`
+
+Re-evaluates claims carrying an `assertion` object. Two operators only:
+`counts` (a regex must match exactly N times) and `distinct` (its first
+capture group must yield exactly N distinct values). Claims without an
+assertion are reported as resting on human verification, which is a
+legitimate state.
+
+*Failure:* either the source changed and the claim is now false, or the claim
+was wrong when written. Both need a person; do not "fix" it by adjusting the
+expected count until it passes.
 
 ---
 
