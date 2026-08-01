@@ -1,0 +1,101 @@
+<svg width="735" height="306" viewBox="0 0 735 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poses of the Phoenix formation alien diving and banking, each 2 by 2 characters, with the character codes listed.">
+<title>The formation alien, diving and banking</title>
+<style>
+  .bg{fill:#050510} .cell{fill:#0C0C1E;stroke:#242440;stroke-width:1}
+  .h1{fill:#E8E8FF;font-family:'Segoe UI',system-ui,sans-serif;font-size:17px;font-weight:600}
+  .sub{fill:#8888AA;font-family:'Segoe UI',system-ui,sans-serif;font-size:11.5px}
+  .idx{fill:#FFFF66;font-family:monospace;font-size:9.5px}
+  .lbl{fill:#AAAACC;font-family:'Segoe UI',system-ui,sans-serif;font-size:10.5px}
+  .note{fill:#777799;font-family:'Segoe UI',system-ui,sans-serif;font-size:11px}
+  .grp{fill:#66DDFF;font-family:monospace;font-size:10.5px}
+  .src{fill:#C9A24A;font-family:monospace;font-size:10px}
+</style>
+<rect class="bg" x="0" y="0" width="735" height="306" rx="8"/>
+<text class="h1" x="20" y="30">The formation alien, diving and banking</text>
+<text class="sub" x="20" y="50">8 poses of 2x2 characters, read out of the screen memory of a recorded session.</text>
+<text class="sub" x="20" y="66">No table holds this size: sprite_rendering.c picks 1x1, 2x1, 1x2 or 2x2 at runtime from the object's control byte.</text>
+<text class="grp" x="20" y="84">2x2 block · 4 characters · foreground set</text>
+<text class="src" x="20" y="100">sprite_rendering.c: bit3_controller() calls execute_bit3_function(control &amp; 0x07), which picks the size</text>
+<rect class="cell" x="17" y="105" width="70" height="70" rx="3"/>
+<rect x="32" y="136" width="4" height="4" fill="#f6f644"/><rect x="36" y="132" width="4" height="4" fill="#f6f644"/><rect x="40" y="128" width="4" height="12" fill="#f6f644"/><rect x="44" y="124" width="4" height="12" fill="#f6f644"/><rect x="44" y="136" width="4" height="4" fill="#d31fd2"/><rect x="48" y="120" width="4" height="4" fill="#f6f644"/><rect x="48" y="132" width="4" height="8" fill="#d31fd2"/>
+<rect x="28" y="140" width="4" height="4" fill="#f6f644"/><rect x="36" y="148" width="4" height="4" fill="#f4cdcf"/><rect x="40" y="148" width="4" height="4" fill="#d31fd2"/><rect x="40" y="152" width="4" height="4" fill="#f4cdcf"/><rect x="44" y="140" width="4" height="8" fill="#d31fd2"/><rect x="48" y="140" width="4" height="8" fill="#d31fd2"/><rect x="48" y="160" width="4" height="4" fill="#f6f644"/>
+<rect x="52" y="116" width="4" height="4" fill="#f6f644"/><rect x="52" y="132" width="4" height="8" fill="#d31fd2"/><rect x="56" y="132" width="4" height="8" fill="#d31fd2"/><rect x="60" y="128" width="4" height="4" fill="#d31fd2"/><rect x="72" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="52" y="140" width="4" height="8" fill="#d31fd2"/><rect x="52" y="148" width="4" height="4" fill="#f6f644"/><rect x="52" y="156" width="4" height="4" fill="#f6f644"/><rect x="56" y="140" width="4" height="4" fill="#d31fd2"/><rect x="56" y="144" width="4" height="12" fill="#f6f644"/><rect x="60" y="144" width="4" height="8" fill="#f6f644"/><rect x="64" y="144" width="4" height="4" fill="#f6f644"/><rect x="68" y="140" width="4" height="4" fill="#f6f644"/>
+<text class="lbl" x="20" y="194">#0</text>
+<text class="idx" x="20" y="208">A6</text>
+<text class="idx" x="20" y="221">B6</text>
+<text class="idx" x="52" y="208">A7</text>
+<text class="idx" x="52" y="221">B7</text>
+<rect class="cell" x="99" y="105" width="70" height="70" rx="3"/>
+<rect x="110" y="136" width="4" height="4" fill="#f6f644"/><rect x="118" y="128" width="4" height="4" fill="#f4cdcf"/><rect x="122" y="124" width="4" height="4" fill="#f4cdcf"/><rect x="122" y="128" width="4" height="4" fill="#d31fd2"/><rect x="126" y="132" width="4" height="8" fill="#d31fd2"/><rect x="130" y="116" width="4" height="4" fill="#f6f644"/><rect x="130" y="132" width="4" height="8" fill="#d31fd2"/>
+<rect x="114" y="140" width="4" height="4" fill="#f6f644"/><rect x="118" y="144" width="4" height="4" fill="#f6f644"/><rect x="122" y="140" width="4" height="12" fill="#f6f644"/><rect x="126" y="140" width="4" height="4" fill="#d31fd2"/><rect x="126" y="144" width="4" height="12" fill="#f6f644"/><rect x="130" y="140" width="4" height="8" fill="#d31fd2"/><rect x="130" y="156" width="4" height="4" fill="#f6f644"/>
+<rect x="134" y="120" width="4" height="4" fill="#f6f644"/><rect x="134" y="128" width="4" height="4" fill="#f6f644"/><rect x="134" y="132" width="4" height="8" fill="#d31fd2"/><rect x="138" y="124" width="4" height="12" fill="#f6f644"/><rect x="138" y="136" width="4" height="4" fill="#d31fd2"/><rect x="142" y="128" width="4" height="8" fill="#f6f644"/><rect x="146" y="132" width="4" height="4" fill="#f6f644"/><rect x="150" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="134" y="140" width="4" height="8" fill="#d31fd2"/><rect x="134" y="160" width="4" height="4" fill="#f6f644"/><rect x="138" y="140" width="4" height="8" fill="#d31fd2"/><rect x="142" y="148" width="4" height="4" fill="#d31fd2"/><rect x="154" y="140" width="4" height="4" fill="#f6f644"/>
+<text class="lbl" x="102" y="194">#1</text>
+<text class="idx" x="102" y="208">A8</text>
+<text class="idx" x="102" y="221">B8</text>
+<text class="idx" x="134" y="208">A9</text>
+<text class="idx" x="134" y="221">B9</text>
+<rect class="cell" x="181" y="105" width="70" height="70" rx="3"/>
+<rect x="192" y="136" width="4" height="4" fill="#f6f644"/><rect x="204" y="128" width="4" height="4" fill="#d31fd2"/><rect x="208" y="132" width="4" height="8" fill="#d31fd2"/><rect x="212" y="116" width="4" height="4" fill="#f6f644"/><rect x="212" y="132" width="4" height="8" fill="#d31fd2"/>
+<rect x="196" y="140" width="4" height="4" fill="#f6f644"/><rect x="200" y="144" width="4" height="4" fill="#f6f644"/><rect x="204" y="144" width="4" height="8" fill="#f6f644"/><rect x="208" y="140" width="4" height="4" fill="#d31fd2"/><rect x="208" y="144" width="4" height="12" fill="#f6f644"/><rect x="212" y="140" width="4" height="8" fill="#d31fd2"/><rect x="212" y="148" width="4" height="4" fill="#f6f644"/><rect x="212" y="156" width="4" height="4" fill="#f6f644"/>
+<rect x="216" y="120" width="4" height="4" fill="#f6f644"/><rect x="216" y="132" width="4" height="8" fill="#d31fd2"/><rect x="220" y="124" width="4" height="12" fill="#f6f644"/><rect x="220" y="136" width="4" height="4" fill="#d31fd2"/><rect x="224" y="128" width="4" height="12" fill="#f6f644"/><rect x="228" y="132" width="4" height="4" fill="#f6f644"/><rect x="232" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="216" y="140" width="4" height="8" fill="#d31fd2"/><rect x="216" y="160" width="4" height="4" fill="#d31fd2"/><rect x="220" y="140" width="4" height="8" fill="#d31fd2"/><rect x="224" y="148" width="4" height="4" fill="#d31fd2"/><rect x="224" y="152" width="4" height="4" fill="#f4cdcf"/><rect x="228" y="148" width="4" height="4" fill="#f4cdcf"/><rect x="236" y="140" width="4" height="4" fill="#f6f644"/>
+<text class="lbl" x="184" y="194">#2</text>
+<text class="idx" x="184" y="208">A4</text>
+<text class="idx" x="184" y="221">B4</text>
+<text class="idx" x="216" y="208">A5</text>
+<text class="idx" x="216" y="221">B5</text>
+<rect class="cell" x="263" y="105" width="70" height="70" rx="3"/>
+<rect x="282" y="136" width="4" height="4" fill="#f6f644"/><rect x="294" y="132" width="4" height="8" fill="#d31fd2"/>
+<rect x="282" y="140" width="4" height="24" fill="#f6f644"/><rect x="286" y="148" width="4" height="12" fill="#f6f644"/><rect x="290" y="144" width="4" height="12" fill="#f6f644"/><rect x="294" y="140" width="4" height="12" fill="#d31fd2"/><rect x="294" y="160" width="4" height="4" fill="#f4cdcf"/>
+<rect x="302" y="132" width="4" height="8" fill="#d31fd2"/><rect x="314" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="298" y="140" width="4" height="20" fill="#d31fd2"/><rect x="302" y="140" width="4" height="12" fill="#d31fd2"/><rect x="302" y="160" width="4" height="4" fill="#f4cdcf"/><rect x="306" y="144" width="4" height="12" fill="#f6f644"/><rect x="310" y="148" width="4" height="12" fill="#f6f644"/><rect x="314" y="140" width="4" height="24" fill="#f6f644"/>
+<text class="lbl" x="266" y="194">#3</text>
+<text class="idx" x="266" y="208">A0</text>
+<text class="idx" x="266" y="221">B0</text>
+<text class="idx" x="298" y="208">A1</text>
+<text class="idx" x="298" y="221">B1</text>
+<rect class="cell" x="345" y="105" width="70" height="70" rx="3"/>
+<rect x="364" y="120" width="4" height="20" fill="#f6f644"/><rect x="368" y="132" width="4" height="8" fill="#f6f644"/><rect x="372" y="128" width="4" height="4" fill="#d31fd2"/><rect x="372" y="132" width="4" height="8" fill="#f6f644"/><rect x="376" y="116" width="4" height="20" fill="#d31fd2"/>
+<rect x="364" y="140" width="4" height="8" fill="#f6f644"/><rect x="368" y="140" width="4" height="4" fill="#f6f644"/><rect x="376" y="144" width="4" height="4" fill="#f4cdcf"/>
+<rect x="380" y="124" width="4" height="16" fill="#d31fd2"/><rect x="384" y="116" width="4" height="20" fill="#d31fd2"/><rect x="388" y="128" width="4" height="12" fill="#f6f644"/><rect x="392" y="132" width="4" height="8" fill="#f6f644"/><rect x="396" y="120" width="4" height="20" fill="#f6f644"/>
+<rect x="380" y="140" width="4" height="4" fill="#d31fd2"/><rect x="384" y="144" width="4" height="4" fill="#f4cdcf"/><rect x="392" y="140" width="4" height="4" fill="#f6f644"/><rect x="396" y="140" width="4" height="8" fill="#f6f644"/>
+<text class="lbl" x="348" y="194">#4</text>
+<text class="idx" x="348" y="208">8E</text>
+<text class="idx" x="348" y="221">9E</text>
+<text class="idx" x="380" y="208">8F</text>
+<text class="idx" x="380" y="221">9F</text>
+<rect class="cell" x="427" y="105" width="70" height="70" rx="3"/>
+<rect x="446" y="120" width="4" height="4" fill="#f4cdcf"/><rect x="446" y="136" width="4" height="4" fill="#f6f644"/><rect x="450" y="116" width="4" height="4" fill="#f4cdcf"/><rect x="450" y="120" width="4" height="4" fill="#d31fd2"/><rect x="450" y="128" width="4" height="12" fill="#f6f644"/><rect x="454" y="124" width="4" height="8" fill="#d31fd2"/><rect x="454" y="132" width="4" height="8" fill="#f6f644"/><rect x="458" y="120" width="4" height="4" fill="#f6f644"/><rect x="458" y="124" width="4" height="12" fill="#d31fd2"/>
+<rect x="446" y="140" width="4" height="8" fill="#f6f644"/><rect x="450" y="140" width="4" height="16" fill="#f6f644"/><rect x="454" y="148" width="4" height="12" fill="#f6f644"/>
+<rect x="462" y="120" width="4" height="8" fill="#f6f644"/><rect x="462" y="128" width="4" height="12" fill="#d31fd2"/><rect x="466" y="116" width="4" height="12" fill="#f6f644"/><rect x="466" y="132" width="4" height="8" fill="#d31fd2"/><rect x="470" y="116" width="4" height="8" fill="#f6f644"/><rect x="474" y="116" width="4" height="8" fill="#f6f644"/><rect x="478" y="120" width="4" height="8" fill="#f6f644"/><rect x="482" y="120" width="4" height="8" fill="#f6f644"/><rect x="486" y="124" width="4" height="4" fill="#f6f644"/>
+<rect x="470" y="140" width="4" height="4" fill="#d31fd2"/><rect x="474" y="144" width="4" height="4" fill="#d31fd2"/>
+<text class="lbl" x="430" y="194">#5</text>
+<text class="idx" x="430" y="208">AE</text>
+<text class="idx" x="430" y="221">BE</text>
+<text class="idx" x="462" y="208">AF</text>
+<text class="idx" x="462" y="221">BF</text>
+<rect class="cell" x="509" y="105" width="70" height="70" rx="3"/>
+<rect x="528" y="136" width="4" height="4" fill="#f4cdcf"/><rect x="532" y="132" width="4" height="4" fill="#f4cdcf"/><rect x="532" y="136" width="4" height="4" fill="#d31fd2"/><rect x="540" y="132" width="4" height="8" fill="#f6f644"/>
+<rect x="512" y="156" width="4" height="12" fill="#f6f644"/><rect x="516" y="152" width="4" height="12" fill="#f6f644"/><rect x="520" y="148" width="4" height="12" fill="#f6f644"/><rect x="524" y="148" width="4" height="12" fill="#f6f644"/><rect x="528" y="144" width="4" height="12" fill="#f6f644"/><rect x="532" y="144" width="4" height="12" fill="#f6f644"/><rect x="536" y="140" width="4" height="8" fill="#d31fd2"/><rect x="536" y="148" width="4" height="4" fill="#f6f644"/><rect x="540" y="140" width="4" height="12" fill="#d31fd2"/>
+<rect x="544" y="124" width="4" height="16" fill="#f6f644"/><rect x="548" y="120" width="4" height="20" fill="#f6f644"/><rect x="552" y="116" width="4" height="16" fill="#f6f644"/><rect x="556" y="116" width="4" height="8" fill="#f6f644"/><rect x="560" y="116" width="4" height="4" fill="#f6f644"/>
+<rect x="544" y="140" width="4" height="4" fill="#f6f644"/><rect x="544" y="144" width="4" height="12" fill="#d31fd2"/><rect x="548" y="148" width="4" height="8" fill="#d31fd2"/><rect x="552" y="156" width="4" height="4" fill="#d31fd2"/><rect x="556" y="160" width="4" height="4" fill="#d31fd2"/>
+<text class="lbl" x="512" y="194">#6</text>
+<text class="idx" x="512" y="208">AA</text>
+<text class="idx" x="512" y="221">BA</text>
+<text class="idx" x="544" y="208">AB</text>
+<text class="idx" x="544" y="221">BB</text>
+<rect class="cell" x="591" y="105" width="70" height="70" rx="3"/>
+<rect x="594" y="116" width="4" height="12" fill="#f6f644"/><rect x="598" y="120" width="4" height="8" fill="#f6f644"/><rect x="602" y="120" width="4" height="12" fill="#f6f644"/><rect x="606" y="124" width="4" height="12" fill="#f6f644"/><rect x="610" y="124" width="4" height="12" fill="#f6f644"/><rect x="610" y="136" width="4" height="4" fill="#d31fd2"/><rect x="614" y="128" width="4" height="4" fill="#f6f644"/><rect x="614" y="132" width="4" height="8" fill="#d31fd2"/><rect x="618" y="132" width="4" height="8" fill="#d31fd2"/><rect x="622" y="124" width="4" height="4" fill="#f4cdcf"/><rect x="622" y="128" width="4" height="4" fill="#d31fd2"/><rect x="622" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="602" y="148" width="4" height="4" fill="#d31fd2"/><rect x="606" y="140" width="4" height="8" fill="#d31fd2"/><rect x="610" y="140" width="4" height="8" fill="#d31fd2"/><rect x="614" y="140" width="4" height="4" fill="#d31fd2"/><rect x="618" y="140" width="4" height="8" fill="#f6f644"/><rect x="622" y="140" width="4" height="12" fill="#f6f644"/>
+<rect x="626" y="128" width="4" height="4" fill="#f4cdcf"/>
+<rect x="626" y="140" width="4" height="20" fill="#f6f644"/><rect x="630" y="148" width="4" height="12" fill="#f6f644"/><rect x="634" y="156" width="4" height="4" fill="#f6f644"/>
+<text class="lbl" x="594" y="194">#7</text>
+<text class="idx" x="594" y="208">82</text>
+<text class="idx" x="594" y="221">92</text>
+<text class="idx" x="626" y="208">83</text>
+<text class="idx" x="626" y="221">93</text>
+<text class="note" x="20" y="254">The widest of its poses, used while it breaks formation and dives at you.</text>
+<text class="note" x="20" y="271">One alien uses all these sizes as it moves, which is why no single sheet can show the whole creature.</text>
+</svg>

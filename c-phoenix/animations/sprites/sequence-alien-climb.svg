@@ -1,0 +1,57 @@
+<svg width="735" height="306" viewBox="0 0 735 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poses of the Phoenix formation alien climbing, each 1 by 2 characters, with the character codes listed.">
+<title>The formation alien, climbing</title>
+<style>
+  .bg{fill:#050510} .cell{fill:#0C0C1E;stroke:#242440;stroke-width:1}
+  .h1{fill:#E8E8FF;font-family:'Segoe UI',system-ui,sans-serif;font-size:17px;font-weight:600}
+  .sub{fill:#8888AA;font-family:'Segoe UI',system-ui,sans-serif;font-size:11.5px}
+  .idx{fill:#FFFF66;font-family:monospace;font-size:9.5px}
+  .lbl{fill:#AAAACC;font-family:'Segoe UI',system-ui,sans-serif;font-size:10.5px}
+  .note{fill:#777799;font-family:'Segoe UI',system-ui,sans-serif;font-size:11px}
+  .grp{fill:#66DDFF;font-family:monospace;font-size:10.5px}
+  .src{fill:#C9A24A;font-family:monospace;font-size:10px}
+</style>
+<rect class="bg" x="0" y="0" width="735" height="306" rx="8"/>
+<text class="h1" x="20" y="30">The formation alien, climbing</text>
+<text class="sub" x="20" y="50">6 poses of 1x2 characters, read out of the screen memory of a recorded session.</text>
+<text class="sub" x="20" y="66">No table holds this size: sprite_rendering.c picks 1x1, 2x1, 1x2 or 2x2 at runtime from the object's control byte.</text>
+<text class="grp" x="20" y="84">1x2 block · 2 characters · foreground set</text>
+<text class="src" x="20" y="100">sprite_rendering.c: bit3_controller() calls execute_bit3_function(control &amp; 0x07), which picks the size</text>
+<rect class="cell" x="17" y="105" width="38" height="70" rx="3"/>
+<rect x="24" y="124" width="4" height="16" fill="#f6f644"/><rect x="28" y="136" width="4" height="4" fill="#f6f644"/><rect x="32" y="112" width="4" height="4" fill="#f6f644"/><rect x="32" y="132" width="4" height="8" fill="#d31fd2"/><rect x="36" y="108" width="4" height="4" fill="#f6f644"/><rect x="36" y="112" width="4" height="4" fill="#f4cdcf"/><rect x="36" y="116" width="4" height="4" fill="#f6f644"/><rect x="36" y="124" width="4" height="16" fill="#d31fd2"/><rect x="40" y="112" width="4" height="4" fill="#f6f644"/><rect x="40" y="132" width="4" height="8" fill="#d31fd2"/><rect x="44" y="136" width="4" height="4" fill="#f6f644"/><rect x="48" y="124" width="4" height="16" fill="#f6f644"/>
+<rect x="24" y="140" width="4" height="16" fill="#f6f644"/><rect x="28" y="140" width="4" height="8" fill="#f6f644"/><rect x="32" y="140" width="4" height="4" fill="#d31fd2"/><rect x="32" y="152" width="4" height="4" fill="#f4cdcf"/><rect x="36" y="140" width="4" height="12" fill="#d31fd2"/><rect x="40" y="140" width="4" height="4" fill="#d31fd2"/><rect x="40" y="152" width="4" height="4" fill="#f4cdcf"/><rect x="44" y="140" width="4" height="8" fill="#f6f644"/><rect x="48" y="140" width="4" height="16" fill="#f6f644"/>
+<text class="lbl" x="20" y="194">#0</text>
+<text class="idx" x="20" y="208">8B</text>
+<text class="idx" x="20" y="221">9B</text>
+<rect class="cell" x="67" y="105" width="38" height="70" rx="3"/>
+<rect x="74" y="124" width="4" height="16" fill="#f6f644"/><rect x="78" y="132" width="4" height="8" fill="#f6f644"/><rect x="82" y="124" width="4" height="4" fill="#f4cdcf"/><rect x="82" y="136" width="4" height="4" fill="#d31fd2"/><rect x="86" y="128" width="4" height="12" fill="#d31fd2"/><rect x="90" y="124" width="4" height="4" fill="#f4cdcf"/><rect x="90" y="136" width="4" height="4" fill="#d31fd2"/><rect x="94" y="132" width="4" height="8" fill="#f6f644"/><rect x="98" y="124" width="4" height="16" fill="#f6f644"/>
+<rect x="74" y="140" width="4" height="16" fill="#f6f644"/><rect x="78" y="140" width="4" height="4" fill="#f6f644"/><rect x="82" y="140" width="4" height="8" fill="#d31fd2"/><rect x="82" y="164" width="4" height="4" fill="#f6f644"/><rect x="86" y="140" width="4" height="16" fill="#d31fd2"/><rect x="86" y="160" width="4" height="4" fill="#f6f644"/><rect x="86" y="164" width="4" height="4" fill="#f4cdcf"/><rect x="86" y="168" width="4" height="4" fill="#f6f644"/><rect x="90" y="140" width="4" height="8" fill="#d31fd2"/><rect x="90" y="164" width="4" height="4" fill="#f6f644"/><rect x="94" y="140" width="4" height="4" fill="#f6f644"/><rect x="98" y="140" width="4" height="16" fill="#f6f644"/>
+<text class="lbl" x="70" y="194">#1</text>
+<text class="idx" x="70" y="208">8A</text>
+<text class="idx" x="70" y="221">9A</text>
+<rect class="cell" x="117" y="105" width="38" height="70" rx="3"/>
+<rect x="120" y="128" width="4" height="4" fill="#f4cdcf"/><rect x="124" y="124" width="4" height="4" fill="#f4cdcf"/><rect x="124" y="128" width="4" height="4" fill="#d31fd2"/><rect x="128" y="116" width="4" height="4" fill="#f6f644"/><rect x="128" y="132" width="4" height="4" fill="#d31fd2"/><rect x="132" y="120" width="4" height="8" fill="#f6f644"/><rect x="132" y="128" width="4" height="4" fill="#d31fd2"/><rect x="132" y="136" width="4" height="4" fill="#d31fd2"/><rect x="136" y="124" width="4" height="8" fill="#f6f644"/><rect x="136" y="132" width="4" height="8" fill="#d31fd2"/><rect x="140" y="128" width="4" height="8" fill="#f6f644"/><rect x="140" y="136" width="4" height="4" fill="#d31fd2"/><rect x="144" y="132" width="4" height="4" fill="#f6f644"/><rect x="148" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="120" y="140" width="4" height="4" fill="#f6f644"/><rect x="124" y="144" width="4" height="4" fill="#f6f644"/><rect x="128" y="140" width="4" height="4" fill="#d31fd2"/><rect x="128" y="144" width="4" height="8" fill="#f6f644"/><rect x="132" y="140" width="4" height="8" fill="#d31fd2"/><rect x="132" y="148" width="4" height="8" fill="#f6f644"/><rect x="136" y="140" width="4" height="12" fill="#d31fd2"/><rect x="136" y="152" width="4" height="8" fill="#f6f644"/><rect x="140" y="140" width="4" height="8" fill="#d31fd2"/><rect x="140" y="160" width="4" height="4" fill="#f6f644"/><rect x="144" y="148" width="4" height="4" fill="#d31fd2"/>
+<text class="lbl" x="120" y="194">#2</text>
+<text class="idx" x="120" y="208">89</text>
+<text class="idx" x="120" y="221">99</text>
+<rect class="cell" x="167" y="105" width="38" height="70" rx="3"/>
+<rect x="174" y="136" width="4" height="4" fill="#f6f644"/><rect x="178" y="132" width="4" height="8" fill="#f6f644"/><rect x="182" y="128" width="4" height="8" fill="#f6f644"/><rect x="182" y="136" width="4" height="4" fill="#d31fd2"/><rect x="186" y="124" width="4" height="8" fill="#f6f644"/><rect x="186" y="132" width="4" height="8" fill="#d31fd2"/><rect x="190" y="120" width="4" height="4" fill="#f6f644"/><rect x="190" y="136" width="4" height="4" fill="#d31fd2"/><rect x="194" y="132" width="4" height="4" fill="#d31fd2"/>
+<rect x="170" y="140" width="4" height="4" fill="#f6f644"/><rect x="170" y="152" width="4" height="4" fill="#f4cdcf"/><rect x="174" y="152" width="4" height="4" fill="#d31fd2"/><rect x="174" y="156" width="4" height="4" fill="#f4cdcf"/><rect x="178" y="140" width="4" height="4" fill="#d31fd2"/><rect x="178" y="148" width="4" height="4" fill="#d31fd2"/><rect x="178" y="164" width="4" height="4" fill="#f6f644"/><rect x="182" y="140" width="4" height="8" fill="#d31fd2"/><rect x="182" y="152" width="4" height="4" fill="#d31fd2"/><rect x="182" y="156" width="4" height="8" fill="#f6f644"/><rect x="186" y="140" width="4" height="12" fill="#d31fd2"/><rect x="186" y="152" width="4" height="8" fill="#f6f644"/><rect x="190" y="140" width="4" height="8" fill="#d31fd2"/><rect x="190" y="148" width="4" height="8" fill="#f6f644"/><rect x="194" y="148" width="4" height="4" fill="#f6f644"/><rect x="198" y="144" width="4" height="4" fill="#f6f644"/>
+<text class="lbl" x="170" y="194">#3</text>
+<text class="idx" x="170" y="208">88</text>
+<text class="idx" x="170" y="221">98</text>
+<rect class="cell" x="217" y="105" width="38" height="70" rx="3"/>
+<rect x="224" y="136" width="4" height="4" fill="#f6f644"/><rect x="228" y="132" width="4" height="8" fill="#f6f644"/><rect x="232" y="128" width="4" height="8" fill="#f6f644"/><rect x="232" y="136" width="4" height="4" fill="#d31fd2"/><rect x="236" y="124" width="4" height="8" fill="#f6f644"/><rect x="236" y="132" width="4" height="4" fill="#d31fd2"/><rect x="240" y="120" width="4" height="4" fill="#f6f644"/><rect x="240" y="136" width="4" height="4" fill="#d31fd2"/><rect x="244" y="128" width="4" height="4" fill="#f4cdcf"/><rect x="244" y="132" width="4" height="4" fill="#d31fd2"/><rect x="248" y="132" width="4" height="4" fill="#f4cdcf"/>
+<rect x="220" y="140" width="4" height="4" fill="#d31fd2"/><rect x="224" y="152" width="4" height="4" fill="#d31fd2"/><rect x="228" y="140" width="4" height="12" fill="#d31fd2"/><rect x="228" y="164" width="4" height="4" fill="#f6f644"/><rect x="232" y="140" width="4" height="16" fill="#d31fd2"/><rect x="232" y="156" width="4" height="8" fill="#f6f644"/><rect x="236" y="140" width="4" height="12" fill="#d31fd2"/><rect x="236" y="152" width="4" height="8" fill="#f6f644"/><rect x="240" y="144" width="4" height="4" fill="#d31fd2"/><rect x="240" y="148" width="4" height="8" fill="#f6f644"/><rect x="244" y="148" width="4" height="4" fill="#f6f644"/><rect x="248" y="144" width="4" height="4" fill="#f6f644"/>
+<text class="lbl" x="220" y="194">#4</text>
+<text class="idx" x="220" y="208">86</text>
+<text class="idx" x="220" y="221">96</text>
+<rect class="cell" x="267" y="105" width="38" height="70" rx="3"/>
+<rect x="274" y="128" width="4" height="4" fill="#d31fd2"/><rect x="278" y="116" width="4" height="4" fill="#f6f644"/><rect x="278" y="132" width="4" height="8" fill="#d31fd2"/><rect x="282" y="120" width="4" height="8" fill="#f6f644"/><rect x="282" y="128" width="4" height="12" fill="#d31fd2"/><rect x="286" y="124" width="4" height="8" fill="#f6f644"/><rect x="286" y="132" width="4" height="8" fill="#d31fd2"/><rect x="290" y="128" width="4" height="8" fill="#f6f644"/><rect x="290" y="136" width="4" height="4" fill="#d31fd2"/><rect x="294" y="132" width="4" height="4" fill="#f6f644"/><rect x="298" y="136" width="4" height="4" fill="#f6f644"/>
+<rect x="270" y="140" width="4" height="4" fill="#f6f644"/><rect x="274" y="144" width="4" height="4" fill="#f6f644"/><rect x="278" y="140" width="4" height="4" fill="#d31fd2"/><rect x="278" y="144" width="4" height="8" fill="#f6f644"/><rect x="282" y="140" width="4" height="8" fill="#d31fd2"/><rect x="282" y="148" width="4" height="8" fill="#f6f644"/><rect x="286" y="140" width="4" height="4" fill="#d31fd2"/><rect x="286" y="148" width="4" height="4" fill="#d31fd2"/><rect x="286" y="152" width="4" height="8" fill="#f6f644"/><rect x="290" y="144" width="4" height="4" fill="#d31fd2"/><rect x="290" y="160" width="4" height="4" fill="#f6f644"/><rect x="294" y="148" width="4" height="4" fill="#d31fd2"/><rect x="294" y="152" width="4" height="4" fill="#f4cdcf"/><rect x="298" y="148" width="4" height="4" fill="#f4cdcf"/>
+<text class="lbl" x="270" y="194">#5</text>
+<text class="idx" x="270" y="208">87</text>
+<text class="idx" x="270" y="221">97</text>
+<text class="note" x="20" y="254">One character wide and two tall: the alien seen head-on as it pulls up.</text>
+<text class="note" x="20" y="271">One alien uses all these sizes as it moves, which is why no single sheet can show the whole creature.</text>
+</svg>
