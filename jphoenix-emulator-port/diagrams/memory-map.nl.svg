@@ -1,0 +1,79 @@
+<svg width="720" height="536" viewBox="0 0 720 536" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="De Phoenix-adresruimte zoals JPhoenix die implementeert: 16 KiB programma-ROM op 0x0000-0x3fff, video-RAM en speldata vanaf 0x4000, en geheugengekoppelde registers voor videopaginering, scrollen, geluid, invoer en vertical blank vanaf 0x5000.">
+  <title>Phoenix-geheugenkaart</title>
+  <style>
+    .bg    { fill:#050510; }
+    .h1    { fill:#E8E8FF; font-family:'Segoe UI',system-ui,sans-serif; font-size:18px; font-weight:600; }
+    .sub   { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; }
+    .addr  { fill:#FFFF66; font-family:monospace; font-size:12px; }
+    .desc  { fill:#DDDDEE; font-family:'Segoe UI',system-ui,sans-serif; font-size:12.5px; }
+    .small { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:11px; }
+    .note  { fill:#777799; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .rw    { font-family:monospace; font-size:10px; }
+    .blkROM  { fill:#141A38; stroke:#3A4A8A; stroke-width:1.5; }
+    .blkRAM  { fill:#0E2420; stroke:#1E6B55; stroke-width:1.5; }
+    .blkIO   { fill:#26141E; stroke:#8A3A5A; stroke-width:1.5; }
+    .blkIN   { fill:#1E1A30; stroke:#5A4A8A; stroke-width:1.5; }
+    .legbox  { stroke-width:1.5; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="720" height="536" rx="10" />
+
+  <text class="h1"  x="26" y="32">De Phoenix-adresruimte</text>
+  <text class="sub" x="26" y="52">Alles is geheugen. De code uit 1980 stuurt de hardware aan door naar adressen te schrijven.</text>
+
+  <!-- legend -->
+  <rect class="blkROM legbox" x="26"  y="66" width="12" height="12" rx="2" />
+  <text class="small" x="44"  y="76">programmacode</text>
+  <rect class="blkRAM legbox" x="140" y="66" width="12" height="12" rx="2" />
+  <text class="small" x="158" y="76">scherm + spelstatus</text>
+  <rect class="blkIO legbox"  x="288" y="66" width="12" height="12" rx="2" />
+  <text class="small" x="306" y="76">hardwareregisters (schrijven)</text>
+  <rect class="blkIN legbox"  x="502" y="66" width="12" height="12" rx="2" />
+  <text class="small" x="520" y="76">hardwarestatus (lezen)</text>
+
+  <!-- ── program ROM ───────────────────────────────────── -->
+  <rect class="blkROM" x="26" y="92" width="668" height="74" rx="6" />
+  <text class="addr" x="42"  y="116">0x0000 – 0x3fff</text>
+  <text class="desc" x="196" y="116">16 KiB programma-ROM — de originele spelcode uit 1980</text>
+  <text class="rw"   x="654" y="116" fill="#7788CC" text-anchor="end">lezen</text>
+  <text class="small" x="196" y="136">Schrijven onder 0x4000 wordt genegeerd; dit gedraagt zich als een echte ROM-chip.</text>
+  <text class="small" x="196" y="153">Precies dit vervangt de C-poort door leesbare C-functies.</text>
+
+  <!-- ── video RAM / game data ─────────────────────────── -->
+  <rect class="blkRAM" x="26" y="176" width="668" height="92" rx="6" />
+  <text class="addr" x="42"  y="200">0x4000 – 0x43ff</text>
+  <text class="desc" x="196" y="200">voorgrond-video-RAM en speldata</text>
+  <text class="rw"   x="654" y="200" fill="#4ECCA8" text-anchor="end">lezen / schrijven</text>
+
+  <rect x="190" y="210" width="470" height="22" fill="#0A1A18" stroke="#1E6B55" stroke-width="1" rx="3" />
+  <text class="addr" x="200" y="225" font-size="11">0x4380–0x438b</text>
+  <text class="small" x="300" y="225" fill="#9EDDCC">spelerscores en highscore, opgeslagen in BCD</text>
+
+  <text class="addr" x="42"  y="255">0x4800 – 0x4bff</text>
+  <text class="desc" x="196" y="255">achtergrond-video-RAM</text>
+  <text class="rw"   x="654" y="255" fill="#4ECCA8" text-anchor="end">lezen / schrijven</text>
+
+  <!-- ── the paging note ───────────────────────────────── -->
+  <rect x="26" y="278" width="668" height="50" fill="#0A0A1C" stroke="#2A2A4A" stroke-width="1" rx="6" />
+  <text class="small" x="42" y="298" fill="#AAAACC">0x4000–0x4fff bestaat <tspan fill="#FFFF66">twee keer</tspan>. Eén schrijfactie naar het videoregister wisselt welke kopie de CPU ziet —</text>
+  <text class="small" x="42" y="315" fill="#AAAACC">zo houdt één machine de schermen en status van twee spelers uit elkaar.</text>
+
+  <!-- ── write registers ───────────────────────────────── -->
+  <rect class="blkIO" x="26" y="340" width="329" height="120" rx="6" />
+  <text x="42" y="362" fill="#DD88AA" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" font-weight="600">SCHRIJVEN STUURT DE HARDWARE</text>
+  <text class="addr" x="42"  y="386">0x5000</text><text class="small" x="120" y="386" fill="#DDAABB">schermpagina + paletbank</text>
+  <text class="addr" x="42"  y="406">0x5800</text><text class="small" x="120" y="406" fill="#DDAABB">verticaal scrollen</text>
+  <text class="addr" x="42"  y="426">0x6000</text><text class="small" x="120" y="426" fill="#DDAABB">geluidsregister A</text>
+  <text class="addr" x="42"  y="446">0x6800</text><text class="small" x="120" y="446" fill="#DDAABB">geluidsregister B</text>
+
+  <!-- ── read registers ────────────────────────────────── -->
+  <rect class="blkIN" x="365" y="340" width="329" height="120" rx="6" />
+  <text x="381" y="362" fill="#AA99DD" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" font-weight="600">LEZEN VRAAGT DE HARDWARE</text>
+  <text class="addr" x="381" y="386">0x7000</text><text class="small" x="459" y="386" fill="#BBB0DD">joystick en knoppen</text>
+  <text class="addr" x="381" y="406">0x7800</text><text class="small" x="459" y="406" fill="#BBB0DD">is het scherm klaar met tekenen?</text>
+  <text class="small" x="381" y="432" fill="#8888AA">Elk register antwoordt binnen een venster van 1 KiB:</text>
+  <text class="small" x="381" y="448" fill="#8888AA">het arcade-board decodeerde adressen ruim.</text>
+
+  <text class="note" x="26" y="488">De blokken staan op leesbaarheid geordend, niet op schaal — de programma-ROM is groter dan alles eronder.</text>
+  <text class="note" x="26" y="508">Alle details staan in docs/EMULATOR_ARCHITECTURE.nl.md.</text>
+</svg>

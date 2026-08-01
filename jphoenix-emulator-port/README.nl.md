@@ -10,6 +10,17 @@ De emulator heeft twee desktopfrontends: de compacte Java AWT-versie en een
 LibGDX/LWJGL3-versie. Beide gebruiken dezelfde emulatiekern, ROM-validatie,
 renderer, inputstatus en soundhardware.
 
+## Hoe de machine is ingedeeld
+
+Een arcade-board heeft geen besturingssysteem en geen drivers. Het spel stuurt
+het scherm, de geluidschips en de joystick aan door naar geheugenadressen te
+schrijven — de geheugenkaart *is* dus de machine:
+
+![De Phoenix-adresruimte: 16 KiB programma-ROM, video-RAM en speldata, en de geheugengekoppelde registers voor paginering, scrollen, geluid, invoer en vertical blank](diagrams/memory-map.nl.svg)
+
+De emulator bootst precies die indeling na; daarom draait de originele ROM er
+ongewijzigd op.
+
 ## Documentatie
 
 Zie [Technische architectuur van JPhoenix](docs/EMULATOR_ARCHITECTURE.nl.md) voor

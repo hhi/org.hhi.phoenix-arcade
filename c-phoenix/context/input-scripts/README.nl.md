@@ -17,6 +17,8 @@ inputscript maakt dezelfde actievolgorde reproduceerbaar. Daardoor kun je:
 
 ## Formaat
 
+![Een invoerscript uitgelegd: elke regel is één knopgebeurtenis op een exact framenummer, getoond als tijdlijn met de bijbehorende regels uit het tekstbestand](../../diagrams/input-script-timeline.nl.svg)
+
 Een event per regel:
 
 ```text

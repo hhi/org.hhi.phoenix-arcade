@@ -1,0 +1,95 @@
+<svg width="760" height="452" viewBox="0 0 760 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The two ways C2-Phoenix works. In native mode it shares the C-Phoenix game engine and only replaces the renderer. In replay mode a RAM dump is converted once into a semantic JSON file, after which the viewer needs no ROM, no raw addresses and no graphics data.">
+  <title>How C2-Phoenix relates to C-Phoenix</title>
+  <style>
+    .bg    { fill:#050510; }
+    .h1    { fill:#E8E8FF; font-family:'Segoe UI',system-ui,sans-serif; font-size:18px; font-weight:600; }
+    .sub   { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; }
+    .mode  { font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; font-weight:600; letter-spacing:.3px; }
+    .box   { fill:#0C0C1E; stroke:#2A2A4A; stroke-width:1.5; }
+    .shared{ fill:#0E2420; stroke:#1E6B55; stroke-width:1.5; }
+    .c2    { fill:#26141E; stroke:#8A3A5A; stroke-width:1.5; }
+    .name  { fill:#DDDDEE; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; font-weight:600; }
+    .what  { fill:#9999BB; font-family:'Segoe UI',system-ui,sans-serif; font-size:10.5px; }
+    .file  { fill:#FFFF66; font-family:monospace; font-size:10.5px; }
+    .note  { fill:#777799; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .no    { fill:#CC6677; font-family:'Segoe UI',system-ui,sans-serif; font-size:11px; }
+    .arrow { fill:none; stroke:#4A4A7A; stroke-width:2; marker-end:url(#a2); }
+    .cut   { fill:none; stroke:#8A3A5A; stroke-width:2; stroke-dasharray:6 5; }
+  </style>
+  <defs>
+    <marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#4A4A7A" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="760" height="452" rx="10" />
+
+  <text class="h1"  x="26" y="32">C2-Phoenix: same game, different picture</text>
+  <text class="sub" x="26" y="52">It never emulates hardware and never reads the graphics ROM. It has two modes, and they borrow different things.</text>
+
+  <!-- legend -->
+  <rect class="shared" x="26" y="66" width="12" height="12" rx="2" />
+  <text class="what" x="44" y="76">shared with C-Phoenix</text>
+  <rect class="c2" x="196" y="66" width="12" height="12" rx="2" />
+  <text class="what" x="214" y="76">C2's own work</text>
+
+  <!-- ══ MODE A: native ══ -->
+  <text class="mode" x="26" y="108" fill="#4ECCA8">MODE A — NATIVE: PLAY IT</text>
+  <text class="what" x="240" y="108">make run · the same game rules, redrawn</text>
+
+  <rect class="shared" x="26" y="120" width="180" height="72" rx="8" />
+  <text class="name" x="40" y="142">C-Phoenix game engine</text>
+  <text class="what" x="40" y="160">rules, input, timing, audio,</text>
+  <text class="what" x="40" y="175">movement tables — untouched</text>
+
+  <path class="arrow" d="M 210,156 L 244,156" />
+
+  <rect class="c2" x="248" y="120" width="180" height="72" rx="8" />
+  <text class="name" x="262" y="142" fill="#EEBBCC">C2 renderer</text>
+  <text class="what" x="262" y="160" fill="#CC9FB0">16×16 hi-res glyphs instead</text>
+  <text class="what" x="262" y="175" fill="#CC9FB0">of the original 8×8 tiles</text>
+
+  <path class="arrow" d="M 432,156 L 466,156" />
+
+  <rect class="box" x="470" y="120" width="264" height="72" rx="8" />
+  <text class="name" x="484" y="142">A window you can play</text>
+  <text class="what" x="484" y="160">Same behaviour as the classic port —</text>
+  <text class="what" x="484" y="175">it still passes the same memory checks.</text>
+
+  <!-- ══ MODE B: replay ══ -->
+  <text class="mode" x="26" y="234" fill="#DD88AA">MODE B — REPLAY: INSPECT IT</text>
+  <text class="what" x="266" y="234">make demo-view · a recorded session, in the browser</text>
+
+  <rect class="box" x="26" y="246" width="148" height="76" rx="8" />
+  <text class="name" x="40" y="268" font-size="11.5">A recorded session</text>
+  <text class="what" x="40" y="286">raw memory, straight from</text>
+  <text class="what" x="40" y="300">C-Phoenix or the emulator</text>
+  <text class="file" x="40" y="316">port_….bin</text>
+
+  <path class="arrow" d="M 178,284 L 208,284" />
+
+  <rect class="c2" x="212" y="246" width="148" height="76" rx="8" />
+  <text class="name" x="226" y="268" font-size="11.5" fill="#EEBBCC">Converted once</text>
+  <text class="what" x="226" y="286" fill="#CC9FB0">addresses become named</text>
+  <text class="what" x="226" y="300" fill="#CC9FB0">things: score, lives, birds</text>
+  <text class="file" x="226" y="316">semantic .json</text>
+
+  <path class="arrow" d="M 364,284 L 394,284" />
+
+  <rect class="box" x="398" y="246" width="148" height="76" rx="8" />
+  <text class="name" x="412" y="268" font-size="11.5">The viewer</text>
+  <text class="what" x="412" y="286">scores, lives, level changes,</text>
+  <text class="what" x="412" y="300">object events per frame</text>
+  <text class="file" x="412" y="316">.html</text>
+
+  <!-- the boundary -->
+  <path class="cut" d="M 380,238 L 380,336" />
+  <text class="no" x="558" y="266">The viewer no longer needs:</text>
+  <text class="no" x="558" y="284" fill="#AA8899">· the ROMs</text>
+  <text class="no" x="558" y="300" fill="#AA8899">· raw memory addresses</text>
+  <text class="no" x="558" y="316" fill="#AA8899">· graphics or colour data</text>
+
+  <text class="note" x="26" y="366">That boundary is the point of mode B: once a session is converted, everything downstream is plain, self-describing data.</text>
+  <text class="note" x="26" y="386">The contract for that file is documented in SEMANTIC-FRAME.md; the drawing itself is described in NATIVE-ART.md.</text>
+  <text class="note" x="26" y="414">C2 is a presentation layer, not a second implementation: it never changes gameplay code or replaces the memory-level checks.</text>
+</svg>

@@ -67,6 +67,12 @@ Daaruit worden ook twee C-bestanden voorbereid:
 - C2-Phoenix genereert zijn hi-res-spriteatlas rechtstreeks uit `graphics.rom`
   en `proms.rom`; deze buildstap leest geen `program.rom`.
 
+Dat onderscheid — ruwe ROM-bytes aan de ene kant, daaruit afgeleide benoemde
+C-tabellen aan de andere — houdt het draaiende spel vrij van directe
+ROM-opzoekingen:
+
+![Hoe ruwe programma-ROM-data de benoemde tabellen in phoenix_tables.c worden, en waar elk van beide wordt gebruikt](diagrams/rom-data-vs-phoenix-tables.nl.svg)
+
 De samengestelde bestanden worden daarna door de projecten gebruikt:
 
 ![Projecten die de samengestelde ROMs gebruiken](diagrams/rom-assembled-consumers.nl.svg)

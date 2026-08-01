@@ -1,0 +1,190 @@
+<svg width="800" height="438" viewBox="0 0 800 438" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated explanation of lockstep verification: one recorded input script drives both the original 1980 ROM on a Java emulator and the hand-translated C port. After every single frame the game memory of both is compared byte by byte and found identical.">
+  <title>What a lockstep comparison is</title>
+  <style>
+    .bg      { fill:#050510; }
+    .panel   { fill:#0C0C1E; stroke:#2A2A4A; stroke-width:1.5; }
+    .h1      { fill:#E8E8FF; font-family:'Segoe UI',system-ui,sans-serif; font-size:19px; font-weight:600; }
+    .sub     { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:12.5px; }
+    .lbl     { fill:#AAAACC; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; font-weight:600; letter-spacing:.4px; }
+    .tag     { fill:#6E6E90; font-family:monospace; font-size:10.5px; }
+    .byte    { fill:#00FFCC; font-family:monospace; font-size:12.5px; }
+    .frameno { fill:#FFFF66; font-family:monospace; font-size:12.5px; font-weight:bold; }
+    .verdict { fill:#00FF66; font-family:'Segoe UI',system-ui,sans-serif; font-size:14px; font-weight:600; }
+    .note    { fill:#777799; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .grid    { fill:none; stroke:#1E1E38; stroke-width:1; }
+    .cell    { fill:#141428; stroke:#2A2A4A; stroke-width:1; }
+    .eq      { fill:#00FF66; font-family:monospace; font-size:15px; font-weight:bold; }
+    .wire    { fill:none; stroke:#4444AA; stroke-width:1.5; stroke-dasharray:3 3; }
+
+    /* Static fallback: if animations do not run, frame 945 stays visible. */
+    .s2, .s3, .s4 { opacity: 0; }
+
+    /* the recorded input travelling from the script into both machines */
+    @keyframes travelL {
+      0%   { transform: translate(400px, 108px); opacity:0; }
+      10%  { opacity:1; }
+      36%  { transform: translate(200px, 132px); opacity:1; }
+      44%, 100% { transform: translate(200px, 132px); opacity:0; }
+    }
+    @keyframes travelR {
+      0%   { transform: translate(400px, 108px); opacity:0; }
+      10%  { opacity:1; }
+      36%  { transform: translate(600px, 132px); opacity:1; }
+      44%, 100% { transform: translate(600px, 132px); opacity:0; }
+    }
+    .tokL { animation: travelL 3s infinite ease-in-out; }
+    .tokR { animation: travelR 3s infinite ease-in-out; }
+
+    /* the bird descends one step per compared frame - identically on both sides */
+    @keyframes birdStep {
+      0%,   24.9% { transform: translate(0px, 0px); }
+      25%,  49.9% { transform: translate(5px, 13px); }
+      50%,  74.9% { transform: translate(10px, 26px); }
+      75%, 100%   { transform: translate(15px, 39px); }
+    }
+    .birdmove { animation: birdStep 12s infinite steps(1); }
+
+    /* four successive frames, each shown for a quarter of the loop */
+    @keyframes q1 { 0%,24.9%{opacity:1} 25%,100%{opacity:0} }
+    @keyframes q2 { 0%,24.9%{opacity:0} 25%,49.9%{opacity:1} 50%,100%{opacity:0} }
+    @keyframes q3 { 0%,49.9%{opacity:0} 50%,74.9%{opacity:1} 75%,100%{opacity:0} }
+    @keyframes q4 { 0%,74.9%{opacity:0} 75%,99.9%{opacity:1} 100%{opacity:0} }
+    .s1 { animation: q1 12s infinite steps(1); }
+    .s2 { animation: q2 12s infinite steps(1); }
+    .s3 { animation: q3 12s infinite steps(1); }
+    .s4 { animation: q4 12s infinite steps(1); }
+
+    /* the equals signs pulse each time a frame is compared */
+    @keyframes eqPulse {
+      0%,  8%   { opacity:.2; }
+      16%       { opacity:1; }
+      30%, 100% { opacity:.7; }
+    }
+    .eqp { animation: eqPulse 3s infinite ease-out; }
+
+    @keyframes scanline {
+      0%   { transform: translateY(0px);  opacity:0; }
+      12%  { opacity:.95; }
+      88%  { opacity:.95; }
+      100% { transform: translateY(78px); opacity:0; }
+    }
+    .scan { animation: scanline 3s infinite linear; }
+
+    @keyframes verdictIn { 0%,55% { opacity:.15; } 72%,100% { opacity:1; } }
+    .vin { animation: verdictIn 3s infinite ease-out; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tokL, .tokR, .birdmove, .s1, .eqp, .scan, .vin { animation: none; }
+      .tokL, .tokR, .scan { opacity: 0; }
+      .vin { opacity: 1; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="800" height="438" rx="10" />
+
+  <!-- ── heading ────────────────────────────────────────────── -->
+  <text class="h1"  x="30" y="34">Lockstep: how we know the port really is Phoenix</text>
+  <text class="sub" x="30" y="55">One recorded session. Two machines. Every single frame of memory compared.</text>
+
+  <!-- ── the shared input script ────────────────────────────── -->
+  <rect class="panel" x="272" y="74" width="256" height="36" rx="6" />
+  <text class="tag"  x="400" y="89" text-anchor="middle">the same recorded input, fed to both</text>
+  <text class="byte" x="400" y="104" text-anchor="middle" font-size="12">945  FIRE  press</text>
+
+  <path class="wire" d="M 316,110 L 200,132" />
+  <path class="wire" d="M 484,110 L 600,132" />
+
+  <g class="tokL"><circle r="5" fill="#FFFF66" /></g>
+  <g class="tokR"><circle r="5" fill="#FFFF66" /></g>
+
+  <!-- ══ LEFT: the original ROM ═════════════════════════════ -->
+  <rect class="panel" x="30" y="132" width="310" height="192" rx="8" />
+  <text class="lbl" x="46" y="154">THE ORIGINAL, 1980</text>
+  <text class="tag" x="46" y="169">Intel 8080 ROM on the Java emulator</text>
+
+  <rect x="46" y="180" width="118" height="86" fill="#03030C" stroke="#22224A" stroke-width="1" rx="4" />
+  <line class="grid" x1="46" y1="201" x2="164" y2="201" />
+  <g class="birdmove">
+    <g transform="translate(76,194)">
+      <rect x="-9" y="-4" width="18" height="8" fill="#FF00AA" />
+      <rect x="-3" y="4" width="6" height="3" fill="#FF00AA" />
+    </g>
+  </g>
+  <g transform="translate(98,254)">
+    <rect x="-9" y="-3" width="18" height="7" fill="#00FF66" />
+    <rect x="-2" y="-8" width="4" height="5" fill="#00FF66" />
+  </g>
+
+  <text class="tag" x="176" y="186">game memory $4B70…</text>
+  <rect class="cell" x="176" y="194" width="148" height="20" rx="3" />
+  <rect class="cell" x="176" y="218" width="148" height="20" rx="3" />
+  <rect class="cell" x="176" y="242" width="148" height="20" rx="3" />
+  <g class="s1"><text class="byte" x="186" y="208">3C 08 A1 00</text><text class="byte" x="186" y="232">12 FF 04 6B</text><text class="byte" x="186" y="256">00 91 2E C3</text></g>
+  <g class="s2"><text class="byte" x="186" y="208">3C 09 A1 00</text><text class="byte" x="186" y="232">12 FF 05 6B</text><text class="byte" x="186" y="256">00 91 2E C3</text></g>
+  <g class="s3"><text class="byte" x="186" y="208">3D 09 A2 00</text><text class="byte" x="186" y="232">13 FF 05 6B</text><text class="byte" x="186" y="256">01 91 2E C3</text></g>
+  <g class="s4"><text class="byte" x="186" y="208">3D 0A A2 00</text><text class="byte" x="186" y="232">13 FF 06 6C</text><text class="byte" x="186" y="256">01 92 2E C3</text></g>
+
+  <line x1="46" y1="282" x2="324" y2="282" stroke="#22224A" stroke-width="1" />
+  <text class="tag" x="46" y="299">program.rom · the unmodified 1980 code</text>
+  <text class="tag" x="46" y="314">runs on emulated arcade hardware</text>
+
+  <!-- ══ MIDDLE: the comparison ═════════════════════════════ -->
+  <text class="lbl" x="400" y="154" text-anchor="middle" fill="#FFFF66">COMPARE</text>
+
+  <rect x="370" y="180" width="60" height="86" fill="#0A0A1C" stroke="#2A2A4A" stroke-width="1" rx="4" />
+  <g class="scan"><rect x="371" y="181" width="58" height="4" fill="#00FF66" /></g>
+
+  <g class="eqp">
+    <text class="eq" x="400" y="209" text-anchor="middle">=</text>
+    <text class="eq" x="400" y="233" text-anchor="middle">=</text>
+    <text class="eq" x="400" y="257" text-anchor="middle">=</text>
+  </g>
+
+  <g class="s1"><text class="frameno" x="400" y="288" text-anchor="middle">frame 945</text></g>
+  <g class="s2"><text class="frameno" x="400" y="288" text-anchor="middle">frame 946</text></g>
+  <g class="s3"><text class="frameno" x="400" y="288" text-anchor="middle">frame 947</text></g>
+  <g class="s4"><text class="frameno" x="400" y="288" text-anchor="middle">frame 948</text></g>
+  <text class="tag" x="400" y="306" text-anchor="middle">…and the</text>
+  <text class="tag" x="400" y="319" text-anchor="middle">13 934 after it</text>
+
+  <!-- ══ RIGHT: the C port ══════════════════════════════════ -->
+  <rect class="panel" x="460" y="132" width="310" height="192" rx="8" />
+  <text class="lbl" x="476" y="154">THE PORT, TODAY</text>
+  <text class="tag" x="476" y="169">hand-translated C, no ROM execution</text>
+
+  <rect x="476" y="180" width="118" height="86" fill="#03030C" stroke="#22224A" stroke-width="1" rx="4" />
+  <line class="grid" x1="476" y1="201" x2="594" y2="201" />
+  <g class="birdmove">
+    <g transform="translate(506,194)">
+      <rect x="-9" y="-4" width="18" height="8" fill="#FF00AA" />
+      <rect x="-3" y="4" width="6" height="3" fill="#FF00AA" />
+    </g>
+  </g>
+  <g transform="translate(528,254)">
+    <rect x="-9" y="-3" width="18" height="7" fill="#00FF66" />
+    <rect x="-2" y="-8" width="4" height="5" fill="#00FF66" />
+  </g>
+
+  <text class="tag" x="606" y="186">game memory $4B70…</text>
+  <rect class="cell" x="606" y="194" width="148" height="20" rx="3" />
+  <rect class="cell" x="606" y="218" width="148" height="20" rx="3" />
+  <rect class="cell" x="606" y="242" width="148" height="20" rx="3" />
+  <g class="s1"><text class="byte" x="616" y="208">3C 08 A1 00</text><text class="byte" x="616" y="232">12 FF 04 6B</text><text class="byte" x="616" y="256">00 91 2E C3</text></g>
+  <g class="s2"><text class="byte" x="616" y="208">3C 09 A1 00</text><text class="byte" x="616" y="232">12 FF 05 6B</text><text class="byte" x="616" y="256">00 91 2E C3</text></g>
+  <g class="s3"><text class="byte" x="616" y="208">3D 09 A2 00</text><text class="byte" x="616" y="232">13 FF 05 6B</text><text class="byte" x="616" y="256">01 91 2E C3</text></g>
+  <g class="s4"><text class="byte" x="616" y="208">3D 0A A2 00</text><text class="byte" x="616" y="232">13 FF 06 6C</text><text class="byte" x="616" y="256">01 92 2E C3</text></g>
+
+  <line x1="476" y1="282" x2="754" y2="282" stroke="#22224A" stroke-width="1" />
+  <text class="tag" x="476" y="299">readable C modules · no ROM is executed</text>
+  <text class="tag" x="476" y="314">yet it must write the very same bytes</text>
+
+  <!-- ══ verdict ════════════════════════════════════════════ -->
+  <g class="vin">
+    <rect x="30" y="344" width="740" height="38" fill="#08180E" stroke="#1E5533" stroke-width="1.5" rx="8" />
+    <text class="eq" x="50" y="369">✓</text>
+    <text class="verdict" x="74" y="368">Identical. Not “looks the same” — byte for byte, the same game.</text>
+  </g>
+
+  <text class="note" x="30" y="404">If one single byte ever differed, the run would be flagged at that exact frame. 57 recorded scenarios currently run this way,</text>
+  <text class="note" x="30" y="421">all byte-exact — which is evidence for those sessions, not a proof that every possible way of playing is covered.</text>
+</svg>

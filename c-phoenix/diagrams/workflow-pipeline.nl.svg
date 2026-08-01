@@ -1,0 +1,94 @@
+<svg width="760" height="430" viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="De C-Phoenix-workflow: speel een sessie en neem hem op, speel hem zichtbaar of headless terug, vergelijk hem met de Java-emulator en zet het resultaat om in een visuele tracer. Bij elk make-target staat het bestand dat het oplevert.">
+  <title>Van spelen naar bewijs: de C-Phoenix-workflow</title>
+  <style>
+    .bg    { fill:#050510; }
+    .h1    { fill:#E8E8FF; font-family:'Segoe UI',system-ui,sans-serif; font-size:18px; font-weight:600; }
+    .sub   { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; }
+    .step  { fill:#0C0C1E; stroke:#2A2A4A; stroke-width:1.5; }
+    .cmd   { fill:#00FFCC; font-family:monospace; font-size:12px; font-weight:bold; }
+    .what  { fill:#DDDDEE; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .out   { fill:#FFFF66; font-family:monospace; font-size:10px; }
+    .num   { fill:#555577; font-family:'Segoe UI',system-ui,sans-serif; font-size:11px; font-weight:600; }
+    .note  { fill:#777799; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .arrow { fill:none; stroke:#4A4A7A; stroke-width:2; marker-end:url(#ah); }
+    .short { fill:none; stroke:#8A6A2A; stroke-width:2; stroke-dasharray:5 4; marker-end:url(#ao); }
+
+    @keyframes flow { 0%{stroke-dashoffset:18} 100%{stroke-dashoffset:0} }
+    .pulse { stroke-dasharray:6 12; animation: flow 1.2s infinite linear; }
+    @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
+  </style>
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#4A4A7A" />
+    </marker>
+    <marker id="ao" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#8A6A2A" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="760" height="430" rx="10" />
+
+  <text class="h1"  x="26" y="32">Van spelen naar bewijs</text>
+  <text class="sub" x="26" y="52">Elke stap is één <tspan font-family="monospace" fill="#00FFCC">make</tspan>-target, en elke stap laat een bestand achter.</text>
+
+  <!-- step 1 -->
+  <rect class="step" x="26" y="76" width="164" height="96" rx="8" />
+  <text class="num"  x="40" y="96">1 · SPELEN</text>
+  <text class="cmd"  x="40" y="116">make recordrun</text>
+  <text class="what" x="40" y="136">Speel zelf. Elke toetsaanslag</text>
+  <text class="what" x="40" y="151">wordt vastgelegd.</text>
+  <text class="out"  x="40" y="167">→ session.txt</text>
+
+  <path class="arrow pulse" d="M 194,124 L 224,124" />
+
+  <!-- step 2 -->
+  <rect class="step" x="228" y="76" width="164" height="96" rx="8" />
+  <text class="num"  x="242" y="96">2 · AFSPELEN</text>
+  <text class="cmd"  x="242" y="116">make replayrun</text>
+  <text class="what" x="242" y="136">Bekijk exact dezelfde sessie,</text>
+  <text class="what" x="242" y="151">die zichzelf afspeelt.</text>
+  <text class="out"  x="242" y="167">→ hetzelfde spel, opnieuw</text>
+
+  <path class="arrow pulse" d="M 396,124 L 426,124" />
+
+  <!-- step 3 -->
+  <rect class="step" x="430" y="76" width="164" height="96" rx="8" />
+  <text class="num"  x="444" y="96">3 · STATUS VASTLEGGEN</text>
+  <text class="cmd"  x="444" y="116">make headlessrun</text>
+  <text class="what" x="444" y="136">Draai opnieuw, zonder</text>
+  <text class="what" x="444" y="151">venster, en dump geheugen.</text>
+  <text class="out"  x="444" y="167">→ port.bin</text>
+
+  <path class="arrow pulse" d="M 598,124 L 616,124" />
+
+  <!-- step 4 -->
+  <rect class="step" x="620" y="76" width="114" height="96" rx="8" />
+  <text class="num"  x="632" y="96">4 · VERGELIJK</text>
+  <text class="cmd"  x="632" y="116" font-size="11">make</text>
+  <text class="cmd"  x="632" y="130" font-size="11">comparerun</text>
+  <text class="what" x="632" y="150" font-size="10.5">Tegen de echte</text>
+  <text class="what" x="632" y="163" font-size="10.5">ROM uit 1980.</text>
+
+  <!-- down to step 5 -->
+  <path class="arrow" d="M 677,176 L 677,206 L 400,206 L 400,230" />
+
+  <!-- step 5 -->
+  <rect class="step" x="228" y="234" width="366" height="88" rx="8" />
+  <text class="num"  x="244" y="254">5 · ZICHTBAAR MAKEN</text>
+  <text class="cmd"  x="244" y="275">make tracerun</text>
+  <text class="what" x="244" y="295">Zet het opgenomen geheugen om in een interactieve pagina:</text>
+  <text class="what" x="244" y="311">het speelveld, het pad van elk object, frame voor frame.</text>
+  <text class="out"  x="470" y="275">→ diff.html</text>
+
+  <!-- shortcut -->
+  <path class="short" d="M 150,180 L 150,278 L 222,278" />
+  <text class="out" x="30" y="204" fill="#C9A24A" font-size="10">haast?</text>
+  <text class="out" x="30" y="220" fill="#C9A24A" font-size="10">make</text>
+  <text class="out" x="30" y="233" fill="#C9A24A" font-size="10">recordtracerun</text>
+  <text class="out" x="30" y="249" fill="#C9A24A" font-size="10">doet stap 1–5</text>
+  <text class="out" x="30" y="262" fill="#C9A24A" font-size="10">in één keer.</text>
+
+  <text class="note" x="26" y="356">Stap 1–3 hebben alleen dit project nodig. Stap 4 vereist ook de gebouwde Java-emulator — daar wordt tegen vergeleken.</text>
+  <text class="note" x="26" y="376">Niets hiervan is destructief: opnamen zijn platte tekst en elk artefact kan opnieuw uit het sessiebestand worden gemaakt.</text>
+  <text class="note" x="26" y="404">De volledige commandoreferentie staat in de README van dit project.</text>
+</svg>

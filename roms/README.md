@@ -65,6 +65,11 @@ It also prepares two C source files:
 - C2-Phoenix generates its hi-res sprite atlas directly from `graphics.rom`
   and `proms.rom`; that build-time step does not read `program.rom`.
 
+That distinction — raw ROM bytes on one side, named C tables derived from them
+on the other — is what keeps the running game free of direct ROM lookups:
+
+![How raw program-ROM data becomes the named tables in phoenix_tables.c, and where each is used](diagrams/rom-data-vs-phoenix-tables.svg)
+
 The assembled files are then used by the projects:
 
 ![Projects that use the assembled ROMs](diagrams/rom-assembled-consumers.svg)

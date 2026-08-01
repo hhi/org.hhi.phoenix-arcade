@@ -10,6 +10,17 @@ The emulator has two desktop frontends: the compact Java AWT version and a
 LibGDX/LWJGL3 version. Both use the same emulation core, ROM validation,
 renderer, input state and sound hardware.
 
+## How the machine is laid out
+
+An arcade board has no operating system and no drivers. The game talks to the
+screen, the sound chips and the joystick by writing to memory addresses — so
+the memory map *is* the machine:
+
+![The Phoenix address space: 16 KiB program ROM, video RAM and game data, and the memory-mapped registers for paging, scrolling, sound, input and vertical blank](diagrams/memory-map.svg)
+
+The emulator reproduces exactly that layout, which is why the original ROM
+runs on it unmodified.
+
 ## Documentation
 
 See [JPhoenix Technical Architecture](docs/EMULATOR_ARCHITECTURE.md) for

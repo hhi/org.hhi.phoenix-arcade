@@ -1,9 +1,26 @@
 # Phoenix C-Port Tools
 
-This directory contains utility scripts to help verify, map, compare, and
-document the Z80-to-C translation of the Phoenix arcade game.
-
 Dutch documentation: [README.nl.md](README.nl.md).
+
+## What this directory is
+
+This is the workshop, not the game. Nothing in here is needed to play
+Phoenix — every script exists to answer a question about the *translation*
+from the original Z80 assembly into C: does it still behave the same, which C
+function replaced which ROM address, and what did the aliens actually do
+during that one session.
+
+Each tool takes something concrete and produces something concrete: a
+recording, a memory dump, a comparison report, a browsable page. Where a
+`make` target exists, that is the supported way in — it fills in the paths and
+options for you. The Python scripts underneath are for when you need to
+deviate from the defaults.
+
+![Which tool answers which question: documentation and mapping tools, replay and scenario tools, comparison tools, and object trace viewers](../diagrams/tool-decision-tree.svg)
+
+For the wider picture of how these fit together into one loop — record,
+replay, compare, visualise — see the workflow diagram in the
+[project README](../README.md).
 
 ## Documentation Generation
 

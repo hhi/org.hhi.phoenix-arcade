@@ -2,6 +2,15 @@
 
 Dutch documentation: [README.nl.md](README.nl.md).
 
+## What this batch does, in one picture
+
+![How lockstep verification works: the same recorded input drives both the original 1980 ROM and the C port, and their game memory is compared byte by byte after every single frame](../../../demo/lockstep-explained.svg)
+
+This directory automates that comparison across every recorded scenario at
+once, rather than one at a time.
+
+## Running it
+
 Runs every input script from `context/input-scripts/`, including `generated/`,
 through both jphoenix with the opt-in poll clock
 (`-Dphoenix.inputclock=poll`) and c-phoenix, then compares the RAM dumps record

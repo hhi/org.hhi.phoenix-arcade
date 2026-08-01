@@ -26,11 +26,29 @@ De bron van waarheid is, in deze volgorde: **Z80 ASM/ROM → C-port → geannote
 
 ## 🎬 Overkoepelende Hoofd-Animatie
 
-- 🚀 [`00_overview_flight_patterns.svg`](../00_overview_flight_patterns.svg) — **Bovenliggende hoofd-animatie die de simultane werking van alle vectoriële vliegpatronen (alien-duik, vogel-sinus en moederschip-daling) demonstreert.**
+Drie bewegingssoorten uit het spel tegelijk — een alien-zwenking, een vogel-duikbom en de daling van het moederschip — allemaal getekend uit de vectoren die in de ROM staan:
+
+![Hoofd-animatie: een alien-zwenking, een vogel-duikbom met bom, en de gestage daling van het moederschip, gegenereerd uit de originele ROM-bewegingsvectoren](../00_overview_flight_patterns.svg)
+
+Bronbestand: [`00_overview_flight_patterns.svg`](../00_overview_flight_patterns.svg).
+
+---
+
+## 🦅 De vogel, fase voor fase
+
+Een Phoenix-vogel is niet één sprite. Hij komt uit het ei, groeit, valt aan en explodeert — zes onderscheiden animatiefases, elk gereconstrueerd uit de graphics-ROM:
+
+| Ei komt uit | Kleine vogel wiekt | Volgroeide spanwijdte |
+| --- | --- | --- |
+| <img src="../01_egg_hatching.svg" width="230" alt="Een ei dat uitkomt tot een vogel"> | <img src="../02_small_bird_flapping.svg" width="230" alt="Een kleine vogel die met de vleugels wiekt, frame A en B"> | <img src="../03_grown_bird_matrix.svg" width="230" alt="De 4x4-matrix van vleugelstanden van een volgroeide vogel"> |
+| **Duikaanval** | **Explosie en bonus** | **Daling moederschip** |
+| <img src="../04_dive_bombing_attack.svg" width="230" alt="Een vogel die op de speler duikt en een bom laat vallen"> | <img src="../05_bird_explosion_bonus.svg" width="230" alt="Een vogel die uiteenspat in deeltjes met 500 punten bonus"> | <img src="../09_mothership_descent_trajectory.svg" width="230" alt="Het moederschip dat langs zijn vaste traject daalt"> |
 
 ---
 
 ## 🎨 Vliegpatronen & Trajecten (78 SVG-bestanden)
+
+Elke regel hieronder is een animatie van één ROM-gedefinieerd bewegingspatroon. Ze staan als lijst omdat het er 78 zijn; open een bestand om het te bekijken.
 
 ### 👾 Alien Cluster A: Wave 1 & 3 Patronen (ROM `$1000–$13FF`)
 - [`07_alien_closed_loop_cluster_a.svg`](../07_alien_closed_loop_cluster_a.svg) — Cluster A overzichts-animatie

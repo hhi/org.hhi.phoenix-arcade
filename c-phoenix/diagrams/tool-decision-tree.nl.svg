@@ -1,0 +1,66 @@
+<svg width="760" height="452" viewBox="0 0 760 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Een keuzekaart voor de C-Phoenix-tools: vanuit de vraag die je beantwoord wilt hebben wijst hij het script of make-target aan dat die vraag beantwoordt — documentatiegeneratoren, replay- en scenariotools, vergelijkingstools en objecttracers.">
+  <title>Welke tool beantwoordt welke vraag</title>
+  <style>
+    .bg    { fill:#050510; }
+    .h1    { fill:#E8E8FF; font-family:'Segoe UI',system-ui,sans-serif; font-size:18px; font-weight:600; }
+    .sub   { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; }
+    .q     { fill:#DDDDEE; font-family:'Segoe UI',system-ui,sans-serif; font-size:12.5px; }
+    .tool  { fill:#00FFCC; font-family:monospace; font-size:11.5px; }
+    .make  { fill:#FFFF66; font-family:monospace; font-size:11px; }
+    .grp   { font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; font-weight:600; letter-spacing:.3px; }
+    .note  { fill:#777799; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .box   { fill:#0C0C1E; stroke-width:1.5; }
+    .row   { fill:#101024; stroke:#242440; stroke-width:1; }
+    .stem  { fill:none; stroke:#3A3A62; stroke-width:1.5; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="760" height="452" rx="10" />
+
+  <text class="h1"  x="26" y="32">Welke tool beantwoordt welke vraag</text>
+  <text class="sub" x="26" y="52">Begin bij wat je wilt weten. Dit is allemaal optioneel — niets ervan is nodig om te spelen.</text>
+
+  <!-- spine -->
+  <path class="stem" d="M 40,80 L 40,394" />
+
+  <!-- ── group 1: understand the code ────────────────── -->
+  <rect class="box" x="40" y="76" width="694" height="76" rx="8" stroke="#3A4A8A" />
+  <text class="grp" x="58" y="97" fill="#7F92D8">“HOE VERHOUDT DE ORIGINELE CODE ZICH TOT DE C-CODE?”</text>
+  <rect class="row" x="58" y="105" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="118" font-size="11">Welke C-functie verving welk ROM-adres?</text>
+  <text class="tool" x="400" y="118">generate_mappings.py</text>
+  <rect class="row" x="58" y="127" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="140" font-size="11">Door de assembly bladeren naar de C-code</text>
+  <text class="make" x="400" y="140">make c-asm-view</text>
+
+  <!-- ── group 2: make a session ─────────────────────── -->
+  <rect class="box" x="40" y="162" width="694" height="76" rx="8" stroke="#1E6B55" />
+  <text class="grp" x="58" y="183" fill="#4ECCA8">“IK WIL EEN HERHAALBARE SPEELSESSIE”</text>
+  <rect class="row" x="58" y="191" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="204" font-size="11">Mezelf opnemen en exact terugspelen</text>
+  <text class="make" x="400" y="204">make recordrun · replayrun</text>
+  <rect class="row" x="58" y="213" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="226" font-size="11">Een sessie vinden die een gebeurtenis haalt</text>
+  <text class="tool" x="400" y="226">input_bot.py</text>
+
+  <!-- ── group 3: is it correct ──────────────────────── -->
+  <rect class="box" x="40" y="248" width="694" height="76" rx="8" stroke="#8A3A5A" />
+  <text class="grp" x="58" y="269" fill="#DD88AA">“GEDRAAGT DE POORT ZICH NOG ALS HET ORIGINEEL?”</text>
+  <rect class="row" x="58" y="277" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="290" font-size="11">Eén sessie vergelijken met de echte ROM</text>
+  <text class="tool" x="400" y="290">compare_ram_dumps.py</text>
+  <rect class="row" x="58" y="299" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="312" font-size="11">De hele verificatiesuite in batch draaien</text>
+  <text class="tool" x="400" y="312">lockstep/run_batch.py</text>
+
+  <!-- ── group 4: see behaviour ──────────────────────── -->
+  <rect class="box" x="40" y="334" width="694" height="76" rx="8" stroke="#5A4A8A" />
+  <text class="grp" x="58" y="355" fill="#AA99DD">“WAT DEDEN DE ALIENS NOU PRECIES?”</text>
+  <rect class="row" x="58" y="363" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="376" font-size="11">Het pad van elk object op het speelveld tonen</text>
+  <text class="tool" x="400" y="376">view_sprite_trace.py</text>
+  <rect class="row" x="58" y="385" width="330" height="18" rx="3" />
+  <text class="q"    x="66" y="398" font-size="11">De ruwe getallen als spreadsheet</text>
+  <text class="tool" x="400" y="398">trace_sprites.py</text>
+
+  <text class="note" x="26" y="434">De <tspan font-family="monospace" fill="#FFFF66">make</tspan>-targets zijn de ondersteunde route; de Python-scripts eronder zijn voor afwijkende instellingen.</text>
+</svg>

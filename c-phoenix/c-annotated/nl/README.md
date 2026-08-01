@@ -24,6 +24,18 @@ De bron van waarheid is, in deze volgorde: **Z80 ASM/ROM → C-port → deze gea
 
 De machineleesbare kern en de instructies voor regeneratie staan in [`knowledge-graph.md`](../knowledge-graph.md); de gegenereerde data staat in [`knowledge-graph.json`](../knowledge-graph.json).
 
+### Hoe de lagen op elkaar aansluiten
+
+Van de Z80-hardware uit 1980 onderaan tot de doorbladerbare notities die je nu leest:
+
+![Meta-architectuur van de kennisgraaf: de lagen van Z80-hardware, via de ROM en de C-poort, tot de geannoteerde documenten en de Obsidian-vault](../kennisgraaf_meta_architectuur.svg)
+
+### Hoe een claim wordt gecontroleerd
+
+Niets hierin berust alleen op handwerk. Bronnen voeden generatoren, generatoren maken artefacten, en een reeks controles bewaakt de hele keten:
+
+![Verificatieketen van de kennisbank: bronnen voeden generatoren, generatoren maken artefacten, en geautomatiseerde controles verifiëren het resultaat](../kennisbank_verificatieketen.svg)
+
 ---
 
 ## 🗂️ Inhoudsopgave van de C & Header Annotated Bestanden

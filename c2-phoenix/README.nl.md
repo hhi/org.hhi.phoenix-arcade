@@ -11,6 +11,12 @@ plaats van Phoenix-pixeldata.
 `c-phoenix/` blijft de ROM-getrouwe C-referentieport. C2-Phoenix wijzigt de
 gameplaycode daarvan niet en vervangt lockstep-validatie niet.
 
+De twee standen lenen verschillende dingen van die referentieport — de native
+stand deelt de draaiende spelengine, de replaystand gebruikt alleen een
+omgezette opname:
+
+![De twee C2-Phoenix-standen: de native stand deelt de C-Phoenix-engine en vervangt alleen de renderer, terwijl de replaystand een RAM-dump eenmalig omzet naar semantische JSON die de viewer leest zonder ROMs of ruwe adressen](diagrams/semantic-boundary.nl.svg)
+
 ## Afbakening
 
 De adapter leest voorlopig een C-Phoenix- of JPhoenix-RAM-dump via de

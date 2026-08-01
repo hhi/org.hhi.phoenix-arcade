@@ -24,6 +24,18 @@ The source of truth is, in this order: **Z80 ASM/ROM → C-port → annotated an
 
 The machine-readable core and regeneration instructions are in [`knowledge-graph.md`](../knowledge-graph.md); generated data is stored in [`knowledge-graph.json`](../knowledge-graph.json).
 
+### How the layers fit together
+
+From the 1980 Z80 hardware at the bottom to the browsable notes you are reading now:
+
+![Knowledge graph meta architecture: the layers from Z80 hardware, through the ROM and the C port, up to the annotated documents and the Obsidian vault](../knowledge_graph_meta_architecture.svg)
+
+### How a claim gets checked
+
+Nothing in here is asserted by hand alone. Sources feed generators, generators produce artifacts, and a set of checks keeps the whole chain honest:
+
+![Knowledge base pipeline: sources feed generators, generators produce artifacts, and automated checks verify the result](../knowledge_base_pipeline.svg)
+
 ---
 
 ## 🗂️ Table of Contents for C & Header Annotated Files

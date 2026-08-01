@@ -26,11 +26,29 @@ The source of truth is, in this order: **Z80 ASM/ROM → C-port → annotated an
 
 ## 🎬 Master Overview Animation
 
-- 🚀 [`../00_overview_flight_patterns.svg`](../00_overview_flight_patterns.svg) — **Master overview animation demonstrating simultaneous vector flight trajectories (alien dive, bird sine wave, and mothership descent).**
+Three of the game's movement types at once — an alien swoop, a bird dive-bomb, and the mothership's descent — all drawn from the vectors stored in the ROM:
+
+![Master overview animation: an alien swoop, a bird dive-bomb with its dropped bomb, and the mothership's steady descent, all generated from the original ROM movement vectors](../00_overview_flight_patterns.svg)
+
+Source file: [`../00_overview_flight_patterns.svg`](../00_overview_flight_patterns.svg).
+
+---
+
+## 🦅 The bird, phase by phase
+
+Phoenix birds are not one sprite. They hatch, grow, attack, and explode — six distinct animation phases, each reconstructed from the graphics ROM:
+
+| Egg hatching | Small bird flapping | Full-grown wing matrix |
+| --- | --- | --- |
+| <img src="../01_egg_hatching.svg" width="230" alt="An egg hatching into a bird"> | <img src="../02_small_bird_flapping.svg" width="230" alt="A small bird flapping its wings, frames A and B"> | <img src="../03_grown_bird_matrix.svg" width="230" alt="The 4x4 wing position matrix of a full-grown bird"> |
+| **Dive-bombing attack** | **Explosion and bonus** | **Mothership descent** |
+| <img src="../04_dive_bombing_attack.svg" width="230" alt="A bird diving at the player and dropping a bomb"> | <img src="../05_bird_explosion_bonus.svg" width="230" alt="A bird exploding into particles with a 500 point bonus"> | <img src="../09_mothership_descent_trajectory.svg" width="230" alt="The mothership descending on its fixed trajectory"> |
 
 ---
 
 ## 🎨 Flight Patterns & Trajectories (78 SVG Assets)
+
+Every entry below is an animation of one ROM-defined movement pattern. They are listed rather than shown because there are 78 of them; open any file to watch it.
 
 ### 👾 Alien Cluster A: Wave 1 & 3 Patterns (ROM `$1000–$13FF`)
 - [`../07_alien_closed_loop_cluster_a.svg`](../07_alien_closed_loop_cluster_a.svg) — Cluster A overview animation

@@ -10,6 +10,12 @@ geometric artwork and a C2 colour theme rather than Phoenix pixel data.
 `c-phoenix/` remains the ROM-faithful C reference port. C2-Phoenix does not
 modify its gameplay code and does not replace lockstep validation.
 
+The two modes borrow different things from that reference port — the native
+mode shares the running game engine, the replay mode only consumes a converted
+recording:
+
+![The two C2-Phoenix modes: native mode shares the C-Phoenix engine and replaces only the renderer, while replay mode converts a RAM dump once into semantic JSON that the viewer reads without ROMs or raw addresses](diagrams/semantic-boundary.svg)
+
 ## Boundary
 
 The adapter currently reads a C-Phoenix or JPhoenix RAM dump through the

@@ -20,6 +20,8 @@ Both techniques depend on reproducible input.
 
 ## Format
 
+![An input script explained: each line is one button event pinned to an exact frame number, shown as a timeline with the matching lines of the text file](../../diagrams/input-script-timeline.svg)
+
 One event per line: `<frame> <button> <press|release>`.
 
 - `frame` - the `frame_counter` value at which the event fires.

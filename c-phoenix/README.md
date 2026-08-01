@@ -26,6 +26,15 @@ next to the files it describes:
 - [context/traces/README.md](context/traces/README.md) - curated trace cases
   and policy for what should or should not be kept in Git.
 
+The workflow
+------------
+
+Most of what follows is one loop: play a session, replay it, record what the
+game did, compare that against the original ROM, and turn the result into
+something you can look at.
+
+![The C-Phoenix workflow: record a session, replay it, dump memory headlessly, compare against the original ROM, and render a visual tracer](diagrams/workflow-pipeline.svg)
+
 Build
 -----
 

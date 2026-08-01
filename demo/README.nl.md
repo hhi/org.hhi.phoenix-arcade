@@ -179,6 +179,36 @@ Gebruik `make c-asm-view-only` om de al gegenereerde pagina te serveren.
 Gebruik geen `file://`: de ingebouwde bronviewer heeft localhost nodig om
 C-bestanden te laden.
 
+## Nieuwe scenario's gericht vinden
+
+De input-bot is een deterministisch hulpmiddel voor testscenario's. Hij speelt
+geen live spel, maar varieert een bestaande replay en rangschikt de kandidaten
+op bereikte speldoelen: bijvoorbeeld een beurtwisseling bij twee spelers, een
+bonusleven of een specifieke moederschipfase. Daarna bewijst een aparte
+evaluatiestap welke doelen de gekozen kandidaat werkelijk haalt.
+
+Hierdoor kunnen nieuwe regressiesessies doelgericht ontstaan uit een bewezen
+beginroute, zonder dat handmatig duizenden invoerevents hoeven te worden
+geschreven.
+
+## Gelijkwaardigheid onderbouwd
+
+De C-poort is niet alleen visueel beoordeeld. Hij wordt frame voor frame
+gecontroleerd tegen de originele ROM:
+
+![Hoe lockstep-verificatie werkt: dezelfde opgenomen invoer stuurt zowel de originele ROM uit 1980 als de C-poort aan, en hun spelgeheugen wordt na elk afzonderlijk frame byte voor byte vergeleken](lockstep-explained.nl.svg)
+
+De actuele scripted lockstep-suite speelt 57 scenario's in beide
+implementaties af en vergelijkt de spelstaat record-voor-record. De
+afgeronde suite rapporteert voor die scenario's byte-exacte
+spelstaatgelijkheid met JPhoenix; de bijbehorende PC-coverage koppelt 176
+C-routines aan uitgevoerde ROM-instructieadressen.
+
+Dit is een sterk, reproduceerbaar bewijs voor de afgedekte scenario's en
+RAM-regio's. Het is geen claim dat elk hypothetisch, nog niet uitgevoerd
+invoerpad automatisch bewezen is. Nieuwe of gewijzigde gameplay blijft daarom
+onder dezelfde replay-, lockstep- en tracecontrole vallen.
+
 ## Uitvoering zichtbaar maken
 
 Ontwerpdiagrammen vertellen welke routes de broncode en ROM *kunnen* bevatten.
@@ -225,31 +255,6 @@ De doorgetrokken en gestippelde verbindingen, frequentiekleuren en de legenda
 maken deel uit van iedere afbeelding. Zij onderscheiden voor deze concrete
 replay de werkelijk uitgevoerde controlflow van uitsluitend bij ontwerp
 onderkende routes.
-
-## Nieuwe scenario's gericht vinden
-
-De input-bot is een deterministisch hulpmiddel voor testscenario's. Hij speelt
-geen live spel, maar varieert een bestaande replay en rangschikt de kandidaten
-op bereikte speldoelen: bijvoorbeeld een beurtwisseling bij twee spelers, een
-bonusleven of een specifieke moederschipfase. Daarna bewijst een aparte
-evaluatiestap welke doelen de gekozen kandidaat werkelijk haalt.
-
-Hierdoor kunnen nieuwe regressiesessies doelgericht ontstaan uit een bewezen
-beginroute, zonder dat handmatig duizenden invoerevents hoeven te worden
-geschreven.
-
-## Gelijkwaardigheid onderbouwd
-
-De C-poort is niet alleen visueel beoordeeld. De actuele scripted
-lockstep-suite speelt 57 scenario's in beide implementaties af en vergelijkt
-de spelstaat record-voor-record. De afgeronde suite rapporteert voor die
-scenario's byte-exacte spelstaatgelijkheid met JPhoenix; de bijbehorende
-PC-coverage koppelt 176 C-routines aan uitgevoerde ROM-instructieadressen.
-
-Dit is een sterk, reproduceerbaar bewijs voor de afgedekte scenario's en
-RAM-regio's. Het is geen claim dat elk hypothetisch, nog niet uitgevoerd
-invoerpad automatisch bewezen is. Nieuwe of gewijzigde gameplay blijft daarom
-onder dezelfde replay-, lockstep- en tracecontrole vallen.
 
 ## Demonstratiepad
 

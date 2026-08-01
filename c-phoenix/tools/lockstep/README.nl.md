@@ -2,6 +2,15 @@
 
 Engelse documentatie: [README.md](README.md).
 
+## Wat deze batch doet, in één plaat
+
+![Hoe lockstep-verificatie werkt: dezelfde opgenomen invoer stuurt zowel de originele ROM uit 1980 als de C-poort aan, en hun spelgeheugen wordt na elk afzonderlijk frame byte voor byte vergeleken](../../../demo/lockstep-explained.nl.svg)
+
+Deze map automatiseert die vergelijking voor álle opgenomen scenario's
+tegelijk, in plaats van één voor één.
+
+## Draaien
+
 Draait elk input-script uit `context/input-scripts/` inclusief `generated/`
 door zowel jphoenix met de opt-in poll-klok (`-Dphoenix.inputclock=poll`) als
 c-phoenix, en vergelijkt de RAM-dumps record-voor-record.

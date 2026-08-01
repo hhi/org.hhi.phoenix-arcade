@@ -1,9 +1,25 @@
 # Phoenix C-poort Tools
 
-Deze map bevat hulpscripts om de Z80-naar-C-vertaling van Phoenix te
-verifieren, mappen, vergelijken en documenteren.
-
 Engelse documentatie: [README.md](README.md).
+
+## Wat deze map is
+
+Dit is de werkplaats, niet het spel. Niets hiervan is nodig om Phoenix te
+spelen — elk script bestaat om een vraag over de *vertaling* van de originele
+Z80-assembly naar C te beantwoorden: gedraagt het zich nog hetzelfde, welke
+C-functie verving welk ROM-adres, en wat deden de aliens nou precies tijdens
+die ene sessie.
+
+Elke tool neemt iets concreets en levert iets concreets op: een opname, een
+geheugendump, een vergelijkingsrapport, een doorbladerbare pagina. Waar een
+`make`-target bestaat is dat de ondersteunde ingang — die vult de paden en
+opties voor je in. De Python-scripts eronder zijn er voor als je van de
+standaardinstellingen wilt afwijken.
+
+![Welke tool beantwoordt welke vraag: documentatie- en mappingtools, replay- en scenariotools, vergelijkingstools en objecttracers](../diagrams/tool-decision-tree.nl.svg)
+
+Voor het grotere geheel — opnemen, terugspelen, vergelijken, zichtbaar maken —
+zie het workflow-diagram in de [project-README](../README.nl.md).
 
 ## Documentatiegeneratie
 

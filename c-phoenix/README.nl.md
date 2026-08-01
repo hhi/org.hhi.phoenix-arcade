@@ -28,6 +28,15 @@ de bijbehorende bestanden:
 - [context/traces/README.nl.md](context/traces/README.nl.md) - gecureerde
   tracecases en Git-beleid.
 
+De workflow
+-----------
+
+Het meeste hieronder is één lus: speel een sessie, speel hem terug, leg vast
+wat het spel deed, vergelijk dat met de originele ROM, en zet het resultaat om
+in iets dat je kunt bekijken.
+
+![De C-Phoenix-workflow: sessie opnemen, terugspelen, headless geheugen dumpen, vergelijken met de originele ROM en een visuele tracer maken](diagrams/workflow-pipeline.nl.svg)
+
 Bouwen
 ------
 

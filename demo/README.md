@@ -156,6 +156,35 @@ switch.
 Use `make c-asm-view-only` to serve the already-generated page. Do not use
 `file://`: the built-in C-source viewer needs localhost to load C files.
 
+## Find New Scenarios Deliberately
+
+The input bot is a deterministic test-scenario tool. It does not play live;
+it varies an existing replay and ranks candidates by game goals such as a
+two-player handoff, a bonus life, or a particular mothership phase. A separate
+evaluation step then proves which goals the selected candidate actually
+reaches.
+
+This lets new regression sessions grow from a proven opening route without
+hand-authoring thousands of input events.
+
+## Evidence for Equivalence
+
+The C port is not judged only by appearance. It is checked, frame by frame,
+against the original ROM:
+
+![How lockstep verification works: the same recorded input drives both the original 1980 ROM and the C port, and their game memory is compared byte by byte after every single frame](lockstep-explained.svg)
+
+The current scripted lockstep suite plays 57 scenarios in both
+implementations and compares game state record by record. The completed
+suite reports byte-exact game-state equality with JPhoenix for those
+scenarios; associated PC coverage connects 176 C routines to executed ROM
+instruction addresses.
+
+This is strong, reproducible evidence for the covered scenarios and RAM
+regions. It is not a claim that every hypothetical, unexecuted input path is
+automatically proven. New or changed gameplay remains subject to the same
+replay, lockstep, and trace checks.
+
 ## Make Execution Visible
 
 Design diagrams describe routes that source code and the ROM *can* contain.
@@ -199,30 +228,6 @@ the instrumentation pipeline.
 The solid and dashed edges, frequency colours, and their legends are part of
 each image. They distinguish observed control flow from design-time-only
 routes for this concrete replay.
-
-## Find New Scenarios Deliberately
-
-The input bot is a deterministic test-scenario tool. It does not play live;
-it varies an existing replay and ranks candidates by game goals such as a
-two-player handoff, a bonus life, or a particular mothership phase. A separate
-evaluation step then proves which goals the selected candidate actually
-reaches.
-
-This lets new regression sessions grow from a proven opening route without
-hand-authoring thousands of input events.
-
-## Evidence for Equivalence
-
-The C port is not judged only by appearance. The current scripted lockstep
-suite plays 57 scenarios in both implementations and compares game state
-record by record. The completed suite reports byte-exact game-state equality
-with JPhoenix for those scenarios; associated PC coverage connects 176 C
-routines to executed ROM instruction addresses.
-
-This is strong, reproducible evidence for the covered scenarios and RAM
-regions. It is not a claim that every hypothetical, unexecuted input path is
-automatically proven. New or changed gameplay remains subject to the same
-replay, lockstep, and trace checks.
 
 ## Demonstration Path
 
