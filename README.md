@@ -67,9 +67,9 @@ phoenix-arcade/
   assembly, and checked frame-by-frame against the Java emulator for
   equivalence. Its own README is the entry point for everything nested
   under it (build, controls, and the tooling covered below).
-  - [`c-annotated/`](c-phoenix/c-annotated/README.md) — knowledge base
+  - [`c-annotated/`](c-phoenix/c-annotated/en/README.md) — knowledge base
     linking the C code to the original Z80 assembly.
-  - [`animations/`](c-phoenix/animations/README.md) — gallery of enemy
+  - [`animations/`](c-phoenix/animations/en/README.md) — gallery of enemy
     flight patterns and movement data.
   - [`tools/`](c-phoenix/tools/README.md) — visual tracer, lockstep
     checker, and other analysis tooling.
@@ -170,7 +170,7 @@ data — this is a live preview of three of them at once, running right now:
 
 <img src="c-phoenix/animations/00_overview_flight_patterns.svg" width="380" alt="Animated overview combining an alien swoop, a bird dive-bomb, and the mothership's descent, generated from the original ROM movement data">
 
-The [full animation and trajectory gallery](c-phoenix/animations/README.md)
+The [full animation and trajectory gallery](c-phoenix/animations/en/README.md)
 has 78 of these, one per ROM-defined pattern, plus the six bird
 growth-and-explosion animation phases, in Dutch or English.
 
@@ -186,7 +186,7 @@ growth-and-explosion animation phases, in Dutch or English.
 - [`context/traces/`](c-phoenix/context/traces/README.md) collects short,
   written case studies — "here's the RAM byte that tracks bird growth, and
   here's the evidence" — rather than raw dumps.
-- [`c-annotated/`](c-phoenix/c-annotated/README.md) is the machine-readable
+- [`c-annotated/`](c-phoenix/c-annotated/en/README.md) is the machine-readable
   knowledge base: a graph connecting C functions, ROM addresses, RAM
   fields, and tables, with its own validity checks. Available in Dutch or
   English.
@@ -217,12 +217,12 @@ unless that's specifically what you're after:
 | Just play, pixel-perfect classic | `cd c-phoenix && make run` |
 | Just play, on the original ROM code | `cd jphoenix-emulator-port && make run` |
 | Watch before building anything | **[Read the demo guide](demo/README.md)** |
-| See how an enemy wave actually moves | [Open the animation gallery](c-phoenix/animations/README.md) |
+| See how an enemy wave actually moves | [Open the animation gallery](c-phoenix/animations/en/README.md) |
 | Trace a play session frame by frame | `make c-tracer-view` |
 | Understand what a lockstep comparison proves | [Read "What lockstep actually proves"](#what-lockstep-actually-proves) |
 | Browse the annotated assembly interactively | `make c-asm-view` |
 | Read the annotated assembly as plain files | [`Phoenix.asm`](c-phoenix/context/Phoenix.asm) → [`Phoenix.md`](c-phoenix/context/Phoenix.md) |
-| Study the source-linked knowledge base | [Open the C-annotated documentation](c-phoenix/c-annotated/README.md) |
+| Study the source-linked knowledge base | [Open the C-annotated documentation](c-phoenix/c-annotated/en/README.md) |
 | Run your own trace or comparison script | [Open the C-Phoenix tools index](c-phoenix/tools/README.md) |
 | Build all three versions without running one | `make build` (or `make all`) |
 | Remove local build output before a fresh build | `make clean` |

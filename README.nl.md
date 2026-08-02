@@ -67,9 +67,9 @@ phoenix-arcade/
   modules in plaats van assembly, en frame-voor-frame gecontroleerd tegen de
   Java-emulator op gelijkwaardigheid. De eigen README is het startpunt voor
   alles wat eronder genest zit (build, besturing en de tooling hieronder).
-  - [`c-annotated/`](c-phoenix/c-annotated/README.md) — knowledge base die
+  - [`c-annotated/`](c-phoenix/c-annotated/nl/README.md) — knowledge base die
     de C-code koppelt aan de originele Z80-assembly.
-  - [`animations/`](c-phoenix/animations/README.md) — galerij van
+  - [`animations/`](c-phoenix/animations/nl/README.md) — galerij van
     vijandelijke vluchtpatronen en bewegingsdata.
   - [`tools/`](c-phoenix/tools/README.nl.md) — visuele tracer,
     lockstep-checker en andere analysetools.
@@ -175,7 +175,7 @@ die nu draait:
 
 <img src="c-phoenix/animations/00_overview_flight_patterns.svg" width="380" alt="Geanimeerd overzicht van een alien-zwenking, een vogel-duikbom en de afdaling van het moederschip, gegenereerd uit de originele ROM-bewegingsdata">
 
-De [volledige animatie- en trajectgalerij](c-phoenix/animations/README.md)
+De [volledige animatie- en trajectgalerij](c-phoenix/animations/nl/README.md)
 telt 78 van dit soort animaties, één per ROM-gedefinieerd patroon, plus de
 zes groei-en-explosiefases van de vogel, in het Nederlands of Engels.
 
@@ -191,7 +191,7 @@ zes groei-en-explosiefases van de vogel, in het Nederlands of Engels.
 - [`context/traces/`](c-phoenix/context/traces/README.nl.md) verzamelt
   korte, geschreven case-studies — "dit is de RAM-byte die vogelgroei
   bijhoudt, en dit is het bewijs" — in plaats van ruwe dumps.
-- [`c-annotated/`](c-phoenix/c-annotated/README.md) is de
+- [`c-annotated/`](c-phoenix/c-annotated/nl/README.md) is de
   machineleesbare knowledge base: een graph die C-functies, ROM-adressen,
   RAM-velden en tabellen met elkaar verbindt, met eigen validatiecontroles.
   Beschikbaar in het Nederlands of Engels.
@@ -222,12 +222,12 @@ te gebruiken — sla ze over tenzij dat precies is wat je zoekt:
 | Gewoon spelen, pixel-perfecte klassieker | `cd c-phoenix && make run` |
 | Gewoon spelen, op de originele ROM-code | `cd jphoenix-emulator-port && make run` |
 | Eerst kijken voordat je iets bouwt | **[Lees de demo-handleiding](demo/README.nl.md)** |
-| Zien hoe een vijandgolf echt beweegt | [Open de animatiegalerij](c-phoenix/animations/README.md) |
+| Zien hoe een vijandgolf echt beweegt | [Open de animatiegalerij](c-phoenix/animations/nl/README.md) |
 | Een speelsessie frame voor frame traceren | `make c-tracer-view` |
 | Begrijpen wat een lockstep-vergelijking bewijst | [Lees "Wat een lockstep-vergelijking echt bewijst"](#wat-een-lockstep-vergelijking-echt-bewijst) |
 | De geannoteerde assembly interactief doorbladeren | `make c-asm-view` |
 | De geannoteerde assembly als platte bestanden lezen | [`Phoenix.asm`](c-phoenix/context/Phoenix.asm) → [`Phoenix.md`](c-phoenix/context/Phoenix.md) |
-| De brongekoppelde knowledge base bestuderen | [Open de C-annotated-documentatie](c-phoenix/c-annotated/README.md) |
+| De brongekoppelde knowledge base bestuderen | [Open de C-annotated-documentatie](c-phoenix/c-annotated/nl/README.md) |
 | Je eigen trace- of vergelijkingsscript draaien | [Open de C-Phoenix-toolindex](c-phoenix/tools/README.nl.md) |
 | Alle drie versies bouwen zonder er één te starten | `make build` (of `make all`) |
 | Lokale build-uitvoer verwijderen voor een schone build | `make clean` |
@@ -264,7 +264,7 @@ zie [`roms/README.nl.md`](roms/README.nl.md).
 `make c2-run C2_VARIANT=classic` voor het originele, ongemengde uiterlijk, of
 een andere `C2_VARIANT`-waarde (`hires2`, `hires2a`, `hires3`, `hires3a`, de
 standaard) om een individuele stap afzonderlijk te vergelijken. Zie
-[`demo/c2-hires-variants-comparison.md`](demo/c2-hires-variants-comparison.md)
+[`demo/c2-hires-variants-comparison.md`](demo/c2-hires-variants-comparison.nl.md)
 voor een galerij naast elkaar.
 
 ### ROM-voorbereidingscommando's

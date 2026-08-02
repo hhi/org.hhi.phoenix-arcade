@@ -2,7 +2,7 @@ c-phoenix - Phoenix (1980) arcade port in C
 =============================================
 
 Een hand-vertaalde C-poort van de originele Phoenix-arcade-ROM (Z80),
-geverifieerd tegen [jphoenix-emulator-port](../jphoenix-emulator-port), een
+geverifieerd tegen [jphoenix-emulator-port](../jphoenix-emulator-port/README.nl.md), een
 echte Z80-emulator die de originele ROM-bytes uitvoert.
 
 Engelse documentatie: [README.md](README.md).

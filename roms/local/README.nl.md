@@ -4,7 +4,7 @@ English version: [README.md](README.md).
 
 Deze map is de beoogde plaats om je eigen fysieke Phoenix
 Amstar-chipdumps (`ic45`, `ic46`, `mmi6301.ic40`, enz. — zie de tabel in
-[`../README.md`](../README.md)) in te plaatsen. Standaard is de map
+[`../README.md`](../README.nl.md)) in te plaatsen. Standaard is de map
 leeg; het is de standaard `ROM_DIR` voor `make romcheck` / `make
 rombuild`, en die commando's verwachten dat de chipbestanden er al
 staan (of elders via `ROM_DIR=<path>`) wanneer je ze draait. De aangeleverde

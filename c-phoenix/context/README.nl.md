@@ -30,7 +30,7 @@ naar de originele Phoenix Z80-ROM en naar de jphoenix-emulator.
 
 - [mapping/](mapping/README.nl.md) - welke C-functie welk stuk van de
   originele ROM vervangt, en het byte-exacte bewijs achter elke bewering.
-- [graphs/](graphs/) - gegenereerde callgraph- en coverage-artefacten.
+- [graphs/](graphs/README.nl.md) - gegenereerde callgraph- en coverage-artefacten.
 - [input-scripts/README.nl.md](input-scripts/README.nl.md) - replay-scripts,
   gegenereerde bot-inputs, `make replayrun` en bugreproductieworkflow.
 - [traces/README.nl.md](traces/README.nl.md) - gecureerde trace-artefacten en

@@ -225,20 +225,28 @@ def validate_renderer_independent_markdown(root: Path, documents: list[Path]) ->
 def validate_repository_entrypoints(root: Path) -> list[str]:
     """Require both repository landing pages to expose the two study topics."""
     repository_root = root.parent
-    required_links = (
-        "c-phoenix/c-annotated/README.md",
-        "c-phoenix/animations/README.md",
-    )
+    # Both entry points must reach the knowledge base and the animation gallery,
+    # and must do so *in their own language*. Linking the bilingual hub page
+    # instead would ask a reader who already chose a language to choose again,
+    # so the hub is no longer accepted here.
+    required_areas = ("c-phoenix/c-annotated", "c-phoenix/animations")
     problems: list[str] = []
-    for name in ("README.md", "README.nl.md"):
+    for name, lang in (("README.md", "en"), ("README.nl.md", "nl")):
         readme = repository_root / name
         if not readme.is_file():
             problems.append(f"{name}: missing repository entry point")
             continue
         text = readme.read_text(encoding="utf-8")
-        for link in required_links:
-            if link not in text:
-                problems.append(f"{name}: missing required study-topic link: {link}")
+        for area in required_areas:
+            wanted = f"{area}/{lang}/README.md"
+            if wanted in text:
+                continue
+            if f"{area}/README.md" in text:
+                problems.append(
+                    f"{name}: links the bilingual hub {area}/README.md; "
+                    f"link {wanted} so the reader stays in one language")
+            else:
+                problems.append(f"{name}: missing required study-topic link: {wanted}")
     return problems
 
 

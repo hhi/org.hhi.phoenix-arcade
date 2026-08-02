@@ -21,7 +21,7 @@ omgezette opname:
 
 De adapter leest voorlopig een C-Phoenix- of JPhoenix-RAM-dump via de
 bestaande private trace-decoder. Hij zet het decoderresultaat om naar het
-geversioneerde contract in [SEMANTIC-FRAME.md](SEMANTIC-FRAME.md). Na export
+geversioneerde contract in [SEMANTIC-FRAME.md](SEMANTIC-FRAME.nl.md). Na export
 leest de C2-viewer alleen dat semantische JSON-bestand: geen ROMs, ruwe
 RAM-adressen, graphicsbytes of kleur-PROM-waarden.
 

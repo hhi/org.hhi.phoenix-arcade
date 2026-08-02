@@ -4,7 +4,7 @@
 
 Negen callgraphs van de C-port, elk met antwoord op één vraag over hoe de code
 samenhangt. Ze worden allemaal uit de broncode gegenereerd door een script in
-[`c-phoenix/tools/`](../../tools/); niets hier is met de hand getekend. Wijkt
+[`c-phoenix/tools/`](../../tools/README.nl.md); niets hier is met de hand getekend. Wijkt
 een graaf af van de code, dan is de code veranderd en de graaf niet.
 
 Elke graaf bestaat uit drie bestanden: de Graphviz-bron (`.dot`), de gerenderde
