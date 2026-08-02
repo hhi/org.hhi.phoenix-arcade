@@ -110,6 +110,22 @@ kandidaat geen fixture: pas de zoekparameters aan en begin opnieuw bij
 
 ## Nieuwe kandidaten zoeken
 
+Voor de twee dingen die je het vaakst doet zijn er `make`-ingangen, zodat je het
+scriptpad niet hoeft te onthouden:
+
+```bash
+make bottargets                        # elk target en de voorwaarde die het toetst
+make botsearch BOT_TARGET=alien_kill   # zoeken, met verstandige standaardwaarden
+```
+
+`make help` toont de `BOT_*`-variabelen met hun huidige waarden (`BOT_SEED`,
+`BOT_FRAMES`, `BOT_ITERATIONS`, `BOT_GENERATIONS`, `BOT_MODE`,
+`BOT_RANDOM_SEED`, `BOT_OUTPUT_DIR`). Vanuit de repository-root heten dezelfde
+twee `make c-bottargets` en `make c-botsearch`.
+
+De rest van deze pagina gebruikt het script rechtstreeks, omdat daar elke vlag
+zichtbaar is.
+
 Gebruik `mutate` om kandidaat-scripts te maken en te rangschikken:
 
 ```bash
@@ -282,6 +298,68 @@ Twee gewoontes volgen hieruit. Vergelijk `max_level` met `max_game` in de log
 voordat je een score gelooft, en kies een `_gameplay`-target zodra je wilt dat de
 speler het werk doet en niet de demo.
 
+## Dezelfde zoektocht met een gameplay-target
+
+De run hierboven is herhaald met één wijziging — het target — zodat elk verschil
+op de scoringsomslag terug te voeren is en op niets anders:
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/extended_playthrough.txt \
+  --frames 6000 --iterations 8 --generations 6 \
+  --mutation-mode jitter \
+  --target bird_wave_gameplay --random-seed 1
+```
+
+```
+   best of this round: 185313  ->  seeds generation 2
+   re-seeded: 185313 -> 185423 (+110)  ->  seeds generation 3
+   re-seeded: 185423 -> 186350 (+927)  ->  seeds generation 4
+   re-seeded: 186350 -> 186587 (+237)  ->  seeds generation 5
+   re-seeded: 186587 -> 192781 (+6194)  ->  seeds generation 6
+   re-seeded: 192781 -> 194982 (+2201)  ->  seeds the saved winner
+seed score per generation: 185313 -> 185423 -> 186350 -> 186587 -> 192781 -> 194982   (5 re-seeds after the first round)
+```
+
+**De omslag werkt.** Dezelfde seed, dezelfde frames, dezelfde mutatiemodus als
+bij de `level_transition`-run — en de score zakt van ~1.260.000 naar ~185.000.
+De 1,1 miljoen die de attract-demo bijdroeg is simpelweg weg;
+`max_gameplay_level` is 0x01, dus de basis is `1 x 150000` en wat overblijft is
+wat de speler werkelijk deed.
+
+**Elke generatie verbeterde.** Vijf her-seeds op vijf, geen plateau — de
+duidelijkste demonstratie van `--generations` in dit document, en een prima
+controle dat de lus zich gedraagt.
+
+**En het target werd nooit gehaald.** Alle 48 kandidaten melden
+`bird_wave_gameplay=miss`, en `max_game` komt nooit van 0x01 af. De zoektocht
+klom dus 5,2% op het *generieke* deel van de score zonder ook maar iets dichter
+bij het gevraagde te komen. Betere scoring leverde geen beter spel op:
+zesduizend frames jitter rond deze seed krijgen de speler niet voorbij ronde 1.
+
+Dat is het benoemen waard, want een stijgende lijn ziet eruit als succes. Lees
+de target-kolom, niet de score.
+
+**Een tweede valkuil: de afgedrukte kolommen zijn de score niet.**
+`mship_tiles` loopt in die log zichtbaar mee met de score — 16 tegels bovenaan,
+0 onderaan — maar met een gameplay-target zijn die treffers **exact niets**
+waard:
+
+```python
+if not gameplay_focus or mothership_gameplay_frames > 0:
+    score += mothership_tile_hit * 1500
+```
+
+`mship_game` is overal 0, dus de voorwaarde is onwaar en de tegels scoren nul.
+De correlatie is echt, het oorzakelijk verband niet: beide volgen uit hoe lang
+de run overleefde. Wil je weten wat een score werkelijk bewoog, draai dan
+`evaluate` op het bewaarde script en vergelijk de tellers — de log drukt een
+vaste set kolommen af, niet de termen van de som.
+
+**Wat je hierna kunt proberen.** Geef de speler meer ruimte
+(`--frames 12000`), of gebruik als seed een script dat al een vogelgolf in echt
+spel bereikt, in plaats van te hopen dat jitter er een vindt.
+
 ## Meerdere targets
 
 Herhaal `--target` voor een gecombineerd doel. Elk geraakt doel krijgt een
@@ -386,15 +464,37 @@ replay en, waar relevant, lockstepvergelijking.
 
 ## Mutatiemodi
 
-- `regenerate` (standaard): behoudt de seed tot `--mutate-after` en genereert
-  daarna een nieuw patroon.
-- `jitter`: varieert vooral de timing van bestaande events; bruikbaar wanneer
-  de seed al de juiste fase bereikt.
-- `sweep`: behoudt de route en beweegt daarna herhaald links/rechts terwijl er
-  wordt geschoten; bruikbaar voor moederschip- of gebiedsdoelen.
+Alle drie behouden de seed-events *vóór* `--mutate-after` (standaard frame 220),
+zodat een bewezen openingsroute overeind blijft. Waar ze verschillen is wat er
+vanaf dat frame gebeurt — en dat verschil bepaalt of `--generations` op een
+winnaar kan voortbouwen.
 
-Gebruik `--mutate-after` om een bekende goede beginroute te behouden. De
-standaard is frame `220`.
+| Modus | Vanaf `--mutate-after` | Neemt de seed mee? |
+| --- | --- | --- |
+| `regenerate` *(standaard)* | Gooit de resterende seed-events weg en schrijft een vers schiet/beweeg-patroon | **Nee** |
+| `sweep` | Gooit ze ook weg, en schrijft daarna een metronomische links-rechts-veeg met constant vuur | **Nee** |
+| `jitter` | Houdt elk seed-event, verschuift elk frame met maximaal ±18, laat ongeveer één op de zeven vallen, en voegt 6-18 nieuwe pulsen toe | **Ja** |
+
+Gemeten op een seed met vijf markeer-events voorbij frame 220: jitter houdt er
+vier, `regenerate` en `sweep` geen enkele. Dat ligt vast in
+[`tests/test_input_bot_generations.py`](../tests/test_input_bot_generations.py).
+
+**Welke je kiest.**
+
+- `regenerate` — je hebt geen idee hoe de invoer eruit moet zien en wilt de
+  ruimte breed en onbevooroordeeld aftasten. Prima voor een eerste poging op een
+  ondiep target.
+- `sweep` — je wilt dat het schip terrein bestrijkt terwijl het doorschiet.
+  Handig voor gebiedstargets zoals een specifieke moederschiptegel raken, waar
+  *waar* het schip staat meer uitmaakt dan een bepaalde knoppenreeks.
+- `jitter` — je hebt al een script dat in de buurt komt en wilt het verfijnen.
+  Dit is de modus die `--generations` nodig heeft; de andere twee gooien de
+  staart van de winnaar elke ronde weg, dus de zoektocht kan niet stapelen.
+
+`--mutate-after` is de andere helft hiervan. Zet hem voorbij een moeizaam
+verworven opening om dat deel tegen alle drie de modi te beschermen:
+`--mutate-after 10000` houdt de eerste tienduizend frames van een lange fixture
+intact en zoekt alleen in de staart.
 
 ## Resultaat bekijken en bewaren
 

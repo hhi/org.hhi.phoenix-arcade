@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -16,6 +16,8 @@ help:
 	@echo "  make c-asm-docs   Generate interactive Phoenix ASM documentation"
 	@echo "  make c-asm-view   Generate and serve Phoenix ASM documentation locally"
 	@echo "  make c-asm-view-only Serve existing Phoenix ASM documentation locally"
+	@echo "  make c-bottargets List the input bot's targets and what each one checks"
+	@echo "  make c-botsearch  Search for an input script reaching BOT_TARGET=<name>"
 	@echo "  make c-tracer-view Generate and serve the C-Phoenix comparison tracer"
 	@echo "  make c-tracer-view-only Serve an existing C-Phoenix tracer locally"
 	@echo "  make c2-build     Build the native interactive C2-Phoenix application"
@@ -72,6 +74,17 @@ c-asm-view:
 
 c-asm-view-only:
 	$(MAKE) -C c-phoenix interactive-asm-view-only ASM_VIEW_PORT=$(ASM_VIEW_PORT)
+
+c-bottargets:
+	$(MAKE) -C c-phoenix bottargets
+
+c-botsearch:
+	$(MAKE) -C c-phoenix botsearch $(if $(BOT_TARGET),BOT_TARGET=$(BOT_TARGET),) \
+	  $(if $(BOT_SEED),BOT_SEED=$(BOT_SEED),) $(if $(BOT_FRAMES),BOT_FRAMES=$(BOT_FRAMES),) \
+	  $(if $(BOT_GENERATIONS),BOT_GENERATIONS=$(BOT_GENERATIONS),) \
+	  $(if $(BOT_ITERATIONS),BOT_ITERATIONS=$(BOT_ITERATIONS),) \
+	  $(if $(BOT_MODE),BOT_MODE=$(BOT_MODE),) \
+	  $(if $(BOT_OUTPUT_DIR),BOT_OUTPUT_DIR=$(BOT_OUTPUT_DIR),)
 
 c-tracer-view:
 	$(MAKE) -C c-phoenix tracer-view TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)

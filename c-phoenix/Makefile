@@ -80,7 +80,7 @@ TRACER_VIEW_PORT ?= 8766
 TRACE_VIEW_OUTPUT ?= $(VISUAL_TRACE_OUTPUT)
 TRACE_VIEW_DIR ?= $(dir $(TRACE_VIEW_OUTPUT))
 
-.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only knowledge-graph-visual wave-screenshots help
+.PHONY: all clean run recordrun recordtracerun replayrun headlessrun demorun demo-tracer-view demo-tracer-view-only comparerun tracerun tracer-view tracer-view-only runtimegraph c2 c2-clean verify-rom-free docs interactive-asm interactive-asm-view interactive-asm-view-only knowledge-graph-visual wave-screenshots bottargets botsearch spritesheets help
 
 all: $(TARGET) verify-rom-free
 
@@ -190,6 +190,37 @@ runtimegraph: $(RUNTIME_TARGET)
 	python3 tools/generate_c_runtime_callgraph.py $(RUNTIME_OUTPUT_DIR)/c_phoenix_calls.bin --binary $(RUNTIME_TARGET) --output-dir $(RUNTIME_OUTPUT_DIR)
 	python3 tools/generate_c_design_runtime_comparison.py --source-dir . --runtime $(RUNTIME_OUTPUT_DIR)/c_phoenix_runtime_calls.csv --output-dir $(RUNTIME_OUTPUT_DIR)
 
+BOT_SEED ?= context/input-scripts/extended_playthrough.txt
+BOT_FRAMES ?= 6000
+BOT_ITERATIONS ?= 8
+BOT_GENERATIONS ?= 6
+BOT_MODE ?= jitter
+BOT_TARGET ?= bird_wave_gameplay
+BOT_RANDOM_SEED ?= 1
+BOT_OUTPUT_DIR ?= /tmp/input-bot
+
+bottargets:
+	@python3 tools/input_bot.py list-targets
+
+botsearch:
+	@test -n "$(BOT_TARGET)" || { echo "Usage: make botsearch BOT_TARGET=<name>  (see make bottargets)"; exit 2; }
+	python3 tools/input_bot.py mutate \
+	  --seed $(BOT_SEED) \
+	  --frames $(BOT_FRAMES) \
+	  --iterations $(BOT_ITERATIONS) \
+	  --generations $(BOT_GENERATIONS) \
+	  --mutation-mode $(BOT_MODE) \
+	  --target $(BOT_TARGET) \
+	  --random-seed $(BOT_RANDOM_SEED) \
+	  --output-dir $(BOT_OUTPUT_DIR)
+
+# Not part of `make docs`: the output depends on which recording you point it
+# at, so a blanket regeneration could silently replace sheets built from a
+# richer trace with thinner ones.
+SPRITE_DUMP ?=
+spritesheets:
+	python3 tools/generate_sprite_sheets.py $(if $(SPRITE_DUMP),--dump $(SPRITE_DUMP),)
+
 help:
 	@echo "c-phoenix make targets"
 	@echo ""
@@ -212,7 +243,12 @@ help:
 	@echo "  make interactive-asm-view Generate ASM documentation and serve it locally"
 	@echo "  make interactive-asm-view-only Serve existing ASM documentation locally"
 	@echo "  make knowledge-graph-visual Regenerate the knowledge graph architecture SVG"
-	@echo "  make docs             Regenerate mapping and graph documentation"
+	@echo "  make docs             Regenerate mapping, graph and generated reference docs"
+	@echo "  make spritesheets     Regenerate the sprite sheets (SPRITE_DUMP=<recording>)"
+	@echo ""
+	@echo "input bot - name a game moment and search for a script that reaches it"
+	@echo "  make bottargets       List the built-in targets and what each one checks"
+	@echo "  make botsearch        Search for a script reaching BOT_TARGET"
 	@echo "  make clean            Remove object files and $(TARGET)"
 	@echo "  make help             Show this help"
 	@echo ""
@@ -287,6 +323,15 @@ help:
 	@echo "  make tracerun COMPARE_SCRIPT=context/input-scripts/two_player_last_grown_bird.txt COMPARE_FRAMES=9000 COMPARE_NAME=last-grown-bird COMPARE_STOP_AFTER=999999"
 	@echo "  make recordtracerun RECORD_NAME=bird-investigation"
 	@echo "  make recordtracerun RECORD_NAME=bird-investigation RECORD_TRACE_FRAMES=15000"
+	@echo "  make bottargets"
+	@echo "  make botsearch BOT_TARGET=alien_kill"
+	@echo "  make botsearch BOT_TARGET=gameplay_level_9 BOT_FRAMES=12000 BOT_GENERATIONS=10"
+	@echo ""
+	@echo "botsearch defaults"
+	@echo "  BOT_SEED=$(BOT_SEED)"
+	@echo "  BOT_FRAMES=$(BOT_FRAMES)  BOT_ITERATIONS=$(BOT_ITERATIONS)  BOT_GENERATIONS=$(BOT_GENERATIONS)"
+	@echo "  BOT_MODE=$(BOT_MODE)  BOT_TARGET=$(BOT_TARGET)  BOT_RANDOM_SEED=$(BOT_RANDOM_SEED)"
+	@echo "  BOT_OUTPUT_DIR=$(BOT_OUTPUT_DIR)"
 
 interactive-asm:
 	@echo "Generating interactive Phoenix ASM documentation..."
@@ -322,4 +367,7 @@ docs:
 	@python3 tools/generate_coverage_callgraph.py
 	@python3 tools/generate_stub_hunter_callgraph.py
 	@python3 tools/generate_knowledge_graph_visual.py
+	@python3 tools/generate_table_reference.py
+	@python3 tools/generate_input_bot_reference.py
+	@python3 tools/generate_input_bot_visual.py
 	@echo "All documentation and graphs successfully generated in context/ !"

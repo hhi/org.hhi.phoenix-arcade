@@ -107,7 +107,7 @@ Phoenix.asm  →  Phoenix.md  →  Phoenix.html
 
 - [`Phoenix.asm`](c-phoenix/context/Phoenix.asm) — de originele
   Z80-assembly, met de hand geannoteerd met wat elke routine doet en welk
-  RAM het aanraakt.
+  RAM het aanraakt. (Credits: [Sorbas2020](https://github.com/Sorbas2020/Phoenix))
 - [`Phoenix.md`](c-phoenix/context/Phoenix.md) — hetzelfde materiaal,
   automatisch gegenereerd als brongekoppelde Markdown; GitHub rendert dit
   bestand direct leesbaar.
@@ -288,8 +288,9 @@ zelf — welke functie welke aanroept, niet wat een speelsessie daadwerkelijk
 heeft uitgevoerd (dat is de runtime-callgraphgalerij in de
 [demo-handleiding](demo/README.nl.md)). Regenereer ze met `make -C
 c-phoenix docs`; zie
-[`context/graphs/README.md`](c-phoenix/context/graphs/README.md) voor wat
-elke graph beantwoordt.
+[`context/graphs/README.nl.md`](c-phoenix/context/graphs/README.nl.md) voor
+welke vraag elke graaf beantwoordt, hoe de generatoren werken en wat ze niet
+zien.
 
 ### Repositorycontroles
 

@@ -104,6 +104,7 @@ Phoenix.asm  →  Phoenix.md  →  Phoenix.html
 
 - [`Phoenix.asm`](c-phoenix/context/Phoenix.asm) — the original Z80 assembly,
   annotated by hand with what each routine does and which RAM it touches.
+  (Credits: [Sorbas2020](https://github.com/Sorbas2020/Phoenix))
 - [`Phoenix.md`](c-phoenix/context/Phoenix.md) — the same material,
   auto-generated as cross-referenced Markdown; GitHub renders this one
   directly.

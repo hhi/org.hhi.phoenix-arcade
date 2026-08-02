@@ -2,9 +2,9 @@
 
 > [!NOTE]
 > **Gap Analysis Conclusion**
-> In the entire 16KB ROM-space, 141 unmapped gaps/data blocks were found:
+> In the entire 16KB ROM-space, 142 unmapped gaps/data blocks were found:
 > - **Padding (FF)**: 94 (Confirmed empty EPROM space)
-> - **UNREFERENCED DATA**: 44 (Unreadable bytes, likely unused arrays, sprites, or artifacts)
+> - **UNREFERENCED DATA**: 45 (Unreadable bytes, likely unused arrays, sprites, or artifacts)
 > - **DATA TABLE**: 2 (Data explicitly referenced by C code)
 > - **Padding (00)**: 1
 >
@@ -32,7 +32,7 @@
 | $0196 | [`slow_print_score_average_table`](../../attract_mode.c#L198) | [attract_mode.c](../../attract_mode.c) | 0196-01CD | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$01CE** | ***** UNREFERENCED DATA (Bytes: ) ***** | **---** | **01CE-01CF** | |
 | $01D0 | [`print_text_lines`](../../utilities.c#L62) | [utilities.c](../../utilities.c) | 01D0-01E0 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $01E1 | [`l01e1`](../../misc_logic.c#L23) | [misc_logic.c](../../misc_logic.c) | 01E1-01EB | Zelfde adres als: `print_copyright_lines` — controleer welke live is |
+| $01E1 | [`l01e1`](../../misc_logic.c#L24) | [misc_logic.c](../../misc_logic.c) | 01E1-01EB | Zelfde adres als: `print_copyright_lines` — controleer welke live is |
 | $01E1 | [`print_copyright_lines`](../../utilities.c#L96) | [utilities.c](../../utilities.c) | 01E1-01EB | Zelfde adres als: `l01e1` — controleer welke live is |
 | **$01EC** | **Padding (1 bytes of FF)** | **---** | **01EC-01EC** | |
 | $01ED | [`draw_row`](../../utilities.c#L107) | [utilities.c](../../utilities.c) | 01ED-01F7 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
@@ -67,12 +67,13 @@
 | $03A0 | [`clear_background`](../../hw_video_audio.c#L155) | [hw_video_audio.c](../../hw_video_audio.c) | 03A0-03AF | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | $03B0 | [`check_demo_mode_player_and_alien`](../../attract_mode.c#L252) | [attract_mode.c](../../attract_mode.c) | 03B0-03FD | Deels geverifieerd (93.9% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | **$03FE** | **Padding (2 bytes of FF)** | **---** | **03FE-03FF** | |
+| $0400 | [`game_state_machine`](../../game_state_machine.c#L32) | [game_state_machine.c](../../game_state_machine.c) | 0400-041D |  |
 | $041E | [`set_bits_video_register`](../../hw_video_audio.c#L252) | [hw_video_audio.c](../../hw_video_audio.c) | 041E-042E | Deels geverifieerd (88.9% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | **$042F** | ***** UNREFERENCED DATA (Bytes: ) ***** | **---** | **042F-042F** | |
 | $0430 | [`state_0_new_game_start`](../../game_state_machine.c#L54) | [game_state_machine.c](../../game_state_machine.c) | 0430-045B, 04A0-04AB | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$045C** | **Padding (4 bytes of FF)** | **---** | **045C-045F** | |
 | $0460 | [`stars_scroll_down`](../../hw_video_audio.c#L266) | [hw_video_audio.c](../../hw_video_audio.c) | 0460-049D, 067A-06AF | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $0460 | [`copy_memory_bank`](../../platform_sdl.c#L90) | [platform_sdl.c](../../platform_sdl.c) | 0460-049D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $0460 | [`copy_memory_bank`](../../platform_sdl.c#L95) | [platform_sdl.c](../../platform_sdl.c) | 0460-049D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$049E** | **Padding (2 bytes of FF)** | **---** | **049E-049F** | |
 | $04A0 | [`l04a0_change_player_at_attract_mode`](../../game_state_machine.c#L98) | [game_state_machine.c](../../game_state_machine.c) | 04A0-04AB | Deels geverifieerd (83.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | $04AC | [`state_1_flashing_score`](../../game_state_machine.c#L132) | [game_state_machine.c](../../game_state_machine.c) | 04AC-04E4, 04E6-04F9, 04FB-0505 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
@@ -84,6 +85,7 @@
 | $0526 | [`l0526`](../../state_init.c#L56) | [state_init.c](../../state_init.c) | 0526-0531 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | $0532 | [`init_alien_data_new_level`](../../state_init.c#L33) | [state_init.c](../../state_init.c) | 0532-0543 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0544** | **Padding (3 bytes of FF)** | **---** | **0544-0546** | |
+| $0547 | [`init_player_data_structure`](../../state_init.c#L26) | [state_init.c](../../state_init.c) | 0547-055A |  |
 | **$055B** | **Padding (5 bytes of FF)** | **---** | **055B-055F** | |
 | **$0596** | **Padding (2 bytes of FF)** | **---** | **0596-0597** | |
 | $05D8 | [`clear_b_bytes_at_hl`](../../utilities.c#L123) | [utilities.c](../../utilities.c) | 05D8-05DF | Geïnlined als memset bij de init-aanroepplekken ($0158/$050B/$0537/$0557); losse functie ongebruikt |
@@ -100,7 +102,7 @@
 | $06E8 | [`print_score_column`](../../utilities.c#L87) | [utilities.c](../../utilities.c) | 06E8-06ED | Geïnlined in state_1_flashing_score (asm-aanroep $04C9); losse functie ongebruikt |
 | **$06EE** | ***** UNREFERENCED DATA (Bytes: ) ***** | **---** | **06EE-06EF** | |
 | $06F0 | [`update_scroll_register_and_fill_background`](../../hw_video_audio.c#L473) | [hw_video_audio.c](../../hw_video_audio.c) | 06F0-06F8 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $06F0 | [`l06f0`](../../misc_logic.c#L11) | [misc_logic.c](../../misc_logic.c) | 06F0-0701 | Deels geverifieerd (80.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $06F0 | [`l06f0`](../../misc_logic.c#L12) | [misc_logic.c](../../misc_logic.c) | 06F0-0701 | Deels geverifieerd (80.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | $0700 | [`player_data_controller`](../../player_logic.c#L250) | [player_logic.c](../../player_logic.c) | 0700-0717 | Deels geverifieerd (92.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | $0718 | [`update_screen_objects`](../../sprite_rendering.c#L215) | [sprite_rendering.c](../../sprite_rendering.c) | 0718-071F | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | $0720 | [`bit4_controller`](../../sprite_rendering.c#L150) | [sprite_rendering.c](../../sprite_rendering.c) | 0720-073F | Deels geverifieerd (88.9% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
@@ -156,6 +158,7 @@
 | **$0BC5** | **Padding (5 bytes of FF)** | **---** | **0BC5-0BC9** | |
 | $0BCA | [`draw_score_average_table_tiles`](../../attract_mode.c#L419) | [attract_mode.c](../../attract_mode.c) | 0BCA-0BF1 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0BF2** | **Padding (14 bytes of FF)** | **---** | **0BF2-0BFF** | |
+| $0C00 | [`l0c00_kill_score`](../../weapon_collision.c#L209) | [weapon_collision.c](../../weapon_collision.c) | 0C00-0C23 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0C24** | **Padding (28 bytes of FF)** | **---** | **0C24-0C3F** | |
 | $0C40 | [`process_enemy_bombs`](../../weapon_collision.c#L163) | [weapon_collision.c](../../weapon_collision.c) | 0C40-0C51 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0C52** | **Padding (4 bytes of FF)** | **---** | **0C52-0C55** | |
@@ -178,16 +181,16 @@
 | $0DF0 | [`check_enemy_bullet_to_player_collision`](../../weapon_collision.c#L189) | [weapon_collision.c](../../weapon_collision.c) | 0DF0-0E01 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | $0E02 | [`l0e02_unused`](../../weapon_collision.c#L199) | [weapon_collision.c](../../weapon_collision.c) | 0E02-0E0B | Vermoedelijk dode code: niet geraakt door c-phoenix of echte Z80, geen asm-referentie |
 | **$0E0C** | **Padding (4 bytes of FF)** | **---** | **0E0C-0E0F** | |
-| $0E10 | [`l0c00_kill_score`](../../weapon_collision.c#L214) | [weapon_collision.c](../../weapon_collision.c) | 0E10-0E6B, 0E70-0E9D, 0C00-0C23 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $0E10 | [`l0e10`](../../weapon_collision.c#L233) | [weapon_collision.c](../../weapon_collision.c) | 0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $0E10 | [`l0e10`](../../weapon_collision.c#L228) | [weapon_collision.c](../../weapon_collision.c) | 0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| **$0E37** | ***** UNREFERENCED DATA (Bytes: ) ***** | **---** | **0E37-0E38** | |
 | **$0E6C** | **Padding (4 bytes of FF)** | **---** | **0E6C-0E6F** | |
 | **$0EA1** | **Padding (3 bytes of 00)** | **---** | **0EA1-0EA3** | |
-| $0EA4 | [`l0ea4_with_score`](../../weapon_collision.c#L301) | [weapon_collision.c](../../weapon_collision.c) | 0EA4-0EE5 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $0EA4 | [`l0ea4_with_score`](../../weapon_collision.c#L296) | [weapon_collision.c](../../weapon_collision.c) | 0EA4-0EE5 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0EE6** | **Padding (26 bytes of FF)** | **---** | **0EE6-0EFF** | |
-| $0F00 | [`l0f00_check_alien_with_player_collision`](../../weapon_collision.c#L380) | [weapon_collision.c](../../weapon_collision.c) | 0F00-0F33, 0F38-0F4E, 0F74-0FB9 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $0F00 | [`l0f00_check_alien_with_player_collision`](../../weapon_collision.c#L375) | [weapon_collision.c](../../weapon_collision.c) | 0F00-0F33, 0F38-0F4E, 0F74-0FB9 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0F34** | **Padding (4 bytes of FF)** | **---** | **0F34-0F37** | |
 | **$0F4F** | ***** UNREFERENCED DATA (Bytes: AD 0E FF FF FF) ***** | **---** | **0F4F-0F55** | |
-| $0F56 | [`l0f56_screen_ram_collision`](../../weapon_collision.c#L352) | [weapon_collision.c](../../weapon_collision.c) | 0F56-0F71 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $0F56 | [`l0f56_screen_ram_collision`](../../weapon_collision.c#L347) | [weapon_collision.c](../../weapon_collision.c) | 0F56-0F71 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$0F72** | **Padding (2 bytes of FF)** | **---** | **0F72-0F73** | |
 | **$0FBA** | ***** UNREFERENCED DATA (Bytes: AD 0E FF FF) ***** | **---** | **0FBA-0FBF** | |
 | $0FC0 | [`handle_animations_for_killed_aliens`](../../alien_logic.c#L195) | [alien_logic.c](../../alien_logic.c) | 0FC0-0FFF | Deels geverifieerd (88.2% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
@@ -198,28 +201,28 @@
 | $1DF0 | [`l1df0`](../../rom_compat_stubs.c#L22) | [rom_compat_stubs.c](../../rom_compat_stubs.c) | 1DF0-1DFF | Deels geverifieerd (27.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | $1EE0 | [`l1ee0`](../../attract_mode.c#L583) | [attract_mode.c](../../attract_mode.c) | 1EE0-1EFA | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$1EFB** | **Padding (5 bytes of FF)** | **---** | **1EFB-1EFF** | |
-| $2000 | [`l2000_alien_wave_main_loop`](../../alien_wave.c#L219) | [alien_wave.c](../../alien_wave.c) | 2000-202A | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $2000 | [`l2000_alien_wave_main_loop`](../../alien_wave.c#L220) | [alien_wave.c](../../alien_wave.c) | 2000-202A | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$202B** | ***** UNREFERENCED DATA (Bytes: FF FF FF E6 03 A FE 01...) ***** | **---** | **202B-203F** | |
 | $2040 | [`add_galaxies_to_background`](../../hw_video_audio.c#L433) | [hw_video_audio.c](../../hw_video_audio.c) | 2040-208A | Deels geverifieerd (94.5% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2070 | [`l2070`](../../player_explosion.c#L115) | [player_explosion.c](../../player_explosion.c) | 2070-2084 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $2070 | [`l2070`](../../player_explosion.c#L118) | [player_explosion.c](../../player_explosion.c) | 2070-2084 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$20AB** | **Padding (5 bytes of FF)** | **---** | **20AB-20AF** | |
-| $20B0 | [`l20b0_player_ship_particles_explosion`](../../player_explosion.c#L74) | [player_explosion.c](../../player_explosion.c) | 20B0-20E2 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $20B0 | [`l20b0_player_ship_particles_explosion`](../../player_explosion.c#L76) | [player_explosion.c](../../player_explosion.c) | 20B0-20E2 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$20E3** | ***** UNREFERENCED DATA (Bytes: 20 FF FF FF FF) ***** | **---** | **20E3-20E7** | |
-| $20E8 | [`l20e8`](../../player_explosion.c#L30) | [player_explosion.c](../../player_explosion.c) | 20E8-210D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $20E8 | [`l20e8`](../../player_explosion.c#L32) | [player_explosion.c](../../player_explosion.c) | 20E8-210D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$210E** | **Padding (14 bytes of FF)** | **---** | **210E-211B** | |
-| $211C | [`l211c`](../../player_explosion.c#L15) | [player_explosion.c](../../player_explosion.c) | 211C-212C | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $211C | [`l211c`](../../player_explosion.c#L16) | [player_explosion.c](../../player_explosion.c) | 211C-212C | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$212D** | **Padding (3 bytes of FF)** | **---** | **212D-212F** | |
-| $2130 | [`l2130`](../../alien_wave.c#L204) | [alien_wave.c](../../alien_wave.c) | 2130-2145 | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2146 | [`l2146`](../../alien_wave.c#L192) | [alien_wave.c](../../alien_wave.c) | 2146-214F | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2150 | [`l2150`](../../alien_wave.c#L133) | [alien_wave.c](../../alien_wave.c) | 2150-215F | Deels geverifieerd (75.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2160 | [`l2160`](../../alien_wave.c#L142) | [alien_wave.c](../../alien_wave.c) | 2160-216F | Deels geverifieerd (80.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2170 | [`l2170`](../../alien_wave.c#L152) | [alien_wave.c](../../alien_wave.c) | 2170-217F | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2180 | [`l2180`](../../alien_wave.c#L160) | [alien_wave.c](../../alien_wave.c) | 2180-218F | Deels geverifieerd (80.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $2190 | [`l2190`](../../alien_wave.c#L170) | [alien_wave.c](../../alien_wave.c) | 2190-21A4 | Deels geverifieerd (83.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $21A5 | [`l21a5`](../../alien_wave.c#L181) | [alien_wave.c](../../alien_wave.c) | 21A5-21B9 | Deels geverifieerd (83.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
-| $21BA | [`l21ba`](../../alien_wave.c#L103) | [alien_wave.c](../../alien_wave.c) | 21BA-21CF | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $2130 | [`l2130`](../../alien_wave.c#L205) | [alien_wave.c](../../alien_wave.c) | 2130-2145 | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $2146 | [`l2146`](../../alien_wave.c#L193) | [alien_wave.c](../../alien_wave.c) | 2146-214F | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $2150 | [`l2150`](../../alien_wave.c#L134) | [alien_wave.c](../../alien_wave.c) | 2150-215F | Deels geverifieerd (75.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $2160 | [`l2160`](../../alien_wave.c#L143) | [alien_wave.c](../../alien_wave.c) | 2160-216F | Deels geverifieerd (80.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $2170 | [`l2170`](../../alien_wave.c#L153) | [alien_wave.c](../../alien_wave.c) | 2170-217F | Deels geverifieerd (66.7% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $2180 | [`l2180`](../../alien_wave.c#L161) | [alien_wave.c](../../alien_wave.c) | 2180-218F | Deels geverifieerd (80.0% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $2190 | [`l2190`](../../alien_wave.c#L171) | [alien_wave.c](../../alien_wave.c) | 2190-21A4 | Deels geverifieerd (83.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $21A5 | [`l21a5`](../../alien_wave.c#L182) | [alien_wave.c](../../alien_wave.c) | 21A5-21B9 | Deels geverifieerd (83.3% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $21BA | [`l21ba`](../../alien_wave.c#L104) | [alien_wave.c](../../alien_wave.c) | 21BA-21CF | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$21D0** | ***** UNREFERENCED DATA (Bytes: 3E 10 32 BA 43 C3 26 05...) ***** | **---** | **21D0-2203** | |
-| $2204 | [`l2204`](../../alien_wave.c#L79) | [alien_wave.c](../../alien_wave.c) | 2204-222B | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $2204 | [`l2204`](../../alien_wave.c#L80) | [alien_wave.c](../../alien_wave.c) | 2204-222B | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$222C** | **Padding (4 bytes of FF)** | **---** | **222C-222F** | |
 | $2230 | [`level_4_6_8_spiral_fill`](../../state_play.c#L119) | [state_play.c](../../state_play.c) | 2230-225F | Live vertaling van L2230 (dode duplicaat `spiral_fill_animation` verwijderd 11 juli 2026) |
 | $2260 | [`l2260_spiral_draw`](../../state_play.c#L26) | [state_play.c](../../state_play.c) | 2260-2291 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
@@ -237,11 +240,11 @@
 | $244C | [`state_7_mother_ship_score_display`](../../state_endings.c#L179) | [state_endings.c](../../state_endings.c) | 244C-2469 | Deels geverifieerd (94.4% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | $246A | [`erase_mothership`](../../mothership_logic.c#L22) | [mothership_logic.c](../../mothership_logic.c) | 246A-2475 | Live (bereikt in echte gameplay, zie my_session.txt-fix 9 juli; scripted-coverage-verschil was harnas-artefact) |
 | **$2494** | ***** UNREFERENCED DATA (Bytes: 1F) ***** | **---** | **2494-2494** | |
-| $24A0 | [`l24a0`](../../misc_logic.c#L36) | [misc_logic.c](../../misc_logic.c) | 24A0-24BB | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $24A0 | [`l24a0`](../../misc_logic.c#L37) | [misc_logic.c](../../misc_logic.c) | 24A0-24BB | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$24BC** | ***** UNREFERENCED DATA (Bytes: CD 51 23 CA C9 FF FF FF...) ***** | **---** | **24BC-24C3** | |
 | $24C4 | [`l24c4`](../../alien_wave.c#L29) | [alien_wave.c](../../alien_wave.c) | 24C4-24DF | Deels geverifieerd (84.6% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | **$24E0** | ***** UNREFERENCED DATA (Bytes: 3A AA 43 E6 0F A C0 3A...) ***** | **---** | **24E0-24F1** | |
-| $24F2 | [`l24f2`](../../misc_logic.c#L53) | [misc_logic.c](../../misc_logic.c) | 24F2-251C | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $24F2 | [`l24f2`](../../misc_logic.c#L55) | [misc_logic.c](../../misc_logic.c) | 24F2-251C | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$251D** | **Padding (3 bytes of FF)** | **---** | **251D-251F** | |
 | $2520 | [`mothership_core_hit_check`](../../mothership_logic.c#L48) | [mothership_logic.c](../../mothership_logic.c) | 2520-254F | Live (bereikt in echte gameplay, zie my_session.txt-fix 9 juli; scripted-coverage-verschil was harnas-artefact) |
 | **$2550** | ***** UNREFERENCED DATA (Bytes: 32 80) ***** | **---** | **2550-2551** | |
@@ -259,9 +262,9 @@
 | **$26CD** | ***** UNREFERENCED DATA (Bytes: C9) ***** | **---** | **26CD-26CF** | |
 | $26D0 | [`l26d0`](../../birds_vertical_movement.c#L36) | [birds_vertical_movement.c](../../birds_vertical_movement.c) | 26D0-26FD | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$26FE** | ***** UNREFERENCED DATA (Bytes: FF FF 21 A2 43 7E A7 A...) ***** | **---** | **26FE-27BC** | |
-| $27BD | [`l27bd`](../../sound_dispatcher.c#L34) | [sound_dispatcher.c](../../sound_dispatcher.c) | 27BD-27EE | Deels geverifieerd (93.5% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
+| $27BD | [`l27bd`](../../sound_dispatcher.c#L35) | [sound_dispatcher.c](../../sound_dispatcher.c) | 27BD-27EE | Deels geverifieerd (93.5% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | **$27EF** | **Padding (17 bytes of FF)** | **---** | **27EF-27FF** | |
-| $3000 | [`l3000`](../../alien_wave.c#L254) | [alien_wave.c](../../alien_wave.c) | 3000-3012 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3000 | [`l3000`](../../alien_wave.c#L255) | [alien_wave.c](../../alien_wave.c) | 3000-3012 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$3013** | ***** UNREFERENCED DATA (Bytes: FF FF FF FF FF 32 64 30...) ***** | **---** | **3013-3027** | |
 | $3028 | [`l3028`](../../alien_logic.c#L528) | [alien_logic.c](../../alien_logic.c) | 3028-3059, 305C-306D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$305A** | **Padding (2 bytes of FF)** | **---** | **305A-305B** | |
@@ -285,7 +288,7 @@
 | $322C | [`l322c`](../../alien_logic.c#L718) | [alien_logic.c](../../alien_logic.c) | 322C-325E | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$325F** | ***** UNREFERENCED DATA (Bytes: 3C E6 0F 77 2E) ***** | **---** | **325F-3263** | |
 | $3264 | [`l3264`](../../alien_logic.c#L459) | [alien_logic.c](../../alien_logic.c) | 3264-32AF | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $32B0 | [`l32b0`](../../misc_logic.c#L71) | [misc_logic.c](../../misc_logic.c) | 32B0-32EB | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $32B0 | [`l32b0`](../../misc_logic.c#L73) | [misc_logic.c](../../misc_logic.c) | 32B0-32EB | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$32EC** | ***** UNREFERENCED DATA (Bytes: CD E0 05 CA C3 A0 03 FF...) ***** | **---** | **32EC-32FF** | |
 | **$3308** | **Padding (8 bytes of FF)** | **---** | **3308-330F** | |
 | $3400 | [`process_birds`](../../bird_logic.c#L27) | [bird_logic.c](../../bird_logic.c) | 3400-3436, 3438-344D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
@@ -349,27 +352,27 @@
 | $3980 | [`check_bird_formation_player_collision`](../../bird_wave_behavior.c#L399) | [bird_wave_behavior.c](../../bird_wave_behavior.c) | 3980-39FD | Deels geverifieerd (93.2% van de range uitgevoerd in byte-exacte runs, 2026-07-12) |
 | **$39FE** | **Padding (2 bytes of FF)** | **---** | **39FE-39FF** | |
 | $3A00 | [`l3a00`](../../bird_wave_behavior.c#L312) | [bird_wave_behavior.c](../../bird_wave_behavior.c) | 3A00-3A0F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A10 | [`l3a10`](../../sound_dispatcher.c#L264) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A10-3A1C | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A1D | [`l3a1d`](../../sound_dispatcher.c#L71) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A1D-3A2B | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A2C | [`l3a2c`](../../sound_dispatcher.c#L61) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A2C-3A3F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A40 | [`l3a40`](../../sound_dispatcher.c#L98) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A40-3A4D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A4E | [`l3a4e`](../../sound_dispatcher.c#L88) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A4E-3A5F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A10 | [`l3a10`](../../sound_dispatcher.c#L265) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A10-3A1C | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A1D | [`l3a1d`](../../sound_dispatcher.c#L72) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A1D-3A2B | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A2C | [`l3a2c`](../../sound_dispatcher.c#L62) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A2C-3A3F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A40 | [`l3a40`](../../sound_dispatcher.c#L99) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A40-3A4D | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A4E | [`l3a4e`](../../sound_dispatcher.c#L89) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A4E-3A5F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$3A60** | ***** UNREFERENCED DATA (Bytes: 0F 00) ***** | **---** | **3A60-3A61** | |
-| $3A62 | [`l3a62`](../../sound_dispatcher.c#L119) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A62-3A77 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A78 | [`l3a78`](../../sound_dispatcher.c#L113) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A78-3A81 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A82 | [`l3a82`](../../sound_dispatcher.c#L133) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A82-3A8F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3A90 | [`l3a90`](../../sound_dispatcher.c#L142) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A90-3A95 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A62 | [`l3a62`](../../sound_dispatcher.c#L120) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A62-3A77 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A78 | [`l3a78`](../../sound_dispatcher.c#L114) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A78-3A81 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A82 | [`l3a82`](../../sound_dispatcher.c#L134) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A82-3A8F | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A90 | [`l3a90`](../../sound_dispatcher.c#L143) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A90-3A95 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$3A96** | ***** UNREFERENCED DATA (Bytes: ) ***** | **---** | **3A96-3A97** | |
-| $3A98 | [`l3a98_scan`](../../sound_dispatcher.c#L153) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A98-3ACA | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3A98 | [`l3a98_scan`](../../sound_dispatcher.c#L154) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3A98-3ACA | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 | **$3ACB** | **Padding (5 bytes of FF)** | **---** | **3ACB-3ACF** | |
-| $3AD0 | [`l3ad0`](../../sound_dispatcher.c#L185) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3AD0-3AF6 | Live (scripted-coverage-verschil was een harnas-artefact) |
+| $3AD0 | [`l3ad0`](../../sound_dispatcher.c#L186) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3AD0-3AF6 | Live (scripted-coverage-verschil was een harnas-artefact) |
 | **$3AF7** | ***** UNREFERENCED DATA (Bytes: 5F) ***** | **---** | **3AF7-3AF7** | |
-| $3AF8 | [`l3af8`](../../sound_dispatcher.c#L174) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3AF8-3B00 | Live (scripted-coverage-verschil was een harnas-artefact) |
-| $3B02 | [`l3b02`](../../sound_dispatcher.c#L205) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B02-3B19 | Live (scripted-coverage-verschil was een harnas-artefact) |
-| $3B1B | [`l3b1b`](../../sound_dispatcher.c#L223) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B1B-3B27 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3B28 | [`l3b28`](../../sound_dispatcher.c#L217) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B28-3B31 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3B33 | [`l3b33`](../../sound_dispatcher.c#L234) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B33-3B41 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
-| $3B43 | [`l3b43`](../../sound_dispatcher.c#L246) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B43-3B5B | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3AF8 | [`l3af8`](../../sound_dispatcher.c#L175) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3AF8-3B00 | Live (scripted-coverage-verschil was een harnas-artefact) |
+| $3B02 | [`l3b02`](../../sound_dispatcher.c#L206) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B02-3B19 | Live (scripted-coverage-verschil was een harnas-artefact) |
+| $3B1B | [`l3b1b`](../../sound_dispatcher.c#L224) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B1B-3B27 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3B28 | [`l3b28`](../../sound_dispatcher.c#L218) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B28-3B31 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3B33 | [`l3b33`](../../sound_dispatcher.c#L235) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B33-3B41 | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
+| $3B43 | [`l3b43`](../../sound_dispatcher.c#L247) | [sound_dispatcher.c](../../sound_dispatcher.c) | 3B43-3B5B | Geverifieerd: byte-exacte scripted lockstep + PC-dekking (2026-07-12) |
 
 ## C-only Infrastructure / Native Helpers
 
@@ -378,7 +381,7 @@ Deze functies bestaan uitsluitend in de C-poort (bijvoorbeeld voor window creati
 | Function | File |
 |---|---|
 | [`drawNx2`](../../attract_mode.c#L449) | [attract_mode.c](../../attract_mode.c) |
-| [`draw_intro_bird_animation_frame`](../../attract_mode.c#L606) | [attract_mode.c](../../attract_mode.c) |
+| [`draw_intro_bird_animation_frame`](../../attract_mode.c#L605) | [attract_mode.c](../../attract_mode.c) |
 | [`draw_n_by_2`](../../attract_mode.c#L405) | [attract_mode.c](../../attract_mode.c) |
 | [`bird_flight_path`](../../bird_logic.c#L69) | [bird_logic.c](../../bird_logic.c) |
 | [`coverage_hit`](../../coverage.c#L67) | [coverage.c](../../coverage.c) |
@@ -386,7 +389,6 @@ Deze functies bestaan uitsluitend in de C-poort (bijvoorbeeld voor window creati
 | [`coverage_observe_frame`](../../coverage.c#L92) | [coverage.c](../../coverage.c) |
 | [`coverage_set_output_path`](../../coverage.c#L49) | [coverage.c](../../coverage.c) |
 | [`coverage_write_dump`](../../coverage.c#L192) | [coverage.c](../../coverage.c) |
-| [`game_state_machine`](../../game_state_machine.c#L31) | [game_state_machine.c](../../game_state_machine.c) |
 | [`set_bits_video_register`](../../game_state_machine.c#L107) | [game_state_machine.c](../../game_state_machine.c) |
 | [`read_dsw0`](../../hw_video_audio.c#L481) | [hw_video_audio.c](../../hw_video_audio.c) |
 | [`read_in0`](../../hw_video_audio.c#L480) | [hw_video_audio.c](../../hw_video_audio.c) |
@@ -397,30 +399,28 @@ Deze functies bestaan uitsluitend in de C-poort (bijvoorbeeld voor window creati
 | [`mame_lofi_resampler_init`](../../mame_lofi_resampler.c#L40) | [mame_lofi_resampler.c](../../mame_lofi_resampler.c) |
 | [`mothership_barrier_collision`](../../mothership_logic.c#L32) | [mothership_logic.c](../../mothership_logic.c) |
 | [`mothership_descent_logic`](../../mothership_logic.c#L12) | [mothership_logic.c](../../mothership_logic.c) |
-| [`apply_input_script`](../../platform_sdl.c#L390) | [platform_sdl.c](../../platform_sdl.c) |
-| [`bank_swap_to`](../../platform_sdl.c#L62) | [platform_sdl.c](../../platform_sdl.c) |
-| [`clamp_byte`](../../platform_sdl.c#L210) | [platform_sdl.c](../../platform_sdl.c) |
-| [`compute_channel`](../../platform_sdl.c#L195) | [platform_sdl.c](../../platform_sdl.c) |
-| [`game_thread_func`](../../platform_sdl.c#L174) | [platform_sdl.c](../../platform_sdl.c) |
-| [`get_phoenix_color`](../../platform_sdl.c#L249) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_is_vblank`](../../platform_sdl.c#L49) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_read_dsw`](../../platform_sdl.c#L45) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_read_inputs`](../../platform_sdl.c#L41) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_toggle_palette_bank`](../../platform_sdl.c#L75) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_write_scroll_register`](../../platform_sdl.c#L139) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_write_sound_a`](../../platform_sdl.c#L143) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_write_sound_b`](../../platform_sdl.c#L147) | [platform_sdl.c](../../platform_sdl.c) |
-| [`hw_write_video_register`](../../platform_sdl.c#L70) | [platform_sdl.c](../../platform_sdl.c) |
-| [`init_phoenix_palette`](../../platform_sdl.c#L221) | [platform_sdl.c](../../platform_sdl.c) |
-| [`input_script_button_mask`](../../platform_sdl.c#L335) | [platform_sdl.c](../../platform_sdl.c) |
-| [`load_input_script`](../../platform_sdl.c#L346) | [platform_sdl.c](../../platform_sdl.c) |
-| [`main`](../../platform_sdl.c#L490) | [platform_sdl.c](../../platform_sdl.c) |
-| [`platform_audio_frame_hook`](../../platform_sdl.c#L160) | [platform_sdl.c](../../platform_sdl.c) |
-| [`platform_ram_dump_hook`](../../platform_sdl.c#L466) | [platform_sdl.c](../../platform_sdl.c) |
-| [`record_input_event`](../../platform_sdl.c#L446) | [platform_sdl.c](../../platform_sdl.c) |
-| [`start_input_recording`](../../platform_sdl.c#L430) | [platform_sdl.c](../../platform_sdl.c) |
-| [`stop_input_recording`](../../platform_sdl.c#L455) | [platform_sdl.c](../../platform_sdl.c) |
-| [`write_screenshot`](../../platform_sdl.c#L284) | [platform_sdl.c](../../platform_sdl.c) |
+| [`apply_input_script`](../../platform_sdl.c#L355) | [platform_sdl.c](../../platform_sdl.c) |
+| [`bank_swap_to`](../../platform_sdl.c#L67) | [platform_sdl.c](../../platform_sdl.c) |
+| [`game_thread_func`](../../platform_sdl.c#L179) | [platform_sdl.c](../../platform_sdl.c) |
+| [`get_phoenix_color`](../../platform_sdl.c#L215) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_is_vblank`](../../platform_sdl.c#L54) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_read_dsw`](../../platform_sdl.c#L50) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_read_inputs`](../../platform_sdl.c#L46) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_toggle_palette_bank`](../../platform_sdl.c#L80) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_write_scroll_register`](../../platform_sdl.c#L144) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_write_sound_a`](../../platform_sdl.c#L148) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_write_sound_b`](../../platform_sdl.c#L152) | [platform_sdl.c](../../platform_sdl.c) |
+| [`hw_write_video_register`](../../platform_sdl.c#L75) | [platform_sdl.c](../../platform_sdl.c) |
+| [`initial_alien_layout_level`](../../platform_sdl.c#L455) | [platform_sdl.c](../../platform_sdl.c) |
+| [`input_script_button_mask`](../../platform_sdl.c#L300) | [platform_sdl.c](../../platform_sdl.c) |
+| [`load_input_script`](../../platform_sdl.c#L311) | [platform_sdl.c](../../platform_sdl.c) |
+| [`main`](../../platform_sdl.c#L476) | [platform_sdl.c](../../platform_sdl.c) |
+| [`platform_audio_frame_hook`](../../platform_sdl.c#L165) | [platform_sdl.c](../../platform_sdl.c) |
+| [`platform_ram_dump_hook`](../../platform_sdl.c#L431) | [platform_sdl.c](../../platform_sdl.c) |
+| [`record_input_event`](../../platform_sdl.c#L411) | [platform_sdl.c](../../platform_sdl.c) |
+| [`start_input_recording`](../../platform_sdl.c#L395) | [platform_sdl.c](../../platform_sdl.c) |
+| [`stop_input_recording`](../../platform_sdl.c#L420) | [platform_sdl.c](../../platform_sdl.c) |
+| [`write_screenshot`](../../platform_sdl.c#L249) | [platform_sdl.c](../../platform_sdl.c) |
 | [`add_score`](../../scoring.c#L66) | [scoring.c](../../scoring.c) |
 | [`bcd_add`](../../scoring.c#L16) | [scoring.c](../../scoring.c) |
 | [`check_coin_event`](../../scoring.c#L202) | [scoring.c](../../scoring.c) |
@@ -451,7 +451,6 @@ Deze functies bestaan uitsluitend in de C-poort (bijvoorbeeld voor window creati
 | [`rrca`](../../sound_dispatcher.c#L10) | [sound_dispatcher.c](../../sound_dispatcher.c) |
 | [`execute_bit3_function`](../../sprite_rendering.c#L77) | [sprite_rendering.c](../../sprite_rendering.c) |
 | [`execute_bit4_function`](../../sprite_rendering.c#L13) | [sprite_rendering.c](../../sprite_rendering.c) |
-| [`init_player_data_structure`](../../state_init.c#L25) | [state_init.c](../../state_init.c) |
 | [`level_1_3_B_player_alive_aliens`](../../state_play.c#L16) | [state_play.c](../../state_play.c) |
 | [`level_5_7_birds_fade_in`](../../state_play.c#L149) | [state_play.c](../../state_play.c) |
 | [`tms36xx_decay`](../../tms36xx.c#L141) | [tms36xx.c](../../tms36xx.c) |

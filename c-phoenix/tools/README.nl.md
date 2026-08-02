@@ -49,6 +49,39 @@ eindgrenzen voor gemapte C-functiebereiken, en terug-/vooruitknoppen:
 python3 tools/generate_interactive_asm_html.py
 ```
 
+## Grafieken- en resultatenindex
+
+De statische `generate_*callgraph.py`-tools schrijven **ontwerptijd**-grafen van
+de broncode naar [context/graphs/README.nl.md](../context/graphs/README.nl.md).
+Die lezen de `.c`-bestanden en beschrijven wat de broncode zégt: welke functie
+welke aanroept, welk bronbestand van welk ander afhangt, uit welke ROM-bank een
+functie komt.
+
+Daartegenover leest `generate_c_runtime_callgraph.py` een trace die is opgenomen
+met `make runtimegraph`, en schrijft **runtime**-bewijs naar
+`context/runtimegraphs/<scenario>/`. `generate_c_design_runtime_comparison.py`
+legt die twee naast elkaar en onderscheidt aanroepen die in het ontwerp bestaan
+én zijn uitgevoerd, van aanroepen die alleen op papier bestaan.
+
+Dat onderscheid is het hele punt: een ontwerptijd-graaf laat zien wat *mogelijk*
+is, een runtime-graaf wat er *gebeurd* is, en pas het verschil tussen die twee
+wijst dode code en ongedocumenteerde paden aan.
+
+Elke opdracht meldt zelf waar het resultaat terechtkomt, zodat gegenereerde
+bestanden vindbaar blijven in plaats van onzichtbare kladbestanden te worden.
+
+Twee grafen zijn bijzonder bruikbaar naast de knowledge base:
+
+- **[`file_callgraph`](../context/graphs/file_callgraph.md)** — de
+  afhankelijkheidsgraaf tussen bronbestanden. Elk `.c`-bestand heeft een
+  geannoteerde tegenhanger in [`c-annotated/`](../c-annotated/README.md); deze
+  graaf laat zien welke van die pagina's je erbij moet lezen voordat je er één
+  begrijpt.
+- **[`rom_bank_callgraph`](../context/graphs/rom_bank_callgraph.md)** — sorteert
+  functies op het `[ASM: nnnn-nnnn]`-adres uit hun doc-commentaar, dezelfde tag
+  waar `generate_mappings.py` op draait. Handig als brug tussen
+  [`context/mapping/`](../context/mapping/README.nl.md) en `Phoenix.asm`.
+
 ## Verificatie en Replay
 
 ### `input_bot.py`

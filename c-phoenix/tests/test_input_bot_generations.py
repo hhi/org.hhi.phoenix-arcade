@@ -185,3 +185,53 @@ class MutationCarryOverTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class GameplayScoringTests(unittest.TestCase):
+    """A `_gameplay` target changes what the score rewards.
+
+    A real six-generation run against `level_transition` scored ~1.26M on a
+    replay where max_level was 0x0B but max_gameplay_level was 0x01: the
+    attract demo had reached round 11 while the player never left round 1, and
+    87% of the score came from that demo. `wants_gameplay_progress()` is what
+    prevents this, so pin its effect down here rather than rediscover it in a
+    log.
+    """
+
+    def coverage(self, max_level, max_gameplay, attract=4000, gameplay=2000):
+        return {
+            "summary": {
+                "max_level_and_round": max_level,
+                "max_gameplay_level_and_round": max_gameplay,
+                "attract_frames": attract,
+                "gameplay_frames": gameplay,
+                "mothership_frames": 500,
+                "mothership_gameplay_frames": 0,
+            },
+            "hits": {}, "game_states": {},
+        }
+
+    def test_attract_progress_dominates_without_a_gameplay_target(self):
+        """The trap: a demo that got to round 11 outscores real play at round 1."""
+        demo_ran_far = ib.coverage_score(self.coverage(0x0B, 0x01), ["level_transition"])
+        player_got_far = ib.coverage_score(self.coverage(0x01, 0x01), ["level_transition"])
+        self.assertGreater(demo_ran_far - player_got_far, 900_000,
+                           "attract-mode levels should still be worth ~100k each here")
+
+    def test_a_gameplay_target_ignores_attract_progress(self):
+        """With the flip, only what the player reached counts."""
+        demo_ran_far = ib.coverage_score(self.coverage(0x0B, 0x01), ["bird_wave_gameplay"])
+        player_got_far = ib.coverage_score(self.coverage(0x01, 0x01), ["bird_wave_gameplay"])
+        self.assertEqual(demo_ran_far, player_got_far,
+                         "a gameplay target must not reward the demo running longer")
+
+    def test_a_gameplay_target_rewards_real_progress(self):
+        low = ib.coverage_score(self.coverage(0x0B, 0x01), ["bird_wave_gameplay"])
+        high = ib.coverage_score(self.coverage(0x0B, 0x05), ["bird_wave_gameplay"])
+        self.assertGreater(high - low, 500_000, "gameplay levels are worth 150k each")
+
+    def test_a_gameplay_target_penalises_idling_in_attract(self):
+        busy = ib.coverage_score(self.coverage(0x0B, 0x05, attract=500), ["bird_wave_gameplay"])
+        idle = ib.coverage_score(self.coverage(0x0B, 0x05, attract=5000), ["bird_wave_gameplay"])
+        self.assertGreater(busy - idle, 4000,
+                           "the full attract penalty should apply, not a quarter of it")

@@ -107,6 +107,21 @@ search parameters and restart at `mutate`.
 
 ## Search for New Candidates
 
+There are `make` entry points for the two things you do most, so you do not have
+to remember the script path:
+
+```bash
+make bottargets                        # every target and the condition it checks
+make botsearch BOT_TARGET=alien_kill   # search, with sensible defaults
+```
+
+`make help` lists the `BOT_*` variables and their current values
+(`BOT_SEED`, `BOT_FRAMES`, `BOT_ITERATIONS`, `BOT_GENERATIONS`, `BOT_MODE`,
+`BOT_RANDOM_SEED`, `BOT_OUTPUT_DIR`). From the repository root the same two are
+`make c-bottargets` and `make c-botsearch`.
+
+The rest of this page uses the script directly, because it shows every flag.
+
 Use `mutate` to create and rank candidate scripts:
 
 ```bash
@@ -277,6 +292,67 @@ Two habits follow from this. Compare `max_level` against `max_game` in the log
 before believing a score, and prefer a `_gameplay` target whenever you want the
 player, not the demo, to be doing the work.
 
+## The Same Search With a Gameplay Target
+
+The run above was repeated with one thing changed — the target — so any
+difference is down to the scoring flip and nothing else:
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/extended_playthrough.txt \
+  --frames 6000 --iterations 8 --generations 6 \
+  --mutation-mode jitter \
+  --target bird_wave_gameplay --random-seed 1
+```
+
+```
+   best of this round: 185313  ->  seeds generation 2
+   re-seeded: 185313 -> 185423 (+110)  ->  seeds generation 3
+   re-seeded: 185423 -> 186350 (+927)  ->  seeds generation 4
+   re-seeded: 186350 -> 186587 (+237)  ->  seeds generation 5
+   re-seeded: 186587 -> 192781 (+6194)  ->  seeds generation 6
+   re-seeded: 192781 -> 194982 (+2201)  ->  seeds the saved winner
+seed score per generation: 185313 -> 185423 -> 186350 -> 186587 -> 192781 -> 194982   (5 re-seeds after the first round)
+```
+
+**The flip works.** Same seed, same frames, same mutation mode as the
+`level_transition` run — and the score drops from ~1,260,000 to ~185,000. The
+1.1 million that the attract demo was contributing is simply gone;
+`max_gameplay_level` is 0x01, so the base is `1 x 150000` and what is left is
+what the player actually did.
+
+**Every generation improved.** Five re-seeds out of five, no plateau — the
+clearest demonstration of `--generations` in this document, and a good sanity
+check that the loop behaves.
+
+**And the target was never reached.** All 48 candidates report
+`bird_wave_gameplay=miss`, and `max_game` never moves off 0x01. So the search
+climbed 5.2% on the *generic* part of the score while getting no closer to what
+was asked. Better scoring did not produce better play: six thousand frames of
+jitter around this seed cannot get the player past round 1.
+
+That is worth stating plainly, because a rising trajectory looks like success.
+Read the target column, not the score.
+
+**A second trap: the printed columns are not the score.** `mship_tiles` visibly
+tracks the score in that log — 16 tiles at the top, 0 tiles at the bottom — but
+with a gameplay target those hits are worth **exactly nothing**:
+
+```python
+if not gameplay_focus or mothership_gameplay_frames > 0:
+    score += mothership_tile_hit * 1500
+```
+
+`mship_game` is 0 throughout, so the guard is false and the tiles score zero.
+The correlation is real, the causation is not: both are downstream of how long
+the run survived. To find out what actually moved a score, run `evaluate` on the
+saved script and compare counters — the log prints a fixed set of columns, not
+the terms of the sum.
+
+**What to try next.** Give the player more room (`--frames 12000`), or seed from
+a script that already reaches a bird wave in gameplay rather than hoping jitter
+discovers one.
+
 ## Multiple Targets
 
 Repeat `--target` for a combined goal. Every reached target receives a ranking
@@ -380,15 +456,35 @@ and, where applicable, a lockstep comparison.
 
 ## Mutation Modes
 
-- `regenerate` (default): preserves the seed until `--mutate-after`, then
-  generates a new pattern.
-- `jitter`: mainly varies existing event timing; use when the seed already
-  reaches the right phase.
-- `sweep`: preserves the route, then repeatedly moves left/right while firing;
-  useful for mothership or area targets.
+All three keep the seed's events *before* `--mutate-after` (default frame 220),
+so a known-good opening route survives. What they do from that frame onward is
+where they differ — and that difference decides whether `--generations` can
+build on a winner.
 
-Use `--mutate-after` to preserve a known-good opening route. The default is
-frame `220`.
+| Mode | From `--mutate-after` onward | Carries the seed forward? |
+| --- | --- | --- |
+| `regenerate` *(default)* | Discards the seed's remaining events and writes a fresh fire/move pattern | **No** |
+| `sweep` | Discards them too, then writes a metronomic left-right sweep with steady fire | **No** |
+| `jitter` | Keeps every seed event, nudges each frame by up to ±18, drops about one in seven, and adds 6-18 new pulses | **Yes** |
+
+Measured on a seed carrying five marker events past frame 220: jitter keeps four
+of them, `regenerate` and `sweep` keep none. That is pinned by
+[`tests/test_input_bot_generations.py`](../tests/test_input_bot_generations.py).
+
+**Which to pick.**
+
+- `regenerate` — you have no idea what the input should look like and want wide,
+  unbiased coverage of the space. Good for a first pass at a shallow target.
+- `sweep` — you want the ship to cover ground while firing continuously. Useful
+  for area targets such as hitting a specific mothership tile, where *where* the
+  ship is matters more than any particular button sequence.
+- `jitter` — you already have a script that gets close and want to refine it.
+  This is the mode `--generations` needs; the other two throw the winner's tail
+  away each round, so the search cannot compound.
+
+`--mutate-after` is the other half of this. Raise it past a hard-won opening to
+protect that part from all three modes: `--mutate-after 10000` keeps the first
+ten thousand frames of a long fixture intact and searches only the tail.
 
 ## View and Keep Results
 

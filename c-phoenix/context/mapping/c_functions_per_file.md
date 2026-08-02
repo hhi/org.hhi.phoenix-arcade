@@ -36,18 +36,18 @@
 | Function | ASM Range(s) |
 |---|---|
 | [`l24c4`](../../alien_wave.c#L29) | 24C4-24DF |
-| [`l2204`](../../alien_wave.c#L79) | 2204-222B |
-| [`l21ba`](../../alien_wave.c#L103) | 21BA-21CF |
-| [`l2150`](../../alien_wave.c#L133) | 2150-215F |
-| [`l2160`](../../alien_wave.c#L142) | 2160-216F |
-| [`l2170`](../../alien_wave.c#L152) | 2170-217F |
-| [`l2180`](../../alien_wave.c#L160) | 2180-218F |
-| [`l2190`](../../alien_wave.c#L170) | 2190-21A4 |
-| [`l21a5`](../../alien_wave.c#L181) | 21A5-21B9 |
-| [`l2146`](../../alien_wave.c#L192) | 2146-214F |
-| [`l2130`](../../alien_wave.c#L204) | 2130-2145 |
-| [`l2000_alien_wave_main_loop`](../../alien_wave.c#L219) | 2000-202A |
-| [`l3000`](../../alien_wave.c#L254) | 3000-3012 |
+| [`l2204`](../../alien_wave.c#L80) | 2204-222B |
+| [`l21ba`](../../alien_wave.c#L104) | 21BA-21CF |
+| [`l2150`](../../alien_wave.c#L134) | 2150-215F |
+| [`l2160`](../../alien_wave.c#L143) | 2160-216F |
+| [`l2170`](../../alien_wave.c#L153) | 2170-217F |
+| [`l2180`](../../alien_wave.c#L161) | 2180-218F |
+| [`l2190`](../../alien_wave.c#L171) | 2190-21A4 |
+| [`l21a5`](../../alien_wave.c#L182) | 21A5-21B9 |
+| [`l2146`](../../alien_wave.c#L193) | 2146-214F |
+| [`l2130`](../../alien_wave.c#L205) | 2130-2145 |
+| [`l2000_alien_wave_main_loop`](../../alien_wave.c#L220) | 2000-202A |
+| [`l3000`](../../alien_wave.c#L255) | 3000-3012 |
 
 ## [attract_mode.c](../../attract_mode.c)
 
@@ -69,7 +69,7 @@
 | [`draw_bird_shape_350c`](../../attract_mode.c#L519) | 350C-355D |
 | [`draw_bird_shape_34de`](../../attract_mode.c#L557) | 34DE-350B |
 | [`l1ee0`](../../attract_mode.c#L583) | 1EE0-1EFA |
-| [`draw_intro_bird_animation_frame`](../../attract_mode.c#L606) | Unknown / None |
+| [`draw_intro_bird_animation_frame`](../../attract_mode.c#L605) | Unknown / None |
 
 ## [bird_logic.c](../../bird_logic.c)
 
@@ -137,7 +137,7 @@
 
 | Function | ASM Range(s) |
 |---|---|
-| [`game_state_machine`](../../game_state_machine.c#L31) | Unknown / None |
+| [`game_state_machine`](../../game_state_machine.c#L32) | 0400-041D |
 | [`state_0_new_game_start`](../../game_state_machine.c#L54) | 0430-045B, 04A0-04AB |
 | [`l04a0_change_player_at_attract_mode`](../../game_state_machine.c#L98) | 04A0-04AB |
 | [`set_bits_video_register`](../../game_state_machine.c#L107) | Unknown / None |
@@ -185,11 +185,11 @@
 
 | Function | ASM Range(s) |
 |---|---|
-| [`l06f0`](../../misc_logic.c#L11) | 06F0-0701 |
-| [`l01e1`](../../misc_logic.c#L23) | 01E1-01EB |
-| [`l24a0`](../../misc_logic.c#L36) | 24A0-24BB |
-| [`l24f2`](../../misc_logic.c#L53) | 24F2-251C |
-| [`l32b0`](../../misc_logic.c#L71) | 32B0-32EB |
+| [`l06f0`](../../misc_logic.c#L12) | 06F0-0701 |
+| [`l01e1`](../../misc_logic.c#L24) | 01E1-01EB |
+| [`l24a0`](../../misc_logic.c#L37) | 24A0-24BB |
+| [`l24f2`](../../misc_logic.c#L55) | 24F2-251C |
+| [`l32b0`](../../misc_logic.c#L73) | 32B0-32EB |
 
 ## [mothership_impl.c](../../mothership_impl.c)
 
@@ -211,40 +211,38 @@
 
 | Function | ASM Range(s) |
 |---|---|
-| [`hw_read_inputs`](../../platform_sdl.c#L41) | Unknown / None |
-| [`hw_read_dsw`](../../platform_sdl.c#L45) | Unknown / None |
-| [`hw_is_vblank`](../../platform_sdl.c#L49) | Unknown / None |
-| [`bank_swap_to`](../../platform_sdl.c#L62) | Unknown / None |
-| [`hw_write_video_register`](../../platform_sdl.c#L70) | Unknown / None |
-| [`hw_toggle_palette_bank`](../../platform_sdl.c#L75) | Unknown / None |
-| [`copy_memory_bank`](../../platform_sdl.c#L90) | 0460-049D |
-| [`hw_write_scroll_register`](../../platform_sdl.c#L139) | Unknown / None |
-| [`hw_write_sound_a`](../../platform_sdl.c#L143) | Unknown / None |
-| [`hw_write_sound_b`](../../platform_sdl.c#L147) | Unknown / None |
-| [`platform_audio_frame_hook`](../../platform_sdl.c#L160) | Unknown / None |
-| [`game_thread_func`](../../platform_sdl.c#L174) | Unknown / None |
-| [`compute_channel`](../../platform_sdl.c#L195) | Unknown / None |
-| [`clamp_byte`](../../platform_sdl.c#L210) | Unknown / None |
-| [`init_phoenix_palette`](../../platform_sdl.c#L221) | Unknown / None |
-| [`get_phoenix_color`](../../platform_sdl.c#L249) | Unknown / None |
-| [`write_screenshot`](../../platform_sdl.c#L284) | Unknown / None |
-| [`input_script_button_mask`](../../platform_sdl.c#L335) | Unknown / None |
-| [`load_input_script`](../../platform_sdl.c#L346) | Unknown / None |
-| [`apply_input_script`](../../platform_sdl.c#L390) | Unknown / None |
-| [`start_input_recording`](../../platform_sdl.c#L430) | Unknown / None |
-| [`record_input_event`](../../platform_sdl.c#L446) | Unknown / None |
-| [`stop_input_recording`](../../platform_sdl.c#L455) | Unknown / None |
-| [`platform_ram_dump_hook`](../../platform_sdl.c#L466) | Unknown / None |
-| [`main`](../../platform_sdl.c#L490) | Unknown / None |
+| [`hw_read_inputs`](../../platform_sdl.c#L46) | Unknown / None |
+| [`hw_read_dsw`](../../platform_sdl.c#L50) | Unknown / None |
+| [`hw_is_vblank`](../../platform_sdl.c#L54) | Unknown / None |
+| [`bank_swap_to`](../../platform_sdl.c#L67) | Unknown / None |
+| [`hw_write_video_register`](../../platform_sdl.c#L75) | Unknown / None |
+| [`hw_toggle_palette_bank`](../../platform_sdl.c#L80) | Unknown / None |
+| [`copy_memory_bank`](../../platform_sdl.c#L95) | 0460-049D |
+| [`hw_write_scroll_register`](../../platform_sdl.c#L144) | Unknown / None |
+| [`hw_write_sound_a`](../../platform_sdl.c#L148) | Unknown / None |
+| [`hw_write_sound_b`](../../platform_sdl.c#L152) | Unknown / None |
+| [`platform_audio_frame_hook`](../../platform_sdl.c#L165) | Unknown / None |
+| [`game_thread_func`](../../platform_sdl.c#L179) | Unknown / None |
+| [`get_phoenix_color`](../../platform_sdl.c#L215) | Unknown / None |
+| [`write_screenshot`](../../platform_sdl.c#L249) | Unknown / None |
+| [`input_script_button_mask`](../../platform_sdl.c#L300) | Unknown / None |
+| [`load_input_script`](../../platform_sdl.c#L311) | Unknown / None |
+| [`apply_input_script`](../../platform_sdl.c#L355) | Unknown / None |
+| [`start_input_recording`](../../platform_sdl.c#L395) | Unknown / None |
+| [`record_input_event`](../../platform_sdl.c#L411) | Unknown / None |
+| [`stop_input_recording`](../../platform_sdl.c#L420) | Unknown / None |
+| [`platform_ram_dump_hook`](../../platform_sdl.c#L431) | Unknown / None |
+| [`initial_alien_layout_level`](../../platform_sdl.c#L455) | Unknown / None |
+| [`main`](../../platform_sdl.c#L476) | Unknown / None |
 
 ## [player_explosion.c](../../player_explosion.c)
 
 | Function | ASM Range(s) |
 |---|---|
-| [`l211c`](../../player_explosion.c#L15) | 211C-212C |
-| [`l20e8`](../../player_explosion.c#L30) | 20E8-210D |
-| [`l20b0_player_ship_particles_explosion`](../../player_explosion.c#L74) | 20B0-20E2 |
-| [`l2070`](../../player_explosion.c#L115) | 2070-2084 |
+| [`l211c`](../../player_explosion.c#L16) | 211C-212C |
+| [`l20e8`](../../player_explosion.c#L32) | 20E8-210D |
+| [`l20b0_player_ship_particles_explosion`](../../player_explosion.c#L76) | 20B0-20E2 |
+| [`l2070`](../../player_explosion.c#L118) | 2070-2084 |
 
 ## [player_logic.c](../../player_logic.c)
 
@@ -320,24 +318,24 @@
 |---|---|
 | [`rrca`](../../sound_dispatcher.c#L10) | Unknown / None |
 | [`l23d6`](../../sound_dispatcher.c#L21) | 23D6-23FB |
-| [`l27bd`](../../sound_dispatcher.c#L34) | 27BD-27EE |
-| [`l3a2c`](../../sound_dispatcher.c#L61) | 3A2C-3A3F |
-| [`l3a1d`](../../sound_dispatcher.c#L71) | 3A1D-3A2B |
-| [`l3a4e`](../../sound_dispatcher.c#L88) | 3A4E-3A5F |
-| [`l3a40`](../../sound_dispatcher.c#L98) | 3A40-3A4D |
-| [`l3a78`](../../sound_dispatcher.c#L113) | 3A78-3A81 |
-| [`l3a62`](../../sound_dispatcher.c#L119) | 3A62-3A77 |
-| [`l3a82`](../../sound_dispatcher.c#L133) | 3A82-3A8F |
-| [`l3a90`](../../sound_dispatcher.c#L142) | 3A90-3A95 |
-| [`l3a98_scan`](../../sound_dispatcher.c#L153) | 3A98-3ACA |
-| [`l3af8`](../../sound_dispatcher.c#L174) | 3AF8-3B00 |
-| [`l3ad0`](../../sound_dispatcher.c#L185) | 3AD0-3AF6 |
-| [`l3b02`](../../sound_dispatcher.c#L205) | 3B02-3B19 |
-| [`l3b28`](../../sound_dispatcher.c#L217) | 3B28-3B31 |
-| [`l3b1b`](../../sound_dispatcher.c#L223) | 3B1B-3B27 |
-| [`l3b33`](../../sound_dispatcher.c#L234) | 3B33-3B41 |
-| [`l3b43`](../../sound_dispatcher.c#L246) | 3B43-3B5B |
-| [`l3a10`](../../sound_dispatcher.c#L264) | 3A10-3A1C |
+| [`l27bd`](../../sound_dispatcher.c#L35) | 27BD-27EE |
+| [`l3a2c`](../../sound_dispatcher.c#L62) | 3A2C-3A3F |
+| [`l3a1d`](../../sound_dispatcher.c#L72) | 3A1D-3A2B |
+| [`l3a4e`](../../sound_dispatcher.c#L89) | 3A4E-3A5F |
+| [`l3a40`](../../sound_dispatcher.c#L99) | 3A40-3A4D |
+| [`l3a78`](../../sound_dispatcher.c#L114) | 3A78-3A81 |
+| [`l3a62`](../../sound_dispatcher.c#L120) | 3A62-3A77 |
+| [`l3a82`](../../sound_dispatcher.c#L134) | 3A82-3A8F |
+| [`l3a90`](../../sound_dispatcher.c#L143) | 3A90-3A95 |
+| [`l3a98_scan`](../../sound_dispatcher.c#L154) | 3A98-3ACA |
+| [`l3af8`](../../sound_dispatcher.c#L175) | 3AF8-3B00 |
+| [`l3ad0`](../../sound_dispatcher.c#L186) | 3AD0-3AF6 |
+| [`l3b02`](../../sound_dispatcher.c#L206) | 3B02-3B19 |
+| [`l3b28`](../../sound_dispatcher.c#L218) | 3B28-3B31 |
+| [`l3b1b`](../../sound_dispatcher.c#L224) | 3B1B-3B27 |
+| [`l3b33`](../../sound_dispatcher.c#L235) | 3B33-3B41 |
+| [`l3b43`](../../sound_dispatcher.c#L247) | 3B43-3B5B |
+| [`l3a10`](../../sound_dispatcher.c#L265) | 3A10-3A1C |
 
 ## [sprite_rendering.c](../../sprite_rendering.c)
 
@@ -366,7 +364,7 @@
 
 | Function | ASM Range(s) |
 |---|---|
-| [`init_player_data_structure`](../../state_init.c#L25) | Unknown / None |
+| [`init_player_data_structure`](../../state_init.c#L26) | 0547-055A |
 | [`init_alien_data_new_level`](../../state_init.c#L33) | 0532-0543 |
 | [`init_alien_movement_pointers`](../../state_init.c#L46) | 0506-0514 |
 | [`l0526`](../../state_init.c#L56) | 0526-0531 |
@@ -444,9 +442,9 @@
 | [`check_player_ship_collision`](../../weapon_collision.c#L173) | Unknown / None |
 | [`check_enemy_bullet_to_player_collision`](../../weapon_collision.c#L189) | 0DF0-0E01 |
 | [`l0e02_unused`](../../weapon_collision.c#L199) | 0E02-0E0B |
-| [`l0c00_kill_score`](../../weapon_collision.c#L214) | 0E10-0E6B, 0E70-0E9D, 0C00-0C23 |
-| [`l0e10`](../../weapon_collision.c#L233) | 0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0 |
-| [`l0ea4_with_score`](../../weapon_collision.c#L301) | 0EA4-0EE5 |
-| [`l0f56_screen_ram_collision`](../../weapon_collision.c#L352) | 0F56-0F71 |
-| [`l0f00_check_alien_with_player_collision`](../../weapon_collision.c#L380) | 0F00-0F33, 0F38-0F4E, 0F74-0FB9 |
+| [`l0c00_kill_score`](../../weapon_collision.c#L209) | 0C00-0C23 |
+| [`l0e10`](../../weapon_collision.c#L228) | 0E10-0E36, 0E39-0E6B, 0E58-0E6B, 0E70-0EA0 |
+| [`l0ea4_with_score`](../../weapon_collision.c#L296) | 0EA4-0EE5 |
+| [`l0f56_screen_ram_collision`](../../weapon_collision.c#L347) | 0F56-0F71 |
+| [`l0f00_check_alien_with_player_collision`](../../weapon_collision.c#L375) | 0F00-0F33, 0F38-0F4E, 0F74-0FB9 |
 

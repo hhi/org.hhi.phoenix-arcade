@@ -40,6 +40,32 @@ Niets hierin berust alleen op handwerk. Bronnen voeden generatoren, generatoren 
 
 ## 🗂️ Inhoudsopgave van de C & Header Annotated Bestanden
 
+### 🕸️ Afhankelijkheidsgrafen — welke pagina's bij elkaar horen
+
+Elk `.c`-bestand hieronder heeft hier een geannoteerde pagina, maar die staan
+niet los van elkaar: één lezen betekent meestal eerst twee of drie andere lezen.
+De ontwerptijd-grafen in
+[`../../context/graphs/`](../../context/graphs/README.nl.md) tonen die
+structuur, gegenereerd uit dezelfde broncode die deze pagina's annoteren.
+
+- [`file_callgraph`](../../context/graphs/file_callgraph.md) 🕸️ — **de
+  afhankelijkheidsgraaf tussen bronbestanden.** Eén knoop per `.c`-bestand,
+  gegroepeerd in architectuurclusters. Gebruik hem om te zien welke geannoteerde
+  pagina's je erbij nodig hebt, en tot welk cluster een bestand behoort.
+- [`rom_bank_callgraph`](../../context/graphs/rom_bank_callgraph.md) 🧭 —
+  functies gesorteerd op de `[ASM: nnnn-nnnn]`-tag uit hun doc-commentaar,
+  dezelfde tag die de annotaties gebruiken. De brug tussen deze pagina's,
+  [`context/mapping/`](../../context/mapping/README.nl.md) en `Phoenix.asm`.
+- [`cross_domain_callgraph`](../../context/graphs/cross_domain_callgraph.md) 🔀 —
+  alleen de aanroepen die hun eigen domein verlaten, en daar zitten de meeste
+  verrassingen in de port.
+
+Die grafen zijn een kaart, geen bewijs: ze komen uit een tekstuele scan, dus
+lees [hun README](../../context/graphs/README.nl.md) voor wat die scan niet
+ziet.
+
+---
+
 ### 🎨 Visuele Animaties & Vliegpatronen
 - [`../../animations/nl/README.md`](../../animations/nl/README.md) 🎬 — **Visuele animatiegids & SVG-analyse van alle vogel-animaties en vliegtrajecten in `c-phoenix/animations/`.**
 - [`../../animations/nl/animation-trajectory.md`](../../animations/nl/animation-trajectory.md) 🚀 — **Analyse van alle voorgeschreven vliegpatronen, ROM-clusters, vectoren en AI-scripts.**

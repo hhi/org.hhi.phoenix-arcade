@@ -40,6 +40,30 @@ Nothing in here is asserted by hand alone. Sources feed generators, generators p
 
 ## 🗂️ Table of Contents for C & Header Annotated Files
 
+### 🕸️ Dependency Graphs — which pages belong together
+
+Every `.c` file below has an annotated page here, but they are not independent:
+reading one usually means reading two or three others first. The design-time
+graphs in [`../../context/graphs/`](../../context/graphs/README.md) show that
+structure, generated from the same sources these pages annotate.
+
+- [`file_callgraph`](../../context/graphs/file_callgraph.md) 🕸️ — **the
+  dependency graph between source files.** One node per `.c` file, grouped into
+  architectural clusters. Use it to see which annotated pages you need alongside
+  the one you are reading, and which cluster a file belongs to.
+- [`rom_bank_callgraph`](../../context/graphs/rom_bank_callgraph.md) 🧭 —
+  functions bucketed by the `[ASM: nnnn-nnnn]` tag in their doc comment, the
+  same tag the annotations use. The bridge between these pages,
+  [`context/mapping/`](../../context/mapping/README.md) and `Phoenix.asm`.
+- [`cross_domain_callgraph`](../../context/graphs/cross_domain_callgraph.md) 🔀 —
+  only the calls that leave their own domain, which is where most surprises in
+  the port live.
+
+Those graphs are a map, not proof: they come from a textual scan, so read
+[their README](../../context/graphs/README.md) for what the scan cannot see.
+
+---
+
 ### 🎨 Visual Animations & Flight Patterns
 - [`../../animations/en/README.md`](../../animations/en/README.md) 🎬 — **Visual animation guide & SVG analysis of all bird animations and flight trajectories in `c-phoenix/animations/`.**
 - [`../../animations/en/animation-trajectory.md`](../../animations/en/animation-trajectory.md) 🚀 — **Analysis of all prescribed flight patterns, ROM clusters, vectors, and AI scripts.**

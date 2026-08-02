@@ -27,8 +27,8 @@ traceable to the original Phoenix Z80 ROM and to the jphoenix emulator.
 
 ## Subdirectories
 
-- [mapping/](mapping/) - generated C/ASM mapping reports and lockstep status
-  data.
+- [mapping/](mapping/README.md) - which C function replaces which piece of the
+  original ROM, and the byte-exact evidence behind each claim.
 - [graphs/](graphs/) - generated callgraph and coverage graph artifacts.
 - [verification/](verification/) - dated lockstep evidence, recorded revisions,
   and JPhoenix PC coverage used to substantiate it.
