@@ -76,6 +76,11 @@ levels, routine hits, and target hits/misses.
 Use the bot when you need a deterministic replay that reaches a specific
 gameplay condition but hand-writing the input timing would be guesswork.
 
+> New to the bot? [`tools/input-bot-howto.md`](../../tools/input-bot-howto.md)
+> explains what it is and walks through a complete search, including
+> `--generations` for targets a single round cannot reach. The picture in
+> [`demo/README.md`](../../../demo/README.md) shows the loop in one glance.
+
 ### 1. Pick a built-in target
 
 ```bash

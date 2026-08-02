@@ -1,0 +1,189 @@
+<svg width="880" height="372" viewBox="0 0 880 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Geanimeerde uitleg van de Phoenix input-bot: je noemt een doel, de bot muteert een seed-inputscript tot twintig varianten, speelt elke variant headless af, scoort hem tegen het doel en houdt de beste. In generatiemodus wordt de winnaar de seed van de volgende ronde, zodat de zoektocht klimt.">
+  <title>Hoe de input-bot een testcase vindt</title>
+  <style>
+    .bg      { fill:#050510; }
+    .panel   { fill:#0C0C1E; stroke:#2A2A4A; stroke-width:1.5; }
+    .badge   { fill:#0C0C1E; stroke:#2A2A4A; stroke-width:1.5; }
+    .h1      { fill:#E8E8FF; font-family:'Segoe UI',system-ui,sans-serif; font-size:19px; font-weight:600; }
+    .sub     { fill:#8888AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:12.5px; }
+    .lbl     { fill:#AAAACC; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; font-weight:600; letter-spacing:.5px; }
+    .step    { fill:#4444AA; font-family:'Segoe UI',system-ui,sans-serif; font-size:13px; font-weight:700; }
+    .note    { fill:#777799; font-family:'Segoe UI',system-ui,sans-serif; font-size:10.5px; }
+    .tag     { fill:#5E5E80; font-family:monospace; font-size:9.5px; }
+    .mono    { fill:#8899CC; font-family:monospace; font-size:10.5px; }
+    .mono2   { fill:#AAB4DD; font-family:monospace; font-size:9.5px; }
+    .target  { fill:#FFFF66; font-family:monospace; font-size:11.5px; font-weight:bold; }
+    .verdict { fill:#00FF66; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; font-weight:600; }
+    .genno   { fill:#E8E8FF; font-family:monospace; font-size:12.5px; font-weight:bold; }
+    .scoreno { fill:#00FFCC; font-family:monospace; font-size:12.5px; font-weight:bold; }
+    .cand    { fill:#141428; stroke:#2A2A4A; stroke-width:1; }
+    .keeprow { fill:#141428; stroke:#2A2A4A; stroke-width:1; }
+    .best    { fill:#10281E; stroke:#00FF66; stroke-width:1.3; }
+    .screen  { fill:#000008; stroke:#2A2A4A; stroke-width:1; }
+    .bird    { fill:#FF66AA; }
+    .shotpx  { fill:#FFFF66; }
+    .shippx  { fill:#00FFCC; }
+    .wire    { fill:none; stroke:#4444AA; stroke-width:1.5; }
+    .head    { fill:#4444AA; }
+    .retwire { fill:none; stroke:#00FF66; stroke-width:1.5; stroke-dasharray:5 4; opacity:.75; }
+    .rethead { fill:#00FF66; opacity:.75; }
+    .ret     { fill:#00CC55; font-family:'Segoe UI',system-ui,sans-serif; font-size:11.5px; }
+    .tokdot  { fill:#FFFF66; }
+    .fact    { fill:#AAAACC; font-family:'Segoe UI',system-ui,sans-serif; font-size:12px; }
+    .foot    { fill:#66668A; font-family:'Segoe UI',system-ui,sans-serif; font-size:10.5px; }
+    .d1 { fill:#4444AA; } .d2 { fill:#00FFCC; } .d3 { fill:#00FF66; }
+
+    /* Static fallback: with no animation the sheet reads as generation 3,
+       every station lit, which is exactly the state the numbers describe. */
+    .g1, .g2 { opacity: 0; }
+    .token   { opacity: 0; }
+
+    @keyframes ride {
+      0%    { transform: translate(104px, 170px); }
+      12%   { transform: translate(104px, 170px); }
+      20%   { transform: translate(272px, 170px); }
+      32%   { transform: translate(272px, 170px); }
+      40%   { transform: translate(440px, 170px); }
+      56%   { transform: translate(440px, 170px); }
+      64%   { transform: translate(608px, 170px); }
+      76%   { transform: translate(608px, 170px); }
+      84%   { transform: translate(776px, 170px); }
+      92%   { transform: translate(776px, 274px); }
+      100%  { transform: translate(104px, 274px); }
+    }
+    @keyframes blip { 0%,8%,100% { opacity:0; } 12%,92% { opacity:1; } }
+    .token { animation: ride 8s infinite linear, blip 8s infinite linear; }
+
+    /* each station brightens as the token reaches it */
+    @keyframes lit1 { 0%,22%,100% { stroke:#2A2A4A; } 2%,20% { stroke:#6666DD; } }
+    @keyframes lit2 { 0%,18%,36%,100% { stroke:#2A2A4A; } 21%,34% { stroke:#6666DD; } }
+    @keyframes lit3 { 0%,38%,60%,100% { stroke:#2A2A4A; } 41%,58% { stroke:#6666DD; } }
+    @keyframes lit4 { 0%,62%,80%,100% { stroke:#2A2A4A; } 65%,78% { stroke:#6666DD; } }
+    @keyframes lit5 { 0%,82%,100% { stroke:#2A2A4A; } 85%,97% { stroke:#00FF66; } }
+    .st1 { animation: lit1 8s infinite; } .st2 { animation: lit2 8s infinite; }
+    .st3 { animation: lit3 8s infinite; } .st4 { animation: lit4 8s infinite; }
+    .st5 { animation: lit5 8s infinite; }
+
+    /* the three mutated candidates appear one by one */
+    @keyframes fan { 0%,20% { opacity:0; } 26%,100% { opacity:1; } }
+    .fan { animation: fan 8s infinite; }
+    .f2  { animation-delay: .35s; } .f3 { animation-delay: .7s; }
+
+    /* the replayed frame: slow on purpose, this is for reading, not for speed */
+    @keyframes fall  { 0%,40% { transform: translate(0,0); } 58% { transform: translate(0,32px); } 60%,100% { transform: translate(0,32px); opacity:0; } }
+    @keyframes rise  { 0%,42% { transform: translate(0,0); opacity:0; } 44% { opacity:1; } 57% { transform: translate(0,-26px); opacity:1; } 59%,100% { opacity:0; } }
+    @keyframes strafe{ 0%,40% { transform: translate(0,0); } 50% { transform: translate(6px,0); } 60%,100% { transform: translate(6px,0); } }
+    .birdfall { animation: fall 8s infinite ease-in; }
+    .shot     { animation: rise 8s infinite linear; }
+    .ship     { animation: strafe 8s infinite ease-in-out; }
+
+    /* the verdict only lands once the score has been computed */
+    @keyframes verdict { 0%,66% { opacity:0; } 70%,100% { opacity:1; } }
+    .hitmark { animation: verdict 8s infinite; }
+
+    /* the return arrow pulses as the generation rolls over */
+    @keyframes ret { 0%,88% { opacity:.25; } 93%,100% { opacity:.9; } }
+    .retwire, .rethead { animation: ret 8s infinite; }
+
+    /* generation counter and running best: one step per pass, three passes */
+    @keyframes show1 { 0%,32.9% { opacity:1; } 33%,100% { opacity:0; } }
+    @keyframes show2 { 0%,32.9% { opacity:0; } 33%,65.9% { opacity:1; } 66%,100% { opacity:0; } }
+    @keyframes show3 { 0%,65.9% { opacity:0; } 66%,100% { opacity:1; } }
+    .g1 { animation: show1 24s infinite steps(1); }
+    .g2 { animation: show2 24s infinite steps(1); }
+    .g3 { animation: show3 24s infinite steps(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .token, .st1, .st2, .st3, .st4, .st5, .fan, .birdfall, .shot, .ship,
+      .hitmark, .retwire, .rethead, .g1, .g2, .g3 { animation: none; }
+      .fan, .hitmark { opacity: 1; }
+      .g1, .g2 { opacity: 0; }
+      .token { opacity: 0; }
+    }
+  </style>
+  <rect class="bg" width="880" height="372"/>
+  <text class="h1" x="26" y="34">Hoe de input-bot een testcase vindt</text>
+  <text class="sub" x="26" y="56">Jij noemt wat je wilt zien. Hij speelt duizenden varianten en houdt de varianten die er komen.</text>
+  <rect class="badge" x="644" y="18" width="210" height="46" rx="6"/>
+  <text class="tag" x="658" y="36">generatie</text>
+  <text class="genno g1" x="728" y="37">1 / 3</text>
+  <text class="genno g2" x="728" y="37">2 / 3</text>
+  <text class="genno g3" x="728" y="37">3 / 3</text>
+  <text class="tag" x="658" y="55">beste score</text>
+  <text class="scoreno g1" x="728" y="56">148 300</text>
+  <text class="scoreno g2" x="728" y="56">212 900</text>
+  <text class="scoreno g3" x="728" y="56">265 400</text>
+  <rect class="panel st1" x="26" y="104" width="156" height="132" rx="7"/>
+  <text class="step" x="38" y="128">1</text>
+  <text class="lbl" x="58" y="128">SEED</text>
+  <text class="note" x="38" y="146">één inputscript</text>
+  <rect class="panel st2" x="194" y="104" width="156" height="132" rx="7"/>
+  <text class="step" x="206" y="128">2</text>
+  <text class="lbl" x="226" y="128">MUTEER</text>
+  <text class="note" x="206" y="146">20 varianten</text>
+  <rect class="panel st3" x="362" y="104" width="156" height="132" rx="7"/>
+  <text class="step" x="374" y="128">3</text>
+  <text class="lbl" x="394" y="128">SPEEL AF</text>
+  <text class="note" x="374" y="146">headless, geen venster</text>
+  <rect class="panel st4" x="530" y="104" width="156" height="132" rx="7"/>
+  <text class="step" x="542" y="128">4</text>
+  <text class="lbl" x="562" y="128">SCOOR</text>
+  <text class="note" x="542" y="146">tegen jouw doel</text>
+  <rect class="panel st5" x="698" y="104" width="156" height="132" rx="7"/>
+  <text class="step" x="710" y="128">5</text>
+  <text class="lbl" x="730" y="128">HOUD</text>
+  <text class="note" x="710" y="146">de beste 3</text>
+  <text class="mono" x="40" y="162"> 120 fire  press</text>
+  <text class="mono" x="40" y="177"> 128 fire  rel</text>
+  <text class="mono" x="40" y="192"> 210 left  press</text>
+  <text class="mono" x="40" y="207"> 246 left  rel</text>
+  <text class="tag" x="40" y="227">basic_playthrough</text>
+  <g class="fan f1">
+  <rect class="cand" x="210" y="156" width="118" height="18" rx="3"/>
+  <text class="mono2" x="216" y="169">+ fire  @ 340</text>
+  </g>
+  <g class="fan f2">
+  <rect class="cand" x="210" y="178" width="118" height="18" rx="3"/>
+  <text class="mono2" x="216" y="191">- left  @ 210</text>
+  </g>
+  <g class="fan f3">
+  <rect class="cand" x="210" y="200" width="118" height="18" rx="3"/>
+  <text class="mono2" x="216" y="213">+ shield@ 512</text>
+  </g>
+  <text class="tag" x="210" y="227">press / release</text>
+  <rect class="screen" x="392" y="156" width="96" height="58" rx="3"/>
+  <g class="birdfall"><rect class="bird" x="432" y="164" width="9" height="7" rx="1"/></g>
+  <g class="shot"><rect class="shotpx" x="438" y="196" width="2" height="7"/></g>
+  <g class="ship"><path class="shippx" d="M 432 208 l 6 -8 l 6 8 z"/></g>
+  <text class="tag" x="378" y="227">--no-render</text>
+  <text class="mono" x="544" y="166">--target</text>
+  <text class="target" x="544" y="184">gameplay_level_9</text>
+  <text class="verdict hitmark" x="544" y="208">hit  +50 000</text>
+  <text class="tag" x="544" y="227">coverage.json</text>
+  <rect class="keeprow best" x="712" y="156" width="126" height="17" rx="3"/>
+  <text class="mono2" x="718" y="168">rank 1   265 400</text>
+  <rect class="keeprow" x="712" y="176" width="126" height="17" rx="3"/>
+  <text class="mono2" x="718" y="188">rank 2   240 100</text>
+  <rect class="keeprow" x="712" y="196" width="126" height="17" rx="3"/>
+  <text class="mono2" x="718" y="208">rank 3   198 750</text>
+  <text class="tag" x="712" y="227">rank_01</text>
+  <path class="wire" d="M 186 170.0 H 184"/>
+  <path class="head" d="M 184 166.0 l 7 4 l -7 4 z"/>
+  <path class="wire" d="M 354 170.0 H 352"/>
+  <path class="head" d="M 352 166.0 l 7 4 l -7 4 z"/>
+  <path class="wire" d="M 522 170.0 H 520"/>
+  <path class="head" d="M 520 166.0 l 7 4 l -7 4 z"/>
+  <path class="wire" d="M 690 170.0 H 688"/>
+  <path class="head" d="M 688 166.0 l 7 4 l -7 4 z"/>
+  <path class="retwire" d="M 776.0 242 V 274 H 104.0 V 248"/>
+  <path class="rethead" d="M 100.0 248 l 4 -8 l 4 8 z"/>
+  <text class="ret" x="440.0" y="266" text-anchor="middle">generatie + 1  ·  de winnaar wordt de nieuwe seed</text>
+  <g class="token"><circle r="7" class="tokdot"/></g>
+  <circle class="dot d1" cx="31" cy="334" r="4"/>
+  <text class="fact" x="44" y="338">9 scripts met de hand geschreven</text>
+  <circle class="dot d2" cx="305" cy="334" r="4"/>
+  <text class="fact" x="318" y="338">50 door de bot geschreven</text>
+  <circle class="dot d3" cx="561" cy="334" r="4"/>
+  <text class="fact" x="574" y="338">79,9% van de C-functies bereikt</text>
+  <text class="foot" x="26" y="360">Zonder --generations is de zoektocht één vlakke ronde: elke kandidaat komt uit dezelfde seed en de winnaar wordt nooit hergebruikt.</text>
+</svg>

@@ -121,9 +121,166 @@ python3 tools/input_bot.py mutate \
   --random-seed 1
 ```
 
-De beste scripts en hun coverage worden standaard opgeslagen onder
-`context/input-scripts/generated/`. Dezelfde `--random-seed` geeft dezelfde
+De beste scripts en hun coverage gaan naar `/tmp/input-bot/` tenzij je iets
+anders opgeeft, en elke run meldt waar hij ze heeft weggeschreven.
+
+Ze belanden bewust **niet** in `context/input-scripts/generated/`. Die map is de
+gecommitte verzameling — de 50 scripts waar het dekkingsbewijs op rust — en een
+ruw zoekresultaat is nog geen fixture: het is alleen *gescoord*, niet bevestigd.
+Promoveren doe je door er eerst `evaluate` op te draaien en het daarna te
+kopiëren, of door `--output-dir` expliciet mee te geven.
+
+Waar hij ook schrijft, een run weigert een bestaand bestand met afwijkende
+inhoud te vervangen en noemt de bestanden, in plaats van er stilletjes overheen
+te gaan. `--force` zet dat opzij. Dezelfde `--random-seed` geeft dezelfde
 mutaties, zolang de emulator en seed gelijk zijn.
+
+## Generaties: de zoektocht laten klimmen
+
+Het commando hierboven is **één vlakke ronde**. Alle twintig kandidaten zijn
+mutaties van dezelfde seed, ze worden gescoord, de beste worden bewaard — en de
+winnaar wordt nooit hergebruikt. Voor een ondiep target als `level_transition`
+is dat genoeg. Voor een diep target als `gameplay_level_9` of
+`mothership_core_gate_70` niet: de run moet dan minuten spel overleven, en geen
+enkele losse mutatie van een korte seed komt daar.
+
+`--generations` dicht dat gat. Het beste script van ronde *N* wordt de seed van
+ronde *N+1*, zodat elke ronde vertrekt vanaf de beste positie tot dan toe in
+plaats van steeds dezelfde omgeving af te tasten:
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/basic_playthrough.txt \
+  --frames 8000 \
+  --iterations 20 \
+  --generations 5 \
+  --target gameplay_level_9 \
+  --random-seed 1 \
+  --output-dir /tmp/input-bot-level9
+```
+
+Dit draait 5 x 20 = 100 replays en drukt per ronde een kop af:
+
+```
+-- generation 1/5 · seed score original
+g01_0001: score=148300 max_game=0x05 ...
+...
+   best of this round: 148300  ->  seeds generation 2
+-- generation 2/5 · seed score 148300
+...
+   re-seeded: 148300 -> 152900 (+4600)  ->  seeds generation 3
+-- generation 3/5 · seed score 152900
+...
+   no improvement (151740 <= 152900); keeping the current seed
+...
+seed score per generation: 148300 -> 152900 -> 152900 -> 161100 -> 161100   (2 re-seeds after the first round)
+```
+
+Elke ronde eindigt met één regel die zegt of de seed verschoven is, en de run
+sluit af met het hele verloop. Je hoeft dus nooit twee kopregels pagina's uit
+elkaar te vergelijken om te zien of de zoektocht klimt of vastzit.
+
+**Eén voorbehoud, en daar valt of staat het mee.** `--generations` bouwt alleen
+voort als de mutator behoudt wat de vorige winnaar goed maakte, en twee van de
+drie modi doen dat niet. `regenerate` (de standaard) en `sweep` gooien elk
+seed-event vanaf `--mutate-after` weg en bouwen daar een vers patroon, dus een
+her-seede winnaar draagt alleen zijn opening bij. Gemeten op een seed met vijf
+markeer-events voorbij frame 220: **jitter neemt er vier mee, regenerate en
+sweep geen enkele.**
+
+Wil je dus iets aan generaties hebben, gebruik dan
+
+```bash
+  --mutation-mode jitter          # houdt de hele winnaar, schuift alleen de timing
+```
+
+of zet `--mutate-after` voorbij het deel dat je wilt meenemen. Een run die om
+generaties vraagt met een weggooiende modus drukt precies deze waarschuwing af.
+Wat elke modus doet, ligt vast in
+[`tests/test_input_bot_generations.py`](../tests/test_input_bot_generations.py).
+
+De seed verschuift alleen bij een **strikte verbetering**. Een ronde die niets
+beters vindt meldt `no improvement (…); keeping the current seed`, en de
+volgende ronde probeert het opnieuw vanaf dezelfde plek — een ongelukkige ronde
+kan de zoektocht dus niet terugduwen. `--keep` rangschikt nog steeds over alle
+generaties heen, niet per ronde.
+
+`--generations 1` is de standaard en gedraagt zich precies zoals voorheen.
+
+De zoeklogica wordt gedekt door
+[`tests/test_input_bot_generations.py`](../tests/test_input_bot_generations.py),
+die `mutate` aanstuurt met een nep-emulator — die test draait dus zonder SDL2 en
+zonder gebouwde binary.
+
+## Een uitgewerkte run, en de valkuil erin
+
+Een echte zoektocht, zes generaties van acht kandidaten tegen `level_transition`:
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/extended_playthrough.txt \
+  --frames 6000 --iterations 8 --generations 6 \
+  --mutation-mode jitter \
+  --target level_transition --random-seed 1
+```
+
+```
+-- generation 1/6 · seed score original
+g01_0007: score=1256823 max_level=0x0B max_game=0x01 deaths=5 kills=11 mship_tiles=10 ... level_transition=hit
+   best of this round: 1256823  ->  seeds generation 2
+-- generation 2/6 · seed score 1256823
+   re-seeded: 1256823 -> 1256919 (+96)  ->  seeds generation 3
+-- generation 3/6 · seed score 1256919
+   re-seeded: 1256919 -> 1265641 (+8722)  ->  seeds generation 4
+-- generation 4/6 · seed score 1265641
+   no improvement (1264995 <= 1265641); keeping the current seed
+...
+seed score per generation: 1256823 -> 1256919 -> 1265641 -> 1265641 -> 1265641 -> 1265641   (2 re-seeds after the first round)
+```
+
+De zoektocht doet precies wat de bedoeling is: twee verbeteringen, daarna een
+plateau waar hij niet vanaf glijdt. Maar de getallen zeggen ook iets anders, en
+dat is goed om te weten voordat je zo'n run vertrouwt.
+
+**Kijk naar `max_level=0x0B` naast `max_game=0x01`.** De eerste telt elk level
+dat *gezien* is, inclusief de attract-demo; de tweede alleen levels die in echt
+spel zijn gehaald. Ronde 11 werd gehaald doordat de demo zichzelf speelde. De
+speler kwam nooit voorbij ronde 1.
+
+Dat telt zwaar, door de manier waarop de score is opgebouwd. `level_transition`
+eindigt niet op `_gameplay`, dus `wants_gameplay_progress()` is onwaar en de
+score gebruikt `max_level * 100000` — attract-voortgang en al — terwijl de
+attract-frame-aftrek door vier wordt gedeeld in plaats van volledig te tellen.
+De rekensom:
+
+| | |
+| --- | --- |
+| `max_level` 0x0B x 100000 | 1.100.000 |
+| `max_gameplay_level` 0x01 x 25000 | 25.000 |
+| `level_transition` gehaald | 50.000 |
+| 5 deaths x -500 | -2.500 |
+| **vaste bodem** | **1.172.500** |
+
+**87% van die score is de attract-demo.** Het deel waar de zoektocht werkelijk
+aan kan draaien ging van 84.323 naar 93.141 — een echte winst van 10,5%, maar op
+een tiende van het getal dat je in de log ziet. En wat hij vooral optimaliseerde
+was `mship_tiles`, die bij `mship_game=0` óók allemaal tijdens de demo scoorden.
+
+**De oplossing is een gameplay-target noemen.** Elk target dat op `_gameplay`
+eindigt kantelt de scoring: `max_gameplay_level * 150000`, geen attract-bonus, en
+de volledige attract-frame-aftrek.
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/extended_playthrough.txt \
+  --frames 6000 --iterations 8 --generations 6 \
+  --mutation-mode jitter \
+  --target bird_wave_gameplay --random-seed 1
+```
+
+Twee gewoontes volgen hieruit. Vergelijk `max_level` met `max_game` in de log
+voordat je een score gelooft, en kies een `_gameplay`-target zodra je wilt dat de
+speler het werk doet en niet de demo.
 
 ## Meerdere targets
 
@@ -143,7 +300,8 @@ python3 tools/input_bot.py mutate \
   --target mothership_explosion \
   --mutate-after 10000 \
   --mutation-mode sweep \
-  --random-seed 1
+  --random-seed 1 \
+  --output-dir /tmp/input-bot-mothership
 ```
 
 Kies alleen doelen die inhoudelijk samen kunnen voorkomen. Een brede set kan
@@ -165,10 +323,17 @@ elke kandidaat daarna altijd opnieuw met `evaluate`.
 | Moederschip | `mothership_active`, `mothership_active_gameplay`, `mothership_tile_hit`, `mothership_tile_4c_hit`, `mothership_tile_60_hit`, `mothership_core_window`, `mothership_core_gate_70`, `mothership_explosion` | Bouw een gefaseerde moederschipcase op: actief in gameplay, tile-hit, kernvenster, gate `$70`, explosie. |
 | Score | `bonus_life_awarded` | Controleert dat de score daadwerkelijk de bonuslevendrempel passeert. Combineer met 2P-targets voor de nog te maken 2P-bonuslevenfixture. |
 
-De actuele lijst blijft leidend en is altijd op te vragen met:
+De tabel hierboven groepeert de targets; **elk target wordt afzonderlijk
+besproken**, met de exacte voorwaarde die het toetst en wanneer je het boven een
+buurman kiest, in [input-bot-reference.nl.md](input-bot-reference.nl.md). Die
+pagina somt ook elke opdrachtregeloptie met zijn standaardwaarde op. Beide zijn
+gegenereerd uit `input_bot.py` en kunnen dus niet achterlopen op de code.
+
+De actuele lijst is altijd op te vragen bij het gereedschap zelf:
 
 ```bash
-python3 tools/input_bot.py list-targets
+python3 tools/input_bot.py list-targets          # namen plus de voorwaarde die elk toetst
+python3 tools/input_bot.py list-targets --plain  # kale namen, voor scripts
 ```
 
 ## Aanbevolen cases

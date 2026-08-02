@@ -53,8 +53,24 @@ python3 tools/generate_interactive_asm_html.py
 
 ### `input_bot.py`
 
-Zie voor doel, mutatiemodi, meerdere targets en een volledige workflow:
-[input-bot-howto.nl.md](input-bot-howto.nl.md).
+**Wat het is.** Jij benoemt een spelmoment dat je vastgelegd wilt hebben — "haal
+level negen", "open het kernvenster van het moederschip", "wissel naar speler
+twee" — en dit zoekt een inputscript dat daar komt. Het muteert een bestaande
+replay tot een reeks varianten, speelt elke variant headless af, scoort hem
+tegen jouw target, en houdt de beste. Met `--generations` wordt de winnaar de
+seed van de volgende ronde, zodat de zoektocht klimt naar targets die geen
+enkele losse mutatie haalt.
+
+Zo zijn 50 van de 59 inputscripts in deze repository ontstaan, en daarmee het
+grootste deel van het dekkingsbewijs achter de C-port.
+
+[![Hoe de input-bot een testcase vindt](../../demo/input-bot-search.nl.svg)](../../demo/input-bot-search.nl.svg)
+
+- [input-bot-howto.nl.md](input-bot-howto.nl.md) — de werkwijze: mutatiemodi,
+  generaties en een compleet uitgewerkt voorbeeld.
+- [input-bot-reference.nl.md](input-bot-reference.nl.md) — elk van de 28
+  targets afzonderlijk besproken, plus elke opdrachtregeloptie met zijn
+  standaardwaarde. Gegenereerd uit de code.
 
 Gebruik `evaluate` om een replay te scoren tegen coverage-doelen:
 

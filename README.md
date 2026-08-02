@@ -199,6 +199,10 @@ unless that's specifically what you're after:
 
 - [`c-phoenix/tools/README.md`](c-phoenix/tools/README.md) — the tracing,
   mapping, comparison, and input-bot scripts behind the C port's analysis.
+  Among them is the [input bot](c-phoenix/tools/input-bot-howto.md): you name a
+  moment you want to see — level nine, a two-player handoff — and it searches
+  for an input script that reaches it. It found 50 of the 59 replay scripts
+  this project's coverage evidence rests on.
 - [`c2-phoenix/tools/README.md`](c2-phoenix/tools/README.md) — the same
   idea for the high-resolution presentation's semantic traces.
 - [`jphoenix-emulator-port/tools/README.md`](jphoenix-emulator-port/tools/README.md)

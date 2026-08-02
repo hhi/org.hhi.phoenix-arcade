@@ -13,6 +13,12 @@ import tempfile
 from pathlib import Path
 
 
+# A search run is raw output, not a fixture: a script only belongs in
+# context/input-scripts/generated once `evaluate` has confirmed it reaches the
+# target. Defaulting there put unvetted scripts among the vetted ones and made
+# every example that omitted --output-dir write into the committed corpus.
+DEFAULT_OUTPUT_DIR = "/tmp/input-bot"
+
 TARGETS = {
     "alien_kill": lambda c: hit(c, "alien_killed_with_score"),
     "bird_hit": lambda c: hit(c, "small_bird_hit") or hit(c, "large_bird_or_egg_hit"),
@@ -347,70 +353,184 @@ def mutate(args: argparse.Namespace) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     best: list[tuple[int, Path, dict]] = []
 
+    # With --generations 1 (the default) this is a flat random search: every
+    # candidate is a mutation of the original seed and the winner is never
+    # reused. Above 1 the round's winner becomes the next round's seed, so the
+    # search climbs instead of resampling the same neighbourhood. The seed is
+    # only replaced on a strict improvement, which keeps it from wandering
+    # back downhill on an unlucky round.
+    generations = max(1, getattr(args, "generations", 1))
+    current_seed = seed_events
+    best_score: int | None = None
+    trajectory: list[int] = []
+
+    # regenerate and sweep both throw away every seed event at or after
+    # --mutate-after and build a fresh pattern there. Re-seeding with a winner
+    # then keeps only its opening, so generations cannot compound: measured on a
+    # seed with five marker events past frame 220, jitter carries four of them
+    # forward and the other two modes carry none. Say so rather than let a run
+    # look like it is climbing when it is not.
+    if generations > 1 and args.mutation_mode in ("regenerate", "sweep"):
+        print(f"warning: --mutation-mode {args.mutation_mode} rebuilds everything from frame "
+              f"{args.mutate_after} onward, so a re-seeded winner keeps only its opening and "
+              f"generations cannot build on each other.\n"
+              f"         Use --mutation-mode jitter to carry a winner forward, or raise "
+              f"--mutate-after past the part you want kept.", file=sys.stderr)
+
     with tempfile.TemporaryDirectory(prefix="c-phoenix-mutate-") as tmp:
         tmpdir = Path(tmp)
-        for index in range(1, args.iterations + 1):
-            candidate = generated_candidate(seed_events, args.frames, rng, args.mutate_after, args.mutation_mode)
-            script_path = tmpdir / f"candidate_{index:04d}.txt"
-            coverage_path = tmpdir / f"coverage_{index:04d}.json"
-            write_script(script_path, candidate, seed_path)
+        for gen in range(1, generations + 1):
+            if generations > 1:
+                print(f"-- generation {gen}/{generations} · seed score "
+                      f"{best_score if best_score is not None else 'original'}")
+            gen_best: tuple[int, list] | None = None
+            for index in range(1, args.iterations + 1):
+                candidate = generated_candidate(current_seed, args.frames, rng, args.mutate_after, args.mutation_mode)
+                tag = f"g{gen:02d}_{index:04d}" if generations > 1 else f"{index:04d}"
+                script_path = tmpdir / f"candidate_{tag}.txt"
+                coverage_path = tmpdir / f"coverage_{tag}.json"
+                write_script(script_path, candidate, seed_path)
 
-            run_args = argparse.Namespace(
-                emulator=args.emulator,
-                frames=args.frames,
-                script=str(script_path),
-                ram_dump=None,
-                cwd=args.cwd,
-                sdl_video_driver=args.sdl_video_driver,
-                no_render=True,
-            )
-            result = run_emulator(run_args, coverage_path)
-            if result.returncode != 0:
-                print(f"{index:04d}: emulator failed with exit {result.returncode}", file=sys.stderr)
-                if args.verbose:
-                    print(result.stdout, end="")
-                    print(result.stderr, end="", file=sys.stderr)
-                continue
+                run_args = argparse.Namespace(
+                    emulator=args.emulator,
+                    frames=args.frames,
+                    script=str(script_path),
+                    ram_dump=None,
+                    cwd=args.cwd,
+                    sdl_video_driver=args.sdl_video_driver,
+                    no_render=True,
+                )
+                result = run_emulator(run_args, coverage_path)
+                if result.returncode != 0:
+                    print(f"{tag}: emulator failed with exit {result.returncode}", file=sys.stderr)
+                    if args.verbose:
+                        print(result.stdout, end="")
+                        print(result.stderr, end="", file=sys.stderr)
+                    continue
 
-            coverage = load_coverage(coverage_path)
-            score = coverage_score(coverage, args.target)
-            best.append((score, script_path, coverage))
-            best.sort(key=lambda item: item[0], reverse=True)
-            best = best[:args.keep]
+                coverage = load_coverage(coverage_path)
+                score = coverage_score(coverage, args.target)
+                best.append((score, script_path, coverage))
+                best.sort(key=lambda item: item[0], reverse=True)
+                best = best[:args.keep]
+                if gen_best is None or score > gen_best[0]:
+                    gen_best = (score, candidate)
 
-            summ = coverage.get("summary", {})
-            target_status = ",".join(
-                f"{target}={'hit' if TARGETS[target](coverage) else 'miss'}"
-                for target in args.target
-            )
-            print(
-                f"{index:04d}: score={score} "
-                f"max_level=0x{int(summ.get('max_level_and_round', 0)):02X} "
-                f"max_game=0x{int(summ.get('max_gameplay_level_and_round', 0)):02X} "
-                f"deaths={summ.get('player_deaths', 0)} "
-                f"kills={coverage.get('hits', {}).get('alien_killed_with_score', {}).get('hits', 0)} "
-                f"mship_tiles={coverage.get('hits', {}).get('mothership_tile_hit', {}).get('hits', 0)} "
-                f"mship60={coverage.get('hits', {}).get('mothership_tile_60_hit', {}).get('hits', 0)} "
-                f"core={coverage.get('hits', {}).get('mothership_core_window_seen', {}).get('hits', 0)} "
-                f"gate70={coverage.get('hits', {}).get('mothership_core_gate_70_seen', {}).get('hits', 0)} "
-                f"mship_game={summ.get('mothership_gameplay_frames', 0)} "
-                f"{target_status}"
-            )
+                summ = coverage.get("summary", {})
+                target_status = ",".join(
+                    f"{target}={'hit' if TARGETS[target](coverage) else 'miss'}"
+                    for target in args.target
+                )
+                print(
+                    f"{tag}: score={score} "
+                    f"max_level=0x{int(summ.get('max_level_and_round', 0)):02X} "
+                    f"max_game=0x{int(summ.get('max_gameplay_level_and_round', 0)):02X} "
+                    f"deaths={summ.get('player_deaths', 0)} "
+                    f"kills={coverage.get('hits', {}).get('alien_killed_with_score', {}).get('hits', 0)} "
+                    f"mship_tiles={coverage.get('hits', {}).get('mothership_tile_hit', {}).get('hits', 0)} "
+                    f"mship60={coverage.get('hits', {}).get('mothership_tile_60_hit', {}).get('hits', 0)} "
+                    f"core={coverage.get('hits', {}).get('mothership_core_window_seen', {}).get('hits', 0)} "
+                    f"gate70={coverage.get('hits', {}).get('mothership_core_gate_70_seen', {}).get('hits', 0)} "
+                    f"mship_game={summ.get('mothership_gameplay_frames', 0)} "
+                    f"{target_status}"
+                )
+            if gen_best is None:
+                print("no candidate survived this generation; stopping", file=sys.stderr)
+                break
+            # Say out loud whether the seed moved. Only the negative case used
+            # to get a line of its own, so a re-seed could be spotted only by
+            # comparing two headers twenty lines apart.
+            nxt = f"generation {gen + 1}" if gen < generations else "the saved winner"
+            if best_score is None:
+                best_score, current_seed = gen_best
+                if generations > 1:
+                    print(f"   best of this round: {best_score}  ->  seeds {nxt}")
+            elif gen_best[0] > best_score:
+                if generations > 1:
+                    print(f"   re-seeded: {best_score} -> {gen_best[0]} "
+                          f"(+{gen_best[0] - best_score})  ->  seeds {nxt}")
+                best_score, current_seed = gen_best
+            elif generations > 1:
+                print(f"   no improvement ({gen_best[0]} <= {best_score}); keeping the current seed")
+            trajectory.append(best_score)
 
+        # The default --output-dir is the committed corpus in
+        # context/input-scripts/generated. A run that happens to produce the
+        # same rank and score as a script already in there would otherwise
+        # overwrite a vetted fixture without saying so. Collisions are checked
+        # up front, so a refusal leaves the directory exactly as it was.
+        planned: list[tuple[Path, str]] = []
         for rank, (score, script_path, coverage) in enumerate(best, start=1):
-            out_script = output_dir / f"mutated_rank_{rank:02d}_score_{score}.txt"
-            out_coverage = output_dir / f"mutated_rank_{rank:02d}_score_{score}.coverage.json"
-            out_script.write_text(script_path.read_text(encoding="utf-8"), encoding="utf-8")
-            out_coverage.write_text(json.dumps(coverage, indent=2, sort_keys=True), encoding="utf-8")
+            stem = f"mutated_rank_{rank:02d}_score_{score}"
+            planned.append((output_dir / f"{stem}.txt",
+                            script_path.read_text(encoding="utf-8")))
+            planned.append((output_dir / f"{stem}.coverage.json",
+                            json.dumps(coverage, indent=2, sort_keys=True)))
 
+        if not getattr(args, "force", False):
+            # an identical rewrite is harmless; only a differing one is a loss
+            clashes = [p for p, body in planned
+                       if p.exists() and p.read_text(encoding="utf-8") != body]
+            if clashes:
+                print("refusing to overwrite existing files:", file=sys.stderr)
+                for p in clashes:
+                    print(f"  {p}", file=sys.stderr)
+                print("Write somewhere else with --output-dir, or pass --force to replace them.",
+                      file=sys.stderr)
+                return 3
+
+        for path, body in planned:
+            path.write_text(body, encoding="utf-8")
+
+    if generations > 1 and trajectory:
+        moves = sum(1 for x, y in zip(trajectory, trajectory[1:]) if y > x)
+        print("seed score per generation: " + " -> ".join(str(s) for s in trajectory)
+              + f"   ({moves} re-seed{'' if moves == 1 else 's'} after the first round)")
     print(f"Saved top {len(best)} scripts to {output_dir}")
     return 0
 
 
-def list_targets(_: argparse.Namespace) -> int:
+def list_targets(args: argparse.Namespace) -> int:
+    """Print the available targets, with the condition each one checks.
+
+    Bare names were not enough to choose between, say, mothership_active and
+    mothership_active_gameplay, so the condition is shown alongside. --plain
+    restores the old one-name-per-line output for anything that parses this.
+    """
+    if getattr(args, "plain", False):
+        for target in sorted(TARGETS):
+            print(target)
+        return 0
+
+    conditions = _target_conditions()
+    width = max(len(t) for t in TARGETS)
     for target in sorted(TARGETS):
-        print(target)
+        print(f"{target:<{width}}  {conditions.get(target, '')}")
+    print(f"\n{len(TARGETS)} targets. What each one is for, and when to pick it over a "
+          f"neighbouring one:\n  tools/input-bot-reference.md")
     return 0
+
+
+def _target_conditions() -> dict[str, str]:
+    """Source text of each TARGETS lambda, read from this file.
+
+    Kept in step with the table by construction: it reads the very definitions
+    it describes, so a new target can never show up here without its condition.
+    """
+    import ast
+    try:
+        src = Path(__file__).read_text(encoding="utf-8")
+        tree = ast.parse(src)
+    except (OSError, SyntaxError):
+        return {}
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") == "TARGETS":
+            out = {}
+            for key, value in zip(node.value.keys, node.value.values):
+                body = value.body if isinstance(value, ast.Lambda) else value
+                out[key.value] = " ".join((ast.get_source_segment(src, body) or "").split())
+            return out
+    return {}
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -436,15 +556,28 @@ def build_parser() -> argparse.ArgumentParser:
     )
     evaluate_parser.set_defaults(func=evaluate)
 
-    targets_parser = sub.add_parser("list-targets", help="show built-in target names")
+    targets_parser = sub.add_parser("list-targets",
+                                    help="show the built-in targets and what each one checks")
+    targets_parser.add_argument("--plain", action="store_true",
+                                help="print bare target names only, one per line, for scripting")
     targets_parser.set_defaults(func=list_targets)
 
     mutate_parser = sub.add_parser("mutate", help="generate and score mutated input scripts")
     mutate_parser.add_argument("--seed", required=True, help="seed input script")
     mutate_parser.add_argument("--frames", type=int, default=8000, help="frames to run each candidate")
-    mutate_parser.add_argument("--iterations", type=int, default=20, help="number of candidates")
+    mutate_parser.add_argument("--iterations", type=int, default=20, help="number of candidates per generation")
+    mutate_parser.add_argument("--generations", type=int, default=1,
+                               help="rounds of search; each round re-seeds with the previous round's "
+                                    "best script, so the search climbs instead of resampling the same "
+                                    "seed (default 1 = a single flat round)")
     mutate_parser.add_argument("--keep", type=int, default=5, help="number of top scripts to save")
-    mutate_parser.add_argument("--output-dir", default="context/input-scripts/generated", help="output directory")
+    mutate_parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR,
+                               help="where to save the top scripts (default: a scratch "
+                                    "directory; promoting a script into "
+                                    "context/input-scripts/generated is a deliberate step, "
+                                    "taken only after evaluate has confirmed it)")
+    mutate_parser.add_argument("--force", action="store_true",
+                               help="allow replacing existing files in --output-dir")
     mutate_parser.add_argument("--emulator", default="./build/c-phoenix", help="emulator binary")
     mutate_parser.add_argument("--cwd", default=".", help="working directory for emulator")
     mutate_parser.add_argument("--sdl-video-driver", default="dummy", help="SDL_VIDEODRIVER for emulator")

@@ -179,17 +179,45 @@ Gebruik `make c-asm-view-only` om de al gegenereerde pagina te serveren.
 Gebruik geen `file://`: de ingebouwde bronviewer heeft localhost nodig om
 C-bestanden te laden.
 
-## Nieuwe scenario's gericht vinden
+## De input-bot: een moment benoemen en de machine het laten zoeken
 
-De input-bot is een deterministisch hulpmiddel voor testscenario's. Hij speelt
-geen live spel, maar varieert een bestaande replay en rangschikt de kandidaten
-op bereikte speldoelen: bijvoorbeeld een beurtwisseling bij twee spelers, een
-bonusleven of een specifieke moederschipfase. Daarna bewijst een aparte
-evaluatiestap welke doelen de gekozen kandidaat werkelijk haalt.
+Aantonen dat de C-port zich net zo gedraagt als het origineel betekent het spel
+in lastige situaties krijgen: een wissel tussen twee spelers, een bonusleven,
+het kernvenster van het moederschip, level negen. Je daar met de hand naartoe
+spelen en elke toetsaanslag opschrijven kost een middag per scenario, en je mag
+opnieuw beginnen zodra er iets verandert.
 
-Hierdoor kunnen nieuwe regressiesessies doelgericht ontstaan uit een bewezen
-beginroute, zonder dat handmatig duizenden invoerevents hoeven te worden
-geschreven.
+Dus is het omgekeerd aangepakt. Jij **benoemt het moment dat je wilt zien** en
+de bot gaat het zoeken.
+
+![Hoe de input-bot een testcase vindt: een seed-inputscript wordt gemuteerd tot twintig varianten, elk headless afgespeeld, gescoord tegen een benoemd doel, en de beste wordt de seed van de volgende generatie](input-bot-search.nl.svg)
+
+Hij neemt één bestaande replay als seed, muteert die tot een reeks varianten,
+speelt elke variant headless op volle snelheid af, en scoort het resultaat
+tegen het doel dat jij noemde — `gameplay_level_9`, `mothership_core_gate_70`,
+`two_player_turn_switch`, en [25 andere](../c-phoenix/tools/input-bot-reference.nl.md). De beste scripts blijven bewaard. Met
+`--generations` wordt de winnaar de seed van de volgende ronde, zodat de
+zoektocht klimt naar diepe doelen die geen enkele losse mutatie ooit haalt.
+
+Elke run is reproduceerbaar: dezelfde `--random-seed` geeft dezelfde zoektocht.
+
+**Dit is geen bijgereedschap — het is het grootste deel van het bewijs.** Van
+de 59 inputscripts in deze repository zijn er 9 met de hand geschreven en
+**50 door de bot gevonden**. Samen bereiken ze 79,9% van de C-functies, en op
+dat dekkingscijfer rust de gelijkwaardigheidsclaim hieronder.
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/basic_playthrough.txt \
+  --frames 8000 --iterations 20 --generations 5 \
+  --target gameplay_level_9 --random-seed 1 \
+  --output-dir /tmp/input-bot-level9
+```
+
+Een aparte `evaluate`-stap bewijst daarna welke doelen de gekozen kandidaat
+echt haalt, zodat een script pas fixture wordt als het twee keer bevestigd is.
+Volledige uitleg, targetcatalogus en mutatiemodi:
+[Input-bot: doel en gebruik](../c-phoenix/tools/input-bot-howto.nl.md).
 
 ## Gelijkwaardigheid onderbouwd
 
@@ -309,6 +337,9 @@ staat in het siblingproject; beide gebruiken dezelfde naam en replay-sessie.
 - [Visuele objecttracer](../c-phoenix/context/traces/visual-tracer-howto.nl.md)
 - [Semantische lockstep-analyse](../c-phoenix/context/traces/semantic-lockstep-howto.nl.md)
 - [Input-bot: doel en gebruik](../c-phoenix/tools/input-bot-howto.nl.md)
+- [Animaties en trajecten](../c-phoenix/animations/nl/README.md) — de vliegbanen die elke vijand volgt, en
+  [de spritesequenties](../c-phoenix/animations/nl/animation-sequences.md) die tonen uit welke 8x8-karakters elk
+  object is opgebouwd en welke C-routine het tekent
 
 Phoenix is daarmee zowel speelbare software als een transparant verslag van
 hoe een arcade-ROM kan worden begrepen, vertaald, getest en onderzocht.

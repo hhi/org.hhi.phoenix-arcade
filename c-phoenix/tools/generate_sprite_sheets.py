@@ -1095,6 +1095,46 @@ def main() -> int:
                                  frames=cfg["frames"], layout=cfg["layout"],
                                  ms_per_frame=cfg["ms_per_frame"], strings=s))
 
+    # -- the mothership hull -------------------------------------------------
+    # Not found by scanning a recording: the hull shares its colour groups with
+    # a grown bird, and that scan produced birds labelled as a hull, twice. The
+    # hull is table-defined after all - phoenix_mothership_tile_page is a whole
+    # 26x9 page, stored upside down because the ship scrolls in from the top.
+    # The low-numbered characters around the ship are the starfield the same
+    # page carries; that is exactly why a colour scan could not isolate it.
+    HULL_W, HULL_H = 26, 9
+    page = read_table(tables, "phoenix_mothership_tile_page")
+    hull = [page[(HULL_H - 1 - (k % HULL_H)) * HULL_W + (k // HULL_H)]
+            for k in range(HULL_W * HULL_H)]        # flip rows, column-major
+    hs = {
+        "en": dict(
+            title="The mothership hull",
+            sub1="One 26 x 9 page of characters - the largest object in the game, and the only one stored as a whole screen page.",
+            sub2="Stored upside down and flipped back here: the ship scrolls in from the top of the screen, so the ROM holds it bottom row first.",
+            routine="draw_image_c_by_b · 26 columns x 9 rows · 234 characters · background set",
+            source="hw_video_audio.c: stars_scroll_down() reads the page through phoenix_starfield_or_mothership_byte(); utilities.c: draw_image_c_by_b() draws it",
+            alt="The Phoenix mothership hull, twenty-six characters wide and nine tall, surrounded by the starfield characters carried on the same ROM page.",
+            notes=[
+                "The scattered single characters around the hull are stars, not ship: this page is one of the three the starfield scroller can point at.",
+                "Because the stars share the hull's colour groups, scanning a recording by colour cannot separate them - the shape had to come from the table.",
+            ]),
+        "nl": dict(
+            title="De romp van het moederschip",
+            sub1="Eén pagina van 26 x 9 karakters - het grootste object in het spel, en het enige dat als hele schermpagina is opgeslagen.",
+            sub2="Ondersteboven opgeslagen en hier teruggedraaid: het schip komt van bovenaf binnenscrollen, dus de ROM bewaart de onderste rij eerst.",
+            routine="draw_image_c_by_b · 26 kolommen x 9 rijen · 234 karakters · achtergrondset",
+            source="hw_video_audio.c: stars_scroll_down() leest de pagina via phoenix_starfield_or_mothership_byte(); utilities.c: draw_image_c_by_b() tekent hem",
+            alt="De romp van het Phoenix-moederschip, zesentwintig karakters breed en negen hoog, omringd door de sterrenveldkarakters op dezelfde ROM-pagina.",
+            notes=[
+                "De losse karakters rondom de romp zijn sterren, geen schip: deze pagina is een van de drie waar de sterrenveldscroller naar kan wijzen.",
+                "Omdat die sterren dezelfde kleurgroepen delen als de romp, kan een kleurenscan van een opname ze niet scheiden - de vorm moest uit de tabel komen.",
+            ]),
+    }
+    for lang, s in hs.items():
+        emit(f"sequence-mothership-hull{'' if lang == 'en' else '.nl'}.svg",
+             sheet_sequence(bg, palette, foreground=False, frames=[hull],
+                            layout=(HULL_W, HULL_H), strings=s))
+
     print(f"runtime sprites read from {dump.name}")
     for p in written:
         label = p.relative_to(PROJECT) if PROJECT in p.parents else p

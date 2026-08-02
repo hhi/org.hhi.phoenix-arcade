@@ -156,16 +156,45 @@ switch.
 Use `make c-asm-view-only` to serve the already-generated page. Do not use
 `file://`: the built-in C-source viewer needs localhost to load C files.
 
-## Find New Scenarios Deliberately
+## The Input Bot: Naming a Moment and Letting the Machine Find It
 
-The input bot is a deterministic test-scenario tool. It does not play live;
-it varies an existing replay and ranks candidates by game goals such as a
-two-player handoff, a bonus life, or a particular mothership phase. A separate
-evaluation step then proves which goals the selected candidate actually
-reaches.
+Proving the C port behaves like the original means getting the game into
+awkward places: a two-player handoff, a bonus life, the mothership's core
+window, level nine. Playing your way there by hand and writing down every
+button press would take an afternoon per scenario, and you would have to do it
+again the moment anything changed.
 
-This lets new regression sessions grow from a proven opening route without
-hand-authoring thousands of input events.
+So it was done the other way around. You **name the moment you want** and the
+bot goes looking for it.
+
+![How the input bot finds a test case: a seed input script is mutated into twenty variations, each replayed headless, scored against a named target, and the best kept as the seed of the next generation](input-bot-search.svg)
+
+It takes one existing replay as a seed, mutates it into a batch of variations,
+replays each one headless at full speed, and scores the result against the
+target you named — `gameplay_level_9`, `mothership_core_gate_70`,
+`two_player_turn_switch`, and [25 others](../c-phoenix/tools/input-bot-reference.md). The best scripts are kept. With
+`--generations` the winner becomes the seed of the next round, so the search
+climbs towards deep targets that no single random mutation would ever reach.
+
+Every run is reproducible: the same `--random-seed` produces the same search.
+
+**This is not a side tool — it is most of the evidence.** Of the 59 input
+scripts in the repository, 9 were written by hand and **50 were found by the
+bot**. Together they reach 79.9% of the C functions, and that coverage figure
+is what the equivalence claim below rests on.
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/basic_playthrough.txt \
+  --frames 8000 --iterations 20 --generations 5 \
+  --target gameplay_level_9 --random-seed 1 \
+  --output-dir /tmp/input-bot-level9
+```
+
+A separate `evaluate` step then proves which goals the chosen candidate really
+reaches, so a script is only promoted to a fixture once it has been confirmed
+twice. Full walkthrough, target catalogue and mutation modes:
+[Input bot: purpose and use](../c-phoenix/tools/input-bot-howto.md).
 
 ## Evidence for Equivalence
 
@@ -281,6 +310,9 @@ lives in the sibling project; both use the same scenario name and replay.
 - [Visual object tracer](../c-phoenix/context/traces/visual-tracer-howto.md)
 - [Semantic lockstep analysis](../c-phoenix/context/traces/semantic-lockstep-howto.md)
 - [Input bot: purpose and use](../c-phoenix/tools/input-bot-howto.md)
+- [Animations and trajectories](../c-phoenix/animations/en/README.md) — the flight paths every enemy follows, and
+  [the sprite sequences](../c-phoenix/animations/en/animation-sequences.md) showing which 8x8 characters each
+  object is built from and which C routine draws it
 
 Phoenix is both playable software and a transparent record of how an arcade ROM
 can be understood, translated, tested, and explored.

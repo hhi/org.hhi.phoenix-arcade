@@ -67,6 +67,12 @@ en rapporteert welke states, levels en doelen zijn bereikt.
 
 ## Input-Bot Instrueren Voor Een Doel
 
+> Nog niet bekend met de bot?
+> [`tools/input-bot-howto.nl.md`](../../tools/input-bot-howto.nl.md) legt uit
+> wat het is en loopt een volledige zoektocht door, inclusief `--generations`
+> voor targets die één ronde niet haalt. De afbeelding in
+> [`demo/README.nl.md`](../../../demo/README.nl.md) toont de lus in één oogopslag.
+
 1. Kies een target:
 
 ```bash

@@ -92,8 +92,24 @@ back/forward controls.
 ## Verification and Replay
 
 ### `input_bot.py`
-For purpose, mutation modes, multiple targets, and a complete workflow, see
-[input-bot-howto.md](input-bot-howto.md).
+
+**What it is.** You name a game moment you want captured — "reach level nine",
+"open the mothership's core window", "hand over to player two" — and this
+searches for an input script that gets there. It mutates an existing replay
+into a batch of variations, replays each one headless, scores it against your
+target, and keeps the best. With `--generations` the winner becomes the seed of
+the next round, so the search climbs towards targets no single mutation reaches.
+
+It is how 50 of the 59 input scripts in this repository were produced, and
+therefore most of the coverage evidence behind the C port.
+
+[![How the input bot finds a test case](../../demo/input-bot-search.svg)](../../demo/input-bot-search.svg)
+
+- [input-bot-howto.md](input-bot-howto.md) — the workflow: mutation modes,
+  generations, and a complete worked example.
+- [input-bot-reference.md](input-bot-reference.md) — every one of the 28
+  targets discussed individually, plus every command-line option and its
+  default. Generated from the code.
 
 **Usage:** `python3 tools/input_bot.py evaluate --script context/input-scripts/basic_playthrough.txt --frames 4000 --target player_bullet_fired`
 

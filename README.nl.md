@@ -204,8 +204,11 @@ vergelijking of graph wil draaien in plaats van de `make`-snelkoppelingen
 te gebruiken — sla ze over tenzij dat precies is wat je zoekt:
 
 - [`c-phoenix/tools/README.nl.md`](c-phoenix/tools/README.nl.md) — de
-  trace-, mapping-, vergelijkings- en input-bot-scripts achter de analyse
-  van de C-poort.
+  trace-, mapping-, vergelijkings- en input-bot-scripts achter de analyse.
+  Daaronder de [input-bot](c-phoenix/tools/input-bot-howto.nl.md): jij benoemt
+  een moment dat je wilt zien — level negen, een wissel tussen twee spelers — en
+  hij zoekt een inputscript dat daar komt. Hij vond 50 van de 59 replay-scripts
+  waar het dekkingsbewijs van dit project op rust.
 - [`c2-phoenix/tools/README.md`](c2-phoenix/tools/README.md) — hetzelfde
   idee voor de semantische traces van de hoge-resolutiepresentatie.
 - [`jphoenix-emulator-port/tools/README.md`](jphoenix-emulator-port/tools/README.md)

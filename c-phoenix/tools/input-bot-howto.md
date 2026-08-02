@@ -118,9 +118,164 @@ python3 tools/input_bot.py mutate \
   --random-seed 1
 ```
 
-The best scripts and their coverage are written by default to
-`context/input-scripts/generated/`. The same `--random-seed` produces the
+The best scripts and their coverage go to `/tmp/input-bot/` unless you say
+otherwise, and every run prints where it wrote them.
+
+They deliberately do **not** land in `context/input-scripts/generated/`. That
+directory is the committed corpus — the 50 scripts the coverage evidence rests
+on — and a raw search result is not a fixture yet: it has only been *scored*,
+not confirmed. Promote a script by running `evaluate` on it first and then
+copying it in, or by passing `--output-dir` explicitly.
+
+Wherever it writes, a run refuses to replace an existing file whose contents
+differ, and names the files, rather than quietly overwriting one. `--force`
+overrides that. The same `--random-seed` produces the
 same mutations while the emulator and seed remain unchanged.
+
+## Generations: Letting the Search Climb
+
+The command above is a **single flat round**. All twenty candidates are mutations
+of the same seed, they are scored, the best are kept — and the winner is never
+reused. For a shallow target such as `level_transition` that is enough. For a
+deep one such as `gameplay_level_9` or `mothership_core_gate_70` it is not: the
+run has to survive several minutes of play, and no single random mutation of a
+short seed gets there.
+
+`--generations` closes that gap. The best script of round *N* becomes the seed of
+round *N+1*, so each round starts from the best position found so far instead of
+resampling the same neighbourhood:
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/basic_playthrough.txt \
+  --frames 8000 \
+  --iterations 20 \
+  --generations 5 \
+  --target gameplay_level_9 \
+  --random-seed 1 \
+  --output-dir /tmp/input-bot-level9
+```
+
+This runs 5 x 20 = 100 replays, and prints a header per round:
+
+```
+-- generation 1/5 · seed score original
+g01_0001: score=148300 max_game=0x05 ...
+...
+   best of this round: 148300  ->  seeds generation 2
+-- generation 2/5 · seed score 148300
+...
+   re-seeded: 148300 -> 152900 (+4600)  ->  seeds generation 3
+-- generation 3/5 · seed score 152900
+...
+   no improvement (151740 <= 152900); keeping the current seed
+...
+seed score per generation: 148300 -> 152900 -> 152900 -> 161100 -> 161100   (2 re-seeds after the first round)
+```
+
+Every round ends with one line saying whether the seed moved, and the run ends
+with the whole trajectory, so you never have to compare two headers pages apart
+to see whether the search is climbing or stuck.
+
+**One caveat, and it decides whether this works at all.** `--generations` only
+compounds if the mutator keeps what made the previous winner good, and two of
+the three modes do not. `regenerate` (the default) and `sweep` discard every
+seed event at or after `--mutate-after` and build a fresh pattern there, so a
+re-seeded winner contributes only its opening. Measured on a seed with five
+marker events past frame 220: **jitter carries four of them forward, regenerate
+and sweep carry none.**
+
+So for generations to mean anything, either
+
+```bash
+  --mutation-mode jitter          # keeps the whole winner, nudges its timing
+```
+
+or raise `--mutate-after` past the part you want carried forward. A run that
+asks for generations with a discarding mode prints a warning saying exactly
+this. The behaviour of each mode is pinned by
+[`tests/test_input_bot_generations.py`](../tests/test_input_bot_generations.py).
+
+The seed only moves on a **strict improvement**. A round that finds nothing
+better prints `no improvement (…); keeping the current seed` and the next round
+retries from the same place, so an unlucky round cannot push the search
+backwards. `--keep` still ranks across all generations, not per round.
+
+`--generations 1` is the default and behaves exactly as it always did.
+
+The search control flow is covered by
+[`tests/test_input_bot_generations.py`](../tests/test_input_bot_generations.py),
+which drives `mutate` with a stub emulator — so it runs without SDL2 or a built
+binary.
+
+## A Worked Run, and the Trap in It
+
+A real search, six generations of eight candidates against `level_transition`:
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/extended_playthrough.txt \
+  --frames 6000 --iterations 8 --generations 6 \
+  --mutation-mode jitter \
+  --target level_transition --random-seed 1
+```
+
+```
+-- generation 1/6 · seed score original
+g01_0007: score=1256823 max_level=0x0B max_game=0x01 deaths=5 kills=11 mship_tiles=10 ... level_transition=hit
+   best of this round: 1256823  ->  seeds generation 2
+-- generation 2/6 · seed score 1256823
+   re-seeded: 1256823 -> 1256919 (+96)  ->  seeds generation 3
+-- generation 3/6 · seed score 1256919
+   re-seeded: 1256919 -> 1265641 (+8722)  ->  seeds generation 4
+-- generation 4/6 · seed score 1265641
+   no improvement (1264995 <= 1265641); keeping the current seed
+...
+seed score per generation: 1256823 -> 1256919 -> 1265641 -> 1265641 -> 1265641 -> 1265641   (2 re-seeds after the first round)
+```
+
+The search behaves exactly as intended: two improvements, then a plateau it
+refuses to fall off. But the numbers say something else as well, and it is worth
+knowing before you trust a run like this.
+
+**Look at `max_level=0x0B` next to `max_game=0x01`.** The first counts any level
+*seen*, the attract-mode demo included; the second counts only levels reached in
+real play. Round 11 was reached by the demo playing itself. The player never got
+past round 1.
+
+That matters because of how the score is built. `level_transition` does not end
+in `_gameplay`, so `wants_gameplay_progress()` is false and the score uses
+`max_level * 100000` — attract progress and all — while the attract-frame
+penalty is divided by four instead of applied in full. The arithmetic:
+
+| | |
+| --- | --- |
+| `max_level` 0x0B x 100000 | 1,100,000 |
+| `max_gameplay_level` 0x01 x 25000 | 25,000 |
+| `level_transition` reached | 50,000 |
+| 5 deaths x -500 | -2,500 |
+| **fixed floor** | **1,172,500** |
+
+**87% of that score is the attract demo.** The part the search can actually move
+went from 84,323 to 93,141 — a real 10.5% gain, but on a tenth of the number you
+see in the log. And what it was mostly optimising was `mship_tiles`, which at
+`mship_game=0` were also all scored during the demo.
+
+**The fix is to name a gameplay target.** Any target ending in `_gameplay` flips
+the scoring: `max_gameplay_level * 150000`, no attract bonus, and the full
+attract-frame penalty.
+
+```bash
+python3 tools/input_bot.py mutate \
+  --seed context/input-scripts/extended_playthrough.txt \
+  --frames 6000 --iterations 8 --generations 6 \
+  --mutation-mode jitter \
+  --target bird_wave_gameplay --random-seed 1
+```
+
+Two habits follow from this. Compare `max_level` against `max_game` in the log
+before believing a score, and prefer a `_gameplay` target whenever you want the
+player, not the demo, to be doing the work.
 
 ## Multiple Targets
 
@@ -139,7 +294,8 @@ python3 tools/input_bot.py mutate \
   --target mothership_explosion \
   --mutate-after 10000 \
   --mutation-mode sweep \
-  --random-seed 1
+  --random-seed 1 \
+  --output-dir /tmp/input-bot-mothership
 ```
 
 Choose only targets that can meaningfully occur together. A broad target set
@@ -161,10 +317,17 @@ candidate again with `evaluate` before promoting it to a fixture.
 | Mothership | `mothership_active`, `mothership_active_gameplay`, `mothership_tile_hit`, `mothership_tile_4c_hit`, `mothership_tile_60_hit`, `mothership_core_window`, `mothership_core_gate_70`, `mothership_explosion` | Build a phased case: active in gameplay, tile hit, core window, `$70` gate, explosion. |
 | Score | `bonus_life_awarded` | Confirms that score actually crosses the bonus-life threshold. Combine with 2P targets for the planned 2P bonus-life fixture. |
 
-The current list is authoritative and can always be queried with:
+The table above groups the targets; **every target is discussed individually**,
+with the exact condition it checks and when to pick it over a neighbouring one,
+in [input-bot-reference.md](input-bot-reference.md). That page also lists every
+command-line option with its default. Both are generated from `input_bot.py`, so
+they cannot fall behind the code.
+
+The live list is always available from the tool itself:
 
 ```bash
-python3 tools/input_bot.py list-targets
+python3 tools/input_bot.py list-targets          # names plus the condition each checks
+python3 tools/input_bot.py list-targets --plain  # bare names, for scripting
 ```
 
 ## Recommended Cases
