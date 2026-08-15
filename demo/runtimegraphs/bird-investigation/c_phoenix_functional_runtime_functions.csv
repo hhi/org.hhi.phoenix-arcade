@@ -1,0 +1,284 @@
+area,function,source_file,incoming_calls,outgoing_calls
+Frame loop & cabinet,add_galaxies_to_background,hw_video_audio.c,3899,47
+Frame loop & cabinet,add_planets_to_background,hw_video_audio.c,3899,27
+Frame loop & cabinet,apply_input_script,platform_sdl.c,13935,0
+Frame loop & cabinet,bank_swap_to,platform_sdl.c,27,0
+Frame loop & cabinet,clear_and_print_scores,hw_video_audio.c,1,10
+Frame loop & cabinet,clear_background,hw_video_audio.c,105,87360
+Frame loop & cabinet,clear_foreground,hw_video_audio.c,52,37856
+Frame loop & cabinet,draw_background_2x2,hw_video_audio.c,13365,120285
+Frame loop & cabinet,hw_read_dsw,platform_sdl.c,1069,0
+Frame loop & cabinet,hw_read_inputs,platform_sdl.c,13966,0
+Frame loop & cabinet,hw_write_scroll_register,platform_sdl.c,7240,0
+Frame loop & cabinet,hw_write_sound_a,platform_sdl.c,13861,13861
+Frame loop & cabinet,hw_write_sound_b,platform_sdl.c,13861,13861
+Frame loop & cabinet,hw_write_video_register,platform_sdl.c,27,27
+Frame loop & cabinet,main,platform_sdl.c,0,13936
+Frame loop & cabinet,phoenix_main_loop,hw_video_audio.c,0,43350
+Frame loop & cabinet,platform_audio_frame_hook,platform_sdl.c,13934,13934
+Frame loop & cabinet,platform_ram_dump_hook,platform_sdl.c,13934,13934
+Frame loop & cabinet,read_dsw0,hw_video_audio.c,38,38
+Frame loop & cabinet,read_in0,hw_video_audio.c,32,32
+Frame loop & cabinet,set_bits_video_register,hw_video_audio.c,25,25
+Frame loop & cabinet,stars_scroll_down,hw_video_audio.c,4044,30494
+Frame loop & cabinet,update_lives_screen,hw_video_audio.c,6,12
+Frame loop & cabinet,update_scroll_register_and_fill_background,hw_video_audio.c,3899,11697
+Frame loop & cabinet,update_sound_control_ram,hw_video_audio.c,588,0
+Frame loop & cabinet,wait_vblank_coin,hw_video_audio.c,13934,41803
+Game flow & attract,clear_fore_and_background,attract_mode.c,36,216
+Game flow & attract,coin_checking,attract_mode.c,620,620
+Game flow & attract,decrement_coins,attract_mode.c,1,4
+Game flow & attract,drawNx2,attract_mode.c,1129,9032
+Game flow & attract,draw_bird_shape_34de,attract_mode.c,33,33
+Game flow & attract,draw_bird_shape_350c,attract_mode.c,6006,117380
+Game flow & attract,draw_n_by_2,attract_mode.c,3,24
+Game flow & attract,draw_score_average_table_tiles,attract_mode.c,1,5
+Game flow & attract,drawbirdobject,attract_mode.c,13060,36952
+Game flow & attract,game_state_machine,game_state_machine.c,13274,39822
+Game flow & attract,get_player_lives_from_dip,state_init.c,1,2
+Game flow & attract,init_alien_data_new_level,state_init.c,21,63
+Game flow & attract,init_alien_movement_pointers,state_init.c,21,0
+Game flow & attract,init_global_level_data,init_global_level_data.c,21,0
+Game flow & attract,init_player_data_structure,state_init.c,21,0
+Game flow & attract,l0526,state_init.c,21,84
+Game flow & attract,l07f0,game_state_machine.c,4,12
+Game flow & attract,l0b15,state_endings.c,4,4
+Game flow & attract,l0ba0,state_endings.c,124,124
+Game flow & attract,l0bba,state_endings.c,252,252
+Game flow & attract,l2260_spiral_draw,state_play.c,208,52416
+Game flow & attract,l2292_spiral_routine,state_play.c,8,1678
+Game flow & attract,l2552_mothership_explosion_done,state_endings.c,1,0
+Game flow & attract,level_0_and_2_aliens_fade_in,state_play.c,878,2071
+Game flow & attract,level_1_3_B_player_alive_aliens,state_play.c,8288,16576
+Game flow & attract,level_4_6_8_spiral_fill,state_play.c,220,436
+Game flow & attract,level_5_7_birds_fade_in,state_play.c,2606,5212
+Game flow & attract,level_9_mothership_fade_in,state_play.c,72,144
+Game flow & attract,level_A_mothership_and_aliens_fade_in,state_play.c,49,97
+Game flow & attract,prompt_for_start_game,attract_mode.c,32,137
+Game flow & attract,slow_print_score_average_table,attract_mode.c,503,822
+Game flow & attract,splash_and_demo,attract_mode.c,556,2473
+Game flow & attract,state_0_new_game_start,game_state_machine.c,4,0
+Game flow & attract,state_1_flashing_score,game_state_machine.c,512,760
+Game flow & attract,state_2_init_game_and_level_data,state_init.c,21,105
+Game flow & attract,state_3_normal_game_play,state_play.c,12065,12065
+Game flow & attract,state_4_player_ship_explosion,state_endings.c,384,768
+Game flow & attract,state_5_game_over_text,state_endings.c,128,382
+Game flow & attract,state_6_mother_ship_explosion,state_endings.c,96,192
+Game flow & attract,state_7_mother_ship_score_display,state_endings.c,64,33
+"Player, laser & shield",copy_current_to_old_player_data,player_logic.c,10894,0
+"Player, laser & shield",draw_shields,player_logic.c,124,248
+"Player, laser & shield",get_assigned_player_bullet_tile,player_logic.c,12986,13477
+"Player, laser & shield",get_player_ship_animation_frame_values,player_logic.c,11261,0
+"Player, laser & shield",l2070,player_explosion.c,64,64
+"Player, laser & shield",l20b0_player_ship_particles_explosion,player_explosion.c,96,23962
+"Player, laser & shield",l20e8,player_explosion.c,95,190
+"Player, laser & shield",l211c,player_explosion.c,95,0
+"Player, laser & shield",map_player_ship_position,player_logic.c,10894,0
+"Player, laser & shield",move_player,player_logic.c,10894,43127
+"Player, laser & shield",player_data_controller,player_logic.c,10894,119834
+"Player, laser & shield",player_update,player_logic.c,10894,65364
+"Player, laser & shield",shields_expired,player_logic.c,2,2
+"Player, laser & shield",spawn_player_bullet,player_logic.c,491,982
+"Player, laser & shield",update_player_bullet_y,player_logic.c,8298,0
+"Player, laser & shield",update_player_position_bullet_shield,player_logic.c,10894,23880
+"Player, laser & shield",update_player_ship_x,player_logic.c,10770,0
+Birds & alien waves,alien_animation_update,alien_logic.c,2880,203162
+Birds & alien waves,alien_data_controller,alien_logic.c,2989,59780
+Birds & alien waves,alien_movement_update,alien_logic.c,2882,137375
+Birds & alien waves,bird_explosion_slot,collision_detection.c,33,162
+Birds & alien waves,birds_vertical_movement_update,birds_vertical_movement.c,2606,6515
+Birds & alien waves,check_bird_formation_player_collision,bird_wave_behavior.c,2606,285
+Birds & alien waves,copy_init_values_for_16_aliens,alien_logic.c,21,410
+Birds & alien waves,draw_first_4_bird_objects,bird_logic.c,1632,6528
+Birds & alien waves,draw_second_4_bird_objects,bird_logic.c,1633,6532
+Birds & alien waves,get_animation_chrs_aliens_fade_in,alien_logic.c,105,0
+Birds & alien waves,get_screen_ram_address_for_all_aliens,alien_logic.c,2901,137940
+Birds & alien waves,handle_animations_for_killed_aliens,alien_logic.c,5572,22288
+Birds & alien waves,init_alien_control_states,alien_logic.c,21,21
+Birds & alien waves,init_alien_control_states_05fa,alien_logic.c,126,3770
+Birds & alien waves,init_alien_positions,alien_logic.c,21,410
+Birds & alien waves,l0fd8,alien_logic.c,11144,16059
+Birds & alien waves,l2000_alien_wave_main_loop,alien_wave.c,8288,41440
+Birds & alien waves,l2130,alien_wave.c,4280,4280
+Birds & alien waves,l2146,alien_wave.c,3624,3624
+Birds & alien waves,l2150,alien_wave.c,1071,3213
+Birds & alien waves,l2160,alien_wave.c,1071,4284
+Birds & alien waves,l2170,alien_wave.c,1069,2138
+Birds & alien waves,l2180,alien_wave.c,1069,4276
+Birds & alien waves,l2190,alien_wave.c,1813,9065
+Birds & alien waves,l21a5,alien_wave.c,1811,9055
+Birds & alien waves,l21ba,alien_wave.c,384,960
+Birds & alien waves,l2204,alien_wave.c,576,6
+Birds & alien waves,l24c4,alien_wave.c,4143,14584
+Birds & alien waves,l2560,alien_logic.c,2882,22852
+Birds & alien waves,l2596,alien_logic.c,22852,38695
+Birds & alien waves,l2668,birds_vertical_movement.c,1303,0
+Birds & alien waves,l26aa,birds_vertical_movement.c,1303,0
+Birds & alien waves,l26d0,birds_vertical_movement.c,1303,10424
+Birds & alien waves,l3000,alien_wave.c,2884,2528
+Birds & alien waves,l3028,alien_logic.c,363,12
+Birds & alien waves,l3074_breakout_delay,alien_logic.c,59,59
+Birds & alien waves,l30ba,alien_logic.c,362,47
+Birds & alien waves,l3124,alien_logic.c,361,47
+Birds & alien waves,l315a,alien_logic.c,361,1570
+Birds & alien waves,l31b4,alien_logic.c,360,120
+Birds & alien waves,l322c,alien_logic.c,358,992
+Birds & alien waves,l3264,alien_logic.c,363,440
+Birds & alien waves,l35e0_descend,bird_wave_behavior.c,4466,21072
+Birds & alien waves,l3628_climb,bird_wave_behavior.c,2400,15732
+Birds & alien waves,l366a_stall,bird_wave_behavior.c,1519,128
+Birds & alien waves,l3672_aim,bird_wave_behavior.c,53,111
+Birds & alien waves,l3695_aim_up,bird_wave_behavior.c,1589,3319
+Birds & alien waves,l36c0_animate,bird_wave_behavior.c,1507,3011
+Birds & alien waves,l36d2_grow,bird_wave_behavior.c,2026,2174
+Birds & alien waves,l36ea_grow,bird_wave_behavior.c,2001,2405
+Birds & alien waves,l3744_restart,bird_wave_behavior.c,57,366
+Birds & alien waves,l3758_bonus_explosion_animation,alien_logic.c,11144,12442
+Birds & alien waves,l3758_bonus_explosion_right,alien_logic.c,118,333
+Birds & alien waves,l3796_bonus_explosion_left,alien_logic.c,118,35
+Birds & alien waves,l37b0_print_bonus_score,alien_logic.c,103,824
+Birds & alien waves,l37cc_erase_bonus_explosion,alien_logic.c,15,795
+Birds & alien waves,l395c,bird_wave_behavior.c,3499,4404
+Birds & alien waves,l3a00,bird_wave_behavior.c,1111,0
+Birds & alien waves,process_birds,bird_logic.c,2606,26331
+Birds & alien waves,refresh_bird_flight_parameters,bird_wave_behavior.c,2224,2224
+Birds & alien waves,try_spawn_bird_dive_bomb,bird_wave_behavior.c,1111,4610
+Birds & alien waves,update_bird_behavior,bird_wave_behavior.c,13060,41584
+Birds & alien waves,update_first_four_birds,bird_wave_behavior.c,1632,6528
+Birds & alien waves,update_second_bird_bank,bird_wave_behavior.c,592,2368
+Birds & alien waves,update_second_four_birds,bird_wave_behavior.c,1633,6532
+Mothership,erase_mothership,mothership_logic.c,31,31
+Mothership,l2351_mothership_animation,mothership_impl.c,2308,9938
+Mothership,mothership_core_hit_check,mothership_logic.c,1,2
+Mothership,update_counters_for_mothership_explosion,mothership_impl.c,96,96
+Collisions & scoring,add_score,scoring.c,196,784
+Collisions & scoring,bcd_add,scoring.c,588,0
+Collisions & scoring,check_coin_event,scoring.c,411,411
+Collisions & scoring,check_enemy_bullet_to_player_collision,weapon_collision.c,8288,24864
+Collisions & scoring,collision_detection_for_birds,collision_detection.c,5402,8921
+Collisions & scoring,copy_current_to_old_enemy_bullet_data,weapon_collision.c,5448,0
+Collisions & scoring,enemy_bullet_data_controller,weapon_collision.c,5448,27240
+Collisions & scoring,enemy_bullet_movement_and_animation,weapon_collision.c,5448,27240
+Collisions & scoring,get_screen_ram_address_for_enemy_bullets,weapon_collision.c,5448,27240
+Collisions & scoring,l096e_clear_bullet,weapon_collision.c,106,212
+Collisions & scoring,l0c00_kill_score,weapon_collision.c,20,60
+Collisions & scoring,l0c84_enemy_bullet_movement,weapon_collision.c,27240,85149
+Collisions & scoring,l0cb4_check_bullet_hit_player,weapon_collision.c,3337,3777
+Collisions & scoring,l0cc4_player_killed,weapon_collision.c,4,4
+Collisions & scoring,l0e10,weapon_collision.c,16576,55506
+Collisions & scoring,l0ea4_with_score,weapon_collision.c,69,838
+Collisions & scoring,l0f00_check_alien_with_player_collision,weapon_collision.c,2884,5774
+Collisions & scoring,l0f56_screen_ram_collision,weapon_collision.c,2884,11666
+Collisions & scoring,l3462_no_birds_left,collision_detection.c,382,958
+Collisions & scoring,l3844_small_bird_hit,collision_detection.c,55,135
+Collisions & scoring,l38a1_erase_bird,collision_detection.c,33,99
+Collisions & scoring,l38bc_large_hit,collision_detection.c,41,58
+Collisions & scoring,process_enemy_bombs,weapon_collision.c,5448,27240
+Collisions & scoring,update_hi_score,scoring.c,197,9
+Collisions & scoring,update_scores_and_sound,scoring.c,13274,53486
+Video & sprites,bit3_controller,sprite_rendering.c,206854,300014
+Video & sprites,bit4_controller,sprite_rendering.c,206854,296542
+Video & sprites,draw_image_c_by_b,utilities.c,1116,35252
+Video & sprites,draw_row,utilities.c,830,64740
+Video & sprites,execute_bit3_function,sprite_rendering.c,46580,210624
+Video & sprites,execute_bit4_function,sprite_rendering.c,44844,212145
+Video & sprites,print_copyright_lines,utilities.c,2,4
+Video & sprites,print_number,utilities.c,554,4365
+Video & sprites,print_text_lines,utilities.c,540,2490
+Video & sprites,update_screen_objects,sprite_rendering.c,206854,413708
+Audio,apply_event,sound.c,2778,854
+Audio,astable_step_count_f,sound_discrete.c,55735998,55735998
+Audio,astable_step_energy,sound_discrete.c,55735998,55735998
+Audio,clamp_pcm16,sound.c,11147200,0
+Audio,discrete_source,sound.c,27867999,27867999
+Audio,effect1_data,sound_discrete.c,27867999,0
+Audio,effect1_filter_selected,sound_discrete.c,83603997,0
+Audio,effect1_filter_step,sound_discrete.c,27867999,55735998
+Audio,effect1_frequency,sound_discrete.c,27867999,0
+Audio,effect2_c22_exponent,sound_discrete.c,27867999,27867999
+Audio,effect2_capacitance,sound_discrete.c,27867999,0
+Audio,effect2_charge_resistance,sound_discrete.c,27867999,0
+Audio,effect2_control_voltage,sound_discrete.c,27867999,27867999
+Audio,effect2_data,sound_discrete.c,27867999,0
+Audio,effect2_frequency,sound_discrete.c,55735998,0
+Audio,high_pass_mixer_output,sound_discrete.c,27867999,0
+Audio,l23d6,sound_dispatcher.c,11810,13323
+Audio,l27bd,sound_dispatcher.c,12889,0
+Audio,l3a10,sound_dispatcher.c,13273,12889
+Audio,l3a1d,sound_dispatcher.c,12889,12889
+Audio,l3a2c,sound_dispatcher.c,439,0
+Audio,l3a40,sound_dispatcher.c,12450,12450
+Audio,l3a4e,sound_dispatcher.c,1249,1249
+Audio,l3a62,sound_dispatcher.c,11201,790
+Audio,l3a78,sound_dispatcher.c,790,0
+Audio,l3a82,sound_dispatcher.c,12889,0
+Audio,l3a90,sound_dispatcher.c,12889,0
+Audio,l3a98_scan,sound_dispatcher.c,8288,188457
+Audio,l3ad0,sound_dispatcher.c,2606,69
+Audio,l3af8,sound_dispatcher.c,69,0
+Audio,l3b02,sound_dispatcher.c,2429,0
+Audio,l3b1b,sound_dispatcher.c,12889,128
+Audio,l3b28,sound_dispatcher.c,128,0
+Audio,l3b33,sound_dispatcher.c,12889,0
+Audio,l3b43,sound_dispatcher.c,12889,89144
+Audio,mame_lofi_resampler_next,mame_lofi_resampler.c,22294400,14818344
+Audio,mix_discrete_sources,sound_discrete.c,27867999,139339995
+Audio,noise_c24_discharge,sound_discrete.c,11147200,0
+Audio,noise_c25_charge,sound_discrete.c,11147200,0
+Audio,note_energy,sound_discrete.c,55735998,0
+Audio,parallel2,sound_discrete.c,139339995,0
+Audio,queue_event,sound.c,2778,0
+Audio,rc_exponent,sound_discrete.c,157160459,0
+Audio,rcdisc4_step,sound_discrete.c,27867999,27867999
+Audio,read_source,mame_lofi_resampler.c,14818344,33397010
+Audio,resistor_mixer,sound_discrete.c,83603997,0
+Audio,rrca,sound_dispatcher.c,1249,0
+Audio,sound_discrete_noise,sound_discrete.c,11147200,22294400
+Audio,sound_discrete_step,sound_discrete.c,27867999,557359980
+Audio,sound_render_frame,sound.c,13934,44591578
+Audio,sound_set_frame_sample_index,sound.c,13273,0
+Audio,sound_write_control_a,sound.c,13861,1924
+Audio,sound_write_control_b,sound.c,13861,854
+Audio,tms36xx_decay,tms36xx.c,10675524,0
+Audio,tms36xx_mm6221aa_tune_w,tms36xx.c,854,0
+Audio,tms36xx_render_internal_sample,tms36xx.c,5529011,26881127
+Audio,tms36xx_restart,tms36xx.c,1068,1068
+Audio,tms36xx_tone,tms36xx.c,10675524,0
+Audio,tms_source,sound.c,5529011,5529011
+Audio,update_c24,sound_discrete.c,11147200,11147200
+Audio,update_c25,sound_discrete.c,11147200,11147200
+Utilities & state data,add_one_to_mem,utilities.c,556,1670
+Utilities & state data,astable_step,runtime symbol,111471996,129292460
+Utilities & state data,check_input_bits,utilities.c,15255,0
+Utilities & state data,compare_bc_to_mem,utilities.c,707,1414
+Utilities & state data,coverage_hit,coverage.c,140771,140771
+Utilities & state data,coverage_is_enabled,coverage.c,154706,0
+Utilities & state data,coverage_observe_frame,coverage.c,13934,13934
+Utilities & state data,coverage_write_dump,coverage.c,1,1
+Utilities & state data,delete_digits,utilities.c,252,3024
+Utilities & state data,effect2_mixer_nodes,runtime symbol,27867999,55735998
+Utilities & state data,get_random_number,utilities.c,3050,0
+Utilities & state data,get_screen_ram_address,utilities.c,75969,303876
+Utilities & state data,get_screen_ram_address_for_player_ship,utilities.c,10915,32745
+Utilities & state data,high_pass_mixer_input,runtime symbol,111471996,111471996
+Utilities & state data,l0260_subtract_if_enough,utilities.c,704,1258
+Utilities & state data,l0270_subtract_from_memory,utilities.c,704,1408
+Utilities & state data,l0277_subtract_to_memory,utilities.c,554,1108
+Utilities & state data,l1df0,rom_compat_stubs.c,127,0
+Utilities & state data,l2085_particles,runtime symbol,96,96
+Utilities & state data,l24a0,misc_logic.c,8288,2884
+Utilities & state data,l24f2,misc_logic.c,576,614
+Utilities & state data,l25b7,utilities.c,248,1120
+Utilities & state data,l32b0,misc_logic.c,21,400
+Utilities & state data,l370a_grow_or_dive,runtime symbol,1705,2041
+Utilities & state data,left_one_column,utilities.c,2722,0
+Utilities & state data,mem_read,runtime symbol,1620678,0
+Utilities & state data,mem_write,runtime symbol,907134,0
+Utilities & state data,phoenix_alien_movement_byte,runtime symbol,31619,0
+Utilities & state data,phoenix_background_2x2_byte,runtime symbol,53460,0
+Utilities & state data,phoenix_bird_shape_data_byte,runtime symbol,46678,0
+Utilities & state data,phoenix_image_byte,runtime symbol,16012,0
+Utilities & state data,phoenix_starfield_or_mothership_byte,runtime symbol,13225,0
+Utilities & state data,phoenix_text_byte,runtime symbol,23240,0
+Utilities & state data,right_one_column,utilities.c,74830,0
+Utilities & state data,tune_table,runtime symbol,5530079,0

@@ -6,9 +6,9 @@
 
 *Phoenix* is the 1980 arcade shoot-'em-up where you fend off diving birds and
 an armoured mothership. This repository lets you actually play it — in a
-faithful pixel-perfect recreation or a redrawn high-resolution version — and,
-if you get curious, look at exactly how the original game worked under the
-hood.
+faithful pixel-perfect recreation, a redrawn high-resolution version, or a
+Redot vertical slice — and, if you get curious, look at exactly how the
+original game worked under the hood.
 
 ## Play it
 
@@ -21,10 +21,16 @@ need installed.
 | **Modern, high-resolution** | Redrawn glyphs, smooth colour and lighting, same rules | `make c2-run` | [`c2-phoenix/README.md`](c2-phoenix/README.md) |
 | **Classic, pixel-perfect** | The original 8×8 look, rebuilt in C | `cd c-phoenix && make run` | [`c-phoenix/README.md`](c-phoenix/README.md) |
 | **Original arcade board** | Runs the real 1980 program code on a Java-based hardware emulator | `cd jphoenix-emulator-port && make run` | [`jphoenix-emulator-port/README.md`](jphoenix-emulator-port/README.md) |
+| **Redot vertical slice** | The C game core in a GPU-composited Redot scene, with audio | `make -C redot-port/native extension` | [`redot-port/README.md`](redot-port/README.md) |
 
 Each "full details" README has the controls, build options, and command-line
 flags for that version (for example, the arrow keys / WASD to move and Space
-to fire, the same across all three).
+to fire, the same across the three desktop implementations).
+
+The Redot port is an editor-playable vertical slice for macOS on Apple Silicon.
+After building its extension, open `redot-port/project.godot` in Redot 26.2
+and run the scene. It is not part of `make build`, because it has its own
+Redot and native-extension toolchain.
 
 One thing every version needs first: your own legally obtained Phoenix
 Amstar ROM set. The repository never ships ROM bytes. Preparing a set takes
@@ -54,6 +60,7 @@ phoenix-arcade/
 │  ├─ animations/            Gallery of enemy flight patterns and movement data
 │  └─ tools/                 Visual tracer, lockstep checker, and other analysis tooling
 ├─ c2-phoenix/                High-resolution presentation, built on the c-phoenix engine
+├─ redot-port/                Redot vertical slice, backed by the C game core
 └─ roms/                     Guide for preparing your own ROM set
 ```
 
@@ -77,6 +84,10 @@ phoenix-arcade/
   swaps in a high-resolution renderer; it's the version pictured above. Its
   own [`tools/`](c2-phoenix/tools/README.md) generate the matching semantic
   traces.
+- [`redot-port/`](redot-port/README.md) runs the same C game core inside a
+  Redot scene, using a native GDExtension for the 60 Hz simulation, video and
+  audio bridge. It currently targets macOS on Apple Silicon and is playable
+  from the Redot editor.
 - [`demo/`](demo/README.md) ties all three together with curated recordings,
   screenshots, and a walkthrough of the tooling below.
 

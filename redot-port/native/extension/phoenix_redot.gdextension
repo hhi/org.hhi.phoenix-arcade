@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "phoenix_redot_library_init"
+compatibility_minimum = "4.3"
+reloadable = true
+
+[libraries]
+macos.debug.arm64 = "res://native/build/libphoenix_redot_extension.macos.debug.arm64.dylib"
+macos.release.arm64 = "res://native/build/libphoenix_redot_extension.macos.debug.arm64.dylib"

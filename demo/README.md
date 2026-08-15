@@ -223,6 +223,9 @@ Runtime callgraphs show which routes a recorded session actually executed.
   ROM. Address labels from the annotated assembly make the graph readable as
   routines rather than only hexadecimal addresses.
 - **C-Phoenix** records executed C function calls during the equivalent replay.
+- The **functional C-Phoenix graph** folds those functions into nine gameplay
+  and engine responsibilities. It is the readable starting point; the
+  function-level graph remains the drill-down.
 - Both graphs use a frequency heatmap: cool colours indicate rarely visited
   routes and warm colours frequently executed routes. Each graph includes a
   legend with that session's concrete value ranges.
@@ -241,6 +244,24 @@ game state.
 The following images are the `bird-investigation` session used by this demo.
 They are included locally so the showcase can be viewed without first running
 the instrumentation pipeline.
+
+### C-Phoenix: functional decomposition
+
+[![Functional runtime decomposition of the bird-investigation recording: frame loop, game flow, player, birds, mothership, collisions, video, audio and utilities](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_callgraph.png)](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_callgraph.md)
+
+The accompanying [function membership CSV](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_functions.csv) maps each executed function back to
+its responsibility, source file and measured in/outgoing call totals.
+
+### C-Phoenix: interactive runtime explorer
+
+[Open the interactive runtime explorer](../c-phoenix/context/runtimegraphs/bird-investigation/c_phoenix_runtime_explorer.html).
+It brings the functional decomposition and detailed runtime calls together in
+one split view. Expand the tree from domain to subsystem, source module, and
+function; the graph aggregates to the selected level while retaining its
+runtime context. The breadcrumb keeps the active scope visible. At function
+level, **Open source** links to the defining C file and line.
+
+![Runtime explorer overview: functional subsystem tree on the left and the aggregated runtime callgraph on the right](runtime-analysis-explorer-overview.png)
 
 ### C-Phoenix: executed C calls
 
@@ -287,7 +308,7 @@ For a compact view of what this session executes in the C implementation:
 make runtimegraph RUNTIME_SCENARIO=bird-investigation RUNTIME_FRAMES=13935
 ```
 
-This writes SVG and PNG summaries to
+This writes SVG and PNG summaries plus `c_phoenix_runtime_explorer.html` to
 `context/runtimegraphs/bird-investigation/`. The equivalent JPhoenix command
 lives in the sibling project; both use the same scenario name and replay.
 

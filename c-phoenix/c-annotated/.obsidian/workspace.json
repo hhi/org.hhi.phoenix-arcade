@@ -11,14 +11,10 @@
             "id": "acc62c0065f9a8d6",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "game-state-machine.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "game-state-machine"
+              "title": "Nieuw tabblad"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "game-state-machine.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Terugverwijzingen voor game-state-machine"
+              "title": "Terugverwijzing"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "game-state-machine.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Uitgaande verwijzingen van game-state-machine"
+              "title": "Uitgaande verwijzingen"
             }
           },
           {
@@ -156,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "game-state-machine.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Overzicht van game-state-machine"
+              "title": "Overzicht"
             }
           }
         ]
@@ -185,9 +178,35 @@
   },
   "active": "acc62c0065f9a8d6",
   "lastOpenFiles": [
+    "en/knowledge-graph.md",
+    "z80-core-h.md",
+    "weapon-collision.md",
+    "weapon-collision-h.md",
+    "walkthrough.md",
+    "utilities.md",
+    "utilities-h.md",
+    "tms36xx.md",
+    "tms36xx-h.md",
+    "state-play.md",
+    "state-play-h.md",
+    "state-init.md",
+    "state-init-h.md",
+    "state-endings.md",
+    "state-endings-h.md",
+    "sprite-rendering.md",
+    "sprite-rendering-h.md",
+    "sound.md",
+    "sound-h.md",
+    "sound-dispatcher.md",
+    "sound-discrete.md",
+    "sound-discrete-h.md",
+    "scoring.md",
+    "runtime-call-trace.md",
+    "rom-compat-stubs.md",
+    "player-logic.md",
+    "en",
+    "nl",
     "knowledge-claims.json",
-    "knowledge-graph.json",
-    "knowledge-graph.md",
-    "runtime-call-trace.md"
+    "knowledge-graph.json"
   ]
 }

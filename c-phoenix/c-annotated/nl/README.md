@@ -48,15 +48,15 @@ De ontwerptijd-grafen in
 [`../../context/graphs/`](../../context/graphs/README.nl.md) tonen die
 structuur, gegenereerd uit dezelfde broncode die deze pagina's annoteren.
 
-- [`file_callgraph`](../../context/graphs/file_callgraph.md) 🕸️ — **de
+- [Bestands-callgraph](../../context/graphs/file_callgraph.md) 🕸️ — **de
   afhankelijkheidsgraaf tussen bronbestanden.** Eén knoop per `.c`-bestand,
   gegroepeerd in architectuurclusters. Gebruik hem om te zien welke geannoteerde
   pagina's je erbij nodig hebt, en tot welk cluster een bestand behoort.
-- [`rom_bank_callgraph`](../../context/graphs/rom_bank_callgraph.md) 🧭 —
+- [ROM-bank-callgraph](../../context/graphs/rom_bank_callgraph.md) 🧭 —
   functies gesorteerd op de `[ASM: nnnn-nnnn]`-tag uit hun doc-commentaar,
   dezelfde tag die de annotaties gebruiken. De brug tussen deze pagina's,
   [`context/mapping/`](../../context/mapping/README.nl.md) en `Phoenix.asm`.
-- [`cross_domain_callgraph`](../../context/graphs/cross_domain_callgraph.md) 🔀 —
+- [Domeinoverstijgende callgraph](../../context/graphs/cross_domain_callgraph.md) 🔀 —
   alleen de aanroepen die hun eigen domein verlaten, en daar zitten de meeste
   verrassingen in de port.
 

@@ -1,0 +1,9 @@
+.godot/
+.import/
+dist/
+native/build/
+native/redot-cpp/bin/
+native/redot-cpp/gen/
+native/generated/
+roms/
+*.translation

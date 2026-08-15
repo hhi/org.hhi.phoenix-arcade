@@ -16,7 +16,10 @@ frames/
 !context/traces/two_player_last_grown_bird_compare/
 !context/traces/two_player_last_grown_bird_compare/*.bin.gz
 context/traces/two_player_last_grown_bird_compare/last-grown-bird-diff.html
-context/runtimegraphs/
+context/runtimegraphs/*
+!context/runtimegraphs/bird-investigation/
+context/runtimegraphs/bird-investigation/*
+!context/runtimegraphs/bird-investigation/c_phoenix_runtime_explorer.html
 
 # macOS / OS generated files
 .DS_Store

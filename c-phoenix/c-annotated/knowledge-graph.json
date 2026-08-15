@@ -5969,8 +5969,7 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/collision-detection.md",
-          "c-annotated/nl/phoenix-tables.md"
+          "c-annotated/nl/collision-detection.md"
         ]
       }
     },
@@ -6001,8 +6000,7 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/collision-detection.md",
-          "c-annotated/nl/phoenix-tables.md"
+          "c-annotated/nl/collision-detection.md"
         ]
       }
     },
@@ -6029,8 +6027,7 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/collision-detection.md",
-          "c-annotated/nl/phoenix-tables.md"
+          "c-annotated/nl/collision-detection.md"
         ]
       }
     },
@@ -6061,8 +6058,7 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/collision-detection.md",
-          "c-annotated/nl/phoenix-tables.md"
+          "c-annotated/nl/collision-detection.md"
         ]
       }
     },
@@ -6089,8 +6085,7 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/collision-detection.md",
-          "c-annotated/nl/phoenix-tables.md"
+          "c-annotated/nl/collision-detection.md"
         ]
       }
     },
@@ -6117,8 +6112,7 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/collision-detection.md",
-          "c-annotated/nl/phoenix-tables.md"
+          "c-annotated/nl/collision-detection.md"
         ]
       }
     },
@@ -7257,7 +7251,6 @@
           "c-annotated/en/init-global-level-data.md",
           "c-annotated/nl/attract-mode.md",
           "c-annotated/nl/init-global-level-data.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-init.md"
         ]
       }
@@ -8160,7 +8153,6 @@
         "documentation": [
           "c-annotated/en/player-explosion.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-explosion.md",
           "c-annotated/nl/state-endings.md"
         ]
@@ -8185,7 +8177,6 @@
         "documentation": [
           "c-annotated/en/player-explosion.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-explosion.md",
           "c-annotated/nl/state-endings.md"
         ]
@@ -8210,7 +8201,6 @@
         "documentation": [
           "c-annotated/en/player-explosion.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-explosion.md",
           "c-annotated/nl/state-endings.md"
         ]
@@ -8235,7 +8225,6 @@
         "documentation": [
           "c-annotated/en/player-explosion.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-explosion.md",
           "c-annotated/nl/state-endings.md"
         ]
@@ -8260,7 +8249,6 @@
         "documentation": [
           "c-annotated/en/player-explosion.md",
           "c-annotated/nl/bird-wave-behavior.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-explosion.md",
           "c-annotated/nl/state-endings.md"
         ]
@@ -8289,7 +8277,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8320,7 +8307,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8351,7 +8337,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8382,7 +8367,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8413,7 +8397,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8444,7 +8427,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8475,7 +8457,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8506,7 +8487,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8537,7 +8517,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8568,7 +8547,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8599,7 +8577,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8630,7 +8607,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -8665,7 +8641,6 @@
           "c-annotated/nl/alien-wave.md",
           "c-annotated/nl/bird-logic.md",
           "c-annotated/nl/phoenix-hw-h.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic-h.md",
           "c-annotated/nl/player-logic.md",
           "c-annotated/nl/sprite-rendering.md",
@@ -10705,7 +10680,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -10735,7 +10709,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -10765,7 +10738,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -10795,7 +10767,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -10825,7 +10796,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -10855,7 +10825,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -10885,7 +10854,6 @@
           "c-annotated/nl/game-state-machine.md",
           "c-annotated/nl/init-global-level-data.md",
           "c-annotated/nl/misc-logic.md",
-          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/state-endings.md",
           "c-annotated/nl/state-init-h.md",
           "c-annotated/nl/state-init.md"
@@ -13364,6 +13332,21 @@
       "status": "documented"
     },
     {
+      "id": "ram:$42F2",
+      "kind": "ram-slot",
+      "name": "RAM $42F2",
+      "ram": {
+        "address": "$42F2"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
       "id": "ram:$4300",
       "kind": "ram-slot",
       "name": "RAM $4300",
@@ -13790,8 +13773,10 @@
         "documentation": [
           "animations/en/animation-trajectory.md",
           "animations/nl/animation-trajectory.md",
+          "c-annotated/en/phoenix-tables.md",
           "c-annotated/en/player-logic.md",
           "c-annotated/nl/phoenix-state-h.md",
+          "c-annotated/nl/phoenix-tables.md",
           "c-annotated/nl/player-logic.md"
         ]
       },
@@ -13823,7 +13808,9 @@
         "documentation": [
           "animations/en/animation-trajectory.md",
           "animations/nl/animation-trajectory.md",
-          "c-annotated/nl/phoenix-state-h.md"
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-state-h.md",
+          "c-annotated/nl/phoenix-tables.md"
         ]
       },
       "status": "documented"
@@ -13861,6 +13848,66 @@
       "status": "documented"
     },
     {
+      "id": "ram:$4852",
+      "kind": "ram-slot",
+      "name": "RAM $4852",
+      "ram": {
+        "address": "$4852"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
+      "id": "ram:$4853",
+      "kind": "ram-slot",
+      "name": "RAM $4853",
+      "ram": {
+        "address": "$4853"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
+      "id": "ram:$4872",
+      "kind": "ram-slot",
+      "name": "RAM $4872",
+      "ram": {
+        "address": "$4872"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
+      "id": "ram:$4873",
+      "kind": "ram-slot",
+      "name": "RAM $4873",
+      "ram": {
+        "address": "$4873"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
       "id": "ram:$4AC6",
       "kind": "ram-slot",
       "name": "RAM $4AC6",
@@ -13875,6 +13922,21 @@
       "status": "documented"
     },
     {
+      "id": "ram:$4AD8",
+      "kind": "ram-slot",
+      "name": "RAM $4AD8",
+      "ram": {
+        "address": "$4AD8"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
       "id": "ram:$4B00",
       "kind": "ram-slot",
       "name": "RAM $4B00",
@@ -13884,6 +13946,21 @@
       "evidence": {
         "documentation": [
           "c-annotated/nl/misc-logic.md"
+        ]
+      },
+      "status": "documented"
+    },
+    {
+      "id": "ram:$4B15",
+      "kind": "ram-slot",
+      "name": "RAM $4B15",
+      "ram": {
+        "address": "$4B15"
+      },
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/phoenix-tables.md",
+          "c-annotated/nl/phoenix-tables.md"
         ]
       },
       "status": "documented"

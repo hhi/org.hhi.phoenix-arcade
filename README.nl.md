@@ -6,9 +6,9 @@
 
 *Phoenix* is de arcade-shoot-'em-up uit 1980 waarin je duikende vogels en een
 gepantserd moederschip afweert. Met deze repository speel je dat spel
-gewoon — in een pixel-perfecte reconstructie of in een opnieuw getekende
-hoge-resolutieversie — en als je nieuwsgierig wordt, kun je precies bekijken
-hoe het origineel onder de motorkap werkte.
+gewoon — in een pixel-perfecte reconstructie, een opnieuw getekende
+hoge-resolutieversie of een Redot-vertical-slice — en als je nieuwsgierig
+wordt, kun je precies bekijken hoe het origineel onder de motorkap werkte.
 
 ## Speel het
 
@@ -21,10 +21,16 @@ nodig hebt.
 | **Modern, hoge resolutie** | Opnieuw getekende glyphs, vloeiende kleur en licht, dezelfde spelregels | `make c2-run` | [`c2-phoenix/README.nl.md`](c2-phoenix/README.nl.md) |
 | **Klassiek, pixel-perfect** | Het originele 8×8-uiterlijk, herbouwd in C | `cd c-phoenix && make run` | [`c-phoenix/README.nl.md`](c-phoenix/README.nl.md) |
 | **Origineel arcade-board** | Draait de echte programmacode uit 1980 op een op Java gebaseerde hardware-emulator | `cd jphoenix-emulator-port && make run` | [`jphoenix-emulator-port/README.nl.md`](jphoenix-emulator-port/README.nl.md) |
+| **Redot-vertical-slice** | De C-gamecore in een via de GPU samengestelde Redot-scene, met audio | `make -C redot-port/native extension` | [`redot-port/README.nl.md`](redot-port/README.nl.md) |
 
 Elke README onder "volledige details" heeft de besturing, buildopties en
 command-line-vlaggen voor die versie (bijvoorbeeld de pijltjestoetsen/WASD om
-te bewegen en Space om te schieten, hetzelfde in alle drie de versies).
+te bewegen en Space om te schieten, hetzelfde in de drie desktopimplementaties).
+
+De Redot-poort is een in de editor speelbare vertical slice voor macOS op
+Apple Silicon. Open na het bouwen van de extensie `redot-port/project.godot`
+in Redot 26.2 en start de scene. Hij valt buiten `make build`, omdat hij een
+eigen Redot- en native-extensietoolchain heeft.
 
 Eén ding heeft elke versie eerst nodig: je eigen, legaal verkregen Phoenix
 Amstar-ROM-set. De repository levert nooit ROM-bytes mee. Een set voorbereiden
@@ -54,6 +60,7 @@ phoenix-arcade/
 │  ├─ animations/            Galerij van vijandelijke vluchtpatronen en bewegingsdata
 │  └─ tools/                 Visuele tracer, lockstep-checker en andere analysetools
 ├─ c2-phoenix/                Hoge-resolutiepresentatie, gebouwd op de c-phoenix-engine
+├─ redot-port/                Redot-vertical-slice, gebaseerd op de C-gamecore
 └─ roms/                     Handleiding om je eigen ROM-set voor te bereiden
 ```
 
@@ -78,6 +85,10 @@ phoenix-arcade/
   is de versie op de afbeelding hierboven. De eigen
   [`tools/`](c2-phoenix/tools/README.md) genereren de bijbehorende
   semantische traces.
+- [`redot-port/`](redot-port/README.nl.md) draait dezelfde C-gamecore in een
+  Redot-scene, met een native GDExtension voor de 60 Hz-simulatie en de video-
+  en audiobrug. Hij richt zich nu op macOS met Apple Silicon en is speelbaar
+  vanuit de Redot-editor.
 - [`demo/`](demo/README.nl.md) brengt alle drie samen met gecureerde
   opnamen, screenshots en een rondleiding langs de tooling hieronder.
 
