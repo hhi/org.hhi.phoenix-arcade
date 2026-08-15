@@ -236,7 +236,7 @@ help:
 	@echo "  make tracerun         Run comparerun and generate an interactive visual tracer"
 	@echo "  make tracer-view      Generate and serve the comparison visual tracer"
 	@echo "  make tracer-view-only Serve an existing visual tracer locally"
-	@echo "  make runtimegraph     Generate an executed C-function call graph"
+	@echo "  make runtimegraph     Generate detailed and functional runtime call graphs"
 	@echo "  make c2               Build the native C2 renderer"
 	@echo "  make c2-clean         Remove C2 native build artefacts"
 	@echo "  make interactive-asm  Regenerate interactive Phoenix ASM documentation"

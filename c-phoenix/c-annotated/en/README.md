@@ -47,15 +47,15 @@ reading one usually means reading two or three others first. The design-time
 graphs in [`../../context/graphs/`](../../context/graphs/README.md) show that
 structure, generated from the same sources these pages annotate.
 
-- [`file_callgraph`](../../context/graphs/file_callgraph.md) 🕸️ — **the
+- [File call graph](../../context/graphs/file_callgraph.md) 🕸️ — **the
   dependency graph between source files.** One node per `.c` file, grouped into
   architectural clusters. Use it to see which annotated pages you need alongside
   the one you are reading, and which cluster a file belongs to.
-- [`rom_bank_callgraph`](../../context/graphs/rom_bank_callgraph.md) 🧭 —
+- [ROM-bank call graph](../../context/graphs/rom_bank_callgraph.md) 🧭 —
   functions bucketed by the `[ASM: nnnn-nnnn]` tag in their doc comment, the
   same tag the annotations use. The bridge between these pages,
   [`context/mapping/`](../../context/mapping/README.md) and `Phoenix.asm`.
-- [`cross_domain_callgraph`](../../context/graphs/cross_domain_callgraph.md) 🔀 —
+- [Cross-domain call graph](../../context/graphs/cross_domain_callgraph.md) 🔀 —
   only the calls that leave their own domain, which is where most surprises in
   the port live.
 

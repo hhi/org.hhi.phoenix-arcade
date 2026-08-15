@@ -80,3 +80,4 @@
   bestaande `[ASM: ...]` comments als bron van waarheid.
 - Als een routine nog onduidelijk is, documenteer de onzekerheid in plaats van
   gedrag te verzinnen.
+- **Privacy & Paden:** Gebruik NOOIT absolute paden in markdown-documentatie, reacties of code-annotaties (geen `/Users/...` of machine-specifieke paden). Gebruik UITSLUITEND relatieve paden (bijv. `../alien_logic.c#L43-L74` of `alien_logic.c`) om privacygevoelige informatie te beschermen.

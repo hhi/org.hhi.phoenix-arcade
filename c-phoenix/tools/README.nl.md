@@ -63,6 +63,15 @@ met `make runtimegraph`, en schrijft **runtime**-bewijs naar
 legt die twee naast elkaar en onderscheidt aanroepen die in het ontwerp bestaan
 én zijn uitgevoerd, van aanroepen die alleen op papier bestaan.
 
+Elke runtime-run schrijft daarnaast een **functionele decompositie**:
+`c_phoenix_functional_runtime_callgraph.svg`. Die vouwt functiedetails samen
+tot negen spel- en enginesystemen, zoals *Birds & alien waves*, *Player, laser
+& shield* en *Audio*. De pijlbreedte en het label blijven echte, gemeten
+runtime-aanroepen. Gebruik deze compacte kaart eerst; voor één systeem geeft
+`c_phoenix_functional_runtime_functions.csv` de onderliggende functies en hun
+in-/uitgaande aantallen. De oorspronkelijke
+`c_phoenix_runtime_callgraph.svg` blijft de detailweergave.
+
 Dat onderscheid is het hele punt: een ontwerptijd-graaf laat zien wat *mogelijk*
 is, een runtime-graaf wat er *gebeurd* is, en pas het verschil tussen die twee
 wijst dode code en ongedocumenteerde paden aan.

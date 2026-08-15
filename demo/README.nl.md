@@ -248,6 +248,9 @@ daadwerkelijk heeft uitgevoerd.
   leesbaar als routines in plaats van alleen hexadecimale adressen.
 - **C-Phoenix** registreert uitgevoerde C-functieaanroepen tijdens diezelfde
   soort replay.
+- De **functionele C-Phoenix-graaf** vouwt die functies samen tot negen spel-
+  en enginesystemen. Dit is het leesbare vertrekpunt; de graaf op
+  functieniveau blijft beschikbaar om door te zoomen.
 - Beide grafieken tonen frequentie als heatmap: koele kleuren zijn weinig
   bezochte routes, warme kleuren veelvuldig uitgevoerde routes. De legenda in
   iedere grafiek vermeldt de concrete waardebereiken van die sessie.
@@ -266,6 +269,24 @@ spelstaat.
 De onderstaande afbeeldingen horen bij de sessie `bird-investigation` van
 deze demo. Ze zijn lokaal opgenomen, zodat de showcase zonder eerst de
 instrumentatiepijplijn te draaien is te bekijken.
+
+### C-Phoenix: functionele decompositie
+
+[![Functionele runtimedecompositie van de bird-investigation-opname: frameloop, spelverloop, speler, vogels, moederschip, botsingen, video, audio en hulpfuncties](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_callgraph.png)](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_callgraph.nl.md)
+
+De bijbehorende [CSV met functielidmaatschappen](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_functions.csv) koppelt iedere uitgevoerde functie terug aan haar verantwoordelijkheid, bronbestand en gemeten aantallen inkomende en uitgaande aanroepen.
+
+### C-Phoenix: interactieve runtime-explorer
+
+[Open de interactieve runtime-explorer](../c-phoenix/context/runtimegraphs/bird-investigation/c_phoenix_runtime_explorer.html).
+Deze brengt de functionele decompositie en gedetailleerde runtime-aanroepen
+samen in één split view. Klap de boom uit van domein naar subsysteem,
+bronmodule en functie; de graaf aggregeert op het geselecteerde niveau terwijl
+de runtimecontext behouden blijft. De breadcrumb toont steeds de actieve
+scope. Op functieniveau verwijst **Open source** naar het C-bronbestand en de
+definitieregel.
+
+![Overzicht van de runtime-explorer: functionele subsysteemboom links en de geaggregeerde runtime-callgraph rechts](runtime-analysis-explorer-overview.png)
 
 ### C-Phoenix: uitgevoerde C-aanroepen
 
@@ -313,8 +334,8 @@ Voor een compact beeld van wat deze sessie in de C-implementatie uitvoert:
 make runtimegraph RUNTIME_SCENARIO=bird-investigation RUNTIME_FRAMES=13935
 ```
 
-Dat schrijft SVG- en PNG-overzichten naar
-`context/runtimegraphs/bird-investigation/`. De equivalente JPhoenix-opdracht
+Dat schrijft SVG- en PNG-overzichten plus `c_phoenix_runtime_explorer.html`
+naar `context/runtimegraphs/bird-investigation/`. De equivalente JPhoenix-opdracht
 staat in het siblingproject; beide gebruiken dezelfde naam en replay-sessie.
 
 ## Engineeringaanpak
