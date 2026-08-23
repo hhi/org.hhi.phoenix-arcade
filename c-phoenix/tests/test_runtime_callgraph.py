@@ -33,6 +33,21 @@ class FunctionalRuntimeCallgraphTest(unittest.TestCase):
         self.assertEqual(RUNTIME_CALLGRAPH.compact_count(1234), "1.2k")
         self.assertEqual(RUNTIME_CALLGRAPH.compact_count(1_855_600_052), "1.9B")
 
+    def test_finds_multiline_and_header_inline_runtime_functions(self):
+        locations = RUNTIME_CALLGRAPH.source_function_locations(ROOT)
+        expected_files = {
+            "l2085_particles": "player_explosion.c",
+            "astable_step": "sound_discrete.c",
+            "mem_read": "z80_core.h",
+            "phoenix_image_byte": "phoenix_tables.h",
+        }
+        for function, expected_file in expected_files.items():
+            source_file, source_line = locations[function]
+            self.assertEqual(source_file, expected_file)
+            source_lines = (ROOT / source_file).read_text(encoding="utf-8").splitlines()
+            signature = "\n".join(source_lines[source_line - 1:source_line + 3])
+            self.assertRegex(signature, rf"\b{function}\s*\(")
+
     def test_explorer_data_preserves_functional_module_and_function_levels(self):
         locations = RUNTIME_CALLGRAPH.source_function_locations(ROOT)
         data = RUNTIME_CALLGRAPH.runtime_explorer_data(

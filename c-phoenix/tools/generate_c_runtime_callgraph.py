@@ -73,18 +73,38 @@ def source_function_files(source_dir):
 def source_function_locations(source_dir):
     """Map functions to their defining source file and one-based line number."""
     function_locations = {}
-    definition = re.compile(
-        r"^\s*(?:static\s+)?(?:void|bool|int|uint(?:8|16|32)_t|"
-        r"int(?:8|16|32)_t|float|double|char\s*\*)\s+"
-        r"([A-Za-z_][A-Za-z0-9_]*)\s*\([^;]*\)\s*\{"
-    )
-    for source_path in source_dir.glob("*.c"):
-        for line_number, line in enumerate(
-            source_path.read_text(encoding="utf-8", errors="ignore").splitlines(), 1
-        ):
-            match = definition.match(line)
-            if match:
-                function_locations[match.group(1)] = (source_path.name, line_number)
+    trailing_identifier = re.compile(r"(?P<function>[A-Za-z_][A-Za-z0-9_]*)\s*$")
+    type_tokens = re.compile(r"[A-Za-z_][A-Za-z0-9_ \t*]*$")
+    control_words = {"else", "for", "if", "return", "switch", "while"}
+    # A runtime edge can enter a static inline helper from a header, while
+    # multiline signatures are common in the gameplay code. Parse complete C
+    # and header files so the explorer never silently drops those source links.
+    source_paths = sorted(source_dir.glob("*.c")) + sorted(source_dir.glob("*.h"))
+    for source_path in source_paths:
+        lines = source_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+        for line_index, line in enumerate(lines):
+            if "(" not in line or line.lstrip().startswith("#"):
+                continue
+            prefix = line.split("(", 1)[0]
+            match = trailing_identifier.search(prefix)
+            if not match:
+                continue
+            type_part = prefix[:match.start()].strip()
+            if (
+                not type_part
+                or not type_tokens.fullmatch(type_part)
+                or type_part.split()[0] in control_words
+            ):
+                continue
+            signature = "\n".join(lines[line_index:line_index + 16])
+            opening_brace = signature.find("{")
+            semicolon = signature.find(";")
+            if opening_brace < 0 or (semicolon >= 0 and semicolon < opening_brace):
+                continue
+            function_locations.setdefault(
+                match.group("function"),
+                (source_path.name, line_index + 1),
+            )
     return function_locations
 
 
