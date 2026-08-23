@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-void update_screen_objects(uint16_t alien_state_addr, uint16_t screen_ram_addr);
-void bit4_controller(uint16_t bc, uint16_t de, uint16_t hl);
-void bit3_controller(uint16_t bc, uint16_t de, uint16_t hl);
+void update_screen_objects(uint16_t object_state_address, uint16_t object_screen_address);
+void bit4_controller(uint16_t object_state_address, uint16_t object_screen_address, uint16_t scratch_address);
+void bit3_controller(uint16_t object_state_address, uint16_t object_screen_address, uint16_t scratch_address);
 
 #endif // SPRITE_RENDERING_H

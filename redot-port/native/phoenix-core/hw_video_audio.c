@@ -4,6 +4,7 @@
 #include "phoenix_tables.h"
 #include "utilities.h"
 #include "z80_core.h"
+#include "game_constants.h"
 #include <stdio.h>
 
 extern PhoenixState state;
@@ -35,9 +36,9 @@ void wait_vblank_coin(void) {
     platform_audio_frame_hook();
 
     // 008E-0097: read IN0 from hardware, shift current value to previous
-    uint8_t new_in0 = hw_read_inputs();
+    uint8_t current_input_snapshot = hw_read_inputs();
     state.IN0Previous = state.IN0Current;
-    state.IN0Current = new_in0;
+    state.IN0Current = current_input_snapshot;
 
     // 0098-009A: AddOneToMem($439B) -> 16-bit counter 439A:439B
     state.Counter9B++;
@@ -45,12 +46,14 @@ void wait_vblank_coin(void) {
         state.Counter9A++;
     }
 
-    if (state.CoinCount == 9) return;
+    if (state.CoinCount == COIN_COUNT_MAXIMUM) return;
 
     // 00A6-00AB: CheckInputBits bit 0 -- coin input transitioned 1 -> 0
-    if ((state.IN0Current & 0x01) == 0 && (state.IN0Previous & 0x01) != 0) {
+    bool coin_pressed_this_frame = (state.IN0Current & BTN_COIN) == 0;
+    bool coin_was_released = (state.IN0Previous & BTN_COIN) != 0;
+    if (coin_pressed_this_frame && coin_was_released) {
         state.CoinCount++;
-        mem_write(0x4142, state.CoinCount + 0x20);
+        mem_write(COIN_DISPLAY_SCREEN_ADDRESS, state.CoinCount + DISPLAY_TILE_DIGIT_OFFSET);
     }
 }
 /*
@@ -254,50 +257,51 @@ void set_bits_video_register(void) {
 void stars_scroll_down(void) {
     extern void hw_write_scroll_register(uint8_t);
 
-    uint8_t a = state.CounterB9;
+    uint8_t previous_scroll_value = state.CounterB9;
     state.CounterB9--;
-    hw_write_scroll_register(a);
+    hw_write_scroll_register(previous_scroll_value);
     
-    if ((a & 0x07) != 0) {
+    if ((previous_scroll_value & 0x07) != 0) {
         return; // continue after 8 pixels
     }
     
-    // Fill the background with stars or mothership
-    uint8_t b = 0x20;
-    uint8_t c = 0x47;
-    uint16_t de = 0x4B21; // BackgroundScreen + 321
+    // Every eighth pixel, insert a full background column. The rotated
+    // screen moves to its next column by subtracting $20 from the low byte.
+    uint8_t background_column_stride = 0x20;
+    uint8_t final_background_page = 0x47;
+    uint16_t background_write_address = 0x4B21; // BackgroundScreen + 321
     
-    a = state.CounterB9;
-    a = (a >> 3) | (a << 5); // RRCA 3 times
-    a &= 0x1F;
+    uint8_t scroll_tile_offset = state.CounterB9;
+    scroll_tile_offset = (scroll_tile_offset >> 3) | (scroll_tile_offset << 5); // RRCA 3 times
+    scroll_tile_offset &= 0x1F;
     
-    uint8_t e = (de & 0xFF) + a;
-    de = (de & 0xFF00) | e;
+    uint8_t background_low_byte = (background_write_address & 0xFF) + scroll_tile_offset;
+    background_write_address = (background_write_address & 0xFF00) | background_low_byte;
     
-    uint16_t hl = (state.M43B2 << 8) | state.M43B3;
+    uint16_t starfield_source_address = (state.M43B2 << 8) | state.M43B3;
 
     while (1) {
-        mem_write(de, phoenix_starfield_or_mothership_byte(hl));
-        hl = (hl & 0xFF00) | ((hl + 1) & 0xFF); // INC L
+        mem_write(background_write_address, phoenix_starfield_or_mothership_byte(starfield_source_address));
+        starfield_source_address = (starfield_source_address & 0xFF00) | ((starfield_source_address + 1) & 0xFF); // INC L
         
-        uint16_t sub_result = (de & 0xFF) - b;
-        de = (de & 0xFF00) | (sub_result & 0xFF);
+        uint16_t low_byte_subtraction = (background_write_address & 0xFF) - background_column_stride;
+        background_write_address = (background_write_address & 0xFF00) | (low_byte_subtraction & 0xFF);
         
-        if (!(sub_result > 0xFF)) { // JP NC (No carry/borrow)
+        if (!(low_byte_subtraction > 0xFF)) { // JP NC (No carry/borrow)
             continue;
         }
         
-        uint8_t d = (de >> 8) - 1; // DEC D
-        de = (d << 8) | (de & 0xFF);
+        uint8_t background_page = (background_write_address >> 8) - 1; // DEC D
+        background_write_address = (background_page << 8) | (background_write_address & 0xFF);
         
-        if (d != c) { // CP C; JP NZ
+        if (background_page != final_background_page) { // CP C; JP NZ
             continue;
         }
         
         break;
     }
     
-    state.M43B3 = hl & 0xFF;
+    state.M43B3 = starfield_source_address & 0xFF;
 }
 
 /*

@@ -288,10 +288,9 @@ extern const uint8_t phoenix_alien_wave_animation_shapes[0x40];
  * [ASM: 1C00-1CFF] T1C00: starfield/background image data. Read by
  * three independent sites, all provably confined to this single page:
  * mothership_logic.c's fixed draw_image_c_by_b(0x1C00, ..., 9, 20) call
- * (180 bytes from 0x1C00); state_play.c:l2292_spiral_routine, whose hl
- * free-wheels via (hl & 0xFF00)|((hl+1)&0xFF) -- the low byte cycles
- * through the full page but the high byte never changes, and its
- * ~512-byte write loop reads the whole page multiple times over; and
+ * (180 bytes from 0x1C00); state_play.c:finish_spiral_transition, whose
+ * uint8_t source index cycles through the full page and reads it multiple
+ * times over its ~512-byte write loop; and
  * hw_video_audio.c:stars_scroll_down, whose hl is a RAM-persisted
  * pointer ($M43B2:M43B3). M43B2 (the page selector) is written by
  * init_global_level_data()'s copy from phoenix_level_data_page: decoding

@@ -13,21 +13,21 @@ extern uint8_t hw_read_dsw(void);
  * result. Used by add_score so score RAM stays in the same decimal encoding
  * the original display routines expect.
  */
-static uint8_t bcd_add(uint8_t a, uint8_t b, uint8_t *carry) {
-    uint16_t sum = a + b + *carry;
-    uint8_t c_out = 0;
+static uint8_t bcd_add(uint8_t value, uint8_t addend, uint8_t *carry) {
+    uint16_t sum = value + addend + *carry;
+    uint8_t carry_out = 0;
     
     // Half-carry for lower nibble
-    if ((a & 0x0F) + (b & 0x0F) + *carry > 0x09) {
+    if ((value & 0x0F) + (addend & 0x0F) + *carry > 0x09) {
         sum += 0x06;
     }
     // Carry for upper nibble
     if (sum > 0x99) {
         sum += 0x60;
-        c_out = 1;
+        carry_out = 1;
     }
     
-    *carry = c_out;
+    *carry = carry_out;
     return (uint8_t)sum;
 }
 
@@ -40,13 +40,13 @@ static void update_hi_score(void) {
     // 02F0: LD DE,$4383 ; Score1low
     // 02F3: LD HL,$438B ; HiScorelow
     
-    uint32_t s1 = (state.Score1high << 16) | (state.Score1mid << 8) | state.Score1low;
-    uint32_t s2 = (state.Score2high << 16) | (state.Score2mid << 8) | state.Score2low;
-    uint32_t current = s1 > s2 ? s1 : s2;
-    uint32_t hi = (state.HiScorehigh << 16) | (state.HiScoremid << 8) | state.HiScorelow;
+    uint32_t player_one_score = (state.Score1high << 16) | (state.Score1mid << 8) | state.Score1low;
+    uint32_t player_two_score = (state.Score2high << 16) | (state.Score2mid << 8) | state.Score2low;
+    uint32_t current_score    = player_one_score > player_two_score ? player_one_score : player_two_score;
+    uint32_t high_score       = (state.HiScorehigh << 16) | (state.HiScoremid << 8) | state.HiScorelow;
     
-    if (current > hi) {
-        if (current == s1) {
+    if (current_score > high_score) {
+        if (current_score == player_one_score) {
             state.HiScorehigh = state.Score1high;
             state.HiScoremid = state.Score1mid;
             state.HiScorelow = state.Score1low;
@@ -64,18 +64,18 @@ static void update_hi_score(void) {
  * player 1/player 2 score storage.
  */
 void add_score(uint16_t score_bcd) {
-    uint8_t p = state.GameAndDemoOrSplash & 1; // 0 = P1, 1 = P2
-    uint8_t* high = p ? &state.Score2high : &state.Score1high;
-    uint8_t* mid  = p ? &state.Score2mid  : &state.Score1mid;
-    uint8_t* low  = p ? &state.Score2low  : &state.Score1low;
+    uint8_t active_player = state.GameAndDemoOrSplash & 1; // 0 = P1, 1 = P2
+    uint8_t *high_score_byte = active_player ? &state.Score2high : &state.Score1high;
+    uint8_t *middle_score_byte = active_player ? &state.Score2mid : &state.Score1mid;
+    uint8_t *low_score_byte = active_player ? &state.Score2low : &state.Score1low;
     
     uint8_t carry = 0;
-    uint8_t c = score_bcd & 0xFF; // lower byte to add
-    uint8_t b = (score_bcd >> 8) & 0xFF; // upper byte to add
+    uint8_t low_bcd_addend  = score_bcd & 0xFF;
+    uint8_t high_bcd_addend = (score_bcd >> 8) & 0xFF;
     
-    *low = bcd_add(*low, c, &carry);
-    *mid = bcd_add(*mid, b, &carry);
-    *high = bcd_add(*high, 0, &carry);
+    *low_score_byte    = bcd_add(*low_score_byte, low_bcd_addend, &carry);
+    *middle_score_byte = bcd_add(*middle_score_byte, high_bcd_addend, &carry);
+    *high_score_byte   = bcd_add(*high_score_byte, 0, &carry);
     
     update_hi_score();
 }
@@ -92,7 +92,7 @@ extern void hw_write_sound_b(uint8_t val);
  */
 void update_scores_and_sound(void) {
     if (state.GameOrAttract == 0) return;
-    uint8_t p = state.GameAndDemoOrSplash & 1;
+    uint8_t active_player = state.GameAndDemoOrSplash & 1;
     
     state.M4397 = 0xFF;
     
@@ -100,14 +100,14 @@ void update_scores_and_sound(void) {
     // trigger byte, score byte, then 2 unused bytes -- not 3-byte
     // records; the caller's "CALL L2748; INC E x3" advances DE by 4
     // total (L2748 itself does one INC E before returning).
-    uint8_t* m = &state.M4370;
-    for (int i = 0; i < 16; i += 4) {
-        if (m[i] == 1 && m[i+1] != 0) {
-            uint8_t a = m[i+1];
-            uint8_t swapped = (a >> 4) | (a << 4);
+    uint8_t *score_event_slots = &state.M4370;
+    for (int slot_offset = 0; slot_offset < 16; slot_offset += 4) {
+        if (score_event_slots[slot_offset] == 1 && score_event_slots[slot_offset + 1] != 0) {
+            uint8_t score_event = score_event_slots[slot_offset + 1];
+            uint8_t swapped = (score_event >> 4) | (score_event << 4);
             uint16_t bcd = ((swapped & 0x0F) << 8) | (swapped & 0xF0);
             add_score(bcd);
-            m[i+1] = 0;
+            score_event_slots[slot_offset + 1] = 0;
             state.M4397 = 0;
         }
     }
@@ -127,14 +127,14 @@ void update_scores_and_sound(void) {
     }
     
     if (state.M4397 == 0) {
-        if (p == 0) print_number(0x4261, 0x4383, 6);
-        else print_number(0x4021, 0x4387, 6);
+        if (active_player == 0) print_number(PLAYER_ONE_SCORE_SCREEN_ADDRESS, PLAYER_ONE_SCORE_RAM_ADDRESS, SCORE_DIGIT_COUNT);
+        else print_number(PLAYER_TWO_SCORE_SCREEN_ADDRESS, PLAYER_TWO_SCORE_RAM_ADDRESS, SCORE_DIGIT_COUNT);
         
         if (state.M43BD != 0 || state.BonusLivesAt != 0) {
             // Check threshold
-            uint8_t* high = p ? &state.Score2high : &state.Score1high;
-            uint8_t* mid  = p ? &state.Score2mid  : &state.Score1mid;
-            uint8_t* low  = p ? &state.Score2low  : &state.Score1low;
+            uint8_t *high_score_byte = active_player ? &state.Score2high : &state.Score1high;
+            uint8_t *middle_score_byte = active_player ? &state.Score2mid : &state.Score1mid;
+            uint8_t *low_score_byte = active_player ? &state.Score2low : &state.Score1low;
             
             // L0314: 3-byte subtraction Threshold - Score, computed
             // *least*-significant byte first with the borrow chaining
@@ -157,25 +157,25 @@ void update_scores_and_sound(void) {
             int16_t temp;
             uint8_t carry = 0;
 
-            temp = state.M43BF - *low;
+            temp = state.M43BF - *low_score_byte;
             carry = (temp < 0) ? 1 : 0;
 
-            temp = state.BonusLivesAt - *mid - carry;
+            temp = state.BonusLivesAt - *middle_score_byte - carry;
             carry = (temp < 0) ? 1 : 0;
 
-            temp = state.M43BD - *high - carry;
+            temp = state.M43BD - *high_score_byte - carry;
             carry = (temp < 0) ? 1 : 0;
             
             if (carry) { // If Threshold < Score (borrow occurred), add a life!
-                uint8_t* lives = p ? &state.Player2Lives : &state.Player1Lives;
-                (*lives)++;
+                uint8_t *active_player_lives = active_player ? &state.Player2Lives : &state.Player1Lives;
+                (*active_player_lives)++;
                 coverage_hit("bonus_life_awarded");
                 update_lives_screen();
                 state.M436A = 0xFF; // sound trigger?
                 
-                uint8_t a = state.BonusLivesAt;
+                uint8_t bonus_life_threshold_middle_byte = state.BonusLivesAt;
                 state.BonusLivesAt = 0;
-                state.M43BD = (a >> 4) | (a << 4);
+                state.M43BD = (bonus_life_threshold_middle_byte >> 4) | (bonus_life_threshold_middle_byte << 4);
             }
         }
     }
@@ -199,20 +199,21 @@ void update_scores_and_sound(void) {
  * display path. The ROM address selects the literal tile value, while DE is
  * still constrained to foreground screen RAM as in the original guard.
  */
-void check_coin_event(uint16_t de, uint16_t rom_addr) {
-    if ((hw_read_dsw() & 0x10) == 0) return;
+void check_coin_event(uint16_t screen_address, uint16_t rom_address) {
+    if ((hw_read_dsw() & COIN_DISPLAY_DIP_MASK) == 0) return;
     
-    // Original guard is narrower than mem_write's own RAM bound (de must
+    // Original guard is narrower than mem_write's own RAM bound (the address must
     // land specifically in the $4000-$43FF foreground screen): preserved
     // here rather than widened, since these three fixed writes should
     // never legitimately target $4400-$4BFF.
-    if (de < 0x4000 || de >= 0x4400) return;
+    if (screen_address < FOREGROUND_SCREEN_START_ADDRESS
+        || screen_address >= FOREGROUND_SCREEN_END_ADDRESS) return;
 
-    if (rom_addr == 0x1895) {
-        mem_write(de, 0x22);
-    } else if (rom_addr == 0x189A) {
-        mem_write(de, 0x13);
-    } else if (rom_addr == 0x18B5) {
-        mem_write(de, 0x24);
+    if (rom_address == COIN_TEXT_TILE_ROM_ADDRESS) {
+        mem_write(screen_address, COIN_TEXT_TILE);
+    } else if (rom_address == COIN_INSERT_TILE_ROM_ADDRESS) {
+        mem_write(screen_address, COIN_INSERT_TILE);
+    } else if (rom_address == COIN_CREDIT_TILE_ROM_ADDRESS) {
+        mem_write(screen_address, COIN_CREDIT_TILE);
     }
 }

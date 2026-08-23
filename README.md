@@ -22,6 +22,7 @@ need installed.
 | **Classic, pixel-perfect** | The original 8×8 look, rebuilt in C | `cd c-phoenix && make run` | [`c-phoenix/README.md`](c-phoenix/README.md) |
 | **Original arcade board** | Runs the real 1980 program code on a Java-based hardware emulator | `cd jphoenix-emulator-port && make run` | [`jphoenix-emulator-port/README.md`](jphoenix-emulator-port/README.md) |
 | **Redot vertical slice** | The C game core in a GPU-composited Redot scene, with audio | `make -C redot-port/native extension` | [`redot-port/README.md`](redot-port/README.md) |
+| **Browser prototype** | The same C game core as WebAssembly, locally in your browser | `make web` | [`redot-port/web/README.md`](redot-port/web/README.md) |
 
 Each "full details" README has the controls, build options, and command-line
 flags for that version (for example, the arrow keys / WASD to move and Space
@@ -32,10 +33,15 @@ After building its extension, open `redot-port/project.godot` in Redot 26.2
 and run the scene. It is not part of `make build`, because it has its own
 Redot and native-extension toolchain.
 
-One thing every version needs first: your own legally obtained Phoenix
-Amstar ROM set. The repository never ships ROM bytes. Preparing a set takes
-a few minutes — see [`roms/README.md`](roms/README.md) for where to put the
-files and the one command that validates and assembles them.
+The browser variant is an experimental static WebAssembly build. It needs
+Emscripten only to build and a local HTTP server to open; players install no
+application. It is also outside `make build`.
+
+Only the JPhoenix emulator route needs your own legally obtained Phoenix
+Amstar ROM set. The repository never ships ROM bytes; see
+[`roms/README.md`](roms/README.md) for its preparation instructions.
+C-Phoenix, C2, Redot and the browser prototype use the versioned render-asset
+header and do not run `romprepare`.
 
 To build all three versions at once without starting any of them, use
 `make build` (`make all` is an alias).
@@ -61,6 +67,7 @@ phoenix-arcade/
 │  └─ tools/                 Visual tracer, lockstep checker, and other analysis tooling
 ├─ c2-phoenix/                High-resolution presentation, built on the c-phoenix engine
 ├─ redot-port/                Redot vertical slice, backed by the C game core
+│  └─ web/                    Experimental WebAssembly browser variant
 └─ roms/                     Guide for preparing your own ROM set
 ```
 
@@ -88,6 +95,9 @@ phoenix-arcade/
   Redot scene, using a native GDExtension for the 60 Hz simulation, video and
   audio bridge. It currently targets macOS on Apple Silicon and is playable
   from the Redot editor.
+  - [`web/`](redot-port/web/README.md) is the experimental browser shell
+    around the same core. Build it locally with Emscripten and serve the
+    static files; the browser needs no installation.
 - [`demo/`](demo/README.md) ties all three together with curated recordings,
   screenshots, and a walkthrough of the tooling below.
 
@@ -243,7 +253,9 @@ unless that's specifically what you're after:
 
 - **To play:** GCC or Clang, SDL2, and GNU Make for the C versions; JDK 11+
   (17+ for the optional LibGDX frontend) for the Java version. Python 3 is
-  needed once, to prepare the ROM set.
+  only needed for the JPhoenix ROM-preparation route.
+- **For the browser prototype build:** also Emscripten (`emcc`) and a local
+  HTTP server, such as the one included with Python 3.
 - **To go deeper:** the same, plus Graphviz for the full comparison and
   graph pipeline.
 

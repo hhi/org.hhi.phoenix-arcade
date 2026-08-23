@@ -51,7 +51,7 @@ static void l0cb4_check_bullet_hit_player(uint16_t bullet_x_offset) {
 void l0cc4_player_killed(void) {
     coverage_hit("player_killed");
     state.GameState = GAME_STATE_PLAYER_EXPLODING;
-    state.CounterA5 = 0x60;
+    state.CounterA5 = PLAYER_EXPLOSION_INITIAL_DURATION;
     state.ParticleExplosion = 0x10;
 }
 
@@ -344,25 +344,26 @@ void l0ea4_with_score(uint16_t score, uint16_t hl, uint16_t bc) {
  * Screen RAM collision check
  * [ASM: 0F56-0F71]
  */
-uint8_t l0f56_screen_ram_collision(uint8_t d, uint8_t e, uint8_t b, uint8_t c) {
-    uint16_t row = (uint16_t)((d << 8) | e);
-    for (int y = 0; y < c; y++) {
-        uint16_t de = row;
-        for (int x = 0; x < b; x++) {
-            if (de >= 0x4000 && de < 0x4400) {
-                uint8_t chr = mem_read(de);
-                if (chr >= 0x60 && chr < 0xC0) {
+uint8_t l0f56_screen_ram_collision(uint8_t screen_high_byte, uint8_t screen_low_byte,
+                                    uint8_t width_in_tiles, uint8_t height_in_tiles) {
+    uint16_t row_start_address = (uint16_t)((screen_high_byte << 8) | screen_low_byte);
+    for (int row_index = 0; row_index < height_in_tiles; row_index++) {
+        uint16_t tile_address = row_start_address;
+        for (int column_index = 0; column_index < width_in_tiles; column_index++) {
+            if (tile_address >= 0x4000 && tile_address < 0x4400) {
+                uint8_t tile = mem_read(tile_address);
+                if (tile >= 0x60 && tile < 0xC0) {
                     return 1; // Collision
                 }
             }
-            de++; // INC DE
+            tile_address++; // INC DE
         }
         // 0F6A: CALL RightOneColumn ($0217) on the restored row start:
         // DE -= 0x20, the next row of the rotated screen. (A previous
         // version did `d++`, i.e. DE += 0x100 -- off-screen, silently
         // swallowed by the bounds guard, so rows past the first were
         // never scanned. Found via scripted lockstep vs jphoenix.)
-        row -= 0x20;
+        row_start_address -= 0x20;
     }
     return 0; // No collision
 }

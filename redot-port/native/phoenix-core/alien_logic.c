@@ -2,6 +2,7 @@
 #include "utilities.h"
 #include "z80_core.h"
 #include "phoenix_tables.h"
+#include "game_constants.h"
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -17,11 +18,11 @@ extern void get_screen_ram_address(uint16_t alien_state_addr, uint16_t screen_ra
  * [ASM: 05EC-05F9]
  */
 void init_alien_control_states(void) {
-    uint8_t index = state.LevelAndRound & 0x0F;
+    uint8_t level_pattern = state.LevelAndRound & LEVEL_PATTERN_MASK;
     extern const uint8_t phoenix_alien_control_init_values[0x20];
-    uint8_t d = phoenix_alien_control_init_values[index * 2];
-    uint8_t e = phoenix_alien_control_init_values[index * 2 + 1];
-    init_alien_control_states_05fa(d, e);
+    uint8_t initial_control_state = phoenix_alien_control_init_values[level_pattern * 2];
+    uint8_t initial_control_shape = phoenix_alien_control_init_values[level_pattern * 2 + 1];
+    init_alien_control_states_05fa(initial_control_state, initial_control_shape);
 }
 
 /*
@@ -29,48 +30,47 @@ void init_alien_control_states(void) {
  * [ASM: 085A-0871]
  */
 uint8_t get_animation_chrs_aliens_fade_in(void) {
-    uint8_t a = state.CounterB4;
-    if (a >= 0x11) return 0x6C;
-    if (a >= 0x0D) return 0x6D;
-    if (a >= 0x09) return 0x6E;
-    if (a >= 0x05) return 0x6F;
+    // The ROM selects the reverse tile sequence $6C, $6D, $6E, $6F,
+    // $68 from CounterB4's countdown bands.
+    uint8_t fade_frames_remaining = state.CounterB4;
+    if (fade_frames_remaining >= 0x11) return 0x6C;
+    if (fade_frames_remaining >= 0x0D) return 0x6D;
+    if (fade_frames_remaining >= 0x09) return 0x6E;
+    if (fade_frames_remaining >= 0x05) return 0x6F;
     return 0x68;
 }
 
 /*
  * [ASM: 0FD8-0FEF]
  */
-static void l0fd8(uint16_t hl) {
-    uint8_t a = mem_read(hl);
-    if (a == 0) return;
+static void draw_alien_explosion_frame(uint16_t explosion_state_address) {
+    uint8_t frames_remaining = mem_read(explosion_state_address);
+    if (frames_remaining == 0) return;
 
-    uint8_t b = a;
-    mem_write(hl, a - 1); // DEC (HL)
+    mem_write(explosion_state_address, frames_remaining - 1); // DEC (HL)
 
-    hl += 2; // INC L, INC L
-    uint8_t d = mem_read(hl);
-    hl++; // INC L
-    uint8_t e = mem_read(hl);
+    uint16_t screen_address_bytes = explosion_state_address + 2;
+    uint8_t screen_high_byte = mem_read(screen_address_bytes);
+    uint8_t screen_low_byte = mem_read(screen_address_bytes + 1);
 
-    uint16_t de = (d << 8) | e;
+    uint16_t screen_address = (screen_high_byte << 8) | screen_low_byte;
 
-    extern uint16_t left_one_column(uint16_t de);
-    de = left_one_column(de);
+    screen_address = left_one_column(screen_address);
 
-    uint8_t offset = (b & 0x0E) >> 1; // RRCA on an already-even value == >>1
+    uint8_t frame_index = (frames_remaining & 0x0E) >> 1; // RRCA on an already-even value == >>1
     extern const uint8_t phoenix_alien_explosion_frames[0x08];
-    uint8_t img = phoenix_alien_explosion_frames[offset];
-    uint16_t img_addr = 0x1700 | img;
+    uint8_t frame_tile = phoenix_alien_explosion_frames[frame_index];
+    uint16_t frame_image_address = ALIEN_EXPLOSION_FRAME_TILE_PAGE | frame_tile;
 
-    // 0FF0: EX DE,HL -- de (screen target) becomes HL, img_addr (source)
+    // 0FF0: EX DE,HL -- the screen target becomes HL, and the frame source
     // becomes DE for Draw3x2 (L3540, entered via drawNx2 with n=3,
     // BC=$FFDF=-33). The earlier translation instead called
-    // draw_image_c_by_b(img_addr, de-0x21, 2, 3), which is not what this
+    // draw_image_c_by_b(frame_image_address, screen_address-0x21, 2, 3), which is not what this
     // ASM does at all: there is no "-0x21 to the target" step here, and
     // Draw3x2 draws 3 row-pairs (2 bytes each) stepping HL by BC=-33
     // between pairs, then blanks a trailing pair -- exactly drawNx2(n=3).
     extern void drawNx2(uint16_t de, uint16_t hl, uint16_t bc, int n);
-    drawNx2(img_addr, de, 0xFFDF, 3);
+    drawNx2(frame_image_address, screen_address, SCREEN_ROW_PAIR_STEP_BACKWARD_33, 3);
 }
 
 /*
@@ -79,16 +79,16 @@ static void l0fd8(uint16_t hl) {
  * by blanking a full column (26 rows) of the foreground.
  * [ASM: 37CC-37E5]
  */
-static void l37cc_erase_bonus_explosion(uint16_t hl) {
-    uint8_t a = mem_read(hl + 3); // LSB of the screen anchor
-    a = (uint8_t)((a & 0x1F) + 0x20);
-    uint16_t addr = (uint16_t)(0x4300 | a);
+static void erase_bonus_explosion(uint16_t explosion_state_address) {
+    uint8_t screen_low_byte = mem_read(explosion_state_address + 3);
+    screen_low_byte = (uint8_t)((screen_low_byte & 0x1F) + 0x20);
+    uint16_t screen_address = (uint16_t)(FOREGROUND_COLUMN_ADDRESS_BASE | screen_low_byte);
 
-    for (uint8_t count = 0x1A; count != 0; count--) {
-        mem_write(addr, 0);
-        addr++;
-        mem_write(addr, 0);
-        addr = (uint16_t)(addr + 0xFFDF); // ADD HL,BC (-33)
+    for (uint8_t rows_remaining = 0x1A; rows_remaining != 0; rows_remaining--) {
+        mem_write(screen_address, 0);
+        screen_address++;
+        mem_write(screen_address, 0);
+        screen_address = (uint16_t)(screen_address + SCREEN_ROW_PAIR_STEP_BACKWARD_33); // ADD HL,BC (-33)
     }
 }
 
@@ -97,13 +97,13 @@ static void l37cc_erase_bonus_explosion(uint16_t hl) {
  * Draws the left part of the bonus explosion animation.
  * [ASM: 3796-37AA]
  */
-static void l3796_bonus_explosion_left(uint8_t a, uint16_t de) {
+static void draw_bonus_explosion_left(uint8_t frame_offset, uint16_t screen_address) {
     extern void drawNx2(uint16_t de, uint16_t hl, uint16_t bc, int n);
 
-    uint16_t hl = (uint16_t)(((uint16_t)a + 0x60) + de);
-    if ((uint32_t)hl + 0xBCC0 > 0xFFFF) return; // RET C: out of range, skip
+    uint16_t left_half_address = (uint16_t)(((uint16_t)frame_offset + 0x60) + screen_address);
+    if ((uint32_t)left_half_address + 0xBCC0 > 0xFFFF) return; // RET C: out of range, skip
 
-    drawNx2(0x17D0, hl, 0xFFDF, 3); // Draw3x2, T17D0 (left part)
+    drawNx2(BONUS_EXPLOSION_LEFT_IMAGE_ADDRESS, left_half_address, SCREEN_ROW_PAIR_STEP_BACKWARD_33, 3); // Draw3x2, left part
 }
 
 /*
@@ -111,18 +111,18 @@ static void l3796_bonus_explosion_left(uint8_t a, uint16_t de) {
  * Draws the right part of the bonus explosion animation.
  * [ASM: 3772-3792]
  */
-static void l3758_bonus_explosion_right(uint8_t a, uint16_t de) {
+static void draw_bonus_explosion_right(uint8_t frame_offset, uint16_t screen_address) {
     extern void drawNx2(uint16_t de, uint16_t hl, uint16_t bc, int n);
 
-    uint16_t target = (uint16_t)(de - a);
-    if ((uint32_t)target + 0xBFA0 <= 0xFFFF) return; // RET NC: out of range, skip
+    uint16_t right_half_address = (uint16_t)(screen_address - frame_offset);
+    if ((uint32_t)right_half_address + 0xBFA0 <= 0xFFFF) return; // RET NC: out of range, skip
 
-    mem_write(target, 0);
-    target++;
-    mem_write(target, 0);
-    target = (uint16_t)(target + 0xFFDF); // ADD HL,BC (-33)
+    mem_write(right_half_address, 0);
+    right_half_address++;
+    mem_write(right_half_address, 0);
+    right_half_address = (uint16_t)(right_half_address + SCREEN_ROW_PAIR_STEP_BACKWARD_33); // ADD HL,BC (-33)
 
-    drawNx2(0x17D6, target, 0xFFDF, 3); // Draw3x2, T17D6 (right part)
+    drawNx2(BONUS_EXPLOSION_RIGHT_IMAGE_ADDRESS, right_half_address, SCREEN_ROW_PAIR_STEP_BACKWARD_33, 3); // Draw3x2, right part
 }
 
 /*
@@ -132,27 +132,28 @@ static void l3758_bonus_explosion_right(uint8_t a, uint16_t de) {
  * the last digit is always '0'.
  * [ASM: 37B0-37C6]
  */
-static void l37b0_print_bonus_score(uint16_t hl) {
+static void print_bonus_explosion_score(uint16_t explosion_state_address) {
     extern uint16_t left_one_column(uint16_t de);
     extern uint16_t right_one_column(uint16_t de);
     extern void print_number(uint16_t screen_addr, uint16_t data_addr, uint8_t digits);
 
-    uint16_t score_addr = hl + 1;
-    uint8_t a = mem_read(score_addr);
+    uint16_t score_address = explosion_state_address + 1;
+    uint8_t score_bcd = mem_read(score_address);
     // DAA: flags coming in are always N=0, H=0, C=0 (from the caller's RRCA)
-    if ((a & 0x0F) > 0x09) a = (uint8_t)(a + 0x06);
-    if (a > 0x99) a = (uint8_t)(a + 0x60);
-    mem_write(score_addr, a);
+    if ((score_bcd & 0x0F) > 0x09) score_bcd = (uint8_t)(score_bcd + 0x06);
+    if (score_bcd > 0x99) score_bcd = (uint8_t)(score_bcd + 0x60);
+    mem_write(score_address, score_bcd);
 
-    uint8_t d = mem_read(hl + 2);
-    uint8_t e = mem_read(hl + 3);
-    uint16_t de = (uint16_t)((d << 8) | e);
+    uint8_t screen_high_byte = mem_read(explosion_state_address + 2);
+    uint8_t screen_low_byte = mem_read(explosion_state_address + 3);
+    uint16_t screen_address = (uint16_t)((screen_high_byte << 8) | screen_low_byte);
 
-    de = right_one_column(de);
-    if (de >= 0x4000 && de < 0x4400) mem_write(de, 0x20); // rightmost digit is always '0'
-    de = left_one_column(de);
+    screen_address = right_one_column(screen_address);
+    if (screen_address >= FOREGROUND_SCREEN_START_ADDRESS
+        && screen_address < FOREGROUND_SCREEN_END_ADDRESS) mem_write(screen_address, 0x20); // rightmost digit is always '0'
+    screen_address = left_one_column(screen_address);
 
-    print_number(de, score_addr, 2);
+    print_number(screen_address, score_address, 2);
 }
 
 /*
@@ -163,28 +164,28 @@ static void l37b0_print_bonus_score(uint16_t hl) {
  * once it reaches zero, erases the animation.
  * [ASM: 3758-37CC]
  */
-static void l3758_bonus_explosion_animation(uint16_t hl) {
-    if (mem_read(hl) == 0) return;
+static void update_bonus_explosion_animation(uint16_t explosion_state_address) {
+    if (mem_read(explosion_state_address) == 0) return;
 
-    mem_write(hl, mem_read(hl) - 1);
-    uint8_t counter = mem_read(hl);
-    if (counter == 0) {
-        l37cc_erase_bonus_explosion(hl);
+    mem_write(explosion_state_address, mem_read(explosion_state_address) - 1);
+    uint8_t frames_remaining = mem_read(explosion_state_address);
+    if (frames_remaining == 0) {
+        erase_bonus_explosion(explosion_state_address);
         return;
     }
 
-    if ((counter & 0x01) == 0) {
-        l37b0_print_bonus_score(hl);
+    if ((frames_remaining & 0x01) == 0) {
+        print_bonus_explosion_score(explosion_state_address);
         return;
     }
 
-    uint8_t a = (uint8_t)(((0x0F - counter) & 0x0E) << 4);
-    uint8_t d = mem_read(hl + 2);
-    uint8_t e = mem_read(hl + 3);
-    uint16_t de = (uint16_t)((d << 8) | e);
+    uint8_t frame_offset = (uint8_t)(((0x0F - frames_remaining) & 0x0E) << 4);
+    uint8_t screen_high_byte = mem_read(explosion_state_address + 2);
+    uint8_t screen_low_byte = mem_read(explosion_state_address + 3);
+    uint16_t screen_address = (uint16_t)((screen_high_byte << 8) | screen_low_byte);
 
-    l3796_bonus_explosion_left(a, de);
-    l3758_bonus_explosion_right(a, de);
+    draw_bonus_explosion_left(frame_offset, screen_address);
+    draw_bonus_explosion_right(frame_offset, screen_address);
 }
 
 /*
@@ -193,10 +194,10 @@ static void l3758_bonus_explosion_animation(uint16_t hl) {
  * [ASM: 0FC0-0FFF]
  */
 void handle_animations_for_killed_aliens(void) {
-    l0fd8(0x4370);
-    l0fd8(0x4374);
-    l3758_bonus_explosion_animation(0x4378);
-    l3758_bonus_explosion_animation(0x437C);
+    draw_alien_explosion_frame(ALIEN_EXPLOSION_ONE_STATE_ADDRESS);
+    draw_alien_explosion_frame(ALIEN_EXPLOSION_TWO_STATE_ADDRESS);
+    update_bonus_explosion_animation(BONUS_EXPLOSION_ONE_STATE_ADDRESS);
+    update_bonus_explosion_animation(BONUS_EXPLOSION_TWO_STATE_ADDRESS);
 }
 
 /*
@@ -204,15 +205,15 @@ void handle_animations_for_killed_aliens(void) {
  * Initialize alien control states (continuation).
  * [ASM: 05FA-060D]
  */
-void init_alien_control_states_05fa(uint8_t d, uint8_t e) {
+void init_alien_control_states_05fa(uint8_t initial_control_state, uint8_t initial_control_shape) {
     if (state.AliensLeft == 0) return;
     
-    uint16_t hl = 0x4B70;
-    int count = state.AliensLeft > 16 ? 16 : state.AliensLeft;
-    for (int i = 0; i < count; i++) {
-        mem_write(hl, d);
-        mem_write(hl + 1, e);
-        hl += 4;
+    uint16_t alien_state_address = ALIEN_CONTROL_DATA_ADDRESS;
+    int alien_count = state.AliensLeft > ALIENS_PER_WAVE ? ALIENS_PER_WAVE : state.AliensLeft;
+    for (int alien_index = 0; alien_index < alien_count; alien_index++) {
+        mem_write(alien_state_address, initial_control_state);
+        mem_write(alien_state_address + 1, initial_control_shape);
+        alien_state_address += 4;
     }
 }
 
@@ -224,20 +225,19 @@ void init_alien_control_states_05fa(uint8_t d, uint8_t e) {
 void init_alien_positions(void) {
     if (state.AliensLeft == 0) return;
     
-    uint8_t index = (state.LevelAndRound >> 1) & 0x0F;
-    uint8_t lsb = phoenix_alien_position_pointer_table[index];
-    uint8_t page_offset = lsb;
+    uint8_t formation_index = (state.LevelAndRound >> 1) & LEVEL_PATTERN_MASK;
+    uint8_t position_data_offset = phoenix_alien_position_pointer_table[formation_index];
 
-    uint16_t de = 0x4B72;
+    uint16_t alien_position_address = ALIEN_POSITION_DATA_ADDRESS;
 
-    int count = state.AliensLeft > 16 ? 16 : state.AliensLeft;
-    for (int i = 0; i < count; i++) {
-        mem_write(de, phoenix_alien_position_layout_page[page_offset]);
-        de++;
-        page_offset++;
-        mem_write(de, phoenix_alien_position_layout_page[page_offset]);
-        de += 3;
-        page_offset++;
+    int alien_count = state.AliensLeft > ALIENS_PER_WAVE ? ALIENS_PER_WAVE : state.AliensLeft;
+    for (int alien_index = 0; alien_index < alien_count; alien_index++) {
+        mem_write(alien_position_address, phoenix_alien_position_layout_page[position_data_offset]);
+        alien_position_address++;
+        position_data_offset++;
+        mem_write(alien_position_address, phoenix_alien_position_layout_page[position_data_offset]);
+        alien_position_address += 3;
+        position_data_offset++;
     }
 }
 
@@ -249,18 +249,18 @@ void init_alien_positions(void) {
 void copy_init_values_for_16_aliens(void) {
     if (state.AliensLeft == 0) return;
     
-    uint8_t index = state.LevelAndRound & 0x0F;
+    uint8_t level_pattern = state.LevelAndRound & LEVEL_PATTERN_MASK;
     extern const uint8_t phoenix_alien_layout_pointers[0x20];
-    uint8_t d = phoenix_alien_layout_pointers[index * 2];
-    uint8_t e = phoenix_alien_layout_pointers[index * 2 + 1];
+    uint8_t pattern_pointer_high_byte = phoenix_alien_layout_pointers[level_pattern * 2];
+    uint8_t pattern_pointer_low_byte  = phoenix_alien_layout_pointers[level_pattern * 2 + 1];
     
-    uint16_t de = 0x4B50;
+    uint16_t alien_pattern_address = ALIEN_PATTERN_TABLE_ADDRESS;
 
-    int count = state.AliensLeft > 16 ? 16 : state.AliensLeft;
-    for (int i = 0; i < count; i++) {
-        mem_write(de, d);
-        mem_write(de + 1, e);
-        de += 2;
+    int alien_count = state.AliensLeft > ALIENS_PER_WAVE ? ALIENS_PER_WAVE : state.AliensLeft;
+    for (int alien_index = 0; alien_index < alien_count; alien_index++) {
+        mem_write(alien_pattern_address, pattern_pointer_high_byte);
+        mem_write(alien_pattern_address + 1, pattern_pointer_low_byte);
+        alien_pattern_address += 2;
     }
 }
 
@@ -272,8 +272,8 @@ void copy_init_values_for_16_aliens(void) {
  * [ASM: 0A50-0A6B]
  */
 void alien_data_controller(void) {
-    uint16_t bc = 0x4B70; // alien data structure (grid)
-    uint16_t de = 0x4BB0; // alien data structure (screen ram)
+    uint16_t bc = ALIEN_CONTROL_DATA_ADDRESS; // alien data structure (grid)
+    uint16_t de = ALIEN_SCREEN_DATA_ADDRESS; // alien data structure (screen ram)
     
     for (int i = 0; i < 20; i++) {
         update_screen_objects(bc, de);
@@ -288,8 +288,8 @@ void alien_data_controller(void) {
  * [ASM: 0A6C-0A99]
  */
 void get_screen_ram_address_for_all_aliens(void) {
-    uint16_t bc = 0x4B70; // data structure for alien control and screen coordinate
-    uint16_t de = 0x4BB3; // data structure for alien screen ram address
+    uint16_t bc = ALIEN_CONTROL_DATA_ADDRESS; // data structure for alien control and screen coordinate
+    uint16_t de = ALIEN_SCREEN_DATA_ADDRESS + 3; // data structure for alien screen ram address
     
     for (int i = 0; i < 20; i++) {
         // Read the alien control state byte
@@ -297,13 +297,13 @@ void get_screen_ram_address_for_all_aliens(void) {
 
         if ((a & 0x18) != 0) { // mask out 0001_1000
             // The following simulates the history shift:
-            // LD D,(HL) where HL=0x4BB3
+            // LD D,(HL) where HL=alien screen address byte 3
             // DEC HL
-            // LD E,(HL) where HL=0x4BB2
+            // LD E,(HL) where HL=alien screen address byte 2
             // DEC HL
-            // LD (HL),D where HL=0x4BB1
+            // LD (HL),D where HL=alien screen address byte 1
             // DEC HL
-            // LD (HL),E where HL=0x4BB0
+            // LD (HL),E where HL=alien screen address byte 0
 
             uint8_t d = mem_read(de);
             uint8_t e = mem_read(de - 1);
@@ -334,8 +334,8 @@ void get_screen_ram_address_for_all_aliens(void) {
  */
 void alien_movement_update(void) {
     for (int i = 0; i < 16; i++) {
-        uint16_t ptr_addr = 0x4B50 + i * 2; // pattern pointer, MSB:LSB
-        uint16_t grid = 0x4B70 + i * 4;     // control A, B, X, Y
+    uint16_t ptr_addr = ALIEN_PATTERN_TABLE_ADDRESS + i * 2; // pattern pointer, MSB:LSB
+    uint16_t grid = ALIEN_CONTROL_DATA_ADDRESS + i * 4;     // control A, B, X, Y
 
         // 0D32-0D37: only aliens with bit 3 of control state A set
         if ((mem_read(grid) & 0x08) == 0) continue;
@@ -380,8 +380,8 @@ void alien_movement_update(void) {
  * [ASM: 0D70-0DB5] and [ASM: 0DBB-0DC6] and [ASM: 0DCC-0DEE]
  */
 void alien_animation_update(void) {
-    uint16_t bc = 0x4B70; // Alien control state A
-    uint16_t hl = 0x4B50; // Alien movement pattern table
+    uint16_t bc = ALIEN_CONTROL_DATA_ADDRESS; // Alien control state A
+    uint16_t hl = ALIEN_PATTERN_TABLE_ADDRESS; // Alien movement pattern table
 
     for (int i = 0; i < 16; i++) {
         uint8_t d = mem_read(hl);
@@ -478,12 +478,12 @@ void l3264(void) {
     // 328F-32AE
     do {
         uint8_t msb_pos = l;
-        uint8_t msb = mem_read(0x4B00 | l);
+        uint8_t msb = mem_read(ALIEN_RUNTIME_DATA_PAGE | l);
         l++;
-        uint8_t lsb = mem_read(0x4B00 | l);
+        uint8_t lsb = mem_read(ALIEN_RUNTIME_DATA_PAGE | l);
         if (msb == e && lsb == d) {
-            mem_write(0x4B00 | msb_pos, state.M4351);
-            mem_write(0x4B00 | l, state.M4352);
+            mem_write(ALIEN_RUNTIME_DATA_PAGE | msb_pos, state.M4351);
+            mem_write(ALIEN_RUNTIME_DATA_PAGE | l, state.M4352);
         }
         l++;
         b--;
@@ -637,9 +637,9 @@ void l315a(void) {
 
     for (int c = 0x10; c > 0; c--) {
         // L3192
-        if (mem_read(0x4B00 | e) & 0x08) {
-            if (state.M4394 == mem_read(0x4B00 | l) &&
-                state.M4356 == mem_read(0x4B00 | (uint8_t)(l + 1))) {
+        if (mem_read(ALIEN_RUNTIME_DATA_PAGE | e) & 0x08) {
+            if (state.M4394 == mem_read(ALIEN_RUNTIME_DATA_PAGE | l) &&
+                state.M4356 == mem_read(ALIEN_RUNTIME_DATA_PAGE | (uint8_t)(l + 1))) {
                 state.M4354 = l;
                 state.M4350 = 0x03;
                 return; // 31AC: POP HL / RET -- leaves the whole scan
@@ -665,8 +665,8 @@ void l31b4(void) {
 
     // 31BA-31C7: grid X/Y of the alien selected by L315A
     uint8_t l = (uint8_t)(((uint8_t)(state.M4354 - 0x50) << 1) + 0x72);
-    uint8_t ax = mem_read(0x4B00 | l);
-    uint8_t ay = mem_read(0x4B00 | (uint8_t)(l + 1));
+    uint8_t ax = mem_read(ALIEN_RUNTIME_DATA_PAGE | l);
+    uint8_t ay = mem_read(ALIEN_RUNTIME_DATA_PAGE | (uint8_t)(l + 1));
 
     // 31C8-31D6: distance to the player; C=4 when the player is right
     uint8_t a = state.PlayerShipX;
@@ -721,9 +721,9 @@ void l322c(void) {
     uint8_t b = state.M4394;
     uint8_t c = state.M4356;
     for (int i = 0; i < 16; i++) {
-        if (mem_read(0x4B70 + i * 4) & 0x08) {
-            if (mem_read(0x4B50 + i * 2) != b) return;
-            if (mem_read(0x4B51 + i * 2) != c) return;
+        if (mem_read(ALIEN_CONTROL_DATA_ADDRESS + i * 4) & 0x08) {
+            if (mem_read(ALIEN_PATTERN_TABLE_ADDRESS + i * 2) != b) return;
+            if (mem_read(ALIEN_PATTERN_TABLE_ADDRESS + 1 + i * 2) != c) return;
         }
     }
     state.M4350 = 0x06;
@@ -779,7 +779,7 @@ void l2560(void) {
     uint8_t a = (uint8_t)(state.Counter93 & 0x01);
     a = (uint8_t)(a << 5); // RLCA x5 on a 0/1 value: safe as a shift
     a = (uint8_t)(a + 0x70);
-    uint16_t hl = (uint16_t)(0x4B00 | a);
+    uint16_t hl = (uint16_t)(ALIEN_RUNTIME_DATA_PAGE | a);
 
     a = (uint8_t)(state.M4357 << 3); // RLCA x3; M4357 is bounds-checked <3 elsewhere
     uint8_t d = (uint8_t)(a + 0xAD);

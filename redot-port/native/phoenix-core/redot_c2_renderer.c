@@ -1,6 +1,6 @@
 #include "redot_c2_renderer.h"
 #include "phoenix_state.h"
-#include "../generated/phoenix_render_assets.h"
+#include "../../../c-phoenix/phoenix_render_assets.h"
 #include <string.h>
 
 extern PhoenixState state;

@@ -167,28 +167,20 @@ void clear_fore_and_background(void) {
  * [ASM: 0173-0195]
  */
 uint8_t get_player_inputs_for_demo(void) {
-    uint8_t a = state.Counter98[1]; // Counter98+1 (LSB)
-    a &= 0x7F;
-    uint8_t b = 0xCE; // 1100_1110 (move right)
+    uint8_t demo_frame = state.Counter98[1] & DEMO_INPUT_PHASE_MASK;
     
-    if (a < 0x1F) return b;
-    b = 0xFE; // 1111_1110 (push fire)
-    if (a == 0x1F) return b;
+    if (demo_frame < DEMO_FIRST_FIRE_FRAME) return DEMO_INPUT_MOVE_RIGHT;
+    if (demo_frame == DEMO_FIRST_FIRE_FRAME) return DEMO_INPUT_FIRE;
     
-    b = 0xAE; // 1010_1110 (move left)
-    if (a < 0x5F) return b;
+    if (demo_frame < DEMO_SECOND_FIRE_FRAME) return DEMO_INPUT_MOVE_LEFT;
+    if (demo_frame == DEMO_SECOND_FIRE_FRAME) return DEMO_INPUT_FIRE;
     
-    b = 0xFE; // push fire
-    if (a == 0x5F) return b;
+    if (demo_frame < DEMO_THIRD_FIRE_FRAME) return DEMO_INPUT_MOVE_RIGHT;
+    if (demo_frame == DEMO_THIRD_FIRE_FRAME) return DEMO_INPUT_FIRE;
     
-    b = 0xCE; // move right
-    if (a < 0x7F) return b;
+    if (state.Counter98[0] != DEMO_SHIELD_COUNTER_MSB) return DEMO_INPUT_FIRE;
     
-    b = 0xFE; // push fire
-    uint8_t msb = state.Counter98[0];
-    if (msb != 0x09) return b;
-    
-    return 0x7E; // 0111_1110 (push shield)
+    return DEMO_INPUT_SHIELD;
 }
 
 /*

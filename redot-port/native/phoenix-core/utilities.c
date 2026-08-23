@@ -3,6 +3,7 @@
 #include "utilities.h"
 #include "phoenix_tables.h"
 #include "z80_core.h"
+#include "game_constants.h"
 
 extern PhoenixState state;
 
@@ -14,11 +15,10 @@ extern PhoenixState state;
  * [ASM: 00BB-00C3]
  */
 uint8_t check_input_bits(uint8_t mask) {
-    uint8_t current = state.IN0Current;
-    current = ~current; // CPL
-    current &= mask;
-    uint8_t prev = state.IN0Previous;
-    return current & prev;
+    // Inputs are active-low: a newly pressed selected bit is 0 now and 1
+    // in the previous snapshot. CPL turns that new press into a set bit.
+    uint8_t newly_pressed_selected_bits = (uint8_t)~state.IN0Current & mask;
+    return newly_pressed_selected_bits & state.IN0Previous;
 }
 
 /*
@@ -28,29 +28,33 @@ uint8_t check_input_bits(uint8_t mask) {
  * [ASM: 00C4-00E1]
  */
 void print_number(uint16_t screen_addr, uint16_t data_addr, uint8_t digits) {
-    while (digits > 0) {
-        uint8_t val = mem_read(data_addr);
+    uint16_t digit_screen_address = screen_addr;
+    uint16_t score_byte_address = data_addr;
+    uint8_t digits_remaining = digits;
 
-        // Print LSB
-        uint8_t lsb = val & 0x0F;
-        if (screen_addr >= 0x4000 && screen_addr < 0x4400) {
-            mem_write(screen_addr, lsb | 0x20);
+    while (digits_remaining > 0) {
+        uint8_t packed_bcd_byte = mem_read(score_byte_address);
+
+        // The display order starts with the low nibble because the rotated
+        // screen advances one visual digit by $20 in RAM.
+        uint8_t low_bcd_digit = packed_bcd_byte & 0x0F;
+        if (digit_screen_address >= 0x4000 && digit_screen_address < 0x4400) {
+            mem_write(digit_screen_address, low_bcd_digit | 0x20);
         }
 
         // Screen addr = LeftOneColumn (which is effectively DE + 0x20)
-        screen_addr += 0x20;
-        digits--;
-        if (digits == 0) break;
+        digit_screen_address += 0x20;
+        digits_remaining--;
+        if (digits_remaining == 0) break;
 
-        // Print MSB
-        uint8_t msb = (val >> 4) & 0x0F;
-        if (screen_addr >= 0x4000 && screen_addr < 0x4400) {
-            mem_write(screen_addr, msb | 0x20);
+        uint8_t high_bcd_digit = (packed_bcd_byte >> 4) & 0x0F;
+        if (digit_screen_address >= 0x4000 && digit_screen_address < 0x4400) {
+            mem_write(digit_screen_address, high_bcd_digit | 0x20);
         }
 
-        screen_addr += 0x20;
-        data_addr--;
-        digits--;
+        digit_screen_address += 0x20;
+        score_byte_address--;
+        digits_remaining--;
     }
 }
 
@@ -160,23 +164,22 @@ void unused_bcd_subtracter(void) {
  * Mapping of 'grid values' to screen ram address.
  * [ASM: 09BA-09D1]
  */
-void get_screen_ram_address(uint16_t bc, uint16_t de) {
-    uint8_t coord1 = mem_read(bc);
-    uint8_t a = coord1 & 0xF8;
-    a >>= 2;
+void get_screen_ram_address(uint16_t object_position_address, uint16_t screen_address_output) {
+    uint8_t object_x = mem_read(object_position_address);
+    uint8_t screen_address_table_index = (object_x & 0xF8) >> 2;
 
-    uint16_t hl = 0x0A00 + a;
-    mem_write(de, phoenix_screen_ram_address_table[hl - 0x0A00]);
+    uint16_t screen_address_table_address = 0x0A00 + screen_address_table_index;
+    mem_write(screen_address_output, phoenix_screen_ram_address_table[screen_address_table_address - 0x0A00]);
 
-    bc++;
-    de++;
-    hl++;
+    object_position_address++;
+    screen_address_output++;
+    screen_address_table_address++;
 
-    uint8_t coord2 = mem_read(bc);
-    a = coord2 & 0xF8;
-    a >>= 3;
+    uint8_t object_y = mem_read(object_position_address);
+    uint8_t screen_low_byte_offset = (object_y & 0xF8) >> 3;
 
-    mem_write(de, a + phoenix_screen_ram_address_table[hl - 0x0A00]);
+    mem_write(screen_address_output, screen_low_byte_offset
+                                   + phoenix_screen_ram_address_table[screen_address_table_address - 0x0A00]);
 }
 
 /*
@@ -185,12 +188,12 @@ void get_screen_ram_address(uint16_t bc, uint16_t de) {
  * [ASM: 09A0-09B5]
  */
 void get_screen_ram_address_for_player_ship(void) {
-    uint16_t bc = 0x43C2;
-    uint16_t de = 0x43E2;
-    while (bc != 0x43CE) {
-        get_screen_ram_address(bc, de);
-        bc += 4;
-        de += 4;
+    uint16_t object_position_address = 0x43C2;
+    uint16_t screen_address_output = 0x43E2;
+    while (object_position_address != 0x43CE) {
+        get_screen_ram_address(object_position_address, screen_address_output);
+        object_position_address += 4;
+        screen_address_output += 4;
     }
 }
 
@@ -359,12 +362,15 @@ void add_to_score(uint16_t hl, uint16_t bc) {
  * [ASM: 04FB-0505]
  */
 void delete_digits(uint16_t screen_addr, uint8_t num_digits) {
-    while (num_digits > 0) {
-        if (screen_addr >= 0x4000 && screen_addr < 0x4400) {
-            mem_write(screen_addr, 0x00);
+    uint16_t digit_screen_address = screen_addr;
+    uint8_t digits_remaining = num_digits;
+
+    while (digits_remaining > 0) {
+        if (digit_screen_address >= 0x4000 && digit_screen_address < 0x4400) {
+            mem_write(digit_screen_address, 0x00);
         }
-        screen_addr = left_one_column(screen_addr);
-        num_digits--;
+        digit_screen_address = left_one_column(digit_screen_address);
+        digits_remaining--;
     }
 }
 
@@ -384,11 +390,10 @@ void phoenix_init(void) {
  * [ASM: 30AA-30B8]
  */
 uint8_t get_random_number(void) {
-    extern PhoenixState state;
-    uint8_t a = state.Counter9B;
-    a = (uint8_t)((a << 3) | (a >> 5)) & 0x07; // RLCA x3, AND $07
-    a = (uint8_t)(a + state.PlayerShipX) & 0x0F;
-    return a;
+    uint8_t frame_counter_bits = state.Counter9B;
+    frame_counter_bits = (uint8_t)((frame_counter_bits << 3) | (frame_counter_bits >> 5)) & 0x07;
+    uint8_t random_nibble = (uint8_t)(frame_counter_bits + state.PlayerShipX) & 0x0F;
+    return random_nibble;
 }
 
 /*
@@ -401,34 +406,32 @@ uint8_t get_random_number(void) {
  * slot was actually found.
  * [ASM: 25B7-25FD]
  */
-void l25b7(uint8_t b, uint8_t c) {
-    uint8_t d = 0x03;
+void l25b7(uint8_t source_x, uint8_t source_y) {
+    uint8_t bullet_slots_to_try = ENEMY_BULLET_SLOTS_EARLY_ROUNDS;
     if (state.LevelAndRound >= 0x10) {
-        d = 0x04;
+        bullet_slots_to_try = ENEMY_BULLET_SLOTS_MID_ROUNDS;
         if (state.LevelAndRound >= 0x20) {
-            d = 0x05;
+            bullet_slots_to_try = ENEMY_BULLET_SLOTS_LATE_ROUNDS;
         }
     }
 
-    uint16_t hl = 0x43CC; // EnemyBullet0State
-    for (; d != 0; d--) {
-        if ((mem_read(hl) & 0x08) == 0) {
-            b = (uint8_t)(b + 0x04);
-            c = (uint8_t)(c + 0x0C);
-            mem_write(hl, 0x08);
+    uint16_t bullet_state_address = 0x43CC; // EnemyBullet0State
+    for (; bullet_slots_to_try != 0; bullet_slots_to_try--) {
+        if ((mem_read(bullet_state_address) & GAME_OBJECT_ACTIVE_FLAG) == 0) {
+            uint8_t bullet_x = (uint8_t)(source_x + ENEMY_BULLET_SPAWN_X_OFFSET);
+            uint8_t bullet_y = (uint8_t)(source_y + ENEMY_BULLET_SPAWN_Y_OFFSET);
+            mem_write(bullet_state_address, GAME_OBJECT_ACTIVE_FLAG);
 
-            hl++; // Shape field
-            uint8_t shape = (uint8_t)(((b >> 1) & 0x03) + (c & 0x04) + 0x58);
-            mem_write(hl, shape);
+            uint16_t bullet_shape_address = bullet_state_address + 1;
+            uint8_t bullet_shape = (uint8_t)(((bullet_x >> 1) & 0x03) + (bullet_y & 0x04) + 0x58);
+            mem_write(bullet_shape_address, bullet_shape);
 
-            hl++; // X field
-            mem_write(hl, b);
+            mem_write(bullet_shape_address + 1, bullet_x);
 
-            hl++; // Y field
-            mem_write(hl, c);
+            mem_write(bullet_shape_address + 2, bullet_y);
             return;
         }
-        hl += 4;
+        bullet_state_address += 4;
     }
     // No free slot in any of the d slots: nothing happens (matches the
     // original's abort-without-effect when the search is exhausted).

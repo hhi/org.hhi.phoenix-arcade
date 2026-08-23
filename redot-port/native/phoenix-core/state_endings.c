@@ -38,19 +38,19 @@ void state_4_player_ship_explosion(void) {
     // We will do it in l0bba where it is needed
     
     state.CounterA5--;
-    uint8_t a = state.CounterA5;
+    uint8_t frames_remaining = state.CounterA5;
     
-    if (a == 0) {
+    if (frames_remaining == 0) {
         l0b15();
         return;
     }
     
-    if (a < 0x20) {
+    if (frames_remaining < PLAYER_EXPLOSION_CLEAR_FRAME) {
         l0ba0();
         return;
     }
     
-    if (a == 0x20) {
+    if (frames_remaining == PLAYER_EXPLOSION_CLEAR_FRAME) {
         clear_foreground();
         return;
     }
@@ -66,13 +66,13 @@ void state_4_player_ship_explosion(void) {
  */
 void state_5_game_over_text(void) {
     state.CounterA5++;
-    uint8_t a = state.CounterA5;
+    uint8_t frames_elapsed = state.CounterA5;
     
-    if (a == 0x40) {
+    if (frames_elapsed == GAME_OVER_CLEAR_BACKGROUND_FRAME) {
         clear_background();
     }
     
-    if (a == 0x80) {
+    if (frames_elapsed == GAME_OVER_COMPLETE_FRAME) {
         state.GameState = GAME_STATE_NEW_GAME;
 
         // If both players have no lives, go to attract mode
@@ -101,7 +101,7 @@ void state_5_game_over_text(void) {
  */
 static void l2552_mothership_explosion_done(void) {
     state.GameState = GAME_STATE_MOTHERSHIP_SCORE;
-    state.CounterA5 = 0x40;
+    state.CounterA5 = MOTHERSHIP_SCORE_DISPLAY_DURATION;
     state.M436B = 0xFF; // 'mother ship score display' sound flag
 }
 
@@ -124,21 +124,21 @@ static void l2552_mothership_explosion_done(void) {
  * reason -- this restores the call sites the ASM actually has.
  */
 void state_6_mother_ship_explosion(void) {
-    uint16_t de;
-    uint8_t a = update_counters_for_mothership_explosion(&de);
+    uint16_t mothership_screen_address;
+    uint8_t frames_remaining = update_counters_for_mothership_explosion(&mothership_screen_address);
 
-    if (a == 0) {
+    if (frames_remaining == 0) {
         l2552_mothership_explosion_done();
         return;
     }
 
-    if (a < 0x20) {
+    if (frames_remaining < MOTHERSHIP_EXPLOSION_SCORE_FRAME) {
         erase_mothership();
         return;
     }
 
-    if (a == 0x20) {
-        mothership_core_hit_check(de);
+    if (frames_remaining == MOTHERSHIP_EXPLOSION_SCORE_FRAME) {
+        mothership_core_hit_check(mothership_screen_address);
         return;
     }
 
@@ -150,24 +150,24 @@ void state_6_mother_ship_explosion(void) {
     // explosiedeeltjes op spelersgerelateerde adressen werden getekend.
     // Gevonden via scripted lockstep (mutated_rank_01_score_3092917,
     // record 11236).
-    if ((a & 0x01) == 0) {
+    if ((frames_remaining & 0x01) == 0) {
         extern void l20e8(uint8_t a, uint8_t d, uint8_t e);
-        l20e8(a, (uint8_t)(de >> 8), (uint8_t)de);
+        l20e8(frames_remaining, (uint8_t)(mothership_screen_address >> 8), (uint8_t)mothership_screen_address);
         return;
     }
 
     // 2415-241E: C = E - 5 + $C0; B = D + carry van de ADD $C0 (de ADC
     // was in een eerdere vertaling weggelaten).
-    uint8_t e_reg = (uint8_t)((de & 0xFF) - 5);
-    uint16_t sum = (uint16_t)e_reg + 0xC0;
-    uint8_t c = (uint8_t)sum;
-    uint8_t b = (uint8_t)((de >> 8) + (sum > 0xFF ? 1 : 0));
-    uint16_t bc = (b << 8) | c;
+    uint8_t particle_low_byte         = (uint8_t)((mothership_screen_address & 0xFF) - 5);
+    uint16_t low_byte_sum             = (uint16_t)particle_low_byte + 0xC0;
+    uint8_t particle_screen_low_byte  = (uint8_t)low_byte_sum;
+    uint8_t particle_screen_high_byte = (uint8_t)((mothership_screen_address >> 8) + (low_byte_sum > 0xFF ? 1 : 0));
+    uint16_t particle_screen_address = (particle_screen_high_byte << 8) | particle_screen_low_byte;
 
-    (void)bc;
+    (void)particle_screen_address;
     // Page-relative offsets into phoenix_explosion_particle_page (base 0x2800):
     // tile table T2A00 -> 0x200, control table T2B00 -> 0x300.
-    l2085_particles(state.CounterA5, 0x200, 0x300, b, c);
+    l2085_particles(state.CounterA5, 0x200, 0x300, particle_screen_high_byte, particle_screen_low_byte);
 }
 
 /*
@@ -178,14 +178,14 @@ void state_6_mother_ship_explosion(void) {
  */
 void state_7_mother_ship_score_display(void) {
     state.CounterA5--;
-    uint8_t a = state.CounterA5;
+    uint8_t frames_remaining = state.CounterA5;
     
-    if ((a & 0x01) != 0) {
+    if ((frames_remaining & 0x01) != 0) {
         update_scroll_register_and_fill_background();
         return;
     }
     
-    if ((a >> 1) != 0) {
+    if ((frames_remaining >> 1) != 0) {
         return;
     }
     
@@ -196,7 +196,7 @@ void state_7_mother_ship_score_display(void) {
     round += 0x10; // next round
     state.LevelAndRound = round;
     
-    state.AliensLeft = 0x10; // 16 aliens left
+    state.AliensLeft = ALIENS_PER_WAVE;
     clear_foreground();
 }
 
@@ -236,9 +236,9 @@ void l0b15(void) {
  * [ASM: 0BA0-0BB2]
  */
 void l0ba0(void) {
-    uint8_t a = state.LevelAndRound & 0x0F;
-    if (a < 4) return;
-    if (a >= 9) return;
+    uint8_t level_pattern = state.LevelAndRound & LEVEL_PATTERN_MASK;
+    if (level_pattern < LEVEL_PATTERN_BIRDS_SPIRAL_4) return;
+    if (level_pattern >= LEVEL_PATTERN_MOTHERSHIP_FADE_IN_9) return;
     
     state.CounterB9 = 0;
     extern void hw_write_scroll_register(uint8_t val);
@@ -254,23 +254,23 @@ void l0ba0(void) {
  * [ASM: 0BBA-0BC4]
  */
 void l0bba(void) {
-    uint8_t a = state.CounterA5;
-    if ((a & 1) == 0) {
+    uint8_t explosion_frame = state.CounterA5;
+    if ((explosion_frame & 1) == 0) {
         extern void handle_animations_for_killed_aliens(void); // 0FC0
         handle_animations_for_killed_aliens();
     } else {
-        uint16_t de = (state.PlayerShipMSB << 8) | state.PlayerShipLSB;
-        de += 0x001F; // LeftOneColumn (+0x20) and DEC DE (-1)
+        uint16_t player_screen_address = (state.PlayerShipMSB << 8) | state.PlayerShipLSB;
+        player_screen_address += 0x001F; // LeftOneColumn (+0x20) and DEC DE (-1)
         
-        uint8_t d = de >> 8;
-        uint8_t e = de & 0xFF;
+        uint8_t player_screen_high_byte = player_screen_address >> 8;
+        uint8_t player_screen_low_byte  = player_screen_address & 0xFF;
         
-        if ((a & 2) != 0) {
+        if ((explosion_frame & 2) != 0) {
             extern void l2070(uint8_t d, uint8_t e);
-            l2070(d, e);
+            l2070(player_screen_high_byte, player_screen_low_byte);
         } else {
             extern void l20e8(uint8_t a, uint8_t d, uint8_t e);
-            l20e8(a, d, e);
+            l20e8(explosion_frame, player_screen_high_byte, player_screen_low_byte);
         }
     }
 }

@@ -21,25 +21,25 @@ extern void delete_digits(uint16_t screen_addr, uint8_t num_digits);
 // Prototypes for the individual state functions
 static void state_0_new_game_start(void);
 static void state_1_flashing_score(void);
-static void l04a0_change_player_at_attract_mode(void);
+static void switch_attract_mode_to_player_two(void);
 extern void copy_memory_bank(uint8_t from_bank, uint8_t to_bank);
 
 // Helper translations
 static void set_bits_video_register(void);
-static void l07f0(void);
+static void reset_score_flash_screen(void);
 
 // [ASM: 0400-041D]
 void game_state_machine(void) {
     coverage_hit("game_state_machine");
     switch (state.GameState) {
-        case GAME_STATE_NEW_GAME: coverage_hit("state_0_new_game_start"); state_0_new_game_start(); break;
-        case GAME_STATE_SCORE_FLASH: coverage_hit("state_1_flashing_score"); state_1_flashing_score(); break;
-        case GAME_STATE_INIT_ROUND: coverage_hit("state_2_init_game_and_level_data"); state_2_init_game_and_level_data(); break;
-        case GAME_STATE_PLAYING: coverage_hit("state_3_normal_game_play"); state_3_normal_game_play(); break;
-        case GAME_STATE_PLAYER_EXPLODING: coverage_hit("state_4_player_ship_explosion"); state_4_player_ship_explosion(); break;
-        case GAME_STATE_GAME_OVER: coverage_hit("state_5_game_over_text"); state_5_game_over_text(); break;
-        case GAME_STATE_MOTHERSHIP_EXPLODING: coverage_hit("state_6_mother_ship_explosion"); state_6_mother_ship_explosion(); break;
-        case GAME_STATE_MOTHERSHIP_SCORE: coverage_hit("state_7_mother_ship_score_display"); state_7_mother_ship_score_display(); break;
+        case GAME_STATE_NEW_GAME:              coverage_hit("state_0_new_game_start");              state_0_new_game_start();              break;
+        case GAME_STATE_SCORE_FLASH:           coverage_hit("state_1_flashing_score");             state_1_flashing_score();             break;
+        case GAME_STATE_INIT_ROUND:            coverage_hit("state_2_init_game_and_level_data");    state_2_init_game_and_level_data();    break;
+        case GAME_STATE_PLAYING:               coverage_hit("state_3_normal_game_play");            state_3_normal_game_play();            break;
+        case GAME_STATE_PLAYER_EXPLODING:      coverage_hit("state_4_player_ship_explosion");       state_4_player_ship_explosion();       break;
+        case GAME_STATE_GAME_OVER:             coverage_hit("state_5_game_over_text");              state_5_game_over_text();              break;
+        case GAME_STATE_MOTHERSHIP_EXPLODING:  coverage_hit("state_6_mother_ship_explosion");       state_6_mother_ship_explosion();       break;
+        case GAME_STATE_MOTHERSHIP_SCORE:      coverage_hit("state_7_mother_ship_score_display");  state_7_mother_ship_score_display();   break;
         default: break;
     }
 }
@@ -53,7 +53,7 @@ void game_state_machine(void) {
  */
 static void state_0_new_game_start(void) {
     state.GameState = GAME_STATE_SCORE_FLASH;
-    state.CounterA5 = 0x80;
+    state.CounterA5 = SCORE_FLASH_DURATION_INITIAL;
 
     uint8_t previous_mode = state.GameAndDemoOrSplash;
     state.GameAndDemoOrSplash = 0x00;
@@ -74,7 +74,7 @@ static void state_0_new_game_start(void) {
     // 0446-0449: during the normal attract-mode demo ('game and demo for
     // player 1'), swap to the 'player 2' bank.
     if (state.GameAndDemoOrSplash == 0x00) {
-        l04a0_change_player_at_attract_mode();
+        switch_attract_mode_to_player_two();
         return;
     }
 
@@ -91,11 +91,11 @@ static void state_0_new_game_start(void) {
 }
 
 /*
- * Translates L04A0
- * Changing the player at attract mode.
+ * Switch the attract-mode view from player 1's bank to player 2's bank.
+ * Translates L04A0.
  * [ASM: 04A0-04AB]
  */
-static void l04a0_change_player_at_attract_mode(void) {
+static void switch_attract_mode_to_player_two(void) {
     state.GameAndDemoOrSplash = 0x01;
     copy_memory_bank(0, 1);
 }
@@ -111,11 +111,11 @@ static void set_bits_video_register(void) {
 }
 
 /*
- * Translates Z80 label L07F0
- * Called from State 1.
+ * Restore the scrolling background and palette at the midpoint of score flash.
+ * Translates Z80 label L07F0, called from state 1 when CounterA5 reaches $7F.
  * [ASM: 07F0-07FA]
  */
-static void l07f0(void) {
+static void reset_score_flash_screen(void) {
     hw_write_scroll_register(state.CounterB9);
     clear_foreground();
     set_bits_video_register();
@@ -131,10 +131,10 @@ static void l07f0(void) {
  */
 static void state_1_flashing_score(void) {
     state.CounterA5--;
-    uint8_t a = state.CounterA5;
+    uint8_t frames_remaining = state.CounterA5;
     
     state.GameState = GAME_STATE_INIT_ROUND;
-    if (a == 0) {
+    if (frames_remaining == 0) {
         return;
     }
     
@@ -143,8 +143,8 @@ static void state_1_flashing_score(void) {
     // 04BA: JP Z,$07F0 -- een tail-jump: bij A == $7F vervangt L07F0 de
     // rest van dit frame volledig (een eerdere vertaling viel erna door
     // naar de flash-logica).
-    if (a == 0x7F) {
-        l07f0();
+    if (frames_remaining == SCORE_FLASH_RESET_FRAME) {
+        reset_score_flash_screen();
         return;
     }
 
@@ -152,13 +152,13 @@ static void state_1_flashing_score(void) {
     state.Counter9A = 0x00;
     state.Counter9B = 0x00;
 
-    // Every 8 frames, toggle visibility (a & 0x08)
-    if ((a & 0x08) != 0) {
+    // Every eight frames, toggle visibility.
+    if ((frames_remaining & SCORE_FLASH_VISIBILITY_TOGGLE_MASK) != 0) {
         // L04E6: Hide score
         if (state.GameAndDemoOrSplash == 0) {
-            delete_digits(0x4261, 6); // L04FB
+            delete_digits(PLAYER_ONE_SCORE_SCREEN_ADDRESS, SCORE_DIGIT_COUNT); // L04FB
         } else {
-            delete_digits(0x4021, 6); // L04FB
+            delete_digits(PLAYER_TWO_SCORE_SCREEN_ADDRESS, SCORE_DIGIT_COUNT); // L04FB
         }
     } else {
         // 04C9: CALL $06E8 -- herprint eerst de statische headerregel
@@ -168,13 +168,13 @@ static void state_1_flashing_score(void) {
         // headertegels blijvend zichtbaar bleven. Gevonden via scripted
         // lockstep (mutated_rank_05_score_573462, record 2159).
         extern void print_text_lines(uint16_t screen_draw_info_addr, uint8_t columns);
-        print_text_lines(0x1800, 1);
+        print_text_lines(SCORE_HEADER_TEXT_ADDRESS, 1);
 
         // L04DF: Show score
         if (state.GameAndDemoOrSplash == 0) {
-            print_number(0x4261, 0x4383, 6); // 04DF
+            print_number(PLAYER_ONE_SCORE_SCREEN_ADDRESS, PLAYER_ONE_SCORE_RAM_ADDRESS, SCORE_DIGIT_COUNT); // 04DF
         } else {
-            print_number(0x4021, 0x4387, 6); // 04DF
+            print_number(PLAYER_TWO_SCORE_SCREEN_ADDRESS, PLAYER_TWO_SCORE_RAM_ADDRESS, SCORE_DIGIT_COUNT); // 04DF
         }
     }
 }

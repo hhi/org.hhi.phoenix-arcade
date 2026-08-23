@@ -14,9 +14,9 @@ extern PhoenixState state;
  * Proposed C name: clamp_scroll_for_player_explosion
  */
 uint8_t l211c(void) {
-    uint8_t a = state.CounterB9;
-    if (a < 0x10) return a;
-    if (a >= 0x30) return a;
+    uint8_t scroll_value = state.CounterB9;
+    if (scroll_value < 0x10) return scroll_value;
+    if (scroll_value >= 0x30) return scroll_value;
 
     state.CounterB9 = 0x10;
     hw_write_scroll_register(0x10);
@@ -29,43 +29,41 @@ uint8_t l211c(void) {
  * [ASM: 20E8-210D]
  * Proposed C name: draw_player_ship_explosion_fragment
  */
-void l20e8(uint8_t a, uint8_t d, uint8_t e) {
-    uint8_t b = a;
-    d += 8;
+void l20e8(uint8_t explosion_frame, uint8_t screen_high_byte, uint8_t screen_low_byte) {
+    uint8_t explosion_frame_source = explosion_frame;
+    screen_high_byte += 8;
 
     // 20E9-20EC overwrites A with D+8 before the call; L211C's return
     // value (not the original CounterA5) feeds the RRCA below.
-    a = l211c();
+    uint8_t scroll_value = l211c();
 
     // RRCA x 3
-    a = (a >> 3) | (a << 5);
-    a += e;
-    uint8_t c = a & 0x1F;
+    scroll_value = (scroll_value >> 3) | (scroll_value << 5);
+    scroll_value += screen_low_byte;
+    uint8_t scrolled_low_five_bits = scroll_value & 0x1F;
     
-    a = e & 0xE0;
-    a |= c;
-    e = a;
+    screen_low_byte &= 0xE0;
+    screen_low_byte |= scrolled_low_five_bits;
     
-    a = b;
+    uint8_t explosion_tile_offset = explosion_frame_source;
     // RRCA x 2
-    a = (a >> 2) | (a << 6);
-    a &= 0x0E;
-    a += 0x90;
-    uint8_t l = a;
+    explosion_tile_offset = (explosion_tile_offset >> 2) | (explosion_tile_offset << 6);
+    explosion_tile_offset &= 0x0E;
+    explosion_tile_offset += 0x90;
 
     // Page-relative index into phoenix_mothership_explosion_pointers
     // (base 0x1B40); l is always in [0x90, 0x9E].
     extern const uint8_t phoenix_mothership_explosion_pointers[0x60];
-    uint8_t page_idx = (uint8_t)(l - 0x40);
+    uint8_t explosion_pointer_index = (uint8_t)(explosion_tile_offset - 0x40);
 
     // 2106: LD A,(HL) -> A=mem[ptr]; 2108: LD L,(HL) at ptr+1 -> L=mem[ptr+1];
     // 2109: LD H,A -- so H (MSB) is the FIRST byte read, L (LSB) the second.
-    uint8_t msb = phoenix_mothership_explosion_pointers[page_idx];
-    uint8_t lsb = phoenix_mothership_explosion_pointers[page_idx + 1];
-    uint16_t image_ptr = (msb << 8) | lsb;
+    uint8_t image_high_byte = phoenix_mothership_explosion_pointers[explosion_pointer_index];
+    uint8_t image_low_byte = phoenix_mothership_explosion_pointers[explosion_pointer_index + 1];
+    uint16_t image_address = (image_high_byte << 8) | image_low_byte;
     
     extern void draw_image_c_by_b(uint16_t hl, uint16_t de, uint8_t b, uint8_t c);
-    draw_image_c_by_b(image_ptr, (d << 8) | e, 4, 4);
+    draw_image_c_by_b(image_address, (screen_high_byte << 8) | screen_low_byte, 4, 4);
 }
 
 /*
@@ -115,28 +113,19 @@ void l2085_particles(uint8_t counter_a5, uint16_t tile_base, uint16_t ctrl_base,
  * [ASM: 2070-2084]
  * Proposed C name: setup_player_ship_particle_explosion
  */
-void l2070(uint8_t d, uint8_t e) {
-    uint8_t a = e - 0x0A;
-    a += 0xC0;
-    uint8_t c = a;
+void l2070(uint8_t screen_high_byte, uint8_t screen_low_byte) {
+    // SUB $0A; ADD $C0; ADC D,$00. Only the ADD's carry reaches the
+    // high byte, exactly as on the Z80.
+    uint16_t low_byte_subtraction = screen_low_byte - 0x0A;
+    uint16_t low_byte_sum = (low_byte_subtraction & 0xFF) + 0xC0;
+    uint8_t carry_after_low_byte_add = low_byte_sum > 0xFF ? 1 : 0;
     
-    a = d + 0; // ADC 0 (assuming carry from ADD C0? No, from SUB 0A. Wait! SUB 0A sets carry if E < 0A)
-    // We must handle carry correctly:
-    uint16_t sub_res = e - 0x0A;
-    uint16_t add_res = (sub_res & 0xFF) + 0xC0;
-    uint8_t carry_after_add = (add_res > 0xFF) ? 1 : 0;
-    
-    c = add_res & 0xFF;
-    
-    // ADC 0 adds carry_after_add (actually, Z80 ADD/ADC preserves carry unless it's an INC/DEC)
-    // Wait, D6 0A is SUB 0A. C6 C0 is ADD C0. ADD C0 modifies carry!
-    // So ADC 0 uses the carry from ADD C0!
-    a = d + carry_after_add;
-    uint8_t b = a;
+    uint8_t particle_low_byte = low_byte_sum & 0xFF;
+    uint8_t particle_high_byte = screen_high_byte + carry_after_low_byte_add;
     
     // Page-relative offsets into phoenix_explosion_particle_page (base 0x2800):
     // tile table T2800 -> 0x000, control table T2900 -> 0x100.
-    l2085_particles(state.CounterA5, 0x000, 0x100, b, c);
+    l2085_particles(state.CounterA5, 0x000, 0x100, particle_high_byte, particle_low_byte);
 }
 
 /*

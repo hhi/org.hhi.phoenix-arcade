@@ -1,6 +1,7 @@
 #include "phoenix_state.h"
 #include "phoenix_tables.h"
 #include "z80_core.h"
+#include "game_constants.h"
 #include <string.h>
 
 extern PhoenixState state;
@@ -35,7 +36,7 @@ void l01e1(void) {
  * [ASM: 24A0-24BB]
  */
 void l24a0(void) {
-    if ((state.LevelAndRound & 0x0F) < 8) return;
+    if ((state.LevelAndRound & LEVEL_PATTERN_MASK) < LEVEL_PATTERN_BIRDS_SPIRAL_8) return;
     extern void l2351_mothership_animation(uint16_t de, uint16_t hl);
     l2351_mothership_animation(0x43C4, 0x43E6);
     if ((state.Counter9B & 0x03) != 0x03) return;
@@ -54,17 +55,17 @@ void l24a0(void) {
  */
 void l24f2(void) {
     extern uint8_t get_random_number(void);
-    uint8_t b = (uint8_t)(get_random_number() + 0x60);
-    if ((b & 0x0E) & state.Counter9B) return;
-    if (state.M439E >= b) return;
-    if (state.M439F < b) return;
+    uint8_t candidate_bomb_x = (uint8_t)(get_random_number() + 0x60);
+    if ((candidate_bomb_x & 0x0E) & state.Counter9B) return;
+    if (state.M439E >= candidate_bomb_x) return;
+    if (state.M439F < candidate_bomb_x) return;
 
-    b = (uint8_t)(b - 0x04);
+    uint8_t bomb_x = (uint8_t)(candidate_bomb_x - 0x04);
     uint8_t neg_counter_b9 = (uint8_t)(0 - state.CounterB9);
-    uint8_t c = (uint8_t)((neg_counter_b9 & 0xF8) + 0x48);
+    uint8_t bomb_y = (uint8_t)((neg_counter_b9 & 0xF8) + 0x48);
 
     extern void l25b7(uint8_t b, uint8_t c);
-    l25b7(b, c);
+    l25b7(bomb_x, bomb_y);
 }
 
 /*
@@ -76,23 +77,22 @@ void l32b0(void) {
     
     if (state.BirdsLeft == 0) return;
     
-    uint8_t c = state.BirdsLeft << 3;
+    uint8_t bird_data_byte_count = state.BirdsLeft << 3;
     memset(&state.B4B70, 0, 0x40); // B4B70 to B4BAF
     
-    uint16_t hl = 0x3F00 | (0x40 - c + 0x70 + 0x10);
-    uint16_t de = 0x4B00 | (0x40 - c + 0x70);
-    uint8_t b = c;
+    uint16_t bird_data_source_address = 0x3F00 | (0x40 - bird_data_byte_count + 0x70 + 0x10);
+    uint16_t bird_data_destination_address = 0x4B00 | (0x40 - bird_data_byte_count + 0x70);
     
     // 32DE-32E3: RRCA x2 / JP NC -- the carry after the second RRCA is
     // bit 1 of LevelAndRound; set -> use the second table at +0x40
     if (state.LevelAndRound & 0x02) {
-        hl += 0x40;
+        bird_data_source_address += 0x40;
     }
-    for (uint8_t i = 0; i < b; i++) {
-        uint16_t src = hl + i;
-        uint8_t val = (src >= 0x3F80)
-            ? phoenix_bird_data_alt_page[src - 0x3F80]
-            : phoenix_bird_behaviour_scripts[src - 0x3F00];
-        mem_write(de + i, val);
+    for (uint8_t byte_index = 0; byte_index < bird_data_byte_count; byte_index++) {
+        uint16_t source_address = bird_data_source_address + byte_index;
+        uint8_t bird_data_byte = (source_address >= 0x3F80)
+            ? phoenix_bird_data_alt_page[source_address - 0x3F80]
+            : phoenix_bird_behaviour_scripts[source_address - 0x3F00];
+        mem_write(bird_data_destination_address + byte_index, bird_data_byte);
     }
 }

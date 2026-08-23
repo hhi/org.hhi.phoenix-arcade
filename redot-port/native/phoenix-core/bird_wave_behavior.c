@@ -268,55 +268,42 @@ extern uint8_t get_random_number(void);
 
 /* [ASM: 3560-359F] Refreshes shared flight parameters for the bird wave. */
 void refresh_bird_flight_parameters(void) {
-    uint8_t a = get_random_number();
-    uint8_t b = a;
-    a <<= 2;
-    uint8_t c = a;
-    a <<= 2;
-    a |= b;
-    state.M436F = a;
+    uint8_t random_value = get_random_number();
+    uint8_t random_value_shifted_twice = random_value << 2;
+    uint8_t flight_parameter_random_bits = (random_value_shifted_twice << 2) | random_value;
+    state.M436F = flight_parameter_random_bits;
     
-    a = state.LevelAndRound;
-    if (a >= 0x40) {
-        a = 0x30;
+    uint8_t level_bits = state.LevelAndRound;
+    if (level_bits >= 0x40) {
+        level_bits = 0x30;
     }
-    a &= 0x30;
-    a >>= 1;
-    b = a;
+    level_bits &= 0x30;
+    level_bits >>= 1;
     
-    a = state.BirdsLeft - 1;
-    if (a >= 4) {
-        a = 3;
+    uint8_t bird_count_bits = state.BirdsLeft - 1;
+    if (bird_count_bits >= 4) {
+        bird_count_bits = 3;
     }
-    a <<= 1;
-    a |= b;
-    b = a;
+    bird_count_bits <<= 1;
+    uint8_t formation_parameter_index = bird_count_bits | level_bits;
     
-    a = state.Counter9A;
-    a <<= 2;
-    a &= 0x20;
-    a |= b;
-    a += 0x80;
+    uint8_t timer_parameter_bits = (state.Counter9A << 2) & 0x20;
+    formation_parameter_index |= timer_parameter_bits;
     
     extern const uint8_t phoenix_bird_formation_params[0x40];
-    uint8_t param_idx = (uint8_t)(a - 0x80);
-    state.M436E = phoenix_bird_formation_params[param_idx];
-    param_idx++;
-    a = phoenix_bird_formation_params[param_idx];
-    a += c;
-    a &= 0xF8;
-    state.M436D = a;
+    state.M436E = phoenix_bird_formation_params[formation_parameter_index];
+    formation_parameter_index++;
+    uint8_t initial_flight_position = phoenix_bird_formation_params[formation_parameter_index];
+    initial_flight_position += random_value_shifted_twice;
+    state.M436D = initial_flight_position & 0xF8;
 }
 
 /* [ASM: 3A00-3A0F] */
-static bool l3a00(uint8_t* out_d) {
-    uint8_t a = state.BirdsLeft;
-    a -= 0x0C;
-    a = (~a) + 1;
-    *out_d = a;
+static bool get_bird_dive_horizontal_range(uint8_t *out_range) {
+    uint8_t horizontal_range = (uint8_t)(0x0C - state.BirdsLeft);
+    *out_range = horizontal_range;
     
-    a = state.Counter9B; // 439B
-    if (a & 0x02) {
+    if (state.Counter9B & 0x02) {
         return true; 
     }
     return false;
@@ -362,29 +349,26 @@ static bool l395c(uint16_t* hl_ptr, uint8_t b, uint8_t c) {
 
 /* [ASM: 3930-395B] Attempts to allocate one bird dive-bomb. */
 void try_spawn_bird_dive_bomb(void) {
-    uint8_t a = state.B4BD2 & 0x1E;
+    uint8_t spawn_position_index = state.B4BD2 & 0x1E;
     extern const uint8_t phoenix_bird_dive_spawn_positions[0x20];
 
-    uint8_t e = phoenix_bird_dive_spawn_positions[a];
-    uint8_t l = phoenix_bird_dive_spawn_positions[a + 1];
-    uint8_t h = 0x4B;
-    uint16_t hl = (h << 8) | l;
+    uint8_t bird_slots_to_try = phoenix_bird_dive_spawn_positions[spawn_position_index];
+    uint8_t first_bird_slot_low_byte = phoenix_bird_dive_spawn_positions[spawn_position_index + 1];
+    uint16_t bird_state_address = 0x4B00 | first_bird_slot_low_byte;
     
-    uint8_t d;
-    if (!l3a00(&d)) {
+    uint8_t horizontal_range;
+    if (!get_bird_dive_horizontal_range(&horizontal_range)) {
         return; 
     }
     
-    a = state.M439F + d;
-    uint8_t c = a;
+    uint8_t maximum_bomb_x = state.M439F + horizontal_range;
     
-    a = state.M439E - d;
-    uint8_t b = a;
+    uint8_t minimum_bomb_x = state.M439E - horizontal_range;
     
-    while (e != 0) {
-        if (l395c(&hl, b, c)) return; // L25B7 always ends the search
-        hl += 8;
-        e--;
+    while (bird_slots_to_try != 0) {
+        if (l395c(&bird_state_address, minimum_bomb_x, maximum_bomb_x)) return; // L25B7 always ends the search
+        bird_state_address += 8;
+        bird_slots_to_try--;
     }
 }
 

@@ -58,30 +58,29 @@ void copy_current_to_old_player_data(void) {
 }
 
 /*
- * Translates L0900 & L0926
- * Reads the joystick and updates PlayerShipX, bounding between 0x0D and 0xC0.
+ * Move the player ship by one horizontal pixel for the current input frame.
+ *
+ * Input bits are active-low, so the current input byte is complemented before
+ * testing. If both directions are pressed, the original branch order selects
+ * the left movement path. The ship remains within its inclusive X bounds.
  * [ASM: 0900-0921]
- * [ASM: 0926-092E]
  */
 void update_player_ship_x(void) {
-    uint8_t input = ~state.IN0Current;
-    
-    // Bit 5 = Right (0x20), Bit 6 = Left (0x40)
-    if ((input & 0x60) == 0) {
-        return; // No movement button pressed
+    uint8_t pressed_inputs = ~state.IN0Current;
+
+    if ((pressed_inputs & (BTN_LEFT | BTN_RIGHT)) == 0) {
+        return;
     }
-    
-    if ((input & 0x40) == 0) {
-        // Move right (Right is pressed, Left is not)
-        if (state.PlayerShipX < 0xC0) {
+
+    if ((pressed_inputs & BTN_LEFT) == 0) {
+        if (state.PlayerShipX < PLAYER_SHIP_X_MAX) {
             state.PlayerShipX++;
-            state.PlayerMoved = 0xFF;
+            state.PlayerMoved = PLAYER_MOVED_FLAG;
         }
     } else {
-        // Move left (Left is pressed)
-        if (state.PlayerShipX >= 0x0D) {
+        if (state.PlayerShipX >= PLAYER_SHIP_X_MIN) {
             state.PlayerShipX--;
-            state.PlayerMoved = 0xFF;
+            state.PlayerMoved = PLAYER_MOVED_FLAG;
         }
     }
 }
@@ -94,31 +93,32 @@ void update_player_ship_x(void) {
 void update_player_position_bullet_shield(void) {
     move_player();
     
-    // Check main bullet
+    // The main bullet is always available; level 3 adds the upper slot.
     get_assigned_player_bullet_tile(&state.PlayerBulletState);
-    
-    // Check if level is 3 (index 3 in 0-15 mapped levels)
+
     if ((state.LevelAndRound & LEVEL_PATTERN_MASK) != LEVEL_PATTERN_ALIENS_ACTIVE_3) {
         return;
     }
-    
-    // If game level 3, process second player bullet as well
+
     get_assigned_player_bullet_tile(&state.AbovePlayerBulletState);
 }
 
 /*
- * Translates L08C4
- * Player ship, shield and bullets handler.
+ * Advance the player ship and shield state for one frame.
+ *
+ * While movement is disabled, the shield is responsible for drawing itself.
+ * Otherwise the shield countdown runs, a fresh shield-button edge may start a
+ * new shield, and the ship position/animation are updated.
  * [ASM: 08C4-08F3]
  */
 void move_player(void) {
     coverage_hit("move_player");
-    uint8_t ps = state.PlayerState;
-    if ((ps & PLAYER_STATE_MOVEMENT_ENABLED) == 0) {
+    uint8_t player_state = state.PlayerState;
+    if ((player_state & PLAYER_STATE_MOVEMENT_ENABLED) == 0) {
         draw_shields(); // L0AA0
         return;
     }
-    
+
     if (state.ShieldCount != 0) {
         state.ShieldCount--;
     } else {
@@ -131,8 +131,8 @@ void move_player(void) {
         extern uint8_t check_input_bits(uint8_t mask);
         if (check_input_bits(BTN_SHIELD) != 0) {
             coverage_hit("player_shield_pressed");
-            // 08DE: LD (HL),$40 -- overschrijft M4362, geen OR
-            state.M4362 = 0x40;
+            // 08DE: this overwrites M4362; it is not an OR operation.
+            state.M4362 = SHIELD_ACTIVATION_FLAG;
             state.PlayerState &= (uint8_t)~PLAYER_STATE_MOVEMENT_ENABLED;
             state.ShieldCount = SHIELD_DURATION_INITIAL;
             state.ShieldCount--;
@@ -142,7 +142,8 @@ void move_player(void) {
     update_player_ship_x(); // L0900
     
     // L08F0 - L08F3: Update animation frame (shape) based on X position
-    get_player_ship_animation_frame_values(0x1600, &state.PlayerShipX); // L0926
+    get_player_ship_animation_frame_values(PLAYER_SHIP_ANIMATION_TABLE,
+                                            &state.PlayerShipX); // L0926
 }
 
 /*
@@ -161,18 +162,19 @@ void map_player_ship_position(void) {
 }
 
 /*
- * Translates L0930
- * Get the assigned player bullet tile if fire button was pressed.
+ * Advance an active bullet slot, or spawn it from a fresh fire-button edge.
+ *
+ * The state byte is the first field of either contiguous bullet slot. An
+ * active slot moves upward; an inactive slot may consume one fire edge to
+ * spawn a new bullet.
  * [ASM: 0930-093C]
  */
 void get_assigned_player_bullet_tile(uint8_t* bullet_state_ptr) {
-    if ((*bullet_state_ptr & 0x08) != 0) {
+    if ((*bullet_state_ptr & PLAYER_BULLET_ACTIVE_FLAG) != 0) {
         update_player_bullet_y(bullet_state_ptr); // L0964
         return;
     }
-    
-    // 0937-093C: CheckInputBits($10) -- fire only on a 1->0 edge of bit 4,
-    // not while the button is merely held down
+
     extern uint8_t check_input_bits(uint8_t mask);
     if (check_input_bits(BTN_FIRE) == 0) {
         return;
@@ -196,8 +198,10 @@ void get_player_ship_animation_frame_values(uint16_t bc, uint8_t* ptr_x) {
 }
 
 /*
- * Translates L093D
- * Spawn player bullet.
+ * Spawn a player bullet in the supplied contiguous bullet slot.
+ *
+ * Consuming the fire edge prevents the optional second slot from spawning a
+ * visually identical bullet in the same frame.
  * [ASM: 093D-0961]
  */
 void spawn_player_bullet(uint8_t* bullet_state_ptr) {
@@ -211,36 +215,31 @@ void spawn_player_bullet(uint8_t* bullet_state_ptr) {
     // same edge and spawn a second bullet stacked on the first -- it has to
     // wait for a fresh press. Without this, both bullet slots fire on the
     // same edge, at the same position, indistinguishable from a single shot.
-    state.IN0Previous &= 0xEF;
-    bullet_state_ptr[0] |= 0x08; // set bit 3 at PlayerBulletState
-    
-    uint8_t a = state.PlayerShipX;
-    a += 0x04;
-    bullet_state_ptr[2] = a; // PlayerBulletX
-    
-    a = state.PlayerShipY;
-    a -= 0x08;
-    bullet_state_ptr[3] = a; // PlayerBulletY
-    
-    // 0956: LD BC, $1620; CALL L0926
-    get_player_ship_animation_frame_values(0x1620, &bullet_state_ptr[2]);
-    
-    state.BulletTriggered = 0x30;
+    state.IN0Previous &= (uint8_t)~BTN_FIRE;
+    bullet_state_ptr[0] |= PLAYER_BULLET_ACTIVE_FLAG;
+
+    bullet_state_ptr[2] = state.PlayerShipX + PLAYER_BULLET_INITIAL_X_OFFSET;
+    bullet_state_ptr[3] = state.PlayerShipY - PLAYER_BULLET_VERTICAL_STEP;
+
+    get_player_ship_animation_frame_values(PLAYER_BULLET_ANIMATION_TABLE,
+                                            &bullet_state_ptr[2]);
+
+    state.BulletTriggered = PLAYER_BULLET_TRIGGERED_FLAG;
 }
 
 /*
- * Translates L0964
- * Update PlayerBulletY (grid) and PlayerBulletState.
+ * Move a bullet upward and deactivate its slot once it reaches the top edge.
  * [ASM: 0964-0975]
  */
 void update_player_bullet_y(uint8_t* bullet_state_ptr) {
-    uint8_t a = bullet_state_ptr[3];
-    a -= 0x08;
-    bullet_state_ptr[3] = a;
-    
-    if (a >= 0x1F) return; // top of screen reached?
-    
-    bullet_state_ptr[0] &= 0xF7; // del bit 3 at PlayerBulletState
+    uint8_t bullet_y = bullet_state_ptr[3] - PLAYER_BULLET_VERTICAL_STEP;
+    bullet_state_ptr[3] = bullet_y;
+
+    if (bullet_y >= PLAYER_BULLET_TOP_Y) {
+        return;
+    }
+
+    bullet_state_ptr[0] &= (uint8_t)~PLAYER_BULLET_ACTIVE_FLAG;
 }
 
 /*

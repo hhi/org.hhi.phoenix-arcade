@@ -15,15 +15,42 @@ placeholder ship, enemy formation or synthetic HUD.
 2. Open `redot-port/project.godot` in Redot and press **F6** or run the
    project.
    Press Enter to open the authentic attract demo. Press C to insert a credit,
-   then Enter for one player. Use Left/Right (or A/D) and Space (or Z) only
+   then 1 or Enter for one player, or 2 for two players. Use Left/Right (or A/D) and Space (or Z) only
    after the game has started. Use Down, S or K for the Phoenix shield. Press
    R to return to the initial gate. The initial gate freezes the Phoenix core;
    the first Enter starts the attract sequence at its first frame. Starting a
    credited game does not skip forward to an active wave.
 
-The game does not access `roms/assembled` while it runs. It renders from the
-already generated local asset header at `native/generated/`. ROM dumps and
-generated local render assets remain outside Git.
+The Redot and browser builds use the versioned
+`c-phoenix/phoenix_render_assets.h` header. They neither access
+`roms/assembled` nor run `romprepare`; that preparation route belongs only
+to the JPhoenix emulator.
+
+## Install Redot (native Redot edition only)
+
+This section is only for the native editor edition. The browser edition does
+not use or require Redot.
+
+1. Download the standard **Redot 26.2** editor for your platform from the
+   [official Redot 26.2 release](https://github.com/Redot-Engine/redot-engine/releases/tag/redot-26.2-stable).
+   This port's C++ bindings are matched to Redot 26.2, so do not substitute a
+   different editor version.
+2. Extract or install the editor using your platform's normal procedure, then
+   run the Redot executable once.
+3. Build the extension with `make -C redot-port/native extension`, open
+   `redot-port/project.godot` in the editor, and run the project.
+
+## Browser variant (experimental)
+
+Alongside the Redot scene, this directory contains a static browser edition.
+It compiles the same C game core to WebAssembly; JavaScript handles only
+input, audio and presentation. Players install nothing: after building, open
+the edition through a local HTTP server in a modern browser.
+
+The browser presentation remains experimental and is not yet released as a
+distribution variant. Its WebAssembly core, input and audio are part of the
+prototype. See [web/README.md](web/README.md) for prerequisites, building,
+local serving, controls and status.
 
 ## Native core
 
@@ -76,8 +103,8 @@ vendored copy of the matching Redot 26.2 C++ bindings in
 ## Export a macOS executable
 
 The checked-in `export_presets.cfg` targets macOS on Apple Silicon. To make a
-standalone application, first generate the local ROM-derived render assets and
-build the native extension as described above. Install the matching Redot 26.2
+standalone application, build the native extension as described above. No ROM
+preparation step is needed. Install the matching Redot 26.2
 export templates once via **Editor → Manage Export Templates**; Redot does not
 bundle these templates with the editor. In **Project → Export**, select the
 existing **macOS** preset and choose **Export Project** with an output such as
@@ -130,7 +157,7 @@ to the GDExtension build boundary:
 4. Run `make -C redot-port/native test` on that OS, then open the project in
    Redot and export with that OS's export preset.
 
-The Phoenix C sources, ROM-derived render assets, controls, C2 shader and
+The Phoenix C sources, shared versioned render-asset header, controls, C2 shader and
 audio bridge remain the same across those platforms.
 
 The port does not contain or commit original ROMs/PROMs. The existing Phoenix

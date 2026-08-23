@@ -152,21 +152,21 @@ static void l3a90(void) {
  * count into SoundControlA's low 6 bits.
  */
 static void l3a98_scan(void) {
-    uint8_t lo = 0x70;
-    uint8_t c = 0;
+    uint8_t alien_state_low_byte = 0x70;
+    uint8_t audible_alien_count = 0;
     do {
-        uint8_t a = mem_read((uint16_t)(0x4B00 | lo));
-        lo++;
-        if (a & 0x08) {
-            a = mem_read((uint16_t)(0x4B00 | lo));
-            if (a >= 0x28) c++;
+        uint8_t alien_control_state = mem_read((uint16_t)(0x4B00 | alien_state_low_byte));
+        alien_state_low_byte++;
+        if (alien_control_state & GAME_OBJECT_ACTIVE_FLAG) {
+            uint8_t alien_shape = mem_read((uint16_t)(0x4B00 | alien_state_low_byte));
+            if (alien_shape >= 0x28) audible_alien_count++;
         }
-        lo = (uint8_t)(lo + 3);
-    } while (lo != 0xB0);
+        alien_state_low_byte = (uint8_t)(alien_state_low_byte + 3);
+    } while (alien_state_low_byte != 0xB0);
 
-    if (c == 0) return;
-    if (c >= 8) c = 8;
-    state.SoundControlA = (uint8_t)((state.SoundControlA & 0xC0) | (uint8_t)(c + 0x25));
+    if (audible_alien_count == 0) return;
+    if (audible_alien_count >= 8) audible_alien_count = 8;
+    state.SoundControlA = (uint8_t)((state.SoundControlA & 0xC0) | (uint8_t)(audible_alien_count + 0x25));
 }
 
 /*

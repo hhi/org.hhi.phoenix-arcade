@@ -1,5 +1,6 @@
 #include "bird_logic.h"
 #include "coverage.h"
+#include "game_constants.h"
 
 extern PhoenixState state;
 
@@ -15,12 +16,15 @@ extern void update_second_four_birds(void); // 34AA
 extern void handle_animations_for_killed_aliens(void); // 0FC0
 extern void try_spawn_bird_dive_bomb(void); // 3930
 extern void process_enemy_bombs(void); // 0C40
-extern void l3462_no_birds_left(void);
+extern void finish_bird_wave_if_empty(void);
 extern void update_second_bird_bank(void); // 3452
 
 /*
  * Translates L3400
- * Handles bird egg hatching, spawning, and flight paths.
+ * Coordinates one bird-wave frame. The collision pass brackets vertical
+ * movement so both the old and new formation position are checked. Which
+ * bank advances alternates with Counter9B; when fewer than four birds
+ * remain, both banks run in the same frame.
  * [ASM: 3400-3436]
  * [ASM: 3438-344D]
  */
@@ -33,14 +37,16 @@ void process_birds(void) {
     check_bird_formation_player_collision();
     
     if (state.BirdsLeft == 0) {
-        l3462_no_birds_left();
+        finish_bird_wave_if_empty();
         return;
     }
     
     if (state.BirdsLeft >= 4) {
         if ((state.Counter9B & 0x01) != 0) {
+            // Odd frames prepare the second bank only.
             update_second_bird_bank();
         } else {
+            // Even frames draw, move, then allow the first bank to attack.
             draw_first_4_bird_objects();
             refresh_bird_flight_parameters();
             update_first_four_birds();
@@ -50,6 +56,7 @@ void process_birds(void) {
         return;
     }
     
+    // A depleted wave keeps both four-bird banks visible and moving.
     draw_first_4_bird_objects();
     draw_second_4_bird_objects();
     refresh_bird_flight_parameters();
@@ -79,10 +86,10 @@ extern void drawbirdobject(uint16_t bird_struct_addr);
  * [ASM: 3474-3485]
  */
 void draw_first_4_bird_objects(void) {
-    uint16_t addr = 0x4B70;
-    while (addr < 0x4B90) {
-        drawbirdobject(addr);
-        addr += 0x08;
+    for (uint16_t bird_object_address = BIRD_OBJECT_BANK_ONE_START_ADDRESS;
+         bird_object_address < BIRD_OBJECT_BANK_ONE_END_ADDRESS;
+         bird_object_address += BIRD_OBJECT_RECORD_STRIDE) {
+        drawbirdobject(bird_object_address);
     }
 }
 
@@ -91,9 +98,9 @@ void draw_first_4_bird_objects(void) {
  * [ASM: 3486-3497]
  */
 void draw_second_4_bird_objects(void) {
-    uint16_t addr = 0x4B90;
-    while (addr < 0x4BB0) {
-        drawbirdobject(addr);
-        addr += 0x08;
+    for (uint16_t bird_object_address = BIRD_OBJECT_BANK_ONE_END_ADDRESS;
+         bird_object_address < BIRD_OBJECT_BANK_TWO_END_ADDRESS;
+         bird_object_address += BIRD_OBJECT_RECORD_STRIDE) {
+        drawbirdobject(bird_object_address);
     }
 }

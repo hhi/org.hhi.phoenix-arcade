@@ -12,18 +12,18 @@ extern void hw_write_scroll_register(uint8_t val);
  * height, plus a bonus when few birds remain.
  * [ASM: 2668-26A7]
  */
-static void l2668(void) {
-    uint8_t b = state.M436E;
-    if (state.Counter9A >= 0x18) b++;
-    if (state.Counter9A >= 0x10) b++;
-    if (state.AliensLeft < 0x03) b++;
+static void update_bird_descent_speed(void) {
+    uint8_t descent_speed = state.M436E;
+    if (state.Counter9A >= 0x18) descent_speed++;
+    if (state.Counter9A >= 0x10) descent_speed++;
+    if (state.AliensLeft < 0x03) descent_speed++;
 
-    uint8_t cap = phoenix_bird_descent_caps[state.B4BD6];
-    uint8_t d = (b < cap) ? b : cap;
+    uint8_t descent_speed_cap = phoenix_bird_descent_caps[state.B4BD6];
+    descent_speed = (descent_speed < descent_speed_cap) ? descent_speed : descent_speed_cap;
 
-    if (state.BirdsLeft < 0x04) d++;
-    if (state.BirdsLeft < 0x02) d++;
-    state.B4BD5 = d;
+    if (state.BirdsLeft < 0x04) descent_speed++;
+    if (state.BirdsLeft < 0x02) descent_speed++;
+    state.B4BD5 = descent_speed;
 }
 
 /*
@@ -33,21 +33,21 @@ static void l2668(void) {
  * position (B4BD6) and height (B4BD7).
  * [ASM: 26D0-26FD]
  */
-static void l26d0(void) {
-    uint8_t d = 0x80; // sentinel: bit 7 set means "none found yet"
-    uint8_t e = 0x00;
-    uint8_t l = 0xA8;
+static void update_bird_formation_extent(void) {
+    uint8_t first_occupied_index = 0x80; // sentinel: bit 7 set means "none found yet"
+    uint8_t last_occupied_index = 0x00;
+    uint8_t bird_state_low_byte = 0xA8;
 
-    for (uint8_t c = 0; c < 8; c++) {
-        if (mem_read(0x4B00 | l) != 0) {
-            if (d & 0x80) d = c; // 26DE-26E3: RLCA / JP NC skips once set
-            e = c;
+    for (uint8_t bird_index = 0; bird_index < 8; bird_index++) {
+        if (mem_read(0x4B00 | bird_state_low_byte) != 0) {
+            if (first_occupied_index & 0x80) first_occupied_index = bird_index; // 26DE-26E3: RLCA / JP NC skips once set
+            last_occupied_index = bird_index;
         }
-        l -= 8;
+        bird_state_low_byte -= 8;
     }
 
-    state.B4BD6 = (uint8_t)(state.B4BD2 + d + e) & 0x1F;
-    state.B4BD7 = (uint8_t)(e - d);
+    state.B4BD6 = (uint8_t)(state.B4BD2 + first_occupied_index + last_occupied_index) & 0x1F;
+    state.B4BD7 = (uint8_t)(last_occupied_index - first_occupied_index);
 }
 
 /*
@@ -57,15 +57,15 @@ static void l26d0(void) {
  * band, then arms a new timer and the climb threshold B4BD1.
  * [ASM: 26AA-26CC] and [ASM: 2476-2493] and [ASM: 2495-249F]
  */
-static void l26aa(void) {
-    uint8_t old = state.B4BD3;
+static void schedule_next_bird_climb(void) {
+    uint8_t previous_climb_timer = state.B4BD3;
     state.B4BD3--;
-    if (old != 0) return; // 26AF-26B0: RET NZ on the pre-decrement value
+    if (previous_climb_timer != 0) return; // 26AF-26B0: RET NZ on the pre-decrement value
     state.B4BD3++;        // 26B1: undo, stays zero
 
-    uint8_t h = state.B4BD6;
-    if (h >= 0x16) return;
-    if (h < 0x08) return;
+    uint8_t formation_position = state.B4BD6;
+    if (formation_position >= 0x16) return;
+    if (formation_position < 0x08) return;
 
     // 26BB-26CB. NB: 26BD is RLCA -- een rotate, geen shift: bit 7 van
     // (B4BD6 - B4BD7) roteert naar bit 0. Bij een negatieve delta (>=
@@ -73,32 +73,33 @@ static void l26aa(void) {
     // laag uitviel en de L2495-keten (c=4-pad: (B+C+3B)*2) de
     // klim-timer B4BD3 exact 8 te laag zette. Gevonden via scripted
     // lockstep (my_session, records 5831-5852).
-    uint8_t diff = (uint8_t)(h - state.B4BD7);
-    uint8_t b = (uint8_t)((diff << 1) | (diff >> 7));
-    uint8_t v = state.M436F & 0x03;
-    state.B4BD4 = v;
-    uint8_t c = (uint8_t)(((~v) & 0x03) + 1);
+    uint8_t formation_position_delta = (uint8_t)(formation_position - state.B4BD7);
+    uint8_t rotated_position_delta = (uint8_t)((formation_position_delta << 1)
+                                                | (formation_position_delta >> 7));
+    uint8_t climb_pattern = state.M436F & 0x03;
+    state.B4BD4 = climb_pattern;
+    uint8_t pattern_repetitions = (uint8_t)(((~climb_pattern) & 0x03) + 1);
 
     // L2476/L2495: A = B + C, plus B per remaining step; a fourth step
     // doubles instead
-    uint8_t a = (uint8_t)(b + c);
-    a = (uint8_t)(a + b);
-    if (--c != 0) {
-        a = (uint8_t)(a + b);
-        if (--c != 0) {
-            a = (uint8_t)(a + b);
-            if (--c != 0) {
-                a = (uint8_t)(a + a);
+    uint8_t next_climb_timer = (uint8_t)(rotated_position_delta + pattern_repetitions);
+    next_climb_timer = (uint8_t)(next_climb_timer + rotated_position_delta);
+    if (--pattern_repetitions != 0) {
+        next_climb_timer = (uint8_t)(next_climb_timer + rotated_position_delta);
+        if (--pattern_repetitions != 0) {
+            next_climb_timer = (uint8_t)(next_climb_timer + rotated_position_delta);
+            if (--pattern_repetitions != 0) {
+                next_climb_timer = (uint8_t)(next_climb_timer + next_climb_timer);
             }
         }
     }
-    state.B4BD3 = a;
+    state.B4BD3 = next_climb_timer;
 
     // 247E-2493: rearm the climb threshold
-    a = (uint8_t)((uint8_t)((uint8_t)(0x08 - state.BirdsLeft) << 1)
-                  + state.Counter9A);
-    a = (uint8_t)(a << 1);
-    state.B4BD1 = (uint8_t)((state.M436F & 0x1E) + a);
+    uint8_t birds_destroyed = (uint8_t)(0x08 - state.BirdsLeft);
+    uint8_t climb_threshold_offset = (uint8_t)((birds_destroyed << 1) + state.Counter9A);
+    climb_threshold_offset = (uint8_t)(climb_threshold_offset << 1);
+    state.B4BD1 = (uint8_t)((state.M436F & 0x1E) + climb_threshold_offset);
 }
 
 /*
@@ -134,9 +135,9 @@ void birds_vertical_movement_update(void) {
 
     // 263F-2649: odd frames schedule, even frames rescan
     if (state.Counter9B & 0x01) {
-        l2668();
-        l26aa();
+        update_bird_descent_speed();
+        schedule_next_bird_climb();
     } else {
-        l26d0();
+        update_bird_formation_extent();
     }
 }

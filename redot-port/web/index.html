@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phoenix — browservariant</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main>
+    <h1>Phoenix</h1>
+    <div class="cabinet">
+      <canvas id="phoenix-screen" width="416" height="512" aria-label="Phoenix speelveld"></canvas>
+      <button id="start-audio" type="button">Klik om te starten</button>
+    </div>
+    <p>C munt · 1/Enter: 1 speler · 2: 2 spelers · ←/→ of A/D bewegen · spatie/Z vuren · Shift/X schild</p>
+    <p id="status" role="status">De WebAssembly-core wordt geladen…</p>
+  </main>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

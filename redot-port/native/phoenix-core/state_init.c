@@ -24,6 +24,8 @@ extern void init_global_level_data(void);
 
 // [ASM: 0547-055A]
 static void init_player_data_structure(void) {
+    // $43C0-$43DF contains the player plus every projectile slot; $43E0-
+    // $43FF holds their cached screen addresses for sprite erasure/redraw.
     memcpy(&state.PlayerState, phoenix_player_init_data, 32);
     memset(&state.OldPlayerShipMSB, 0, 32);
 }
@@ -31,7 +33,8 @@ static void init_player_data_structure(void) {
 // L0532: Init alien data for a new level and round
 // [ASM: 0532-0543]
 static void init_alien_data_new_level(void) {
-    memset(&state.M4B50, 0, 0xA0); // Clear $4B50 to $4BEF
+    // $4B50-$4BEF is the 16-alien movement/control workspace.
+    memset(&state.M4B50, 0, 0xA0);
     init_alien_control_states();
     copy_init_values_for_16_aliens();
     init_alien_positions();
@@ -88,15 +91,15 @@ void state_2_init_game_and_level_data(void) {
  */
 void get_player_lives_from_dip(void) {
     extern uint8_t read_dsw0(void); // 0x7800
-    uint8_t dsw = read_dsw0();
+    uint8_t dip_switches = read_dsw0();
     
     // 0353: AND $03
     // 0355: ADD $03
-    uint8_t lives = (dsw & 0x03) + 3;
+    uint8_t configured_lives = (dip_switches & 0x03) + 3;
     
     // 0358: LD HL,$4390
     // 035B: LD (HL),B
-    state.Player1Lives = lives;
+    state.Player1Lives = configured_lives;
     
     // 035C: LD L,$A2
     // 035E: LD A,(HL)
@@ -105,7 +108,7 @@ void get_player_lives_from_dip(void) {
     if (state.GameOrAttract != 1) {
         // 0364: LD L,$91
         // 0366: LD (HL),B
-        state.Player2Lives = lives;
+        state.Player2Lives = configured_lives;
     }
     
     extern void update_lives_screen(void);

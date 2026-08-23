@@ -4,7 +4,7 @@
 #include "redot_c2_renderer.h"
 #include "sound.h"
 #include "utilities.h"
-#include "../generated/phoenix_render_assets.h"
+#include "../../../c-phoenix/phoenix_render_assets.h"
 #include <string.h>
 
 PhoenixState state = {0};

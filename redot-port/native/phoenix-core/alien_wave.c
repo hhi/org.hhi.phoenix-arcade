@@ -27,7 +27,7 @@ extern void update_scroll_register_and_fill_background(void);
  * [ASM: 24C4-24DF]
  */
 void l24c4(void) {
-    if ((state.LevelAndRound & 0x0F) < 0x08) {
+    if ((state.LevelAndRound & LEVEL_PATTERN_MASK) < LEVEL_PATTERN_BIRDS_SPIRAL_8) {
         update_scroll_register_and_fill_background();
         return;
     }
@@ -41,33 +41,27 @@ void l24c4(void) {
     state.M43AA++;
     if ((state.M43AA & 0x03) == 0) {
         // Inline L22FA
-        uint16_t hl = 0x4AAA;
-        uint8_t c = mem_read(0x488A);
-        for (int i = 0; i < 18; i++) {
-            uint8_t a = c;
-            a &= 0x03;
-            a = (a << 2) | (a >> 6); // RLCA twice
-            uint8_t d = a;
-            c = mem_read(hl);
-            a = c;
-            a &= 0x0C;
-            a = (a >> 2) | (a << 6); // RRCA twice [ASM 230D-230E]
-            a |= d;
-            a |= 0x60; // [ASM 2310]
-            mem_write(hl, a);
-            hl -= 0x20; // [ASM 2313-231A: SUB $20 on L, borrow decrements H]
+        uint16_t animation_tile_address = 0x4AAA;
+        uint8_t previous_tile = mem_read(0x488A);
+        for (int row = 0; row < 18; row++) {
+            uint8_t low_animation_bits = previous_tile & 0x03;
+            low_animation_bits = (low_animation_bits << 2) | (low_animation_bits >> 6); // RLCA twice
+            previous_tile = mem_read(animation_tile_address);
+            uint8_t high_animation_bits = previous_tile & 0x0C;
+            high_animation_bits = (high_animation_bits >> 2) | (high_animation_bits << 6); // RRCA twice [ASM 230D-230E]
+            uint8_t animation_tile = high_animation_bits | low_animation_bits | 0x60; // [ASM 2310]
+            mem_write(animation_tile_address, animation_tile);
+            animation_tile_address -= 0x20; // [ASM 2313-231A: SUB $20 on L, borrow decrements H]
         }
     } else {
         // Inline L2322
         state.AnimationCounter++;
-        uint8_t a = state.AnimationCounter;
-        a &= 0x07;
-        a = (a << 3) | (a >> 5); // RLCA 3 times
-        a &= 0xFF;
-        a += 0xC0;
-        uint16_t src = 0x1B00 | a;
+        uint8_t animation_frame = state.AnimationCounter & 0x07;
+        animation_frame = (animation_frame << 3) | (animation_frame >> 5); // RLCA 3 times
+        animation_frame += 0xC0;
+        uint16_t animation_source_address = 0x1B00 | animation_frame;
         extern void draw_image_c_by_b(uint16_t hl, uint16_t de, uint8_t b, uint8_t c);
-        draw_image_c_by_b(src, 0x49A6, 4, 2); // B=0x04 rows, C=0x02 columns
+        draw_image_c_by_b(animation_source_address, 0x49A6, 4, 2); // B=0x04 rows, C=0x02 columns
     }
 }
 
@@ -85,14 +79,14 @@ void l2204(void) {
     state.ShieldCount = 0;
     state.LevelAndRound++;
     
-    uint8_t index = (state.LevelAndRound & 0x0E) >> 1;
+    uint8_t round_population_index = (state.LevelAndRound & 0x0E) >> 1;
     extern const uint8_t phoenix_round_population[0x08];
-    uint8_t val = phoenix_round_population[index];
+    uint8_t round_population = phoenix_round_population[round_population_index];
     
-    if ((val & 0x80) == 0) {
-        state.AliensLeft = val; // Positive, use AliensLeft
+    if ((round_population & 0x80) == 0) {
+        state.AliensLeft = round_population; // Positive, use AliensLeft
     } else {
-        state.BirdsLeft = val & 0x7F; // Negative, use BirdsLeft
+        state.BirdsLeft = round_population & 0x7F; // Negative, use BirdsLeft
     }
     
     clear_foreground(); // 0380
@@ -119,10 +113,10 @@ void l21ba(uint8_t masked_counter) {
     // escort aliens) skips the transition and just respawns another 16
     // aliens in place -- that wave doesn't end by running out of aliens,
     // it ends when the mothership itself is destroyed.
-    if ((state.LevelAndRound & 0x0F) < 0x0B) {
+    if ((state.LevelAndRound & LEVEL_PATTERN_MASK) < LEVEL_PATTERN_ALIENS_ACTIVE_B) {
         l2204();
     } else {
-        state.AliensLeft = 0x10;
+        state.AliensLeft = ALIENS_PER_WAVE;
         extern void l0526(void);
         l0526(); // init alien data
     }
@@ -227,13 +221,13 @@ void l2000_alien_wave_main_loop(void) {
     state.M435F++;
 
     if (state.AliensLeft == 0) {
-            l21ba(masked_counter);
+        l21ba(masked_counter);
         return;
     }
 
     if (state.AliensLeft >= 5) {
-            l2130(masked_counter);
-            return;
+        l2130(masked_counter);
+        return;
     }
 
     if (masked_counter == 0) {
@@ -241,9 +235,9 @@ void l2000_alien_wave_main_loop(void) {
     }
 
     if (state.M435E == 0) {
-            l2130(masked_counter);
+        l2130(masked_counter);
     } else {
-            l2146(masked_counter);
+        l2146(masked_counter);
     }
 }
 
@@ -253,10 +247,10 @@ void l2000_alien_wave_main_loop(void) {
  * [ASM: 3000-3012]
  */
 void l3000(void) {
-    uint8_t a = state.Counter93;
+    uint8_t breakout_phase = state.Counter93;
     state.Counter93++;
-    a &= 0x07;
-    switch (a) {
+    breakout_phase &= 0x07;
+    switch (breakout_phase) {
         case 0: { extern void l3264(void); l3264(); break; }
         case 1: { extern void l3028(void); l3028(); break; }
         case 2: { extern void l30ba(void); l30ba(); break; }

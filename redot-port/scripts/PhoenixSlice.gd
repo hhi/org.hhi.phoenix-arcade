@@ -7,6 +7,7 @@ const WIDTH := 416
 const HEIGHT := 512
 const BTN_COIN := 0x01
 const BTN_START_1P := 0x02
+const BTN_START_2P := 0x04
 const BTN_FIRE := 0x10
 const BTN_RIGHT := 0x20
 const BTN_LEFT := 0x40
@@ -43,11 +44,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var key_event := event as InputEventKey
 	if key_event == null or not key_event.pressed or key_event.echo:
 		return
-	if key_event.keycode == KEY_ENTER:
+	if key_event.keycode == KEY_ENTER or key_event.keycode == KEY_1:
 		if not demo_running:
 			demo_running = true
 		elif credit_inserted and not game_running:
-			start_credited_game()
+			start_credited_game(BTN_START_1P)
+	elif key_event.keycode == KEY_2 and credit_inserted and not game_running:
+		start_credited_game(BTN_START_2P)
 	elif key_event.keycode == KEY_C and demo_running and not game_running:
 		# C is the cabinet coin switch. It adds a credit but does not silently
 		# begin a game; Enter remains the original 1-player start control.
@@ -98,8 +101,8 @@ func cabinet_input() -> int:
 	return input_mask
 
 
-func start_credited_game() -> void:
-	core.step(0xff & ~BTN_START_1P)
+func start_credited_game(start_button: int) -> void:
+	core.step(0xff & ~start_button)
 	# Release Start and let the original game-state transitions play in real
 	# time; do not skip forward to an already-active wave.
 	game_running = true
@@ -161,13 +164,13 @@ func create_prompt() -> void:
 	add_child(layer)
 	prompt_panel = ColorRect.new()
 	# Keep cabinet instructions below the normal player-ship flight area.
-	prompt_panel.position = Vector2(46, 468)
-	prompt_panel.size = Vector2(324, 40)
+	prompt_panel.position = Vector2(18, 468)
+	prompt_panel.size = Vector2(380, 40)
 	prompt_panel.color = Color(0.0, 0.0, 0.0, 0.78)
 	layer.add_child(prompt_panel)
 	prompt_label = Label.new()
-	prompt_label.position = Vector2(58, 471)
-	prompt_label.size = Vector2(300, 30)
+	prompt_label.position = Vector2(30, 471)
+	prompt_label.size = Vector2(356, 30)
 	prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	prompt_label.add_theme_font_size_override("font_size", 18)
 	prompt_label.add_theme_color_override("font_color", Color.WHITE)
@@ -207,7 +210,7 @@ func refresh_prompt() -> void:
 		prompt_label.text = "PRESS C: COIN"
 	elif not game_running:
 		prompt_panel.visible = true
-		prompt_label.text = "PRESS ENTER: 1 PLAYER"
+		prompt_label.text = "PRESS 1/ENTER: 1P · 2: 2P"
 	else:
 		prompt_panel.visible = false
 		prompt_label.text = ""

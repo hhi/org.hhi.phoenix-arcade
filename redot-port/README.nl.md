@@ -17,16 +17,44 @@ synthetische HUD.
 1. Bouw de extensie: `make -C redot-port/native extension`.
 2. Open `redot-port/project.godot` in Redot en druk op **F6**, of start het
    project. Druk op Enter om de authentieke attract-demo te openen. Druk op C
-   om een credit in te werpen en daarna op Enter voor één speler. Gebruik
+   om een credit in te werpen en daarna op 1 of Enter voor één speler, of op
+   2 voor twee spelers. Gebruik
    Links/Rechts (of A/D) en Spatie (of Z) pas nadat het spel is gestart.
    Gebruik Omlaag, S of K voor het Phoenix-schild. Druk op R om terug te gaan
    naar het beginscherm. Dat beginscherm bevriest de Phoenix-core; de eerste
    Enter start de attract-sequentie bij het eerste frame. Een spel starten met
    een credit springt niet vooruit naar een actieve golf.
 
-Het spel leest tijdens het draaien niet uit `roms/assembled`. Het rendert met
-de al gegenereerde lokale assetheader onder `native/generated/`. ROM-dumps en
-gegenereerde lokale renderassets blijven buiten Git.
+De Redot- en browserbuild gebruiken de versiebeheerde header
+`c-phoenix/phoenix_render_assets.h`. Zij lezen niet uit
+`roms/assembled` en voeren geen `romprepare` uit; die
+voorbereidingsroute hoort alleen bij de JPhoenix-emulator.
+
+## Redot installeren (alleen de native Redot-uitgave)
+
+Dit onderdeel geldt alleen voor de native editoruitgave. De browseruitgave
+gebruikt Redot niet en heeft het ook niet nodig.
+
+1. Download de standaardeditor **Redot 26.2** voor je platform via de
+   [officiële Redot-26.2-release](https://github.com/Redot-Engine/redot-engine/releases/tag/redot-26.2-stable).
+   De C++-bindings van deze poort passen bij Redot 26.2; vervang die versie dus
+   niet door een andere editorversie.
+2. Pak de editor uit of installeer hem volgens de gebruikelijke procedure van
+   je platform en start het Redot-programma eenmaal.
+3. Bouw de extensie met `make -C redot-port/native extension`, open
+   `redot-port/project.godot` in de editor en start het project.
+
+## Browservariant (experimenteel)
+
+Naast de Redot-scene bevat deze directory een statische browseruitgave. Die
+compileert dezelfde C-gamecore naar WebAssembly; JavaScript verzorgt alleen
+invoer, audio en presentatie. Installeer voor spelen niets: na het bouwen
+open je de uitgave via een lokale HTTP-server in een moderne browser.
+
+De browserpresentatie is nog experimenteel en is nog niet vrijgegeven als
+distributievariant. De WebAssembly-core, invoer en audio zijn wel onderdeel
+van het prototype. Zie [web/README.nl.md](web/README.nl.md) voor vereisten,
+bouwen, lokaal starten, bediening en status.
 
 ## Native core
 
@@ -79,9 +107,9 @@ van de bijpassende Redot 26.2-C++-bindings in `native/redot-cpp/`.
 ## Een macOS-programma exporteren
 
 De meegeleverde `export_presets.cfg` richt zich op macOS op Apple Silicon. Om
-een zelfstandige applicatie te maken, genereer je eerst de lokale van ROM
-afgeleide renderassets en bouw je de native extensie zoals hierboven
-beschreven. Installeer eenmalig de bijpassende Redot 26.2-exporttemplates via
+een zelfstandige applicatie te maken, bouw je de native extensie zoals hierboven
+beschreven. Een ROM-voorbereidingsstap is niet nodig. Installeer eenmalig de
+bijpassende Redot 26.2-exporttemplates via
 **Editor → Manage Export Templates**; Redot bundelt deze niet met de editor.
 Kies in **Project → Export** de bestaande **macOS**-preset en kies **Export
 Project**, met bijvoorbeeld `dist/Phoenix.app` als uitvoer.
@@ -134,7 +162,7 @@ beperkt tot de GDExtension-buildgrens:
 4. Voer `make -C redot-port/native test` uit op dat OS, open daarna het project
    in Redot en exporteer met de exportpreset van dat OS.
 
-De Phoenix-C-bronnen, van ROM afgeleide renderassets, besturing, C2-shader en
+De Phoenix-C-bronnen, gedeelde versiebeheerde renderassetheader, besturing, C2-shader en
 audiobrug blijven op alle platformen hetzelfde.
 
 De poort bevat of commit geen originele ROMs/PROMs. De bestaande Phoenix-

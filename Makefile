@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only web c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -27,6 +27,7 @@ help:
 	@echo "  make c2-demo-view Generate and serve the C2 semantic HTML viewer"
 	@echo "  make c2-demo-view-only Serve an existing C2 semantic HTML viewer locally"
 	@echo "  make j-build      Build JPhoenix"
+	@echo "  make web          Build the experimental browser variant (requires emcc)"
 	@echo "  make j-tracer-view Generate and serve the JPhoenix tracer locally"
 	@echo "  make j-tracer-view-only Serve an existing JPhoenix tracer locally"
 	@echo "  make c-test       Run C-Phoenix tests"
@@ -112,6 +113,18 @@ c2-demo-view-only:
 
 j-build:
 	$(MAKE) -C jphoenix-emulator-port
+
+# Emscripten is a developer toolchain and is deliberately not downloaded by
+# the repository. Keep the public entrypoint at the repository root and make
+# a missing prerequisite immediately actionable.
+web:
+	@command -v emcc >/dev/null 2>&1 || { \
+		echo "error: make web requires Emscripten (emcc)."; \
+		echo "Install it: https://emscripten.org/docs/getting_started/downloads.html"; \
+		echo "Then activate the SDK in this shell (for example: source ./emsdk_env.sh)."; \
+		exit 1; \
+	}
+	$(MAKE) -C redot-port/native web
 
 j-tracer-view:
 	$(MAKE) -C jphoenix-emulator-port tracer-view TRACER_VIEW_PORT=$(TRACER_VIEW_PORT)

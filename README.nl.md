@@ -22,6 +22,7 @@ nodig hebt.
 | **Klassiek, pixel-perfect** | Het originele 8×8-uiterlijk, herbouwd in C | `cd c-phoenix && make run` | [`c-phoenix/README.nl.md`](c-phoenix/README.nl.md) |
 | **Origineel arcade-board** | Draait de echte programmacode uit 1980 op een op Java gebaseerde hardware-emulator | `cd jphoenix-emulator-port && make run` | [`jphoenix-emulator-port/README.nl.md`](jphoenix-emulator-port/README.nl.md) |
 | **Redot-vertical-slice** | De C-gamecore in een via de GPU samengestelde Redot-scene, met audio | `make -C redot-port/native extension` | [`redot-port/README.nl.md`](redot-port/README.nl.md) |
+| **Browserprototype** | Dezelfde C-gamecore als WebAssembly, lokaal in je browser | `make web` | [`redot-port/web/README.nl.md`](redot-port/web/README.nl.md) |
 
 Elke README onder "volledige details" heeft de besturing, buildopties en
 command-line-vlaggen voor die versie (bijvoorbeeld de pijltjestoetsen/WASD om
@@ -32,10 +33,15 @@ Apple Silicon. Open na het bouwen van de extensie `redot-port/project.godot`
 in Redot 26.2 en start de scene. Hij valt buiten `make build`, omdat hij een
 eigen Redot- en native-extensietoolchain heeft.
 
-Eén ding heeft elke versie eerst nodig: je eigen, legaal verkregen Phoenix
-Amstar-ROM-set. De repository levert nooit ROM-bytes mee. Een set voorbereiden
-kost een paar minuten — zie [`roms/README.nl.md`](roms/README.nl.md) voor waar
-de bestanden horen en het ene commando dat ze valideert en samenstelt.
+De browservariant is een experimentele, statische WebAssembly-build. Zij
+vereist alleen Emscripten om te bouwen en een lokale HTTP-server om te
+openen; de speler installeert geen app. Hij valt eveneens buiten `make build`.
+
+Alleen de JPhoenix-emulatorroute heeft je eigen, legaal verkregen Phoenix
+Amstar-ROM-set nodig. De repository levert nooit ROM-bytes mee; zie
+[`roms/README.nl.md`](roms/README.nl.md) voor de voorbereidingsinstructies.
+C-Phoenix, C2, Redot en het browserprototype gebruiken de versiebeheerde
+renderassetheader en voeren geen `romprepare` uit.
 
 Om alle drie de versies in één keer te bouwen zonder er één te starten,
 gebruik je `make build` (`make all` is een alias).
@@ -61,6 +67,7 @@ phoenix-arcade/
 │  └─ tools/                 Visuele tracer, lockstep-checker en andere analysetools
 ├─ c2-phoenix/                Hoge-resolutiepresentatie, gebouwd op de c-phoenix-engine
 ├─ redot-port/                Redot-vertical-slice, gebaseerd op de C-gamecore
+│  └─ web/                    Experimentele WebAssembly-browservariant
 └─ roms/                     Handleiding om je eigen ROM-set voor te bereiden
 ```
 
@@ -89,6 +96,9 @@ phoenix-arcade/
   Redot-scene, met een native GDExtension voor de 60 Hz-simulatie en de video-
   en audiobrug. Hij richt zich nu op macOS met Apple Silicon en is speelbaar
   vanuit de Redot-editor.
+  - [`web/`](redot-port/web/README.nl.md) is de experimentele browser-shell
+    rond dezelfde core. Bouw lokaal met Emscripten en serveer de statische
+    bestanden; de browser hoeft niets te installeren.
 - [`demo/`](demo/README.nl.md) brengt alle drie samen met gecureerde
   opnamen, screenshots en een rondleiding langs de tooling hieronder.
 
@@ -248,7 +258,9 @@ te gebruiken — sla ze over tenzij dat precies is wat je zoekt:
 
 - **Om te spelen:** GCC of Clang, SDL2 en GNU Make voor de C-versies; JDK 11+
   (17+ voor de optionele LibGDX-frontend) voor de Java-versie. Python 3 is
-  eenmalig nodig, om de ROM-set voor te bereiden.
+  alleen nodig voor de JPhoenix-route die de ROM-set voorbereidt.
+- **Voor de browserprototype-build:** daarnaast Emscripten (`emcc`) en een
+  lokale HTTP-server, bijvoorbeeld die van Python 3.
 - **Om dieper te gaan:** hetzelfde, plus Graphviz voor de volledige
   vergelijkings- en graphketen.
 
