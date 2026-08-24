@@ -96,7 +96,7 @@ startAudioButton.addEventListener("click", async () => {
   audioContext ??= new AudioContext({ sampleRate: 48000 });
   await audioContext.resume();
   startAudioButton.hidden = true;
-  status.textContent = "Phoenix draait in WebAssembly.";
+  status.textContent = "Phoenix is running in WebAssembly.";
 });
 
 try {
@@ -108,9 +108,9 @@ try {
     module.HEAPU8.subarray(module._phoenix_web_background_layer(), module._phoenix_web_background_layer() + layerLength),
     module.HEAPU8.subarray(module._phoenix_web_foreground_layer(), module._phoenix_web_foreground_layer() + layerLength),
   );
-  status.textContent = "Klaar. Klik op starten om audio te activeren.";
+  status.textContent = "Ready. Click start to enable audio.";
   requestAnimationFrame(animationFrame);
 } catch (error) {
-  status.textContent = `Laden mislukt: ${error.message}`;
+  status.textContent = `Loading failed: ${error.message}`;
   console.error(error);
 }
