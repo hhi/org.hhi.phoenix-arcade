@@ -108,7 +108,7 @@ try {
     module.HEAPU8.subarray(module._phoenix_web_background_layer(), module._phoenix_web_background_layer() + layerLength),
     module.HEAPU8.subarray(module._phoenix_web_foreground_layer(), module._phoenix_web_foreground_layer() + layerLength),
   );
-  status.textContent = "Ready. Click start to enable audio.";
+  status.textContent = "Ready. Click to start playing.";
   requestAnimationFrame(animationFrame);
 } catch (error) {
   status.textContent = `Loading failed: ${error.message}`;
