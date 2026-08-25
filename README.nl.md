@@ -60,6 +60,8 @@ volgen naar de leesbare C-functie, het oorspronkelijke Z80-adresbereik en de
 bijbehorende uitleg. Het is een statische pagina die direct vanuit de checkout
 te openen is; bouwen is niet nodig.
 
+![Overzicht van de Knowledge Base Explorer](c-phoenix/c-annotated/knowledge-base-explorer-overview.svg)
+
 ## Hoe het project is opgebouwd
 
 Phoenix Arcade is één monorepo, opgebouwd in lagen: speelbare spellen

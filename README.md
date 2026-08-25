@@ -60,6 +60,8 @@ to follow a game system — player shield, bird waves, scoring, video or sound
 explanatory documentation. It is a static page and can be opened directly
 from the checkout; no build is required.
 
+![Knowledge Base Explorer overview](c-phoenix/c-annotated/knowledge-base-explorer-overview.svg)
+
 ## How the project is put together
 
 Phoenix Arcade is one monorepo, organised in layers: playable games at the
