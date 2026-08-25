@@ -52,6 +52,14 @@ Not ready to build yet? **[Read the demo guide](demo/README.md)** — it opens
 with playable recordings of a real session, side by side with the
 high-resolution look, before it shows any of the developer tooling.
 
+## Explore how the game works
+
+**[Open the interactive Knowledge Base Explorer](c-phoenix/c-annotated/knowledge-base-explorer/index.html)**
+to follow a game system — player shield, bird waves, scoring, video or sound
+— to the readable C function, its original Z80 address range, and its
+explanatory documentation. It is a static page and can be opened directly
+from the checkout; no build is required.
+
 ## How the project is put together
 
 Phoenix Arcade is one monorepo, organised in layers: playable games at the
@@ -209,8 +217,10 @@ growth-and-explosion animation phases, in Dutch or English.
   here's the evidence" — rather than raw dumps.
 - [`c-annotated/`](c-phoenix/c-annotated/en/README.md) is the machine-readable
   knowledge base: a graph connecting C functions, ROM addresses, RAM
-  fields, and tables, with its own validity checks. Available in Dutch or
-  English.
+  fields, and tables, with its own validity checks. Its **[interactive
+  explorer](c-phoenix/c-annotated/knowledge-base-explorer/index.html)** is
+  the direct, topic-oriented entry point; the written material is available
+  in Dutch or English.
 
 ### Tool references, for running your own investigation
 

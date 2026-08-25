@@ -10,6 +10,10 @@ Dutch documentation: [README.nl.md](README.nl.md).
 This root README is the entry point. Detailed documentation intentionally lives
 next to the files it describes:
 
+- [Interactive Knowledge Base Explorer](c-annotated/knowledge-base-explorer/index.html)
+  - start here to browse a game system by topic, then open its C routine,
+  original Z80 range, and explanatory documentation. It opens directly as a
+  local static page.
 - [STATUS.md](context/STATUS.md) - current status, open observations, and
   verification scope.
 - [Central demo](../demo/README.md) - videos, screenshots, visual tracing, and

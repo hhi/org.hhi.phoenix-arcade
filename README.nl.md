@@ -52,6 +52,14 @@ Nog niet klaar om te bouwen? **[Lees de demo-handleiding](demo/README.nl.md)**
 — die begint met speelbare opnamen van een echte sessie, naast de
 hoge-resolutieweergave, voordat er iets over de ontwikkeltooling volgt.
 
+## Bekijk hoe het spel werkt
+
+**[Open de interactieve Knowledge Base Explorer](c-phoenix/c-annotated/knowledge-base-explorer/index.html)**
+om een spelsysteem — spelersschild, vogelgolven, score, video of geluid — te
+volgen naar de leesbare C-functie, het oorspronkelijke Z80-adresbereik en de
+bijbehorende uitleg. Het is een statische pagina die direct vanuit de checkout
+te openen is; bouwen is niet nodig.
+
 ## Hoe het project is opgebouwd
 
 Phoenix Arcade is één monorepo, opgebouwd in lagen: speelbare spellen
@@ -82,7 +90,9 @@ phoenix-arcade/
   Java-emulator op gelijkwaardigheid. De eigen README is het startpunt voor
   alles wat eronder genest zit (build, besturing en de tooling hieronder).
   - [`c-annotated/`](c-phoenix/c-annotated/nl/README.md) — knowledge base die
-    de C-code koppelt aan de originele Z80-assembly.
+    de C-code koppelt aan de originele Z80-assembly; de **[interactieve
+    explorer](c-phoenix/c-annotated/knowledge-base-explorer/index.html)** is
+    de directe, onderwerpgerichte ingang.
   - [`animations/`](c-phoenix/animations/nl/README.md) — galerij van
     vijandelijke vluchtpatronen en bewegingsdata.
   - [`tools/`](c-phoenix/tools/README.nl.md) — visuele tracer,

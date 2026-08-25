@@ -2,6 +2,7 @@
 
 Kies uw gewenste taal / Choose your preferred language:
 
+- 🧭 [Interactive Knowledge Base Explorer](knowledge-base-explorer/index.html) — **Direct entry point / directe ingang:** browse by game system, then open the mapped C function, Z80 range and explanation. Works directly as a local static page.
 - 🇳🇱 [Nederlands (Nederlandse Documentatie)](nl/README.md)
 - 🇬🇧 [English (English Documentation)](en/README.md)
 

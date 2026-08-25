@@ -10,6 +10,10 @@ Engelse documentatie: [README.md](README.md).
 Deze root-README is het startpunt. Detaildocumentatie staat bewust dichter bij
 de bijbehorende bestanden:
 
+- [Interactieve Knowledge Base Explorer](c-annotated/knowledge-base-explorer/index.html)
+  - begin hier om een spelsysteem per onderwerp te volgen naar de C-routine,
+  het oorspronkelijke Z80-bereik en de uitleg. Deze lokale statische pagina
+  opent direct.
 - [STATUS.nl.md](context/STATUS.nl.md) - actuele stand, open observaties en
   verificatiebereik.
 - [Centrale demo](../demo/README.nl.md) - video's, screenshots, visuele
