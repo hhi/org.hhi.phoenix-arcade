@@ -42,6 +42,11 @@ compares those observed edges with the design graph. The corresponding graph
 and result locations are part of each command's output, so generated artifacts
 remain discoverable rather than being implicit scratch files.
 
+The generated [runtime trace explorer](runtime-trace-explorer/index.html)
+is the interactive entry point for the latest recorded trace. It visualises
+recorded calls; it does not execute C-Phoenix in the browser and can be opened
+directly with `file://`.
+
 ### Other build and maintenance tools
 
 | Tool | Purpose | Result/location |

@@ -35,6 +35,7 @@ RUNTIME_OBJS = $(SRCS:%.c=build/runtime/%.o)
 RUNTIME_SCENARIO ?=
 RUNTIME_FRAMES ?= 0
 RUNTIME_OUTPUT_DIR ?= $(CURDIR)/context/runtimegraphs/$(RUNTIME_SCENARIO)
+RUNTIME_EXPLORER_OUTPUT ?= $(CURDIR)/tools/runtime-trace-explorer/index.html
 # Shared input scripts are addressed as context/... from every implementation.
 # In this directory the shared context lives locally; sibling implementations
 # override CONTEXT_ROOT with ../c-phoenix/context.
@@ -187,7 +188,7 @@ runtimegraph: $(RUNTIME_TARGET)
 	@test "$(RUNTIME_FRAMES)" -gt 0 || { echo "RUNTIME_FRAMES must be a positive frame count"; exit 2; }
 	mkdir -p $(RUNTIME_OUTPUT_DIR)
 	SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy $(RUNTIME_TARGET) --run-frames=$(RUNTIME_FRAMES) --input-script=context/input-scripts/$(RUNTIME_SCENARIO).txt --no-render --runtime-call-trace=$(RUNTIME_OUTPUT_DIR)/c_phoenix_calls.bin
-	python3 tools/generate_c_runtime_callgraph.py $(RUNTIME_OUTPUT_DIR)/c_phoenix_calls.bin --binary $(RUNTIME_TARGET) --output-dir $(RUNTIME_OUTPUT_DIR)
+	python3 tools/generate_c_runtime_callgraph.py $(RUNTIME_OUTPUT_DIR)/c_phoenix_calls.bin --binary $(RUNTIME_TARGET) --output-dir $(RUNTIME_OUTPUT_DIR) --explorer-output $(RUNTIME_EXPLORER_OUTPUT)
 	python3 tools/generate_c_design_runtime_comparison.py --source-dir . --runtime $(RUNTIME_OUTPUT_DIR)/c_phoenix_runtime_calls.csv --output-dir $(RUNTIME_OUTPUT_DIR)
 
 BOT_SEED ?= context/input-scripts/extended_playthrough.txt

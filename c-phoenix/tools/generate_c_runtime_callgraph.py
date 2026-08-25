@@ -5,6 +5,7 @@ import argparse
 import bisect
 import collections
 import csv
+import os
 import pathlib
 import re
 import struct
@@ -354,7 +355,8 @@ def write_functional_graph(output_dir, counts, function_files, function_location
             "\nThe per-function membership and measured call totals are in "
             "`c_phoenix_functional_runtime_functions.csv`. The existing "
             "`c_phoenix_runtime_callgraph.svg` remains the drill-down view. "
-            "`c_phoenix_runtime_explorer.html` links both levels interactively.\n"
+            "The [runtime trace explorer](../../../tools/runtime-trace-explorer/index.html) "
+            "links both levels interactively.\n"
         )
 
     dutch_report_path = output_dir / "c_phoenix_functional_runtime_callgraph.nl.md"
@@ -382,11 +384,10 @@ def write_functional_graph(output_dir, counts, function_files, function_location
             "\nDe lidmaatschappen per functie en de gemeten aantallen staan in "
             "`c_phoenix_functional_runtime_functions.csv`. De bestaande "
             "`c_phoenix_runtime_callgraph.svg` blijft de detailweergave. De "
-            "interactieve `c_phoenix_runtime_explorer.html` koppelt beide "
-            "niveaus.\n"
+            "interactieve [runtimetrace-explorer](../../../tools/runtime-trace-explorer/index.html) "
+            "koppelt beide niveaus.\n"
         )
 
-    write_runtime_explorer(output_dir, counts, function_files, function_locations)
 
 
 def runtime_explorer_data(counts, function_files, function_locations=None):
@@ -447,17 +448,19 @@ def runtime_explorer_data(counts, function_files, function_locations=None):
     }
 
 
-def write_runtime_explorer(output_dir, counts, function_files, function_locations=None):
-    """Write a dependency-free split-view explorer beside the static graphs."""
+def write_runtime_explorer(html_path, counts, function_files, function_locations=None):
+    """Write a dependency-free explorer for a recorded runtime trace."""
     data = json.dumps(
         runtime_explorer_data(counts, function_files, function_locations), ensure_ascii=False
     )
-    html_path = output_dir / "c_phoenix_runtime_explorer.html"
-    html_path.write_text(f'''<!doctype html>
+    source_dir = pathlib.Path(__file__).resolve().parents[1]
+    source_prefix = pathlib.PurePosixPath(os.path.relpath(source_dir, html_path.parent))
+    html_path.parent.mkdir(parents=True, exist_ok=True)
+    html = f'''<!doctype html>
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>C-Phoenix runtime explorer</title>
+<title>C-Phoenix runtime trace explorer</title>
 <style>
 :root {{ color-scheme: light; --ink:#19324a; --muted:#617387; --line:#c8d6e1; --panel:#f7fafc; --accent:#1677a6; --selected:#d8eff9; --edge:#7193aa; }}
 * {{ box-sizing:border-box }} body {{ margin:0; font:14px/1.45 system-ui,-apple-system,sans-serif; color:var(--ink); background:#edf3f7 }}
@@ -473,7 +476,7 @@ aside,section {{ background:white; min-width:0 }} aside {{ padding:16px; overflo
 .node {{ cursor:pointer }} .node rect {{ stroke:#5f849a; stroke-width:1.2; fill:#fff }} .node.selected rect {{ fill:var(--selected); stroke:var(--accent); stroke-width:2 }} .node text {{ font-size:12px; fill:var(--ink) }} .edge {{ stroke:var(--edge); fill:none; marker-end:url(#arrow) }} .edge-label {{ font-size:11px; fill:#49667a }}
 .empty {{ padding:50px; text-align:center; color:var(--muted) }} @media(max-width:760px) {{ main {{ grid-template-columns:1fr; }} aside {{ max-height:42vh }} }}
 </style>
-<header><h1>Runtime analysis explorer</h1><p>Functional decomposition linked to observed runtime calls.</p></header>
+<header><h1>Runtime trace explorer</h1><p>Functional decomposition linked to recorded runtime calls.</p></header>
 <main><aside><div class="eyebrow">Functional scope</div><div id="tree"></div></aside><section><nav id="breadcrumb" aria-label="Breadcrumb"></nav><h2 id="title"></h2><p id="summary"></p><p id="source"></p><svg id="graph" role="img" aria-label="Runtime call graph"></svg></section></main>
 <script>
 const DATA = {data};
@@ -499,7 +502,14 @@ function graph() {{ const {{display,edges}}=aggregate(), svg=document.querySelec
   list.forEach(([id,name])=>{{ const p=pos.get(id),g=document.createElementNS(svg.namespaceURI,'g'); g.setAttribute('class','node '+(id===selected?'selected':'')); g.onclick=()=>nodes.has(id)&&select(id); const rect=document.createElementNS(svg.namespaceURI,'rect'); rect.setAttribute('x',p.x); rect.setAttribute('y',p.y); rect.setAttribute('width',cardWidth); rect.setAttribute('height',58); rect.setAttribute('rx',7); const text=document.createElementNS(svg.namespaceURI,'text'); text.setAttribute('x',p.x+cardWidth/2); text.setAttribute('y',p.y+23); text.setAttribute('text-anchor','middle'); const words=name.split(' '), lines=['']; words.forEach(word=>{{ const line=lines[lines.length-1], next=(line+' '+word).trim(); if(next.length>21&&lines.length<2) lines.push(word); else lines[lines.length-1]=next; }}); if(words.join(' ').length>lines.join(' ').length) lines[lines.length-1]+='…'; lines.forEach((line,i)=>{{const span=document.createElementNS(svg.namespaceURI,'tspan');span.setAttribute('x',p.x+cardWidth/2);span.setAttribute('dy',i?14:0);span.textContent=line;text.append(span)}});g.append(rect,text);svg.append(g); }}); }}
 function compact(value) {{ return value>=1e9?(value/1e9).toFixed(1)+'B':value>=1e6?(value/1e6).toFixed(1)+'M':value>=1e3?(value/1e3).toFixed(1)+'k':String(value); }}
 function render() {{ const tree=document.querySelector('#tree'); tree.replaceChildren(); renderTree(DATA.root,tree); const path=[]; for(let id=selected;;id=parents.get(id)){{path.unshift(id);if(!parents.has(id))break;}} const crumb=document.querySelector('#breadcrumb'); crumb.replaceChildren(); path.forEach((id,i)=>{{if(i)crumb.append(' › ');const b=document.createElement('button');b.textContent=label(id);b.onclick=()=>select(id);crumb.append(b)}}); const scope=functions(selected), calls=DATA.edges.filter(e=>scope.has(e.caller)||scope.has(e.callee)).reduce((n,e)=>n+e.count,0), node=nodes.get(selected); document.querySelector('#title').textContent=node.label; document.querySelector('#summary').textContent=`${{scope.size}} observed functions · ${{compact(calls)}} calls touching this scope · select a node to refine`; const source=document.querySelector('#source'); source.replaceChildren(); if(node.kind==='function' && node.source_file && node.source_line) {{ const link=document.createElement('a'); link.href=`../../../${{node.source_file}}#L${{node.source_line}}`; link.textContent=`Open source: ${{node.source_file}}:${{node.source_line}}`; source.append(link); }} graph(); }} render();
-</script></html>''', encoding="utf-8")
+</script></html>'''
+    html_path.write_text(
+        html.replace(
+            "../../../${node.source_file}",
+            f"{source_prefix}/${{node.source_file}}",
+        ),
+        encoding="utf-8",
+    )
 
 
 def main():
@@ -507,6 +517,7 @@ def main():
     parser.add_argument("trace")
     parser.add_argument("--binary", required=True)
     parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--explorer-output")
     args = parser.parse_args()
 
     trace_path = pathlib.Path(args.trace)
@@ -531,6 +542,8 @@ def main():
     function_files = source_function_files(source_dir)
     function_locations = source_function_locations(source_dir)
     write_functional_graph(output_dir, counts, function_files, function_locations)
+    explorer_path = pathlib.Path(args.explorer_output) if args.explorer_output else output_dir / "c_phoenix_runtime_explorer.html"
+    write_runtime_explorer(explorer_path, counts, function_files, function_locations)
     print(f"Executed C call edges: {len(counts)}")
     print("Functional runtime decomposition written alongside the detailed graph.")
     if dropped_edges:

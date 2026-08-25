@@ -276,9 +276,9 @@ instrumentatiepijplijn te draaien is te bekijken.
 
 De bijbehorende [CSV met functielidmaatschappen](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_functions.csv) koppelt iedere uitgevoerde functie terug aan haar verantwoordelijkheid, bronbestand en gemeten aantallen inkomende en uitgaande aanroepen.
 
-### C-Phoenix: interactieve runtime-explorer
+### C-Phoenix: interactieve runtimetrace-explorer
 
-[Open de interactieve runtime-explorer](../c-phoenix/context/runtimegraphs/bird-investigation/c_phoenix_runtime_explorer.html).
+[Open de interactieve runtimetrace-explorer](../c-phoenix/tools/runtime-trace-explorer/index.html).
 Deze brengt de functionele decompositie en gedetailleerde runtime-aanroepen
 samen in één split view. Klap de boom uit van domein naar subsysteem,
 bronmodule en functie; de graaf aggregeert op het geselecteerde niveau terwijl
@@ -334,8 +334,9 @@ Voor een compact beeld van wat deze sessie in de C-implementatie uitvoert:
 make runtimegraph RUNTIME_SCENARIO=bird-investigation RUNTIME_FRAMES=13935
 ```
 
-Dat schrijft SVG- en PNG-overzichten plus `c_phoenix_runtime_explorer.html`
-naar `context/runtimegraphs/bird-investigation/`. De equivalente JPhoenix-opdracht
+Dat schrijft SVG- en PNG-overzichten naar `context/runtimegraphs/bird-investigation/`
+en ververst de runtimetrace-explorer op `tools/runtime-trace-explorer/index.html`.
+De equivalente JPhoenix-opdracht
 staat in het siblingproject; beide gebruiken dezelfde naam en replay-sessie.
 
 ## Engineeringaanpak

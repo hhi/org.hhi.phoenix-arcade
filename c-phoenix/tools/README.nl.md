@@ -79,6 +79,11 @@ wijst dode code en ongedocumenteerde paden aan.
 Elke opdracht meldt zelf waar het resultaat terechtkomt, zodat gegenereerde
 bestanden vindbaar blijven in plaats van onzichtbare kladbestanden te worden.
 
+De gegenereerde [runtimetrace-explorer](runtime-trace-explorer/index.html) is
+het interactieve startpunt voor de meest recent opgenomen trace. Hij
+visualiseert opgenomen aanroepen; hij voert C-Phoenix niet in de browser uit
+en kan rechtstreeks via `file://` worden geopend.
+
 Twee grafen zijn bijzonder bruikbaar naast de knowledge base:
 
 - **[`file_callgraph`](../context/graphs/file_callgraph.md)** — de

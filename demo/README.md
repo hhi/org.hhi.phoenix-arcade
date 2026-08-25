@@ -252,9 +252,9 @@ the instrumentation pipeline.
 The accompanying [function membership CSV](runtimegraphs/bird-investigation/c_phoenix_functional_runtime_functions.csv) maps each executed function back to
 its responsibility, source file and measured in/outgoing call totals.
 
-### C-Phoenix: interactive runtime explorer
+### C-Phoenix: interactive runtime trace explorer
 
-[Open the interactive runtime explorer](../c-phoenix/context/runtimegraphs/bird-investigation/c_phoenix_runtime_explorer.html).
+[Open the interactive runtime trace explorer](../c-phoenix/tools/runtime-trace-explorer/index.html).
 It brings the functional decomposition and detailed runtime calls together in
 one split view. Expand the tree from domain to subsystem, source module, and
 function; the graph aggregates to the selected level while retaining its
@@ -308,8 +308,9 @@ For a compact view of what this session executes in the C implementation:
 make runtimegraph RUNTIME_SCENARIO=bird-investigation RUNTIME_FRAMES=13935
 ```
 
-This writes SVG and PNG summaries plus `c_phoenix_runtime_explorer.html` to
-`context/runtimegraphs/bird-investigation/`. The equivalent JPhoenix command
+This writes SVG and PNG summaries to `context/runtimegraphs/bird-investigation/`
+and refreshes the runtime trace explorer at
+`tools/runtime-trace-explorer/index.html`. The equivalent JPhoenix command
 lives in the sibling project; both use the same scenario name and replay.
 
 ## Engineering Approach
