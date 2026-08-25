@@ -6483,7 +6483,7 @@
       "name": "add_galaxies_to_background",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 433
+        "line": 425
       },
       "asm_ranges": [
         {
@@ -6524,7 +6524,7 @@
       "name": "add_planets_to_background",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 356
+        "line": 348
       },
       "asm_ranges": [
         {
@@ -6565,7 +6565,7 @@
       "name": "clear_and_print_scores",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 196
+        "line": 188
       },
       "asm_ranges": [
         {
@@ -6606,7 +6606,7 @@
       "name": "clear_background",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 155
+        "line": 147
       },
       "asm_ranges": [
         {
@@ -6647,7 +6647,7 @@
       "name": "clear_foreground",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 237
+        "line": 229
       },
       "asm_ranges": [
         {
@@ -6688,7 +6688,7 @@
       "name": "clear_ram_bank",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 76
+        "line": 65
       },
       "asm_ranges": [
         {
@@ -6729,7 +6729,7 @@
       "name": "draw_background_2x2",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 320
+        "line": 312
       },
       "asm_ranges": [
         {
@@ -6770,7 +6770,7 @@
       "name": "init_sound_screen",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 94
+        "line": 83
       },
       "asm_ranges": [
         {
@@ -6811,7 +6811,7 @@
       "name": "phoenix_main_loop",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 123
+        "line": 112
       },
       "asm_ranges": [
         {
@@ -6847,12 +6847,48 @@
       }
     },
     {
+      "id": "c:hw_video_audio:phoenix_run_game_frame",
+      "kind": "c-function",
+      "name": "phoenix_run_game_frame",
+      "source": {
+        "path": "hw_video_audio.c",
+        "line": 124
+      },
+      "asm_ranges": [],
+      "status": "confirmed",
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/hw-video-audio-h.md",
+          "c-annotated/en/hw-video-audio.md",
+          "c-annotated/en/weapon-collision.md",
+          "c-annotated/nl/alien-logic.md",
+          "c-annotated/nl/alien-wave.md",
+          "c-annotated/nl/attract-mode.md",
+          "c-annotated/nl/birds-vertical-movement.md",
+          "c-annotated/nl/game-state-machine.md",
+          "c-annotated/nl/hw-video-audio-h.md",
+          "c-annotated/nl/hw-video-audio.md",
+          "c-annotated/nl/misc-logic.md",
+          "c-annotated/nl/mothership-impl.md",
+          "c-annotated/nl/mothership-logic.md",
+          "c-annotated/nl/phoenix-hw-h.md",
+          "c-annotated/nl/platform-sdl.md",
+          "c-annotated/nl/player-logic.md",
+          "c-annotated/nl/scoring.md",
+          "c-annotated/nl/state-endings.md",
+          "c-annotated/nl/state-init.md",
+          "c-annotated/nl/state-play.md",
+          "c-annotated/nl/weapon-collision.md"
+        ]
+      }
+    },
+    {
       "id": "c:hw_video_audio:read_dsw0",
       "kind": "c-function",
       "name": "read_dsw0",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 481
+        "line": 473
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -6888,7 +6924,7 @@
       "name": "read_in0",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 480
+        "line": 472
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -6924,7 +6960,7 @@
       "name": "render_sprites",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 166
+        "line": 158
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -6960,7 +6996,7 @@
       "name": "set_bits_video_register",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 252
+        "line": 244
       },
       "asm_ranges": [
         {
@@ -7001,7 +7037,7 @@
       "name": "stars_scroll_down",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 266
+        "line": 258
       },
       "asm_ranges": [
         {
@@ -7042,7 +7078,7 @@
       "name": "update_audio_registers",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 179
+        "line": 171
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7078,7 +7114,7 @@
       "name": "update_lives_screen",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 216
+        "line": 208
       },
       "asm_ranges": [
         {
@@ -7119,7 +7155,7 @@
       "name": "update_scroll_register_and_fill_background",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 473
+        "line": 465
       },
       "asm_ranges": [
         {
@@ -7160,7 +7196,7 @@
       "name": "update_sound_control_ram",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 228
+        "line": 220
       },
       "asm_ranges": [
         {
@@ -7201,7 +7237,7 @@
       "name": "wait_vblank_coin",
       "source": {
         "path": "hw_video_audio.c",
-        "line": 30
+        "line": 29
       },
       "asm_ranges": [
         {
@@ -7607,7 +7643,7 @@
       "name": "apply_input_script",
       "source": {
         "path": "platform_sdl.c",
-        "line": 354
+        "line": 364
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7629,7 +7665,7 @@
       "name": "bank_swap_to",
       "source": {
         "path": "platform_sdl.c",
-        "line": 66
+        "line": 76
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7651,7 +7687,7 @@
       "name": "copy_memory_bank",
       "source": {
         "path": "platform_sdl.c",
-        "line": 95
+        "line": 105
       },
       "asm_ranges": [
         {
@@ -7678,7 +7714,7 @@
       "name": "game_thread_func",
       "source": {
         "path": "platform_sdl.c",
-        "line": 179
+        "line": 189
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7700,7 +7736,7 @@
       "name": "get_phoenix_color",
       "source": {
         "path": "platform_sdl.c",
-        "line": 215
+        "line": 225
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7722,7 +7758,7 @@
       "name": "hw_is_vblank",
       "source": {
         "path": "platform_sdl.c",
-        "line": 53
+        "line": 63
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7744,7 +7780,7 @@
       "name": "hw_read_dsw",
       "source": {
         "path": "platform_sdl.c",
-        "line": 49
+        "line": 59
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7766,7 +7802,7 @@
       "name": "hw_read_inputs",
       "source": {
         "path": "platform_sdl.c",
-        "line": 45
+        "line": 55
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7788,7 +7824,7 @@
       "name": "hw_toggle_palette_bank",
       "source": {
         "path": "platform_sdl.c",
-        "line": 79
+        "line": 89
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7810,7 +7846,7 @@
       "name": "hw_write_scroll_register",
       "source": {
         "path": "platform_sdl.c",
-        "line": 143
+        "line": 153
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7832,7 +7868,7 @@
       "name": "hw_write_sound_a",
       "source": {
         "path": "platform_sdl.c",
-        "line": 147
+        "line": 157
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7854,7 +7890,7 @@
       "name": "hw_write_sound_b",
       "source": {
         "path": "platform_sdl.c",
-        "line": 151
+        "line": 161
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7876,7 +7912,7 @@
       "name": "hw_write_video_register",
       "source": {
         "path": "platform_sdl.c",
-        "line": 74
+        "line": 84
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7898,7 +7934,7 @@
       "name": "initial_alien_layout_level",
       "source": {
         "path": "platform_sdl.c",
-        "line": 454
+        "line": 464
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7920,7 +7956,7 @@
       "name": "input_script_button_mask",
       "source": {
         "path": "platform_sdl.c",
-        "line": 299
+        "line": 309
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7942,7 +7978,7 @@
       "name": "input_script_button_name",
       "source": {
         "path": "platform_sdl.c",
-        "line": 381
+        "line": 391
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7964,7 +8000,7 @@
       "name": "load_input_script",
       "source": {
         "path": "platform_sdl.c",
-        "line": 310
+        "line": 320
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -7986,7 +8022,7 @@
       "name": "main",
       "source": {
         "path": "platform_sdl.c",
-        "line": 475
+        "line": 485
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -8008,7 +8044,7 @@
       "name": "platform_audio_frame_hook",
       "source": {
         "path": "platform_sdl.c",
-        "line": 164
+        "line": 174
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -8030,7 +8066,29 @@
       "name": "platform_ram_dump_hook",
       "source": {
         "path": "platform_sdl.c",
-        "line": 431
+        "line": 441
+      },
+      "asm_ranges": [],
+      "status": "confirmed",
+      "evidence": {
+        "documentation": [
+          "c-annotated/en/platform-sdl.md",
+          "c-annotated/nl/game-state-machine.md",
+          "c-annotated/nl/hw-video-audio.md",
+          "c-annotated/nl/platform-sdl.md",
+          "c-annotated/nl/player-logic.md",
+          "c-annotated/nl/sound.md",
+          "c-annotated/nl/state-init.md"
+        ]
+      }
+    },
+    {
+      "id": "c:platform_sdl:platform_wait_vblank",
+      "kind": "c-function",
+      "name": "platform_wait_vblank",
+      "source": {
+        "path": "platform_sdl.c",
+        "line": 41
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -8052,7 +8110,7 @@
       "name": "record_input_event",
       "source": {
         "path": "platform_sdl.c",
-        "line": 411
+        "line": 421
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -8074,7 +8132,7 @@
       "name": "start_input_recording",
       "source": {
         "path": "platform_sdl.c",
-        "line": 394
+        "line": 404
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -8096,7 +8154,7 @@
       "name": "stop_input_recording",
       "source": {
         "path": "platform_sdl.c",
-        "line": 419
+        "line": 429
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -8118,7 +8176,7 @@
       "name": "write_screenshot",
       "source": {
         "path": "platform_sdl.c",
-        "line": 249
+        "line": 259
       },
       "asm_ranges": [],
       "status": "confirmed",
@@ -16928,32 +16986,12 @@
     {
       "kind": "calls",
       "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "c:attract_mode:coin_checking"
-    },
-    {
-      "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "c:attract_mode:prompt_for_start_game"
-    },
-    {
-      "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "c:attract_mode:splash_and_demo"
-    },
-    {
-      "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "c:game_state_machine:game_state_machine"
-    },
-    {
-      "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
       "to": "c:hw_video_audio:init_sound_screen"
     },
     {
       "kind": "calls",
       "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "c:hw_video_audio:update_sound_control_ram"
+      "to": "c:hw_video_audio:phoenix_run_game_frame"
     },
     {
       "kind": "calls",
@@ -16963,22 +17001,47 @@
     {
       "kind": "calls",
       "from": "c:hw_video_audio:phoenix_main_loop",
+      "to": "c:utilities:print_text_lines"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
+      "to": "c:attract_mode:coin_checking"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
+      "to": "c:attract_mode:prompt_for_start_game"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
+      "to": "c:attract_mode:splash_and_demo"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
+      "to": "c:game_state_machine:game_state_machine"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
+      "to": "c:hw_video_audio:update_sound_control_ram"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
       "to": "c:platform_sdl:hw_write_sound_a"
     },
     {
       "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
       "to": "c:platform_sdl:hw_write_sound_b"
     },
     {
       "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
+      "from": "c:hw_video_audio:phoenix_run_game_frame",
       "to": "c:scoring:update_scores_and_sound"
-    },
-    {
-      "kind": "calls",
-      "from": "c:hw_video_audio:phoenix_main_loop",
-      "to": "c:utilities:print_text_lines"
     },
     {
       "kind": "calls",
@@ -17034,6 +17097,11 @@
       "kind": "calls",
       "from": "c:hw_video_audio:wait_vblank_coin",
       "to": "c:platform_sdl:platform_ram_dump_hook"
+    },
+    {
+      "kind": "calls",
+      "from": "c:hw_video_audio:wait_vblank_coin",
+      "to": "c:platform_sdl:platform_wait_vblank"
     },
     {
       "kind": "calls",

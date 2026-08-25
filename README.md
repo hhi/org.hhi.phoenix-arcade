@@ -22,7 +22,7 @@ need installed.
 | **Classic, pixel-perfect** | The original 8×8 look, rebuilt in C | `cd c-phoenix && make run` | [`c-phoenix/README.md`](c-phoenix/README.md) |
 | **Original arcade board** | Runs the real 1980 program code on a Java-based hardware emulator | `cd jphoenix-emulator-port && make run` | [`jphoenix-emulator-port/README.md`](jphoenix-emulator-port/README.md) |
 | **Redot vertical slice** | The C game core in a GPU-composited Redot scene, with audio | `make -C redot-port/native extension` | [`redot-port/README.md`](redot-port/README.md) |
-| **Browser prototype** | The same C game core as WebAssembly, locally in your browser | `make web` | [`redot-port/web/README.md`](redot-port/web/README.md) |
+| **Browser prototype** | The C game core as WebAssembly, locally in your browser | `make web` | [`browser-port/README.md`](browser-port/README.md) |
 
 Each "full details" README has the controls, build options, and command-line
 flags for that version (for example, the arrow keys / WASD to move and Space
@@ -67,7 +67,7 @@ phoenix-arcade/
 │  └─ tools/                 Visual tracer, lockstep checker, and other analysis tooling
 ├─ c2-phoenix/                High-resolution presentation, built on the c-phoenix engine
 ├─ redot-port/                Redot vertical slice, backed by the C game core
-│  └─ web/                    Experimental WebAssembly browser variant
+├─ browser-port/              Experimental standalone WebAssembly browser variant
 └─ roms/                     Guide for preparing your own ROM set
 ```
 
@@ -95,9 +95,9 @@ phoenix-arcade/
   Redot scene, using a native GDExtension for the 60 Hz simulation, video and
   audio bridge. It currently targets macOS on Apple Silicon and is playable
   from the Redot editor.
-  - [`web/`](redot-port/web/README.md) is the experimental browser shell
-    around the same core. Build it locally with Emscripten and serve the
-    static files; the browser needs no installation.
+- [`browser-port/`](browser-port/README.md) is the standalone experimental
+  browser shell. It compiles the canonical C-Phoenix core with Emscripten and
+  needs neither Redot nor a native application on the player's machine.
 - [`demo/`](demo/README.md) ties all three together with curated recordings,
   screenshots, and a walkthrough of the tooling below.
 

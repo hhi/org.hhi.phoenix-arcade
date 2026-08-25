@@ -3,9 +3,10 @@
 🇳🇱 Nederlands · 🇬🇧 [English](README.md)
 
 Dit is een experimentele, statische browseruitgave van Phoenix. De
-spelmechanica draait niet opnieuw in JavaScript: dezelfde C-core als de
-Redot-poort wordt met Emscripten naar WebAssembly gecompileerd. JavaScript
-levert alleen toetsenbord-invoer, browseraudio en presentatie.
+spelmechanica draait niet opnieuw in JavaScript: de canonieke C-core onder
+`c-phoenix/` wordt met Emscripten naar WebAssembly gecompileerd. JavaScript
+levert alleen toetsenbord-invoer, browseraudio en presentatie; Redot is niet
+nodig.
 
 ## Status
 
@@ -42,11 +43,20 @@ op een webserver plaatsen; daarna open je de webpagina in de browser.
    ```
 
    Dit schrijft `phoenix_core.js` en `phoenix_core.wasm` naar
-   `redot-port/web/build/`. Die gegenereerde bestanden horen niet in Git.
+   `browser-port/build/`. Die gegenereerde bestanden horen niet in Git.
+
+   Maak in plaats daarvan het ZIP-bestand voor een GitHub-release met:
+
+   ```sh
+   make web-package
+   ```
+
+   Dit schrijft `browser-port/build/phoenix-browser.zip`. Het archief is een
+   complete statische site: pak het uit en serveer de inhoud via HTTP(S).
 3. Serveer de webmap via HTTP:
 
    ```sh
-   python3 -m http.server 8080 --directory redot-port/web
+   python3 -m http.server 8080 --directory browser-port
    ```
 
    Open vervolgens <http://127.0.0.1:8080>. Open `index.html` niet met een
@@ -69,9 +79,11 @@ JPhoenix-emulatorroute.
 | Twee spelers starten | 2 |
 | Bewegen | pijl-links/-rechts of A/D |
 | Vuren | spatie of Z |
-| Schild | Shift of X |
+| Schild | pijl-omlaag, Shift of X |
 
-Klik eerst op **Klik om te starten** om browseraudio toe te staan. Dit is een
+beveiligingsregel van browsers, geen verschil in Phoenix-mechanics.
+Klik eerst op **Click to start** om browseraudio toe te staan. Dit is een
+beveiligingsregel van browsers, geen verschil in Phoenix-mechanics.
 beveiligingsregel van browsers, geen verschil in Phoenix-mechanics.
 
 ## Compatibiliteit
@@ -83,11 +95,20 @@ drivers kunnen verschillen tussen Safari, Chrome, Edge en Firefox.
 
 ## Controle
 
-Voer naast de webbuild altijd de bestaande native core-smoketest uit:
+Voer naast de webbuild altijd de C-core- en Redot-adapter-smoketests uit:
 
 ```sh
+make c-test
 make -C redot-port/native test
 ```
 
 De browsermap is een statische artefactmap. Publicatie op een echte
 HTTPS-webserver is pas aan de orde nadat de renderer visueel is gevalideerd.
+
+## GitHub-releases
+
+Elke gepubliceerde release met browserondersteuning moet
+`phoenix-browser.zip` als release-asset bevatten. Daarmee kunnen spelers en
+sitebeheerders de webuitgave gebruiken zonder Emscripten te installeren of uit
+broncode te bouwen. Ontwikkelaars kunnen het pakket altijd reproduceren met
+`make web-package`.

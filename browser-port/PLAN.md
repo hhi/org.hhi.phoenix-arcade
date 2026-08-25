@@ -1,7 +1,7 @@
 # Phoenix browservariant — historisch ontwerp
 
 > Dit document is het oorspronkelijke ontwerp. Voor de actuele installatie,
-> bediening en experimentele status zie [web/README.nl.md](web/README.nl.md).
+> bediening en experimentele status zie [README.nl.md](README.nl.md).
 > De implementatie wijkt op drie punten af: de browserbestanden staan direct
 > onder `web/` (niet onder `web/src/`), de bridge levert afzonderlijke
 > voor- en achtergrondlagen, en de presentatie gebruikt een WebGL 2-poort van
@@ -9,10 +9,10 @@
 
 ## Doel
 
-Maak een zelfstandige browseruitgave van Phoenix die de bestaande
-`native/phoenix-core` ongewijzigd als game-mechanische bron gebruikt. De
-browser verzorgt alleen invoer, presentatie en audio; alle spelstatus,
-timers, botsingen, score en levelovergangen blijven in de C-core draaien.
+Maak een zelfstandige browseruitgave van Phoenix die de canonieke
+`c-phoenix/`-gamecore als game-mechanische bron gebruikt. De browser verzorgt
+alleen invoer, presentatie en audio; alle spelstatus, timers, botsingen,
+score en levelovergangen blijven in de C-core draaien.
 
 ## Afbakening
 
@@ -50,7 +50,7 @@ De bestaande public core-API is de grens tussen shell en mechanics:
 
 ## Bestandsindeling
 
-Voeg onder `redot-port/web/` toe:
+Voeg onder `browser-port/` toe:
 
 - `index.html` — canvas, start-overlay en toegankelijke bedieningshulp;
 - `src/main.js` — WASM-lifecycle, 60 Hz-loop, input en framepresentatie;
@@ -74,7 +74,7 @@ worden niet vervangen of hernoemd.
 | Munt | `C` | Coin-knop |
 | Links / rechts | pijltjes of A/D | virtuele knoppen / D-pad |
 | Vuren | spatie of Z | Fire / knop A |
-| Schild | Shift of X | Shield / knop B |
+| Schild | pijl-omlaag, Shift of X | Shield / knop B |
 
 De browser-shell houdt de Phoenix-logica actief-laag: geen ingedrukte knop is
 `0xFF`; een ingedrukte knop wist uitsluitend het bijbehorende cabinetbit.

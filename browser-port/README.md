@@ -3,9 +3,9 @@
 🇬🇧 English · 🇳🇱 [Nederlands](README.nl.md)
 
 This is an experimental static browser edition of Phoenix. Game mechanics are
-not reimplemented in JavaScript: the same C core as the Redot port is compiled
+not reimplemented in JavaScript: the canonical `c-phoenix/` core is compiled
 to WebAssembly with Emscripten. JavaScript supplies only keyboard input,
-browser audio and presentation.
+browser audio and presentation. It neither requires nor uses Redot.
 
 ## Status
 
@@ -41,11 +41,20 @@ place them on a web server; then open the page in a browser.
    ```
 
    This writes `phoenix_core.js` and `phoenix_core.wasm` to
-   `redot-port/web/build/`. Those generated files do not belong in Git.
+   `browser-port/build/`. Those generated files do not belong in Git.
+
+   To produce the ZIP attached to a GitHub release instead, run:
+
+   ```sh
+   make web-package
+   ```
+
+   It writes `browser-port/build/phoenix-browser.zip`. The archive is a
+   complete static site: unzip it and serve its contents over HTTP(S).
 3. Serve the web directory over HTTP:
 
    ```sh
-   python3 -m http.server 8080 --directory redot-port/web
+   python3 -m http.server 8080 --directory browser-port
    ```
 
    Then open <http://127.0.0.1:8080>. Do not open `index.html` with a
@@ -68,7 +77,7 @@ emulator route.
 | Start two players | 2 |
 | Move | Left/Right arrows or A/D |
 | Fire | Space or Z |
-| Shield | Shift or X |
+| Shield | Down arrow, Shift or X |
 
 Click **Click to start** first to allow browser audio. This is browser security
 behaviour, not a Phoenix-mechanics difference.
@@ -82,11 +91,19 @@ differ between Safari, Chrome, Edge and Firefox.
 
 ## Verification
 
-Run the existing native core smoke test alongside the web build:
+Run the canonical-core and Redot-adapter smoke tests alongside the web build:
 
 ```sh
+make c-test
 make -C redot-port/native test
 ```
 
 The browser directory is a static artifact directory. Publishing to a real
 HTTPS server comes only after visual renderer validation.
+
+## GitHub releases
+
+Each published browser-capable release should include
+`phoenix-browser.zip` as a release asset. It lets players or site hosts use
+the web edition without installing Emscripten or building from source.
+Developers can still reproduce the asset with `make web-package`.

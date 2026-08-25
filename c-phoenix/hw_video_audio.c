@@ -4,14 +4,13 @@
 #include "phoenix_tables.h"
 #include "utilities.h"
 #include "z80_core.h"
-#include <SDL2/SDL.h>
 #include <stdio.h>
 
-extern SDL_sem* g_sem_vblank_go;
-extern SDL_sem* g_sem_frame_done;
-extern volatile bool g_quit;
-
 extern PhoenixState state;
+
+/* The platform owns timing. SDL waits for its video thread; embedded ports
+ * return after scheduling their host-driven frame. */
+extern bool platform_wait_vblank(void);
 
 extern void game_state_machine(void);
 extern void update_scores_and_sound(void);
@@ -27,19 +26,8 @@ extern void print_text_lines(uint16_t screen_draw_info_addr, uint8_t columns);
  * Wait for the vertical blanking and then handle coin counting
  * [ASM: 0080-00B5]
  */
-void wait_vblank_coin(void) {
-    // Wait for vertical blanking. Signal completion of the *previous*
-    // frame's full processing (skipped on the very first call, which has
-    // no previous frame to report) before blocking for the next tick --
-    // this preserves the original counter-compare handshake's one-frame
-    // pipelining without busy-polling.
-    static bool first_call = true;
-    if (!first_call) {
-        SDL_SemPost(g_sem_frame_done);
-    }
-    first_call = false;
-    SDL_SemWait(g_sem_vblank_go);
-    if (g_quit) return;
+bool wait_vblank_coin(void) {
+    if (!platform_wait_vblank()) return false;
 
     // Lockstep verification snapshot, same point as jphoenix's interrupt()
     extern void platform_ram_dump_hook(void);
@@ -61,13 +49,14 @@ void wait_vblank_coin(void) {
         state.Counter9A++;
     }
 
-    if (state.CoinCount == 9) return;
+    if (state.CoinCount == 9) return true;
 
     // 00A6-00AB: CheckInputBits bit 0 -- coin input transitioned 1 -> 0
     if ((state.IN0Current & 0x01) == 0 && (state.IN0Previous & 0x01) != 0) {
         state.CoinCount++;
         mem_write(0x4142, state.CoinCount + 0x20);
     }
+    return true;
 }
 /*
  * Translates ClearRAMBank
@@ -124,26 +113,29 @@ void phoenix_main_loop(void) {
     init_sound_screen();
     print_text_lines(0x1800, 3);
     
-    while (1) {
-        wait_vblank_coin();
-        if (g_quit) break;
+    while (wait_vblank_coin()) {
+        phoenix_run_game_frame();
+    }
+}
 
-        if (state.GameOrAttract == 0) {
-            // 002D-0035: mute the TMS36XX and mirror it in RAM
-            hw_write_sound_a(0x0F);
-            hw_write_sound_b(0x0F);
-            update_sound_control_ram(0x0F);
+/* Execute the non-timing part of reset-vector code once. Host adapters call
+ * this after wait_vblank_coin(), which keeps the game mechanics independent
+ * of SDL, Redot, or a browser event loop. */
+void phoenix_run_game_frame(void) {
+    if (state.GameOrAttract == 0) {
+        // 002D-0035: mute the TMS36XX and mirror it in RAM
+        hw_write_sound_a(0x0F);
+        hw_write_sound_b(0x0F);
+        update_sound_control_ram(0x0F);
 
-            extern uint8_t coin_checking(void);
-            if (coin_checking() > 0) {
-                prompt_for_start_game();
-            } else {
-                splash_and_demo();
-            }
+        if (coin_checking() > 0) {
+            prompt_for_start_game();
         } else {
-            game_state_machine();
-            update_scores_and_sound();
+            splash_and_demo();
         }
+    } else {
+        game_state_machine();
+        update_scores_and_sound();
     }
 }
 

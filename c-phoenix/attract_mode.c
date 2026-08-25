@@ -18,7 +18,7 @@ extern void draw_score_average_table_tiles(void); // L0BCA
 extern void init_global_level_data(void); // L0580
 extern void draw_intro_bird_animation_frame(void); // L21DC
 extern void clear_background(void); // L03A0
-extern void wait_vblank_coin(void); // L0080
+extern bool wait_vblank_coin(void); // L0080
 extern void clear_foreground(void); // L0380
 extern void slow_print_scroll_register_update(void); // L0078
 extern void add_bc_to_mem(uint16_t hl, uint16_t bc);

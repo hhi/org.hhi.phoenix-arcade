@@ -22,7 +22,7 @@ nodig hebt.
 | **Klassiek, pixel-perfect** | Het originele 8×8-uiterlijk, herbouwd in C | `cd c-phoenix && make run` | [`c-phoenix/README.nl.md`](c-phoenix/README.nl.md) |
 | **Origineel arcade-board** | Draait de echte programmacode uit 1980 op een op Java gebaseerde hardware-emulator | `cd jphoenix-emulator-port && make run` | [`jphoenix-emulator-port/README.nl.md`](jphoenix-emulator-port/README.nl.md) |
 | **Redot-vertical-slice** | De C-gamecore in een via de GPU samengestelde Redot-scene, met audio | `make -C redot-port/native extension` | [`redot-port/README.nl.md`](redot-port/README.nl.md) |
-| **Browserprototype** | Dezelfde C-gamecore als WebAssembly, lokaal in je browser | `make web` | [`redot-port/web/README.nl.md`](redot-port/web/README.nl.md) |
+| **Browserprototype** | De C-gamecore als WebAssembly, lokaal in je browser | `make web` | [`browser-port/README.nl.md`](browser-port/README.nl.md) |
 
 Elke README onder "volledige details" heeft de besturing, buildopties en
 command-line-vlaggen voor die versie (bijvoorbeeld de pijltjestoetsen/WASD om
@@ -67,7 +67,7 @@ phoenix-arcade/
 │  └─ tools/                 Visuele tracer, lockstep-checker en andere analysetools
 ├─ c2-phoenix/                Hoge-resolutiepresentatie, gebouwd op de c-phoenix-engine
 ├─ redot-port/                Redot-vertical-slice, gebaseerd op de C-gamecore
-│  └─ web/                    Experimentele WebAssembly-browservariant
+├─ browser-port/              Experimentele zelfstandige WebAssembly-browservariant
 └─ roms/                     Handleiding om je eigen ROM-set voor te bereiden
 ```
 
@@ -96,9 +96,9 @@ phoenix-arcade/
   Redot-scene, met een native GDExtension voor de 60 Hz-simulatie en de video-
   en audiobrug. Hij richt zich nu op macOS met Apple Silicon en is speelbaar
   vanuit de Redot-editor.
-  - [`web/`](redot-port/web/README.nl.md) is de experimentele browser-shell
-    rond dezelfde core. Bouw lokaal met Emscripten en serveer de statische
-    bestanden; de browser hoeft niets te installeren.
+- [`browser-port/`](browser-port/README.nl.md) is de zelfstandige experimentele
+  browser-shell. Hij compileert de canonieke C-Phoenix-core met Emscripten en
+  vereist noch Redot noch een native applicatie bij de speler.
 - [`demo/`](demo/README.nl.md) brengt alle drie samen met gecureerde
   opnamen, screenshots en een rondleiding langs de tooling hieronder.
 

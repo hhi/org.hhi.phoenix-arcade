@@ -1,5 +1,6 @@
 #include "phoenix_hw.h"
 #include "phoenix_state.h"
+#include <hw_video_audio.h>
 #include "redot_core.h"
 #include "redot_c2_renderer.h"
 #include "sound.h"
@@ -64,6 +65,10 @@ void platform_audio_frame_hook(void) {
     g_audio_samples = (uint32_t)sound_render_frame(g_audio_frame);
 }
 
+/* Redot drives this adapter from its own frame callback, so no SDL wait is
+ * needed here. The common core still owns the vblank bookkeeping. */
+bool platform_wait_vblank(void) { return true; }
+
 static uint32_t packed_bcd_score(uint8_t high, uint8_t mid, uint8_t low) {
     return ((high >> 4) * 100000 + (high & 0x0F) * 10000 +
             (mid >> 4) * 1000 + (mid & 0x0F) * 100 +
@@ -88,6 +93,10 @@ void phoenix_redot_create(void) {
 
 void phoenix_redot_set_input(uint8_t active_low_inputs) {
     g_inputs = active_low_inputs;
+}
+
+void phoenix_redot_step(void) {
+    if (wait_vblank_coin()) phoenix_run_game_frame();
 }
 
 void phoenix_redot_snapshot(PhoenixRedotSnapshot* out) {

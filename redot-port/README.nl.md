@@ -32,8 +32,8 @@ voorbereidingsroute hoort alleen bij de JPhoenix-emulator.
 
 ## Redot installeren (alleen de native Redot-uitgave)
 
-Dit onderdeel geldt alleen voor de native editoruitgave. De browseruitgave
-gebruikt Redot niet en heeft het ook niet nodig.
+Dit onderdeel geldt alleen voor de native editoruitgave. De zelfstandige
+browseruitgave gebruikt Redot niet en heeft het ook niet nodig.
 
 1. Download de standaardeditor **Redot 26.2** voor je platform via de
    [officiële Redot-26.2-release](https://github.com/Redot-Engine/redot-engine/releases/tag/redot-26.2-stable).
@@ -44,24 +44,14 @@ gebruikt Redot niet en heeft het ook niet nodig.
 3. Bouw de extensie met `make -C redot-port/native extension`, open
    `redot-port/project.godot` in de editor en start het project.
 
-## Browservariant (experimenteel)
-
-Naast de Redot-scene bevat deze directory een statische browseruitgave. Die
-compileert dezelfde C-gamecore naar WebAssembly; JavaScript verzorgt alleen
-invoer, audio en presentatie. Installeer voor spelen niets: na het bouwen
-open je de uitgave via een lokale HTTP-server in een moderne browser.
-
-De browserpresentatie is nog experimenteel en is nog niet vrijgegeven als
-distributievariant. De WebAssembly-core, invoer en audio zijn wel onderdeel
-van het prototype. Zie [web/README.nl.md](web/README.nl.md) voor vereisten,
-bouwen, lokaal starten, bediening en status.
+De zelfstandige browseruitgave staat beschreven in
+[`../browser-port/README.nl.md`](../browser-port/README.nl.md).
 
 ## Native core
 
-`native/phoenix-core/` bevat een lokale kopie van de C-Phoenix-spelbronnen,
-behalve het SDL-desktopstartpunt en de gegenereerde classic-ROM-graphics. De
-kopie heeft een Redot-eigen platformadapter van één frame in plaats van een
-SDL-venster, thread of eventloop. Hij bevat geen ROM-data.
+`native/adapter/` bevat de Redot-eigen platformadapter. De build koppelt
+die aan de canonieke `../c-phoenix/`-spelbronnen, met alleen het SDL-
+desktopplatform uitgesloten. Hij bevat geen ROM-data.
 
 Bouw en test deze core zonder enig ander deelproject aan te raken:
 
@@ -77,7 +67,7 @@ met een gewone SCons-installatie volstaat het kale commando hierboven.
 
 Op macOS/Apple Silicon schrijft dit
 `native/build/libphoenix_redot_extension.macos.debug.arm64.dylib`. De
-geëxporteerde ABI staat in `native/phoenix-core/redot_core.h`: creëer de core,
+geëxporteerde ABI staat in `native/adapter/redot_core.h`: creëer de core,
 lever actieve-lage cabinetinvoer aan, ga precies één frame vooruit en vraag
 video, status en audio op.
 
@@ -138,7 +128,7 @@ geen oplossing.
 
 ### Linux- of Windows-ondersteuning toevoegen
 
-Wijzig hiervoor **niet** `native/phoenix-core/`. Het benodigde werk blijft
+Wijzig hiervoor **niet** `native/adapter/`. Het benodigde werk blijft
 beperkt tot de GDExtension-buildgrens:
 
 1. Bouw de vendored `native/redot-cpp/`-bindings op het doel-OS met dezelfde

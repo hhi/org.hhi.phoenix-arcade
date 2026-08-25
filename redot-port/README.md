@@ -28,8 +28,8 @@ to the JPhoenix emulator.
 
 ## Install Redot (native Redot edition only)
 
-This section is only for the native editor edition. The browser edition does
-not use or require Redot.
+This section is only for the native editor edition. The separate browser
+edition does not use or require Redot.
 
 1. Download the standard **Redot 26.2** editor for your platform from the
    [official Redot 26.2 release](https://github.com/Redot-Engine/redot-engine/releases/tag/redot-26.2-stable).
@@ -40,24 +40,14 @@ not use or require Redot.
 3. Build the extension with `make -C redot-port/native extension`, open
    `redot-port/project.godot` in the editor, and run the project.
 
-## Browser variant (experimental)
-
-Alongside the Redot scene, this directory contains a static browser edition.
-It compiles the same C game core to WebAssembly; JavaScript handles only
-input, audio and presentation. Players install nothing: after building, open
-the edition through a local HTTP server in a modern browser.
-
-The browser presentation remains experimental and is not yet released as a
-distribution variant. Its WebAssembly core, input and audio are part of the
-prototype. See [web/README.md](web/README.md) for prerequisites, building,
-local serving, controls and status.
+The standalone browser edition is documented in
+[`../browser-port/README.md`](../browser-port/README.md).
 
 ## Native core
 
-`native/phoenix-core/` contains a local copy of the C-Phoenix game sources,
-except for the SDL desktop entrypoint and generated classic-ROM graphics. The
-copy has a Redot-owned one-frame platform adapter instead of an SDL window,
-thread or event loop. It does not include ROM data.
+`native/adapter/` contains the Redot-owned platform adapter. The build
+links it with the canonical `../c-phoenix/` game sources, excluding only the
+SDL desktop platform. It does not include ROM data.
 
 Build and exercise that core without touching any sibling project:
 
@@ -73,7 +63,7 @@ a normal SCons installation makes the plain command above sufficient.
 
 On macOS/Apple Silicon this writes
 `native/build/libphoenix_redot_extension.macos.debug.arm64.dylib`. The exported
-ABI is defined in `native/phoenix-core/redot_core.h`: create, supply active-low
+ABI is defined in `native/adapter/redot_core.h`: create, supply active-low
 cabinet input, advance exactly one frame, and request video, state and audio.
 
 The GDExtension registers `PhoenixCore`, which `PhoenixSlice.gd` constructs and
@@ -134,7 +124,7 @@ provided, and cross-compiling the existing macOS binary will not work.
 
 ### Adding Linux or Windows support
 
-Do **not** change `native/phoenix-core/` for this. The required work is limited
+Do **not** change `native/adapter/` for this. The required work is limited
 to the GDExtension build boundary:
 
 1. Build the vendored `native/redot-cpp/` bindings on the target OS with the

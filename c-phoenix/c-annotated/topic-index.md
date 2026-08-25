@@ -77,7 +77,7 @@ A subject catalogue beside the file-oriented [`README.md`](README.md). Topics cr
 - `init_alien_data_new_level` — [state_init.c#L33](../state_init.c) · $0532-$0543
 - `init_alien_movement_pointers` — [state_init.c#L46](../state_init.c) · $0506-$0514
 - `init_alien_positions` — [alien_logic.c#L224](../alien_logic.c) · $0610-$0638
-- `initial_alien_layout_level` — [platform_sdl.c#L454](../platform_sdl.c)
+- `initial_alien_layout_level` — [platform_sdl.c#L464](../platform_sdl.c)
 - `l0f00_check_alien_with_player_collision` — [weapon_collision.c#L375](../weapon_collision.c) · $0F00-$0F33 $0F38-$0F4E $0F74-$0FB9
 - `l0fd8` — [alien_logic.c#L43](../alien_logic.c) · $0FD8-$0FEF
 - `l2000_alien_wave_main_loop` — [alien_wave.c#L219](../alien_wave.c) · $2000-$202A
@@ -216,7 +216,7 @@ A subject catalogue beside the file-oriented [`README.md`](README.md). Topics cr
 - `check_bird_formation_player_collision` — [bird_wave_behavior.c#L399](../bird_wave_behavior.c) · $3980-$39FD
 - `check_enemy_bullet_to_player_collision` — [weapon_collision.c#L189](../weapon_collision.c) · $0DF0-$0E01
 - `check_player_ship_collision` — [weapon_collision.c#L172](../weapon_collision.c)
-- `clear_and_print_scores` — [hw_video_audio.c#L196](../hw_video_audio.c) · $032E-$034E
+- `clear_and_print_scores` — [hw_video_audio.c#L188](../hw_video_audio.c) · $032E-$034E
 - `collision_detection_for_birds` — [collision_detection.c#L132](../collision_detection.c) · $3800-$3841 $391C-$3922
 - `copy_current_to_old_enemy_bullet_data` — [weapon_collision.c#L99](../weapon_collision.c)
 - `draw_score_average_table_tiles` — [attract_mode.c#L419](../attract_mode.c) · $0BCA-$0BF1
@@ -297,7 +297,7 @@ A subject catalogue beside the file-oriented [`README.md`](README.md). Topics cr
 
 ## Attract mode, coins and demo
 
-*20 nodes on topic, 44 one relation away.*
+*20 nodes on topic, 45 one relation away.*
 
 **Functions**
 
@@ -319,55 +319,56 @@ A subject catalogue beside the file-oriented [`README.md`](README.md). Topics cr
 - `slow_print_score_average_table` — [attract_mode.c#L198](../attract_mode.c) · $0196-$01CD
 - `slow_print_scroll_register_update` — [attract_mode.c#L241](../attract_mode.c) · $0078-$007D
 - `splash_and_demo` — [attract_mode.c#L32](../attract_mode.c) · $00E3-$013A $0140-$0172 ✓
-- `wait_vblank_coin` — [hw_video_audio.c#L30](../hw_video_audio.c) · $0080-$00B5
+- `wait_vblank_coin` — [hw_video_audio.c#L29](../hw_video_audio.c) · $0080-$00B5
 
 **ROM tables** — `phoenix_attract_text_page`
 
-**Reached from here** — `add_one_to_mem`, `clear_and_print_scores`, `clear_background`, `clear_foreground`, `compare_bc_to_mem`, `copy_memory_bank`, `game_state_machine`, `get_player_lives_from_dip`, `hw_read_dsw`, `hw_read_inputs`, `init_global_level_data`, `l0260_subtract_if_enough`, `l06f0`, `platform_audio_frame_hook`, `platform_ram_dump_hook`, `print_copyright_lines`, `read_dsw0`, `read_in0` *(+1 more)*
+**Reached from here** — `add_one_to_mem`, `clear_and_print_scores`, `clear_background`, `clear_foreground`, `compare_bc_to_mem`, `copy_memory_bank`, `game_state_machine`, `get_player_lives_from_dip`, `hw_read_dsw`, `hw_read_inputs`, `init_global_level_data`, `l0260_subtract_if_enough`, `l06f0`, `platform_audio_frame_hook`, `platform_ram_dump_hook`, `platform_wait_vblank`, `print_copyright_lines`, `read_dsw0` *(+2 more)*
 
 ---
 
 ## Sprite rendering and video
 
-*36 nodes on topic, 38 one relation away.*
+*37 nodes on topic, 39 one relation away.*
 
 **Functions**
 
-- `add_galaxies_to_background` — [hw_video_audio.c#L433](../hw_video_audio.c) · $2040-$208A
-- `add_planets_to_background` — [hw_video_audio.c#L356](../hw_video_audio.c) · $06B0-$06E7
+- `add_galaxies_to_background` — [hw_video_audio.c#L425](../hw_video_audio.c) · $2040-$208A
+- `add_planets_to_background` — [hw_video_audio.c#L348](../hw_video_audio.c) · $06B0-$06E7
 - `bit3_controller` — [sprite_rendering.c#L179](../sprite_rendering.c) · $0740-$07EE
 - `bit4_controller` — [sprite_rendering.c#L150](../sprite_rendering.c) · $0720-$073F
-- `clear_and_print_scores` — [hw_video_audio.c#L196](../hw_video_audio.c) · $032E-$034E
-- `clear_background` — [hw_video_audio.c#L155](../hw_video_audio.c) · $03A0-$03AF
-- `clear_foreground` — [hw_video_audio.c#L237](../hw_video_audio.c) · $0380-$039D
-- `clear_ram_bank` — [hw_video_audio.c#L76](../hw_video_audio.c) · $006B-$0077
-- `draw_background_2x2` — [hw_video_audio.c#L320](../hw_video_audio.c) · $07DC-$07EF
+- `clear_and_print_scores` — [hw_video_audio.c#L188](../hw_video_audio.c) · $032E-$034E
+- `clear_background` — [hw_video_audio.c#L147](../hw_video_audio.c) · $03A0-$03AF
+- `clear_foreground` — [hw_video_audio.c#L229](../hw_video_audio.c) · $0380-$039D
+- `clear_ram_bank` — [hw_video_audio.c#L65](../hw_video_audio.c) · $006B-$0077
+- `draw_background_2x2` — [hw_video_audio.c#L312](../hw_video_audio.c) · $07DC-$07EF
 - `execute_bit3_function` — [sprite_rendering.c#L76](../sprite_rendering.c)
 - `execute_bit4_function` — [sprite_rendering.c#L13](../sprite_rendering.c)
 - `get_screen_ram_address` — [utilities.c#L163](../utilities.c) · $09BA-$09D1
 - `get_screen_ram_address_for_all_aliens` — [alien_logic.c#L290](../alien_logic.c) · $0A6C-$0A99
 - `get_screen_ram_address_for_enemy_bullets` — [weapon_collision.c#L132](../weapon_collision.c) · $0C6B-$0C80
 - `get_screen_ram_address_for_player_ship` — [utilities.c#L187](../utilities.c) · $09A0-$09B5
-- `init_sound_screen` — [hw_video_audio.c#L94](../hw_video_audio.c) · $0050-$006A
+- `init_sound_screen` — [hw_video_audio.c#L83](../hw_video_audio.c) · $0050-$006A
 - `l0f56_screen_ram_collision` — [weapon_collision.c#L347](../weapon_collision.c) · $0F56-$0F71
-- `phoenix_main_loop` — [hw_video_audio.c#L123](../hw_video_audio.c) · $0000-$004F ✓
-- `read_dsw0` — [hw_video_audio.c#L481](../hw_video_audio.c)
-- `read_in0` — [hw_video_audio.c#L480](../hw_video_audio.c)
-- `render_sprites` — [hw_video_audio.c#L166](../hw_video_audio.c)
+- `phoenix_main_loop` — [hw_video_audio.c#L112](../hw_video_audio.c) · $0000-$004F ✓
+- `phoenix_run_game_frame` — [hw_video_audio.c#L124](../hw_video_audio.c)
+- `read_dsw0` — [hw_video_audio.c#L473](../hw_video_audio.c)
+- `read_in0` — [hw_video_audio.c#L472](../hw_video_audio.c)
+- `render_sprites` — [hw_video_audio.c#L158](../hw_video_audio.c)
 - `set_bits_video_register` — [game_state_machine.c#L107](../game_state_machine.c)
-- `set_bits_video_register` — [hw_video_audio.c#L252](../hw_video_audio.c) · $041E-$042E
+- `set_bits_video_register` — [hw_video_audio.c#L244](../hw_video_audio.c) · $041E-$042E
 - `slow_print_scroll_register_update` — [attract_mode.c#L241](../attract_mode.c) · $0078-$007D
-- `stars_scroll_down` — [hw_video_audio.c#L266](../hw_video_audio.c) · $067A-$06AF
-- `update_audio_registers` — [hw_video_audio.c#L179](../hw_video_audio.c)
-- `update_lives_screen` — [hw_video_audio.c#L216](../hw_video_audio.c) · $0367-$0376
+- `stars_scroll_down` — [hw_video_audio.c#L258](../hw_video_audio.c) · $067A-$06AF
+- `update_audio_registers` — [hw_video_audio.c#L171](../hw_video_audio.c)
+- `update_lives_screen` — [hw_video_audio.c#L208](../hw_video_audio.c) · $0367-$0376
 - `update_screen_objects` — [sprite_rendering.c#L215](../sprite_rendering.c) · $0718-$071F
-- `update_scroll_register_and_fill_background` — [hw_video_audio.c#L473](../hw_video_audio.c) · $06F0-$06F8
-- `update_sound_control_ram` — [hw_video_audio.c#L228](../hw_video_audio.c) · $0377-$037D
-- `wait_vblank_coin` — [hw_video_audio.c#L30](../hw_video_audio.c) · $0080-$00B5
+- `update_scroll_register_and_fill_background` — [hw_video_audio.c#L465](../hw_video_audio.c) · $06F0-$06F8
+- `update_sound_control_ram` — [hw_video_audio.c#L220](../hw_video_audio.c) · $0377-$037D
+- `wait_vblank_coin` — [hw_video_audio.c#L29](../hw_video_audio.c) · $0080-$00B5
 
 **ROM tables** — `phoenix_bird_scroll_steps`, `phoenix_screen_ram_address_table`, `phoenix_sprite_character_block_shapes`, `phoenix_starfield_no_planets_page`, `phoenix_starfield_page`
 
-**Reached from here** — `coin_checking`, `game_state_machine`, `hw_read_dsw`, `hw_read_inputs`, `l06f0`, `platform_audio_frame_hook`, `platform_ram_dump_hook`, `print_number`, `prompt_for_start_game`, `right_one_column`, `slow_print_score_average_table`, `splash_and_demo`, `update_scores_and_sound`
+**Reached from here** — `coin_checking`, `game_state_machine`, `hw_read_dsw`, `hw_read_inputs`, `l06f0`, `platform_audio_frame_hook`, `platform_ram_dump_hook`, `platform_wait_vblank`, `print_number`, `prompt_for_start_game`, `right_one_column`, `slow_print_score_average_table`, `splash_and_demo`, `update_scores_and_sound`
 
 ---
 
@@ -399,7 +400,7 @@ A subject catalogue beside the file-oriented [`README.md`](README.md). Topics cr
 - `effect2_mixer_nodes` — [sound_discrete.c#L217](../sound_discrete.c)
 - `high_pass_mixer_input` — [sound_discrete.c#L298](../sound_discrete.c)
 - `high_pass_mixer_output` — [sound_discrete.c#L305](../sound_discrete.c)
-- `init_sound_screen` — [hw_video_audio.c#L94](../hw_video_audio.c) · $0050-$006A
+- `init_sound_screen` — [hw_video_audio.c#L83](../hw_video_audio.c) · $0050-$006A
 - `l23d6` — [sound_dispatcher.c#L21](../sound_dispatcher.c) · $23D6-$23FB
 - `l27bd` — [sound_dispatcher.c#L35](../sound_dispatcher.c) · $27BD-$27EE
 - `l3a10` — [sound_dispatcher.c#L265](../sound_dispatcher.c) · $3A10-$3A1C
@@ -452,7 +453,7 @@ A subject catalogue beside the file-oriented [`README.md`](README.md). Topics cr
 - `update_c24` — [sound_discrete.c#L332](../sound_discrete.c)
 - `update_c25` — [sound_discrete.c#L356](../sound_discrete.c)
 - `update_scores_and_sound` — [scoring.c#L93](../scoring.c)
-- `update_sound_control_ram` — [hw_video_audio.c#L228](../hw_video_audio.c) · $0377-$037D
+- `update_sound_control_ram` — [hw_video_audio.c#L220](../hw_video_audio.c) · $0377-$037D
 
 **ROM tables** — `phoenix_bird_sound_cadence`
 

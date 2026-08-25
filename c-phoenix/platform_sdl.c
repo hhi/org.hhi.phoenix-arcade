@@ -39,6 +39,16 @@ static int g_initial_alien_layout_level = -1;
 
 void platform_ram_dump_hook(void);
 
+bool platform_wait_vblank(void) {
+    // Signal completion of the previous frame before waiting for the next
+    // vblank tick. The first frame has no predecessor to acknowledge.
+    static bool first_call = true;
+    if (!first_call) SDL_SemPost(g_sem_frame_done);
+    first_call = false;
+    SDL_SemWait(g_sem_vblank_go);
+    return !g_quit;
+}
+
 /* ==========================================================
  * HARDWARE ABSTRACTION IMPLEMENTATIONS
  * ========================================================== */
