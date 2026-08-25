@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only web web-package c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only web web-package c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-explorer kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -38,6 +38,7 @@ help:
 	@echo "  make kg-check     Validate ASM annotations, the knowledge graph, and check for drift"
 	@echo "  make kg-annotations Report [ASM: ...] tags the generator cannot see"
 	@echo "  make kg-generate  Regenerate c-phoenix/c-annotated/knowledge-graph.json"
+	@echo "  make kg-explorer  Regenerate the interactive knowledge-base explorer"
 	@echo "  make kg-visual    Regenerate the knowledge-graph architecture SVGs"
 	@echo "  make kg-claims    Re-verify claim sources and machine-checkable assertions"
 	@echo "  make kg-topics    Regenerate the topic-oriented index from the graph"
@@ -174,6 +175,7 @@ kg-check:
 	python3 c-phoenix/c-annotated/tools/check_claim_assertions.py
 	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
 	python3 c-phoenix/c-annotated/tools/generate_topic_index.py --check
+	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_explorer.py --graph c-phoenix/c-annotated/knowledge-graph.json --output c-phoenix/c-annotated/knowledge-base-explorer/index.html --check
 
 kg-annotations:
 	python3 c-phoenix/c-annotated/tools/check_asm_annotations.py
@@ -183,6 +185,10 @@ kg-annotations:
 
 kg-generate:
 	python3 c-phoenix/c-annotated/tools/generate_knowledge_graph.py
+	$(MAKE) kg-explorer
+
+kg-explorer:
+	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_explorer.py --graph c-phoenix/c-annotated/knowledge-graph.json --output c-phoenix/c-annotated/knowledge-base-explorer/index.html
 
 # The architecture SVGs are rendered from a template inside
 # c-phoenix/tools/generate_knowledge_graph_visual.py -- edit the template,

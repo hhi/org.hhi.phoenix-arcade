@@ -24,6 +24,16 @@ De bron van waarheid is, in deze volgorde: **Z80 ASM/ROM → C-port → deze gea
 
 De machineleesbare kern en de instructies voor regeneratie staan in [`knowledge-graph.md`](../knowledge-graph.md); de gegenereerde data staat in [`knowledge-graph.json`](../knowledge-graph.json).
 
+### Interactieve verkenner
+
+[Open de Knowledge Base Explorer](../knowledge-base-explorer/index.html) om de
+gevalideerde graaf te doorzoeken en relaties te volgen tussen C-functies,
+Z80-routines, RAM/ROM-nodes, states, claims en de bestaande documentatie. Hij
+wordt uit `knowledge-graph.json` gegenereerd, voegt zelf geen claims toe en
+opent rechtstreeks via `file://`.
+
+![Overzicht van de Knowledge Base Explorer](../knowledge-base-explorer-overview.svg)
+
 ### Hoe de lagen op elkaar aansluiten
 
 Van de Z80-hardware uit 1980 onderaan tot de doorbladerbare notities die je nu leest:

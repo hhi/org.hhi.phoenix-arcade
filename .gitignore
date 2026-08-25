@@ -11,6 +11,7 @@ c2-phoenix/native/c2_hires_sprite_assets.h
 *.bin
 *.html
 !browser-port/index.html
+!c-phoenix/c-annotated/knowledge-base-explorer/index.html
 !c-phoenix/context/Phoenix.html
 c2-phoenix/*.json
 c2-phoenix/*.html

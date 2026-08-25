@@ -24,6 +24,16 @@ The source of truth is, in this order: **Z80 ASM/ROM → C-port → annotated an
 
 The machine-readable core and regeneration instructions are in [`knowledge-graph.md`](../knowledge-graph.md); generated data is stored in [`knowledge-graph.json`](../knowledge-graph.json).
 
+### Interactive explorer
+
+[Open the Knowledge Base Explorer](../knowledge-base-explorer/index.html) to
+search the validated graph and follow links between C functions, Z80 routines,
+RAM/ROM nodes, states, claims and the existing documentation. It is generated
+from `knowledge-graph.json`, does not add claims of its own, and opens directly
+with `file://`.
+
+![Knowledge Base Explorer overview](../knowledge-base-explorer-overview.svg)
+
 ### How the layers fit together
 
 From the 1980 Z80 hardware at the bottom to the browsable notes you are reading now:
