@@ -16,10 +16,10 @@ web: $(MODULE)
 
 package: $(PACKAGE)
 
-$(PACKAGE): $(MODULE) ../index.html ../main.js ../c2_hires_renderer.js ../style.css
+$(PACKAGE): $(MODULE) ../README.md ../README.nl.md ../index.html ../main.js ../c2_hires_renderer.js ../style.css
 	rm -rf $(PACKAGE_DIR)
 	mkdir -p $(PACKAGE_DIR)/build
-	cp ../index.html ../main.js ../c2_hires_renderer.js ../style.css $(PACKAGE_DIR)/
+	cp ../README.md ../README.nl.md ../index.html ../main.js ../c2_hires_renderer.js ../style.css $(PACKAGE_DIR)/
 	cp ../build/phoenix_core.js ../build/phoenix_core.wasm $(PACKAGE_DIR)/build/
 	cd $(PACKAGE_DIR) && zip -qr ../$(notdir $(PACKAGE)) .
 

@@ -20,6 +20,26 @@ Redot-uitgave blijft volledig afzonderlijk werken.
 Je installeert geen app of plug-in. Iemand moet eerst de bestanden bouwen en
 op een webserver plaatsen; daarna open je de webpagina in de browser.
 
+### De GitHub-release gebruiken
+
+Het releasebestand `phoenix-browser.zip` bevat het gebouwde spel al. Zo speel
+je het lokaal:
+
+1. Download en pak `phoenix-browser.zip` uit.
+2. Ga in een terminal naar de uitgepakte map en start een lokale server:
+
+   ```sh
+   python3 -m http.server 8080
+   ```
+
+3. Open <http://127.0.0.1:8080> in een actuele browser en klik op
+   **Click to start**.
+
+Open `index.html` niet rechtstreeks met een `file://`-URL: browsers laden de
+JavaScriptmodule en WebAssembly betrouwbaar alleen via HTTP(S). Je hebt voor
+de releasedownload geen Redot, Emscripten, ROM-bestanden of native Phoenix-
+installatie nodig.
+
 ## Voor ontwikkelaars: installeren, bouwen en starten
 
 1. Installeer [Emscripten via de officiële SDK](https://emscripten.org/docs/getting_started/downloads.html).

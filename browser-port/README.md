@@ -19,6 +19,26 @@ edition remains fully separate.
 There is no app or plug-in to install. Someone must first build the files and
 place them on a web server; then open the page in a browser.
 
+### Use the GitHub release download
+
+The `phoenix-browser.zip` release asset already contains the built game. To
+play it locally:
+
+1. Download and unzip `phoenix-browser.zip`.
+2. In a terminal, change to the unzipped directory and start a local server:
+
+   ```sh
+   python3 -m http.server 8080
+   ```
+
+3. Open <http://127.0.0.1:8080> in a current browser and click **Click to
+   start**.
+
+Do not open `index.html` directly with a `file://` URL: browsers load the
+JavaScript module and WebAssembly reliably only through HTTP(S). You do not
+need Redot, Emscripten, ROM files or a native Phoenix installation to play
+the release download.
+
 ## For developers: install, build and run
 
 1. Install [Emscripten using the official SDK](https://emscripten.org/docs/getting_started/downloads.html).
