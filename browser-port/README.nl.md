@@ -130,5 +130,6 @@ HTTPS-webserver is pas aan de orde nadat de renderer visueel is gevalideerd.
 Elke gepubliceerde release met browserondersteuning moet
 `phoenix-browser.zip` als release-asset bevatten. Daarmee kunnen spelers en
 sitebeheerders de webuitgave gebruiken zonder Emscripten te installeren of uit
-broncode te bouwen. Ontwikkelaars kunnen het pakket altijd reproduceren met
-`make web-package`.
+broncode te bouwen. GitHub Actions bouwt en voegt dit pakket automatisch toe
+wanneer een GitHub-release wordt gepubliceerd. Ontwikkelaars kunnen het pakket
+altijd reproduceren met `make web-package`.

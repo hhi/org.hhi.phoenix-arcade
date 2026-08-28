@@ -125,5 +125,6 @@ HTTPS server comes only after visual renderer validation.
 
 Each published browser-capable release should include
 `phoenix-browser.zip` as a release asset. It lets players or site hosts use
-the web edition without installing Emscripten or building from source.
-Developers can still reproduce the asset with `make web-package`.
+the web edition without installing Emscripten or building from source. GitHub
+Actions builds and attaches the package automatically when a GitHub release is
+published. Developers can still reproduce the asset with `make web-package`.
