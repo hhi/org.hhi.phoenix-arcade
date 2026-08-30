@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate standalone, syntax-coloured C source pages for the ASM viewer."""
+"""Generate standalone, syntax-coloured C/header source pages for the ASM viewer."""
 
 from __future__ import annotations
 
@@ -47,18 +47,33 @@ body {{ margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system
 """
 
 
+def destination_for(source: Path, output_dir: Path) -> Path:
+    """Keep C and header pages distinct when their stems are identical."""
+    suffix = "-h.html" if source.suffix == ".h" else ".html"
+    return output_dir / f"{source.stem}{suffix}"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--output-dir", type=Path, default=Path(__file__).resolve().parents[1] / "context/source")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    sources = sorted(args.source_root.glob("*.c"))
+    sources = sorted(
+        path for suffix in ("*.c", "*.h") for path in args.source_root.glob(suffix)
+    )
     if not sources:
-        raise ValueError(f"No C sources found in {args.source_root}")
+        raise ValueError(f"No C or header sources found in {args.source_root}")
     stale = []
+    c_stems = {source.stem for source in sources if source.suffix == ".c"}
+    obsolete = [
+        args.output_dir / f"{source.stem}.html"
+        for source in sources
+        if source.suffix == ".h" and source.stem not in c_stems
+        and (args.output_dir / f"{source.stem}.html").exists()
+    ]
     for source in sources:
-        destination = args.output_dir / f"{source.stem}.html"
+        destination = destination_for(source, args.output_dir)
         rendered = render(source)
         if args.check:
             if not destination.exists() or destination.read_text(encoding="utf-8") != rendered:
@@ -66,10 +81,16 @@ def main() -> int:
         else:
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_text(rendered, encoding="utf-8")
+    if args.check:
+        stale.extend(obsolete)
+    else:
+        for path in obsolete:
+            path.unlink()
     if stale:
-        print("Stale C source pages: " + ", ".join(str(path) for path in stale), file=sys.stderr)
+        print("Stale C/header source pages: " + ", ".join(str(path) for path in stale), file=sys.stderr)
         return 1
-    print(f"C source pages: {'current' if args.check else 'generated'} ({len(sources)} files)")
+    detail = f"; removed {len(obsolete)} obsolete header aliases" if obsolete else ""
+    print(f"C/header source pages: {'current' if args.check else 'generated'} ({len(sources)} files){detail}")
     return 0
 
 

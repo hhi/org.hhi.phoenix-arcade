@@ -3,7 +3,7 @@ id="utility-subroutines-utilitiesc---c-annotated-knowledge-graph-documentatie">U
 Subroutines (<code>utilities.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/utilities.html"><code>utilities.c</code></a>. Deze module bevat
+href="../../../context/source/utilities.html"><code>utilities.c</code></a>. Deze module bevat
 de kern-hulpprogramma's van de game, waaronder geheugen-lees/schrijf
 abstracties (<code>mem_read</code>/<code>mem_write</code>),
 BCD-cijferweergave, tekst-rendering op het geroteerde scherm en de
@@ -43,7 +43,7 @@ Koppelingen</strong></h4>
 <h3 id="check_input_bits"><code>check_input_bits</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/utilities.html#L16-L22"><code>check_input_bits</code></a> (Z80
+href="../../../context/source/utilities.html#L16-L22"><code>check_input_bits</code></a> (Z80
 ROM: <code>$00BB–$00C3</code>) voert een flankdetectie uit (1 -&gt; 0
 overgang van een knop) door <code>state.IN0Current</code> te vergelijken
 met <code>state.IN0Previous</code>.</p>
@@ -54,11 +54,11 @@ Koppelingen</strong></h4>
 <ul>
 <li><a href="player-logic.html#move_player"><code>move_player</code></a> —
 <a
-href="../../context/source/player_logic.html#L131"><code>player_logic.c#L131</code></a></li>
+href="../../../context/source/player_logic.html#L131"><code>player_logic.c#L131</code></a></li>
 <li><a
 href="player-logic.html#get_assigned_player_bullet_tile"><code>get_assigned_player_bullet_tile</code></a>
 — <a
-href="../../context/source/player_logic.html#L177"><code>player_logic.c#L177</code></a></li>
+href="../../../context/source/player_logic.html#L177"><code>player_logic.c#L177</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -67,7 +67,7 @@ Tekst-rendering</h2>
 <h3 id="print_number"><code>print_number</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/utilities.html#L30-L55"><code>print_number</code></a> (Z80 ROM:
+href="../../../context/source/utilities.html#L30-L55"><code>print_number</code></a> (Z80 ROM:
 <code>$00C4–$00E1</code>) drukt een BCD-getal af op de opgegeven
 VRAM-positie.</p>
 <h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
@@ -78,14 +78,14 @@ Koppelingen</strong></h4>
 <li><a
 href="mothership-logic.html#mothership_core_hit_check"><code>mothership_core_hit_check</code></a>
 — <a
-href="../../context/source/mothership_logic.html#L75"><code>mothership_logic.c#L75</code></a></li>
+href="../../../context/source/mothership_logic.html#L75"><code>mothership_logic.c#L75</code></a></li>
 <li><a
 href="game-state-machine.html#state_1_flashing_score"><code>state_1_flashing_score</code></a>
 — <a
-href="../../context/source/game_state_machine.html#L175"><code>game_state_machine.c#L175</code></a></li>
+href="../../../context/source/game_state_machine.html#L175"><code>game_state_machine.c#L175</code></a></li>
 <li><a
 href="scoring.html#update_scores_and_sound"><code>update_scores_and_sound</code></a>
-— <a href="../../context/source/scoring.html#L130"><code>scoring.c#L130</code></a></li>
+— <a href="../../../context/source/scoring.html#L130"><code>scoring.c#L130</code></a></li>
 </ul></li>
 </ul>
 <hr />

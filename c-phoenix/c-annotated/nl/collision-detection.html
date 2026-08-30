@@ -3,7 +3,7 @@ id="collision-detection-collision_detectionc---c-annotated-knowledge-graph-docum
 Detection (<code>collision_detection.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/collision_detection.html"><code>collision_detection.c</code></a>.
+href="../../../context/source/collision_detection.html"><code>collision_detection.c</code></a>.
 Deze module implementeert de fijne tegel- en pixelmasker
 botsingsdetectie tussen spelerkogels, vogels en eieren tijdens de
 vogel-levels.</p>
@@ -25,7 +25,7 @@ Hoofdlus</h2>
 id="collision_detection_for_birds"><code>collision_detection_for_birds</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/collision_detection.html#L132-L165"><code>collision_detection_for_birds</code></a>
+href="../../../context/source/collision_detection.html#L132-L165"><code>collision_detection_for_birds</code></a>
 (Z80 ROM: <code>$3800–$3841</code>, <code>$391C–$3922</code>) berekent
 per frame de exacte botsing tussen een actieve spelerkogel en het
 bewegende vogelraster.</p>
@@ -38,30 +38,30 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><code>phoenix_bullet_pixel_masks</code> — <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a
 href="#l3844_small_bird_hit"><code>l3844_small_bird_hit</code></a> — <a
-href="../../context/source/collision_detection.html#L159"><code>collision_detection.c#L159</code></a></li>
+href="../../../context/source/collision_detection.html#L159"><code>collision_detection.c#L159</code></a></li>
 <li><a href="#l38bc_large_hit"><code>l38bc_large_hit</code></a> — <a
-href="../../context/source/collision_detection.html#L163"><code>collision_detection.c#L163</code></a></li>
+href="../../../context/source/collision_detection.html#L163"><code>collision_detection.c#L163</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
-href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
+href="../../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../context/source/bird_logic.html#L30"><code>bird_logic.c#L30</code></a></li>
+href="../../../context/source/bird_logic.html#L30"><code>bird_logic.c#L30</code></a></li>
 <li><a
 href="bird-logic.html#bird_flight_path"><code>bird_flight_path</code></a>
 — <a
-href="../../context/source/bird_logic.html#L72"><code>bird_logic.c#L72</code></a></li>
+href="../../../context/source/bird_logic.html#L72"><code>bird_logic.c#L72</code></a></li>
 <li><a
 href="bird-wave-behavior.html#check_bird_formation_player_collision"><code>check_bird_formation_player_collision</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html#L428"><code>bird_wave_behavior.c#L428</code></a></li>
+href="../../../context/source/bird_wave_behavior.html#L428"><code>bird_wave_behavior.c#L428</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -89,7 +89,7 @@ Inslagen</h2>
 <h3 id="l3844_small_bird_hit"><code>l3844_small_bird_hit</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/collision_detection.html#L56-L91"><code>l3844_small_bird_hit</code></a>
+href="../../../context/source/collision_detection.html#L56-L91"><code>l3844_small_bird_hit</code></a>
 (Z80 ROM: <code>$3844–$388D</code>, <code>$3894–$389C</code>) verwerkt
 inslagen op kleine vogels.</p>
 <h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
@@ -98,17 +98,17 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l38a1_erase_bird"><code>l38a1_erase_bird</code></a> — <a
-href="../../context/source/collision_detection.html#L61"><code>collision_detection.c#L61</code></a></li>
+href="../../../context/source/collision_detection.html#L61"><code>collision_detection.c#L61</code></a></li>
 <li><a href="#bird_explosion_slot"><code>bird_explosion_slot</code></a>
 — <a
-href="../../context/source/collision_detection.html#L73"><code>collision_detection.c#L73</code></a></li>
+href="../../../context/source/collision_detection.html#L73"><code>collision_detection.c#L73</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#collision_detection_for_birds"><code>collision_detection_for_birds</code></a>
 — <a
-href="../../context/source/collision_detection.html#L159"><code>collision_detection.c#L159</code></a></li>
+href="../../../context/source/collision_detection.html#L159"><code>collision_detection.c#L159</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
@@ -123,7 +123,7 @@ href="#bird_explosion_slot"><code>bird_explosion_slot</code></a>.</p>
 <h3 id="l38bc_large_hit"><code>l38bc_large_hit</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/collision_detection.html#L99-L124"><code>l38bc_large_hit</code></a>
+href="../../../context/source/collision_detection.html#L99-L124"><code>l38bc_large_hit</code></a>
 (Z80 ROM: <code>$38BC–$38F1</code>) verwerkt inslagen op eieren en grote
 vogels. Eieren transformeren bij een treffer direct in een vogel via
 <code>phoenix_egg_transformation_types</code>.</p>
@@ -136,12 +136,12 @@ id="l38a1_erase_bird--bird_explosion_slot"><code>l38a1_erase_bird</code>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../context/source/collision_detection.html#L20-L29"><code>l38a1_erase_bird</code></a>
+href="../../../context/source/collision_detection.html#L20-L29"><code>l38a1_erase_bird</code></a>
 (Z80 ROM: <code>$38A1–$38B5</code>) wist een getroffen vogel door de
 lege 4x4 tegelvorm (<code>0x17F0</code>) te tekenen. Bevat de beroemde
 Arcade-beveiliging ("AMSTAR" copyright-code selector).</li>
 <li><a
-href="../../context/source/collision_detection.html#L38-L48"><code>bird_explosion_slot</code></a>
+href="../../../context/source/collision_detection.html#L38-L48"><code>bird_explosion_slot</code></a>
 (Z80 ROM: <code>$38F8–$391B</code>) registreert een nieuwe explosie in
 een vrij geheugenslot (<code>0x4370</code> t/m
 <code>0x437C</code>).</li>
@@ -151,7 +151,7 @@ een vrij geheugenslot (<code>0x4370</code> t/m
 <h3 id="l3462_no_birds_left"><code>l3462_no_birds_left</code></h3>
 <h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/collision_detection.html#L174-L185"><code>l3462_no_birds_left</code></a>
+href="../../../context/source/collision_detection.html#L174-L185"><code>l3462_no_birds_left</code></a>
 (Z80 ROM: <code>$3462–$346D</code>) wordt aangeroepen zodra alle vogels
 in een wave zijn uitgeschakeld (<code>BirdsLeft == 0</code>) en verzorgt
 de overgang naar de ronde-afronding via <a
@@ -162,19 +162,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>process_enemy_bombs</code> — <a
-href="../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
+href="../../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
+href="../../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
 <li><a href="alien-wave.html#l2204"><code>l2204</code></a> — <a
-href="../../context/source/alien_wave.html#L80"><code>alien_wave.c#L80</code></a></li>
+href="../../../context/source/alien_wave.html#L80"><code>alien_wave.c#L80</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../context/source/bird_logic.html#L36"><code>bird_logic.c#L36</code></a></li>
+href="../../../context/source/bird_logic.html#L36"><code>bird_logic.c#L36</code></a></li>
 </ul></li>
 </ul>
 </body></html>

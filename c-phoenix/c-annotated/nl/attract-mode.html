@@ -3,7 +3,7 @@ id="attract-mode--demo-attract_modec---c-annotated-knowledge-graph-documentatie"
 Mode &amp; Demo (<code>attract_mode.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/attract_mode.html"><code>attract_mode.c</code></a>. Deze module
+href="../../../context/source/attract_mode.html"><code>attract_mode.c</code></a>. Deze module
 beheert het attract-scherm, de intro-splash, de automatisch spelende
 demo, munttellers, startknop-detectie en de speciale tegel-rendering
 voor de intro.</p>
@@ -25,7 +25,7 @@ Sequencer</h2>
 <h3 id="splash_and_demo"><code>splash_and_demo</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/attract_mode.html#L32-L107"><code>splash_and_demo</code></a>
+href="../../../context/source/attract_mode.html#L32-L107"><code>splash_and_demo</code></a>
 (Z80 ROM: <code>$00E3–$0172</code>) is de hoofdteller-gebaseerde
 sequencer die in attract mode wisselt tussen het copyright-scherm, de
 score-gemiddelde tabel, de intro-vogelanimatie en de demo-gameplay.</p>
@@ -35,36 +35,36 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>print_copyright_lines</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a
 href="#slow_print_score_average_table"><code>slow_print_score_average_table</code></a>
 — <a
-href="../../context/source/attract_mode.html#L51"><code>attract_mode.c#L51</code></a></li>
+href="../../../context/source/attract_mode.html#L51"><code>attract_mode.c#L51</code></a></li>
 <li><a
 href="#draw_score_average_table_tiles"><code>draw_score_average_table_tiles</code></a>
 — <a
-href="../../context/source/attract_mode.html#L59"><code>attract_mode.c#L59</code></a></li>
+href="../../../context/source/attract_mode.html#L59"><code>attract_mode.c#L59</code></a></li>
 <li><a
 href="init-global-level-data.html#init_global_level_data"><code>init_global_level_data</code></a>
 — <a
-href="../../context/source/init_global_level_data.html"><code>init_global_level_data.c</code></a></li>
+href="../../../context/source/init_global_level_data.html"><code>init_global_level_data.c</code></a></li>
 <li><a
 href="#slow_print_scroll_register_update"><code>slow_print_scroll_register_update</code></a>
 — <a
-href="../../context/source/attract_mode.html#L84"><code>attract_mode.c#L84</code></a></li>
+href="../../../context/source/attract_mode.html#L84"><code>attract_mode.c#L84</code></a></li>
 <li><a
 href="#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
 — <a
-href="../../context/source/attract_mode.html#L92"><code>attract_mode.c#L92</code></a></li>
+href="../../../context/source/attract_mode.html#L92"><code>attract_mode.c#L92</code></a></li>
 <li><a
 href="#check_demo_mode_player_and_alien"><code>check_demo_mode_player_and_alien</code></a>
 — <a
-href="../../context/source/attract_mode.html#L101"><code>attract_mode.c#L101</code></a></li>
+href="../../../context/source/attract_mode.html#L101"><code>attract_mode.c#L101</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><code>attract_mode_update</code> — <a
-href="../../context/source/state_init.html"><code>state_init.c</code></a></li>
+href="../../../context/source/state_init.html"><code>state_init.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -72,7 +72,7 @@ href="../../context/source/state_init.html"><code>state_init.c</code></a></li>
 id="get_player_inputs_for_demo"><code>get_player_inputs_for_demo</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/attract_mode.html#L169-L192"><code>get_player_inputs_for_demo</code></a>
+href="../../../context/source/attract_mode.html#L169-L192"><code>get_player_inputs_for_demo</code></a>
 (Z80 ROM: <code>$0173–$0195</code>) genereert vooraf ingestelde
 joystickinvoer (naar links, naar rechts, vuren, schild) om een speelbare
 demonstratie na te bootsen.</p>
@@ -85,12 +85,12 @@ id="prompt_for_start_game--decrement_coins"><code>prompt_for_start_game</code>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../context/source/attract_mode.html#L293-L359"><code>prompt_for_start_game</code></a>
+href="../../../context/source/attract_mode.html#L293-L359"><code>prompt_for_start_game</code></a>
 (Z80 ROM: <code>$0288–$02EE</code>) toont "PRESS START 1 OR 2 PLAYERS",
 leest de startknoppen in, decrement de credits en initialiseert beide
 spelersbuffers (bank 0 en bank 1).</li>
 <li><a
-href="../../context/source/attract_mode.html#L366-L390"><code>decrement_coins</code></a>
+href="../../../context/source/attract_mode.html#L366-L390"><code>decrement_coins</code></a>
 (Z80 ROM: <code>$02CB–$02EF</code>) verwerkt het muntenverbruik (1 of 2
 munten per spel, afhankelijk van DIP-switches) en verlaat de attract
 mode (<code>state.GameOrAttract = 1</code> of <code>2</code>).</li>
@@ -103,16 +103,16 @@ Koppelingen</strong></h4>
 <li><a
 href="#clear_fore_and_background"><code>clear_fore_and_background</code></a>
 — <a
-href="../../context/source/attract_mode.html#L302"><code>attract_mode.c#L302</code></a></li>
+href="../../../context/source/attract_mode.html#L302"><code>attract_mode.c#L302</code></a></li>
 <li><code>print_text_lines</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a href="#coin_checking"><code>coin_checking</code></a> — <a
-href="../../context/source/attract_mode.html#L309"><code>attract_mode.c#L309</code></a></li>
+href="../../../context/source/attract_mode.html#L309"><code>attract_mode.c#L309</code></a></li>
 <li><a
 href="scoring.html#update_hi_score"><code>update_hi_score</code></a> — <a
-href="../../context/source/scoring.html#L39"><code>scoring.c#L39</code></a></li>
+href="../../../context/source/scoring.html#L39"><code>scoring.c#L39</code></a></li>
 <li><code>hw_write_video_register</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -121,7 +121,7 @@ href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a
 id="slow_print_score_average_table"><code>slow_print_score_average_table</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/attract_mode.html#L198-L235"><code>slow_print_score_average_table</code></a>
+href="../../../context/source/attract_mode.html#L198-L235"><code>slow_print_score_average_table</code></a>
 (Z80 ROM: <code>$0196–$01CD</code>) schrijft langzaam karakter voor
 karakter de gemiddelde scoretabel naar het voorgrondscherm.</p>
 <hr />
@@ -132,14 +132,14 @@ karakter de gemiddelde scoretabel naar het voorgrondscherm.</p>
 <h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../context/source/attract_mode.html#L472-L512"><code>drawbirdobject</code></a>
+href="../../../context/source/attract_mode.html#L472-L512"><code>drawbirdobject</code></a>
 (Z80 ROM: <code>$34C0–$355D</code>) rendert een vogel-object uit RAM,
 inclusief automatische afkapping (clipping) aan de randen van het
 speelveld.</li>
-<li><a href="../../context/source/attract_mode.html#L449-L461"><code>drawNx2</code></a>
+<li><a href="../../../context/source/attract_mode.html#L449-L461"><code>drawNx2</code></a>
 (Z80 ROM: <code>$3520–$355D</code>) is de algemene 2-koloms
 tegel-renderer die door explosies en vogelsprites gebruikt wordt.</li>
-<li><a href="../../context/source/attract_mode.html#L583-L603"><code>l1ee0</code></a> (Z80
+<li><a href="../../../context/source/attract_mode.html#L583-L603"><code>l1ee0</code></a> (Z80
 ROM: <code>$1EE0–$1EFA</code>) voert een checksum-berekening uit over de
 copyrighttekst als anti-piraterij controle.</li>
 </ul>

@@ -42,8 +42,8 @@ Overview of Flight Pattern Architecture &amp; Z80 Memory Loop</h2>
 birds, and mothership) are not calculated dynamically via physical
 forces, but controlled via <strong>static vectorial lookup
 tables</strong> stored in Z80 ROM in <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a> / <a
-href="../../phoenix_tables.h"><code>phoenix_tables.h</code></a>.</p>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a> / <a
+href="../../../context/source/phoenix_tables-h.html"><code>phoenix_tables.h</code></a>.</p>
 <h3 id="memory-map--ram-data-structures"><strong>Memory Map &amp; RAM
 Data Structures</strong></h3>
 <p>Each active entity on screen utilizes a specific memory layout in
@@ -89,7 +89,7 @@ range <code>0x00–0x1F</code>; it is <strong>not</strong> masked at this
 point. The Z80 performs one <code>RLCA</code>, which is equivalent to
 multiplying this bounded value by two and therefore selects one pair in
 <a
-href="../../phoenix_tables.h#L162"><code>phoenix_alien_direction_vectors</code></a>
+href="../../../context/source/phoenix_tables-h.html#L162"><code>phoenix_alien_direction_vectors</code></a>
 (ROM <code>$1700–$173F</code>):</p>
 <ol type="1">
 <li><code>vector_offset = step_byte × 2</code></li>
@@ -115,18 +115,18 @@ Links</strong></h4>
 <ul>
 <li><strong>Relevant C Source Files:</strong>
 <ul>
-<li><a href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a> →
+<li><a href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a> →
 <a
 href="../../c-annotated/en/phoenix-tables.html"><code>phoenix-tables.md</code></a></li>
-<li><a href="../../context/source/alien_logic.html"><code>alien_logic.c</code></a> → <a
+<li><a href="../../../context/source/alien_logic.html"><code>alien_logic.c</code></a> → <a
 href="../../c-annotated/en/alien-logic.html"><code>alien-logic.md</code></a></li>
-<li><a href="../../context/source/bird_logic.html"><code>bird_logic.c</code></a> → <a
+<li><a href="../../../context/source/bird_logic.html"><code>bird_logic.c</code></a> → <a
 href="../../c-annotated/en/bird-logic.html"><code>bird-logic.md</code></a></li>
 <li><a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>
 → <a
 href="../../c-annotated/en/bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a></li>
-<li><a href="../../context/source/attract_mode.html"><code>attract_mode.c</code></a> → <a
+<li><a href="../../../context/source/attract_mode.html"><code>attract_mode.c</code></a> → <a
 href="../../c-annotated/en/attract-mode.html"><code>attract-mode.md</code></a></li>
 </ul></li>
 </ul>
@@ -199,7 +199,7 @@ primarily closed formation loops used during <strong>Alien Wave 1 and
 Wave 3</strong> (orderly swarm formations with small and medium
 aliens).</li>
 <li><strong>Initialization:</strong> The table <a
-href="../../phoenix_tables.h#L139"><code>phoenix_alien_layout_pointers</code></a>
+href="../../../context/source/phoenix_tables-h.html#L139"><code>phoenix_alien_layout_pointers</code></a>
 initializes alien pointers to the start of this ROM page at
 <code>$1000</code> by default.</li>
 </ul></li>
@@ -246,7 +246,7 @@ Analysis</strong></h3>
 <ul>
 <li><strong>ROM Address Range:</strong> <code>$1000–$13FF</code> (1024
 bytes) in <a
-href="../../context/source/phoenix_tables.html#L73"><code>phoenix_tables.c</code></a>.</li>
+href="../../../context/source/phoenix_tables.html#L73"><code>phoenix_tables.c</code></a>.</li>
 <li><strong>Structure:</strong> 18 closed-loop &amp; open-trajectory
 patterns (<code>T1020</code> through <code>T13D0</code>), each
 consisting of vector indices terminated by <code>0x00</code> and padded
@@ -424,7 +424,7 @@ Analysis</strong></h3>
 <ul>
 <li><strong>ROM Address Range:</strong> <code>$2C00–$2FFF</code> (1024
 bytes) in <a
-href="../../context/source/phoenix_tables.html#L423"><code>phoenix_tables.c</code></a>.</li>
+href="../../../context/source/phoenix_tables.html#L423"><code>phoenix_tables.c</code></a>.</li>
 <li><strong>Structure:</strong> 18 patterns (patterns 19 through 36)
 primarily consisting of open breakout trajectories for diving aliens and
 mothership escort waves.</li>
@@ -595,8 +595,8 @@ Trajectories &amp; AI Behavior Scripts</h2>
 <h3 id="detailed-analysis-of-bird-ai-subsystem"><strong>Detailed
 Analysis of Bird AI Subsystem</strong></h3>
 <p>The bird AI subsystem in <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>
-and <a href="../../context/source/bird_logic.html"><code>bird_logic.c</code></a> is driven
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>
+and <a href="../../../context/source/bird_logic.html"><code>bird_logic.c</code></a> is driven
 by 4 linked ROM lookup tables:</p>
 <ol type="1">
 <li><p><strong><code>phoenix_bird_behaviour_scripts</code> (ROM
@@ -841,9 +841,9 @@ Attract Mode Movement Paths</h2>
 <ul>
 <li><strong>Description:</strong> Prescribed 26x9 tile matrix and
 descent speed table for the steady downward movement of the mothership
-in <a href="../../context/source/mothership_impl.html"><code>mothership_impl.c</code></a>
+in <a href="../../../context/source/mothership_impl.html"><code>mothership_impl.c</code></a>
 and <a
-href="../../context/source/mothership_logic.html"><code>mothership_logic.c</code></a>.</li>
+href="../../../context/source/mothership_logic.html"><code>mothership_logic.c</code></a>.</li>
 </ul>
 <p><img src="../09_mothership_descent_trajectory.svg"
 alt="Mothership Descent Trajectory" /></p>

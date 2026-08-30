@@ -3,7 +3,7 @@ id="bird-logic-bird_logicc---c-annotated-knowledge-graph-documentatie">Bird
 Logic (<code>bird_logic.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/bird_logic.html"><code>bird_logic.c</code></a>. Deze module
+href="../../../context/source/bird_logic.html"><code>bird_logic.c</code></a>. Deze module
 regelt het hoofd-updateproces van de vogelgolven: de spelfasen 4–8, met
 de actieve vogel-fade-in-fasen 5 en 7. De module omvat eieren
 uitbroeden, vluchtpaden en het tekenen van de vogel-objecten.</p>
@@ -22,7 +22,7 @@ Routines</a></li>
 <h3 id="process_birds"><code>process_birds</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/bird_logic.html#L27-L66"><code>process_birds</code></a> (Z80
+href="../../../context/source/bird_logic.html#L27-L66"><code>process_birds</code></a> (Z80
 ROM: <code>$3400–$344D</code>) is de hoofd-updatelus voor de vogelgolven
 (spelfasen 4–8; actieve vogel-fade-in-fasen 5 en 7).</p>
 <h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
@@ -35,65 +35,65 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="player-logic.html#player_update"><code>player_update</code></a> — <a
-href="../../context/source/player_logic.html#L10"><code>player_logic.c#L10</code></a></li>
+href="../../../context/source/player_logic.html#L10"><code>player_logic.c#L10</code></a></li>
 <li><a
 href="collision-detection.html#collision_detection_for_birds"><code>collision_detection_for_birds</code></a>
 — <a
-href="../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
+href="../../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
 <li><a
 href="birds-vertical-movement.html#birds_vertical_movement_update"><code>birds_vertical_movement_update</code></a>
 — <a
-href="../../context/source/birds_vertical_movement.html"><code>birds_vertical_movement.c</code></a></li>
+href="../../../context/source/birds_vertical_movement.html"><code>birds_vertical_movement.c</code></a></li>
 <li><a
 href="collision-detection.html#check_bird_formation_player_collision"><code>check_bird_formation_player_collision</code></a>
 — <a
-href="../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
+href="../../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
 <li><a
 href="bird-wave-behavior.html#l3462_no_birds_left"><code>l3462_no_birds_left</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 <li><a
 href="bird-wave-behavior.html#update_second_bird_bank"><code>update_second_bird_bank</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 <li><a
 href="#draw_first_4_bird_objects"><code>draw_first_4_bird_objects</code></a>
 — <a
-href="../../context/source/bird_logic.html#L81"><code>bird_logic.c#L81</code></a></li>
+href="../../../context/source/bird_logic.html#L81"><code>bird_logic.c#L81</code></a></li>
 <li><a
 href="#draw_second_4_bird_objects"><code>draw_second_4_bird_objects</code></a>
 — <a
-href="../../context/source/bird_logic.html#L93"><code>bird_logic.c#L93</code></a></li>
+href="../../../context/source/bird_logic.html#L93"><code>bird_logic.c#L93</code></a></li>
 <li><a
 href="bird-wave-behavior.html#refresh_bird_flight_parameters"><code>refresh_bird_flight_parameters</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 <li><a
 href="bird-wave-behavior.html#update_first_four_birds"><code>update_first_four_birds</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 <li><a
 href="bird-wave-behavior.html#update_second_four_birds"><code>update_second_four_birds</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 <li><code>try_spawn_bird_dive_bomb</code> — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 <li><code>process_enemy_bombs</code> — <a
-href="../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
+href="../../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
+href="../../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
+href="../../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
@@ -128,7 +128,7 @@ Botsingsafhandeling</h2>
 <h3 id="bird_flight_path"><code>bird_flight_path</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/bird_logic.html#L69-L73"><code>bird_flight_path</code></a>
+href="../../../context/source/bird_logic.html#L69-L73"><code>bird_flight_path</code></a>
 verwerkt de geometrische duikvluchtpaden en voert de botsingsdetectie
 voor vogels uit.</p>
 <h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
@@ -137,18 +137,18 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="collision-detection.html#collision_detection_for_birds"><code>collision_detection_for_birds</code></a>
 — <a
-href="../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
+href="../../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
+href="../../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -157,7 +157,7 @@ href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a
 id="draw_first_4_bird_objects"><code>draw_first_4_bird_objects</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/bird_logic.html#L81-L87"><code>draw_first_4_bird_objects</code></a>
+href="../../../context/source/bird_logic.html#L81-L87"><code>draw_first_4_bird_objects</code></a>
 (Z80 ROM: <code>$3474–$3485</code>) tekent de sprite-objecten voor
 vogels 0 tot en met 3.</p>
 <h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
@@ -166,17 +166,17 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>drawbirdobject</code> — <a
-href="../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
+href="../../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#process_birds"><code>process_birds</code></a> — <a
-href="../../context/source/bird_logic.html#L44"><code>bird_logic.c#L44</code></a>, <a
-href="../../context/source/bird_logic.html#L53"><code>L53</code></a></li>
+href="../../../context/source/bird_logic.html#L44"><code>bird_logic.c#L44</code></a>, <a
+href="../../../context/source/bird_logic.html#L53"><code>L53</code></a></li>
 <li><a
 href="bird-wave-behavior.html#update_second_bird_bank"><code>update_second_bird_bank</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
@@ -190,7 +190,7 @@ vogel-records.</p>
 id="draw_second_4_bird_objects"><code>draw_second_4_bird_objects</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/bird_logic.html#L93-L99"><code>draw_second_4_bird_objects</code></a>
+href="../../../context/source/bird_logic.html#L93-L99"><code>draw_second_4_bird_objects</code></a>
 (Z80 ROM: <code>$3486–$3497</code>) tekent de sprite-objecten voor
 vogels 4 tot en met 7.</p>
 <h4 id="knowledge-graph-koppelingen-3"><strong>Knowledge Graph
@@ -199,16 +199,16 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>drawbirdobject</code> — <a
-href="../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
+href="../../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#process_birds"><code>process_birds</code></a> — <a
-href="../../context/source/bird_logic.html#L54"><code>bird_logic.c#L54</code></a></li>
+href="../../../context/source/bird_logic.html#L54"><code>bird_logic.c#L54</code></a></li>
 <li><a
 href="bird-wave-behavior.html#update_second_bird_bank"><code>update_second_bird_bank</code></a>
 — <a
-href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
+href="../../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-2"><strong>Stap-voor-stap

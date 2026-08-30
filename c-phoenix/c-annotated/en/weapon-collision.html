@@ -3,7 +3,7 @@ id="weapon-collision-weapon_collisionc---c-annotated-knowledge-graph-documentati
 Collision (<code>weapon_collision.c</code>) - C-Annotated Knowledge
 Graph Documentation</h1>
 <p>This document contains an annotated analysis of all functions in <a
-href="../../context/source/weapon_collision.html"><code>weapon_collision.c</code></a>.
+href="../../../context/source/weapon_collision.html"><code>weapon_collision.c</code></a>.
 This module manages collision detection for player bullets, enemy
 bullets, shields, and direct collisions between the player ship and
 flying aliens.</p>
@@ -24,7 +24,7 @@ Aliens</h2>
 <h3 id="l0e10"><code>l0e10</code></h3>
 <h4 id="description"><strong>Description</strong></h4>
 <p>The function <a
-href="../../context/source/weapon_collision.html#L233-L294"><code>l0e10</code></a> (Z80
+href="../../../context/source/weapon_collision.html#L233-L294"><code>l0e10</code></a> (Z80
 ROM: <code>$0E10–$0E9D</code>) executes collision detection for player
 bullets against aliens (both inside formation and in free diving
 flight).</p>
@@ -34,22 +34,22 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><code>phoenix_formation_hit_window</code> — <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="#l0c00_kill_score"><code>l0c00_kill_score</code></a> — <a
-href="../../context/source/weapon_collision.html#L214"><code>weapon_collision.c#L214</code></a></li>
+href="../../../context/source/weapon_collision.html#L214"><code>weapon_collision.c#L214</code></a></li>
 <li><a href="#l0ea4_with_score"><code>l0ea4_with_score</code></a> — <a
-href="../../context/source/weapon_collision.html#L301"><code>weapon_collision.c#L301</code></a></li>
+href="../../../context/source/weapon_collision.html#L301"><code>weapon_collision.c#L301</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
-href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
+href="../../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#check_enemy_bullet_to_player_collision"><code>check_enemy_bullet_to_player_collision</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L191-L192"><code>weapon_collision.c#L191-L192</code></a></li>
+href="../../../context/source/weapon_collision.html#L191-L192"><code>weapon_collision.c#L191-L192</code></a></li>
 </ul></li>
 </ul>
 <h4 id="step-by-step-functionality"><strong>Step-by-Step
@@ -77,7 +77,7 @@ called.</li>
 <h3 id="l0ea4_with_score"><code>l0ea4_with_score</code></h3>
 <h4 id="description-1"><strong>Description</strong></h4>
 <p>The function <a
-href="../../context/source/weapon_collision.html#L301-L345"><code>l0ea4_with_score</code></a>
+href="../../../context/source/weapon_collision.html#L301-L345"><code>l0ea4_with_score</code></a>
 (Z80 ROM: <code>$0EA4–$0EE5</code>) registers the destruction of an
 alien, updates bullet and alien control states, awards score, and
 initializes an explosion slot.</p>
@@ -87,21 +87,21 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
+href="../../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l0e10"><code>l0e10</code></a> — <a
-href="../../context/source/weapon_collision.html#L265"><code>weapon_collision.c#L265</code></a>,
-<a href="../../context/source/weapon_collision.html#L291"><code>L291</code></a></li>
+href="../../../context/source/weapon_collision.html#L265"><code>weapon_collision.c#L265</code></a>,
+<a href="../../../context/source/weapon_collision.html#L291"><code>L291</code></a></li>
 <li><a
 href="#l0f00_check_alien_with_player_collision"><code>l0f00_check_alien_with_player_collision</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L411"><code>weapon_collision.c#L411</code></a>,
-<a href="../../context/source/weapon_collision.html#L446"><code>L446</code></a></li>
+href="../../../context/source/weapon_collision.html#L411"><code>weapon_collision.c#L411</code></a>,
+<a href="../../../context/source/weapon_collision.html#L446"><code>L446</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -109,7 +109,7 @@ href="../../context/source/weapon_collision.html#L411"><code>weapon_collision.c#
 <h3 id="process_enemy_bombs"><code>process_enemy_bombs</code></h3>
 <h4 id="description-2"><strong>Description</strong></h4>
 <p>The function <a
-href="../../context/source/weapon_collision.html#L163-L169"><code>process_enemy_bombs</code></a>
+href="../../../context/source/weapon_collision.html#L163-L169"><code>process_enemy_bombs</code></a>
 (Z80 ROM: <code>$0C40–$0C51</code>) manages the per-frame updating of
 all 5 enemy bomb slots.</p>
 <h4 id="knowledge-graph-links-2"><strong>Knowledge Graph
@@ -120,21 +120,21 @@ Links</strong></h4>
 <li><a
 href="#l0c84_enemy_bullet_movement"><code>l0c84_enemy_bullet_movement</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L63"><code>weapon_collision.c#L63</code></a></li>
+href="../../../context/source/weapon_collision.html#L63"><code>weapon_collision.c#L63</code></a></li>
 <li><code>update_screen_objects</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>get_screen_ram_address</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="alien-wave.html#l2160"><code>l2160</code></a> — <a
-href="../../context/source/alien_wave.html#L145"><code>alien_wave.c#L145</code></a></li>
+href="../../../context/source/alien_wave.html#L145"><code>alien_wave.c#L145</code></a></li>
 <li><a href="alien-wave.html#l2180"><code>l2180</code></a> — <a
-href="../../context/source/alien_wave.html#L163"><code>alien_wave.c#L163</code></a></li>
+href="../../../context/source/alien_wave.html#L163"><code>alien_wave.c#L163</code></a></li>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../context/source/bird_logic.html#L48"><code>bird_logic.c#L48</code></a></li>
+href="../../../context/source/bird_logic.html#L48"><code>bird_logic.c#L48</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -142,7 +142,7 @@ href="../../context/source/bird_logic.html#L48"><code>bird_logic.c#L48</code></a
 id="l0c84_enemy_bullet_movement"><code>l0c84_enemy_bullet_movement</code></h3>
 <h4 id="description-3"><strong>Description</strong></h4>
 <p>The function <a
-href="../../context/source/weapon_collision.html#L63-L98"><code>l0c84_enemy_bullet_movement</code></a>
+href="../../../context/source/weapon_collision.html#L63-L98"><code>l0c84_enemy_bullet_movement</code></a>
 (Z80 ROM: <code>$0C84–$0CB3</code>) moves an enemy bullet downward
 (<code>Y += 4</code>), toggles its animation frame and checks for hits
 on the player ship or player force field.</p>
@@ -153,7 +153,7 @@ Collisions</h2>
 id="l0f00_check_alien_with_player_collision"><code>l0f00_check_alien_with_player_collision</code></h3>
 <h4 id="description-4"><strong>Description</strong></h4>
 <p>The function <a
-href="../../context/source/weapon_collision.html#L380-L454"><code>l0f00_check_alien_with_player_collision</code></a>
+href="../../../context/source/weapon_collision.html#L380-L454"><code>l0f00_check_alien_with_player_collision</code></a>
 (Z80 ROM: <code>$0F00–$0FB9</code>) checks physical collisions between
 diving aliens and the player ship (or the player force field).</p>
 <h4 id="knowledge-graph-links-3"><strong>Knowledge Graph
@@ -162,24 +162,24 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="#l0f56_screen_ram_collision"><code>l0f56_screen_ram_collision</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L352"><code>weapon_collision.c#L352</code></a></li>
+href="../../../context/source/weapon_collision.html#L352"><code>weapon_collision.c#L352</code></a></li>
 <li><a href="#l0cc4_player_killed"><code>l0cc4_player_killed</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L442"><code>weapon_collision.c#L442</code></a></li>
+href="../../../context/source/weapon_collision.html#L442"><code>weapon_collision.c#L442</code></a></li>
 <li><a href="#l0ea4_with_score"><code>l0ea4_with_score</code></a> — <a
-href="../../context/source/weapon_collision.html#L411"><code>weapon_collision.c#L411</code></a>,
-<a href="../../context/source/weapon_collision.html#L446"><code>L446</code></a></li>
+href="../../../context/source/weapon_collision.html#L411"><code>weapon_collision.c#L411</code></a>,
+<a href="../../../context/source/weapon_collision.html#L446"><code>L446</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="alien-wave.html#l2150"><code>l2150</code></a> — <a
-href="../../context/source/alien_wave.html#L137"><code>alien_wave.c#L137</code></a></li>
+href="../../../context/source/alien_wave.html#L137"><code>alien_wave.c#L137</code></a></li>
 <li><a href="alien-wave.html#l2190"><code>l2190</code></a> — <a
-href="../../context/source/alien_wave.html#L174"><code>alien_wave.c#L174</code></a></li>
+href="../../../context/source/alien_wave.html#L174"><code>alien_wave.c#L174</code></a></li>
 </ul></li>
 </ul>
 <h4 id="step-by-step-functionality-1"><strong>Step-by-Step
@@ -202,7 +202,7 @@ Routines</h2>
 <h3 id="l0cc4_player_killed"><code>l0cc4_player_killed</code></h3>
 <h4 id="description-5"><strong>Description</strong></h4>
 <p>The function <a
-href="../../context/source/weapon_collision.html#L51-L56"><code>l0cc4_player_killed</code></a>
+href="../../../context/source/weapon_collision.html#L51-L56"><code>l0cc4_player_killed</code></a>
 (Z80 ROM: <code>$0CC4–$0CD3</code>) is called upon a fatal hit on the
 player ship.</p>
 <h4 id="knowledge-graph-links-4"><strong>Knowledge Graph
@@ -211,18 +211,18 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l0cb4_check_bullet_hit_player"><code>l0cb4_check_bullet_hit_player</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L43"><code>weapon_collision.c#L43</code></a></li>
+href="../../../context/source/weapon_collision.html#L43"><code>weapon_collision.c#L43</code></a></li>
 <li><a
 href="#l0f00_check_alien_with_player_collision"><code>l0f00_check_alien_with_player_collision</code></a>
 — <a
-href="../../context/source/weapon_collision.html#L442"><code>weapon_collision.c#L442</code></a></li>
+href="../../../context/source/weapon_collision.html#L442"><code>weapon_collision.c#L442</code></a></li>
 </ul></li>
 </ul>
 </body></html>

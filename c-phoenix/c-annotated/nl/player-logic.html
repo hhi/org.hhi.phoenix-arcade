@@ -3,7 +3,7 @@ id="player-logic-player_logicc---c-annotated-knowledge-graph-documentatie">Playe
 Logic (<code>player_logic.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/player_logic.html"><code>player_logic.c</code></a>. Deze module
+href="../../../context/source/player_logic.html"><code>player_logic.c</code></a>. Deze module
 beheert het spelerschip, joystickinvoer, schild-activatie, kogelspawning
 en de rendering van het speler-krachtveld.</p>
 <hr />
@@ -22,7 +22,7 @@ Krachtveldbeheer</a></li>
 <h3 id="player_update"><code>player_update</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L35-L42"><code>player_update</code></a> (Z80
+href="../../../context/source/player_logic.html#L35-L42"><code>player_update</code></a> (Z80
 ROM: <code>$0876–$0885</code>) is de centrale per-frame update-routine
 voor de speler.</p>
 <h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
@@ -35,39 +35,39 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="#player_data_controller"><code>player_data_controller</code></a> —
 <a
-href="../../context/source/player_logic.html#L37"><code>player_logic.c#L37</code></a></li>
+href="../../../context/source/player_logic.html#L37"><code>player_logic.c#L37</code></a></li>
 <li><a
 href="#copy_current_to_old_player_data"><code>copy_current_to_old_player_data</code></a>
 — <a
-href="../../context/source/player_logic.html#L38"><code>player_logic.c#L38</code></a></li>
+href="../../../context/source/player_logic.html#L38"><code>player_logic.c#L38</code></a></li>
 <li><a
 href="#update_player_position_bullet_shield"><code>update_player_position_bullet_shield</code></a>
 — <a
-href="../../context/source/player_logic.html#L39"><code>player_logic.c#L39</code></a></li>
+href="../../../context/source/player_logic.html#L39"><code>player_logic.c#L39</code></a></li>
 <li><code>get_screen_ram_address_for_player_ship</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a
 href="#map_player_ship_position"><code>map_player_ship_position</code></a>
 — <a
-href="../../context/source/player_logic.html#L41"><code>player_logic.c#L41</code></a></li>
+href="../../../context/source/player_logic.html#L41"><code>player_logic.c#L41</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-wave.html#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
 — <a
-href="../../context/source/alien_wave.html#L222"><code>alien_wave.c#L222</code></a></li>
+href="../../../context/source/alien_wave.html#L222"><code>alien_wave.c#L222</code></a></li>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../context/source/bird_logic.html#L29"><code>bird_logic.c#L29</code></a></li>
+href="../../../context/source/bird_logic.html#L29"><code>bird_logic.c#L29</code></a></li>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
+href="../../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -75,7 +75,7 @@ href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a
 id="copy_current_to_old_player_data"><code>copy_current_to_old_player_data</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L49-L58"><code>copy_current_to_old_player_data</code></a>
+href="../../../context/source/player_logic.html#L49-L58"><code>copy_current_to_old_player_data</code></a>
 (Z80 ROM: <code>$0886–$0897</code>) verschuift de huidige
 positiegegevens van de speler en kogels naar de 'oude' geheugenbuffers
 ten behoeve van het schonen van het scherm in het volgende frame.</p>
@@ -84,7 +84,7 @@ ten behoeve van het schonen van het scherm in het volgende frame.</p>
 <h3 id="move_player"><code>move_player</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L114-L146"><code>move_player</code></a> (Z80
+href="../../../context/source/player_logic.html#L114-L146"><code>move_player</code></a> (Z80
 ROM: <code>$08C4–$08F3</code>) verwerkt schild-activatie en
 joystick-invoer.</p>
 <h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
@@ -93,23 +93,23 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#draw_shields"><code>draw_shields</code></a> — <a
-href="../../context/source/player_logic.html#L118"><code>player_logic.c#L118</code></a></li>
+href="../../../context/source/player_logic.html#L118"><code>player_logic.c#L118</code></a></li>
 <li><code>check_input_bits</code> — <a
-href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
+href="../../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
 <li><a
 href="#update_player_ship_x"><code>update_player_ship_x</code></a> — <a
-href="../../context/source/player_logic.html#L142"><code>player_logic.c#L142</code></a></li>
+href="../../../context/source/player_logic.html#L142"><code>player_logic.c#L142</code></a></li>
 <li><a
 href="#get_player_ship_animation_frame_values"><code>get_player_ship_animation_frame_values</code></a>
 — <a
-href="../../context/source/player_logic.html#L145"><code>player_logic.c#L145</code></a></li>
+href="../../../context/source/player_logic.html#L145"><code>player_logic.c#L145</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#update_player_position_bullet_shield"><code>update_player_position_bullet_shield</code></a>
 — <a
-href="../../context/source/player_logic.html#L95"><code>player_logic.c#L95</code></a></li>
+href="../../../context/source/player_logic.html#L95"><code>player_logic.c#L95</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -131,7 +131,7 @@ en werkt het sprite-frame bij.</li>
 <h3 id="update_player_ship_x"><code>update_player_ship_x</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L66-L87"><code>update_player_ship_x</code></a>
+href="../../../context/source/player_logic.html#L66-L87"><code>update_player_ship_x</code></a>
 (Z80 ROM: <code>$0900–$0921</code>, <code>$0926–$092E</code>) leest de
 joystick in (<code>state.IN0Current</code>) en beweegt X tussen grenzen
 <code>0x0D</code> (links) en <code>0xC0</code> (rechts).</p>
@@ -140,7 +140,7 @@ joystick in (<code>state.IN0Current</code>) en beweegt X tussen grenzen
 id="map_player_ship_position"><code>map_player_ship_position</code></h3>
 <h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L153-L161"><code>map_player_ship_position</code></a>
+href="../../../context/source/player_logic.html#L153-L161"><code>map_player_ship_position</code></a>
 (Z80 ROM: <code>$097A–$0995</code>) raadpleegt
 <code>phoenix_player_x_position_mapping</code> om de effectieve
 botsings-kaders <code>state.M439E</code> en <code>state.M439F</code> te
@@ -153,10 +153,10 @@ id="get_assigned_player_bullet_tile--spawn_player_bullet"><code>get_assigned_pla
 &amp; <code>spawn_player_bullet</code></h3>
 <h4 id="beschrijving-5"><strong>Beschrijving</strong></h4>
 <p>Functie <a
-href="../../context/source/player_logic.html#L168-L182"><code>get_assigned_player_bullet_tile</code></a>
+href="../../../context/source/player_logic.html#L168-L182"><code>get_assigned_player_bullet_tile</code></a>
 (Z80 ROM: <code>$0930–$093C</code>) vuurt op flank-detectie van
 <code>BTN_FIRE</code> een kogel af via <a
-href="../../context/source/player_logic.html#L203-L229"><code>spawn_player_bullet</code></a>
+href="../../../context/source/player_logic.html#L203-L229"><code>spawn_player_bullet</code></a>
 (Z80 ROM: <code>$093D–$0961</code>).</p>
 <h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
 Koppelingen</strong></h4>
@@ -166,20 +166,20 @@ Koppelingen</strong></h4>
 <li><a
 href="#update_player_bullet_y"><code>update_player_bullet_y</code></a> —
 <a
-href="../../context/source/player_logic.html#L170"><code>player_logic.c#L170</code></a></li>
+href="../../../context/source/player_logic.html#L170"><code>player_logic.c#L170</code></a></li>
 <li><code>check_input_bits</code> — <a
-href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
+href="../../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
 <li><a
 href="#get_player_ship_animation_frame_values"><code>get_player_ship_animation_frame_values</code></a>
 — <a
-href="../../context/source/player_logic.html#L226"><code>player_logic.c#L226</code></a></li>
+href="../../../context/source/player_logic.html#L226"><code>player_logic.c#L226</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="update_player_bullet_y"><code>update_player_bullet_y</code></h3>
 <h4 id="beschrijving-6"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L236-L244"><code>update_player_bullet_y</code></a>
+href="../../../context/source/player_logic.html#L236-L244"><code>update_player_bullet_y</code></a>
 (Z80 ROM: <code>$0964–$0975</code>) verplaatst de spelerkogel 8 pixels
 omhoog (<code>Y -= 8</code>). Zodra de top van het scherm bereikt is
 (<code>Y &lt; 0x1F</code>), wordt de kogel verwijderd
@@ -191,18 +191,18 @@ Krachtveldbeheer</h2>
 <code>shields_expired</code></h3>
 <h4 id="beschrijving-7"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L294-L320"><code>draw_shields</code></a> (Z80
+href="../../../context/source/player_logic.html#L294-L320"><code>draw_shields</code></a> (Z80
 ROM: <code>$0AA0–$0AC1</code>) animeert en rendert de 4x4 tegelmatrix
 van het speler-krachtveld. Zodra het schild verloopt
 (<code>ShieldCount == 0xC0</code>), wist <a
-href="../../context/source/player_logic.html#L276-L287"><code>shields_expired</code></a>
+href="../../../context/source/player_logic.html#L276-L287"><code>shields_expired</code></a>
 het krachtveld en herstelt de spelerstatus.</p>
 <hr />
 <h2 id="5-scherm-ram-controller">5. Scherm RAM-controller</h2>
 <h3 id="player_data_controller"><code>player_data_controller</code></h3>
 <h4 id="beschrijving-8"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_logic.html#L250-L267"><code>player_data_controller</code></a>
+href="../../../context/source/player_logic.html#L250-L267"><code>player_data_controller</code></a>
 (Z80 ROM: <code>$0700–$0717</code>) ververst de VRAM-objecten voor het
 spelerschip en de spelerkogels tussen adresseringen <code>0x43C0</code>
 en <code>0x43EC</code>.</p>

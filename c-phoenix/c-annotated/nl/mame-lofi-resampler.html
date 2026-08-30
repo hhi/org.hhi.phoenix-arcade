@@ -3,7 +3,7 @@ id="mame-lo-fi-stream-resampler-mame_lofi_resamplerc---c-annotated-knowledge-gra
 Lo-Fi Stream Resampler (<code>mame_lofi_resampler.c</code>) -
 C-Annotated Knowledge Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van de functies in <a
-href="../../context/source/mame_lofi_resampler.html"><code>mame_lofi_resampler.c</code></a>.
+href="../../../context/source/mame_lofi_resampler.html"><code>mame_lofi_resampler.c</code></a>.
 Deze module implementeert MAME's 4-punts kubische interpolatie (cubic
 interpolation) resampler om bron-audio (zoals 23.8kHz TMS-muziek of
 96kHz discreet-audio) om te zetten naar de 44.1kHz
@@ -17,12 +17,12 @@ id="mame_lofi_resampler_init--mame_lofi_resampler_next"><code>mame_lofi_resample
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../context/source/mame_lofi_resampler.html#L40-L46"><code>mame_lofi_resampler_init</code></a>:
+href="../../../context/source/mame_lofi_resampler.html#L40-L46"><code>mame_lofi_resampler_init</code></a>:
 Genereert de process-globale interpolatie-tabel <code>g_interp</code> en
 berekent de vaste-kommaberekening stapgrootte
 (<code>r-&gt;step</code>).</li>
 <li><a
-href="../../context/source/mame_lofi_resampler.html#L66-L82"><code>mame_lofi_resampler_next</code></a>:
+href="../../../context/source/mame_lofi_resampler.html#L66-L82"><code>mame_lofi_resampler_next</code></a>:
 Berekent de gewogen 4-punts kubische interpolatie over de sample-window
 <code>s0..s3</code> en schuift de bron-samples op bij
 phase-overflow.</li>
@@ -33,19 +33,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>build_interpolation</code> — <a
-href="../../context/source/mame_lofi_resampler.html#L15"><code>mame_lofi_resampler.c#L15</code></a></li>
+href="../../../context/source/mame_lofi_resampler.html#L15"><code>mame_lofi_resampler.c#L15</code></a></li>
 <li><code>read_source</code> — <a
-href="../../context/source/mame_lofi_resampler.html#L53"><code>mame_lofi_resampler.c#L53</code></a></li>
+href="../../../context/source/mame_lofi_resampler.html#L53"><code>mame_lofi_resampler.c#L53</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
-href="../../context/source/sound.html#L60"><code>sound.c#L60</code></a>, <a
-href="../../context/source/sound.html#L62"><code>L62</code></a></li>
+href="../../../context/source/sound.html#L60"><code>sound.c#L60</code></a>, <a
+href="../../../context/source/sound.html#L62"><code>L62</code></a></li>
 <li><a
 href="sound.html#sound_render_frame"><code>sound_render_frame</code></a> —
-<a href="../../context/source/sound.html#L176"><code>sound.c#L176</code></a>, <a
-href="../../context/source/sound.html#L177"><code>L177</code></a></li>
+<a href="../../../context/source/sound.html#L176"><code>sound.c#L176</code></a>, <a
+href="../../../context/source/sound.html#L177"><code>L177</code></a></li>
 </ul></li>
 </ul>
 </body></html>

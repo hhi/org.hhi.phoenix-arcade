@@ -3,7 +3,7 @@ id="birds-vertical-movement-birds_vertical_movementc---c-annotated-knowledge-gra
 Vertical Movement (<code>birds_vertical_movement.c</code>) - C-Annotated
 Knowledge Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/birds_vertical_movement.html"><code>birds_vertical_movement.c</code></a>.
+href="../../../context/source/birds_vertical_movement.html"><code>birds_vertical_movement.c</code></a>.
 Deze module beheert de verticale golf- en scrollbewegingen van de
 vogelformatie via de hardware-scrollregisters.</p>
 <hr />
@@ -23,7 +23,7 @@ Verticale Beweging</h2>
 id="birds_vertical_movement_update"><code>birds_vertical_movement_update</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/birds_vertical_movement.html#L112-L142"><code>birds_vertical_movement_update</code></a>
+href="../../../context/source/birds_vertical_movement.html#L112-L142"><code>birds_vertical_movement_update</code></a>
 (Z80 ROM: <code>$2600–$2664</code>) stelt de verticale scrollwaarde van
 de vogel-laag in via het hardware-register
 <code>hw_write_scroll_register</code>.</p>
@@ -36,21 +36,21 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>hw_write_scroll_register</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>phoenix_bird_scroll_steps</code> — <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="#l2668"><code>l2668</code></a> — <a
-href="../../context/source/birds_vertical_movement.html#L137"><code>birds_vertical_movement.c#L137</code></a></li>
+href="../../../context/source/birds_vertical_movement.html#L137"><code>birds_vertical_movement.c#L137</code></a></li>
 <li><a href="#l26aa"><code>l26aa</code></a> — <a
-href="../../context/source/birds_vertical_movement.html#L138"><code>birds_vertical_movement.c#L138</code></a></li>
+href="../../../context/source/birds_vertical_movement.html#L138"><code>birds_vertical_movement.c#L138</code></a></li>
 <li><a href="#l26d0"><code>l26d0</code></a> — <a
-href="../../context/source/birds_vertical_movement.html#L140"><code>birds_vertical_movement.c#L140</code></a></li>
+href="../../../context/source/birds_vertical_movement.html#L140"><code>birds_vertical_movement.c#L140</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../context/source/bird_logic.html#L31"><code>bird_logic.c#L31</code></a></li>
+href="../../../context/source/bird_logic.html#L31"><code>bird_logic.c#L31</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -84,7 +84,7 @@ Formatie-analyse</h2>
 <h3 id="l2668"><code>l2668</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/birds_vertical_movement.html#L15-L27"><code>l2668</code></a>
+href="../../../context/source/birds_vertical_movement.html#L15-L27"><code>l2668</code></a>
 (Z80 ROM: <code>$2668–$26A7</code>) berekent de dalingssnelheid
 <code>state.B4BD5</code> op basis van de moeilijkheidsgraad, het aantal
 resterende aliens (<code>AliensLeft</code>) en vogels
@@ -95,21 +95,21 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_bird_descent_caps</code> — <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#birds_vertical_movement_update"><code>birds_vertical_movement_update</code></a>
 — <a
-href="../../context/source/birds_vertical_movement.html#L137"><code>birds_vertical_movement.c#L137</code></a></li>
+href="../../../context/source/birds_vertical_movement.html#L137"><code>birds_vertical_movement.c#L137</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l26d0"><code>l26d0</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/birds_vertical_movement.html#L36-L51"><code>l26d0</code></a>
+href="../../../context/source/birds_vertical_movement.html#L36-L51"><code>l26d0</code></a>
 (Z80 ROM: <code>$26D0–$26FD</code>) scant de 8 vogel-slots (van slot 7
 terug naar slot 0) om de posities <code>state.B4BD6</code>
 (formatie-positie) en <code>state.B4BD7</code> (formatie-hoogte) te
@@ -120,14 +120,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
-href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
+href="../../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#birds_vertical_movement_update"><code>birds_vertical_movement_update</code></a>
 — <a
-href="../../context/source/birds_vertical_movement.html#L140"><code>birds_vertical_movement.c#L140</code></a></li>
+href="../../../context/source/birds_vertical_movement.html#L140"><code>birds_vertical_movement.c#L140</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -135,7 +135,7 @@ href="../../context/source/birds_vertical_movement.html#L140"><code>birds_vertic
 <h3 id="l26aa"><code>l26aa</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/birds_vertical_movement.html#L60-L102"><code>l26aa</code></a>
+href="../../../context/source/birds_vertical_movement.html#L60-L102"><code>l26aa</code></a>
 (Z80 ROM: <code>$26AA–$26CC</code>, <code>$2476–$2493</code>,
 <code>$2495–$249F</code>) beheert de aftelteller
 <code>state.B4BD3</code> en wapent de klimdrempel
@@ -153,7 +153,7 @@ Koppelingen</strong></h4>
 <li><a
 href="#birds_vertical_movement_update"><code>birds_vertical_movement_update</code></a>
 — <a
-href="../../context/source/birds_vertical_movement.html#L138"><code>birds_vertical_movement.c#L138</code></a></li>
+href="../../../context/source/birds_vertical_movement.html#L138"><code>birds_vertical_movement.c#L138</code></a></li>
 </ul></li>
 </ul>
 </body></html>

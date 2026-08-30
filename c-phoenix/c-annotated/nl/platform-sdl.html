@@ -3,7 +3,7 @@ id="sdl2-platform-host-platform_sdlc---c-annotated-knowledge-graph-documentatie"
 Platform Host (<code>platform_sdl.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a>. Deze module
+href="../../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a>. Deze module
 bevat de hoofd-entrypoint van de applicatie, het SDL2-vensterbeheer,
 toetsenbordinvoer, VRAM-bankswapping en de audio/video 60Hz vblank
 synchronisatie.</p>
@@ -31,11 +31,11 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
-href="../../context/source/sound.html"><code>sound.c</code></a></li>
+href="../../../context/source/sound.html"><code>sound.c</code></a></li>
 <li><a
 href="hw-video-audio.html#phoenix_main_loop"><code>phoenix_main_loop</code></a>
 — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -48,7 +48,7 @@ Bank-swapping</h2>
 <li><code>bank_swap_to</code>: Emuleert het fysieke bank-swappen van de
 twee 3KB VRAM-banken (Player 1 RAM versus Player 2 RAM).</li>
 <li><a
-href="../../context/source/platform_sdl.html#L90-L137"><code>copy_memory_bank</code></a>
+href="../../../context/source/platform_sdl.html#L90-L137"><code>copy_memory_bank</code></a>
 (Z80 ROM: <code>$0460–$049D</code>): Kopiëert de gedeelde header-rijen
 en achtergrondparameters tussen Player 1 en Player 2 banken.</li>
 </ul>

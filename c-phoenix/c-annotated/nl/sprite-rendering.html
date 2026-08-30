@@ -3,7 +3,7 @@ id="sprite-rendering-sprite_renderingc---c-annotated-knowledge-graph-documentati
 Rendering (<code>sprite_rendering.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a>.
+href="../../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a>.
 Deze module beheert de weergave en opschoning van 1x1, 2x1, 1x2 en 2x2
 tegelmatrix-objecten op het voorgrondscherm.</p>
 <hr />
@@ -20,7 +20,7 @@ Engine</h2>
 <h3 id="update_screen_objects"><code>update_screen_objects</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/sprite_rendering.html#L215-L223"><code>update_screen_objects</code></a>
+href="../../../context/source/sprite_rendering.html#L215-L223"><code>update_screen_objects</code></a>
 (Z80 ROM: <code>$0718–$071F</code>) is de centrale routine die voor een
 scherm-object (zoals aliens, kogels en de speler) eerst de oude positie
 wist (via <code>bit4_controller</code>) en vervolgens het nieuwe
@@ -35,22 +35,22 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#bit4_controller"><code>bit4_controller</code></a> — <a
-href="../../context/source/sprite_rendering.html#L219"><code>sprite_rendering.c#L219</code></a></li>
+href="../../../context/source/sprite_rendering.html#L219"><code>sprite_rendering.c#L219</code></a></li>
 <li><a href="#bit3_controller"><code>bit3_controller</code></a> — <a
-href="../../context/source/sprite_rendering.html#L222"><code>sprite_rendering.c#L222</code></a></li>
+href="../../../context/source/sprite_rendering.html#L222"><code>sprite_rendering.c#L222</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-logic.html#alien_data_controller"><code>alien_data_controller</code></a>
 — <a
-href="../../context/source/alien_logic.html#L279"><code>alien_logic.c#L279</code></a></li>
+href="../../../context/source/alien_logic.html#L279"><code>alien_logic.c#L279</code></a></li>
 <li><a
 href="player-logic.html#player_data_controller"><code>player_data_controller</code></a>
 — <a
-href="../../context/source/player_logic.html#L255"><code>player_logic.c#L255</code></a></li>
+href="../../../context/source/player_logic.html#L255"><code>player_logic.c#L255</code></a></li>
 <li><code>enemy_bullet_data_controller</code> — <a
-href="../../context/source/weapon_collision.html#L152"><code>weapon_collision.c#L152</code></a></li>
+href="../../../context/source/weapon_collision.html#L152"><code>weapon_collision.c#L152</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -61,12 +61,12 @@ Teken-controllers</h2>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../context/source/sprite_rendering.html#L150-L173"><code>bit4_controller</code></a>
+href="../../../context/source/sprite_rendering.html#L150-L173"><code>bit4_controller</code></a>
 (Z80 ROM: <code>$0720–$073F</code>): Inspecteert bit 4 van de
 controlestate. Indien actief, wist deze de oude tegelposities (1x1, 2x1,
 1x2 of 2x2) uit VRAM.</li>
 <li><a
-href="../../context/source/sprite_rendering.html#L179-L208"><code>bit3_controller</code></a>
+href="../../../context/source/sprite_rendering.html#L179-L208"><code>bit3_controller</code></a>
 (Z80 ROM: <code>$0740–$07EE</code>): Inspecteert bit 3 van de
 controlestate. Indien actief, haalt deze de tegel-ID's op uit
 <code>phoenix_sprite_character_block_shapes</code> en schrijft het

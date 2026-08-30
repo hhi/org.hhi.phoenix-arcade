@@ -3,7 +3,7 @@ id="scoring--sound-service-scoringc---c-annotated-knowledge-graph-documentatie">
 &amp; Sound Service (<code>scoring.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/scoring.html"><code>scoring.c</code></a>. Deze module beheert
+href="../../../context/source/scoring.html"><code>scoring.c</code></a>. Deze module beheert
 de BCD-scoretelling, High Score vergelijkingen,
 bonusleven-drempelcontroles, attract-mode muntsymbolen en de per-frame
 geluidssynchronisatie.</p>
@@ -24,7 +24,7 @@ Muntcontroles</a></li>
 <code>bcd_add</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/scoring.html#L66-L81"><code>add_score</code></a> telt een
+href="../../../context/source/scoring.html#L66-L81"><code>add_score</code></a> telt een
 BCD-gecodeerde score toe aan de actieve speler (Player 1 of Player 2,
 afhankelijk van bit 0 in <code>state.GameAndDemoOrSplash</code>).
 Hulpfunctie <code>bcd_add</code> verzorgt de BCD-optelling met
@@ -35,21 +35,21 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#update_hi_score"><code>update_hi_score</code></a> — <a
-href="../../context/source/scoring.html#L80"><code>scoring.c#L80</code></a></li>
+href="../../../context/source/scoring.html#L80"><code>scoring.c#L80</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#update_scores_and_sound"><code>update_scores_and_sound</code></a>
-— <a href="../../context/source/scoring.html#L109"><code>scoring.c#L109</code></a>, <a
-href="../../context/source/scoring.html#L124"><code>L124</code></a></li>
+— <a href="../../../context/source/scoring.html#L109"><code>scoring.c#L109</code></a>, <a
+href="../../../context/source/scoring.html#L124"><code>L124</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="update_hi_score"><code>update_hi_score</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/scoring.html#L39-L59"><code>update_hi_score</code></a> (Z80
+href="../../../context/source/scoring.html#L39-L59"><code>update_hi_score</code></a> (Z80
 ROM: <code>$02F0–$02F5</code>) vergelijkt de 3-byte BCD scores van
 Player 1 en Player 2 en werkt de globale High Score
 (<code>HiScorehigh</code>, <code>HiScoremid</code>,
@@ -61,7 +61,7 @@ Geluid Service</h2>
 id="update_scores_and_sound"><code>update_scores_and_sound</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/scoring.html#L93-L195"><code>update_scores_and_sound</code></a>
+href="../../../context/source/scoring.html#L93-L195"><code>update_scores_and_sound</code></a>
 (Z80 ROM: <code>$2700–$27A8</code>, <code>$3A10</code>) is de per-frame
 servicemodule voor scoretoekenning, bonusleven-controle en
 geluidssynchronisatie.</p>
@@ -71,27 +71,27 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a href="#add_score"><code>add_score</code></a> — <a
-href="../../context/source/scoring.html#L109"><code>scoring.c#L109</code></a>, <a
-href="../../context/source/scoring.html#L124"><code>L124</code></a></li>
+href="../../../context/source/scoring.html#L109"><code>scoring.c#L109</code></a>, <a
+href="../../../context/source/scoring.html#L124"><code>L124</code></a></li>
 <li><a href="utilities.html#print_number"><code>print_number</code></a> —
-<a href="../../context/source/utilities.html#L80"><code>utilities.c:L80</code></a></li>
+<a href="../../../context/source/utilities.html#L80"><code>utilities.c:L80</code></a></li>
 <li><code>update_lives_screen</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>hw_write_sound_a</code> / <code>hw_write_sound_b</code> — <a
-href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
+href="../../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>sound_set_frame_sample_index</code> — <a
-href="../../context/source/sound.html"><code>sound.c</code></a></li>
+href="../../../context/source/sound.html"><code>sound.c</code></a></li>
 <li><code>l3a10</code> — <a
-href="../../context/source/sound_dispatcher.html"><code>sound_dispatcher.c</code></a></li>
+href="../../../context/source/sound_dispatcher.html"><code>sound_dispatcher.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
+href="../../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -123,7 +123,7 @@ geluidswaarden via <code>hw_write_sound_a</code> en
 <h3 id="check_coin_event"><code>check_coin_event</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/scoring.html#L202-L218"><code>check_coin_event</code></a>
+href="../../../context/source/scoring.html#L202-L218"><code>check_coin_event</code></a>
 verwerkt muntsymbolen in het VRAM tijdens de attract mode op basis van
 de DIP-switch instellingen (<code>hw_read_dsw()</code>).</p>
 </body></html>

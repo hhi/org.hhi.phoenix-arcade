@@ -3,7 +3,7 @@ id="player-explosion-player_explosionc---c-annotated-knowledge-graph-documentati
 Explosion (<code>player_explosion.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/player_explosion.html"><code>player_explosion.c</code></a>.
+href="../../../context/source/player_explosion.html"><code>player_explosion.c</code></a>.
 Deze module beheert het visuele ontploffingsproces van het spelerschip,
 inclusief fragment-rendering, scrolling-klemmen en
 deeltjes-animaties.</p>
@@ -21,7 +21,7 @@ Fragment Rendering</h2>
 <h3 id="l211c"><code>l211c</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_explosion.html#L16-L24"><code>l211c</code></a> (Z80 ROM:
+href="../../../context/source/player_explosion.html#L16-L24"><code>l211c</code></a> (Z80 ROM:
 <code>$211C–$212C</code>) klemt de achtergrond-scrollsnelheid
 <code>state.CounterB9</code> op <code>0x10</code> tijdens de
 speler-explosieanimatie en bijwerkt het hardware-register via
@@ -30,7 +30,7 @@ speler-explosieanimatie en bijwerkt het hardware-register via
 <h3 id="l20e8"><code>l20e8</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_explosion.html#L32-L69"><code>l20e8</code></a> (Z80 ROM:
+href="../../../context/source/player_explosion.html#L32-L69"><code>l20e8</code></a> (Z80 ROM:
 <code>$20E8–$210D</code>) rendert de losse fragmenten van het
 ontploffende spelerschip.</p>
 <h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
@@ -39,17 +39,17 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l211c"><code>l211c</code></a> — <a
-href="../../context/source/player_explosion.html#L38"><code>player_explosion.c#L38</code></a></li>
+href="../../../context/source/player_explosion.html#L38"><code>player_explosion.c#L38</code></a></li>
 <li><code>phoenix_mothership_explosion_pointers</code> — <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>draw_image_c_by_b</code> — <a
-href="../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
+href="../../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-endings.html#l0cc4_player_killed"><code>l0cc4_player_killed</code></a>
-— <a href="../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
+— <a href="../../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -74,9 +74,9 @@ image pointer op.</li>
 <code>l2085_particles</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functies <a
-href="../../context/source/player_explosion.html#L118-L140"><code>l2070</code></a> (Z80
+href="../../../context/source/player_explosion.html#L118-L140"><code>l2070</code></a> (Z80
 ROM: <code>$2070–$2084</code>) en <a
-href="../../context/source/player_explosion.html#L154-L187"><code>l2085_particles</code></a>
+href="../../../context/source/player_explosion.html#L154-L187"><code>l2085_particles</code></a>
 (Z80 ROM: <code>$2085–$20AA</code>) verzorgen het opzetten en berekenen
 van de rondspattende deeltjes (particles) bij het vernietigen van de
 speler (en shared met het moederschip).</p>
@@ -88,13 +88,13 @@ Koppelingen</strong></h4>
 <li><a
 href="#l20b0_player_ship_particles_explosion"><code>l20b0_player_ship_particles_explosion</code></a>
 — <a
-href="../../context/source/player_explosion.html#L169"><code>player_explosion.c#L169</code></a></li>
+href="../../../context/source/player_explosion.html#L169"><code>player_explosion.c#L169</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-endings.html#l0cc4_player_killed"><code>l0cc4_player_killed</code></a>
-— <a href="../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
+— <a href="../../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -102,7 +102,7 @@ href="state-endings.html#l0cc4_player_killed"><code>l0cc4_player_killed</code></
 id="l20b0_player_ship_particles_explosion"><code>l20b0_player_ship_particles_explosion</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/player_explosion.html#L76-L107"><code>l20b0_player_ship_particles_explosion</code></a>
+href="../../../context/source/player_explosion.html#L76-L107"><code>l20b0_player_ship_particles_explosion</code></a>
 (Z80 ROM: <code>$20B0–$20E2</code>) voert de eigenlijke kopieerlus uit
 van het deeltjes-raster naar VRAM.</p>
 <h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
@@ -111,14 +111,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_explosion_particle_page</code> — <a
-href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
+href="../../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
+href="../../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2085_particles"><code>l2085_particles</code></a> — <a
-href="../../context/source/player_explosion.html#L169"><code>player_explosion.c#L169</code></a></li>
+href="../../../context/source/player_explosion.html#L169"><code>player_explosion.c#L169</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap

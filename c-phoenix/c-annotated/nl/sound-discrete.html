@@ -3,7 +3,7 @@ id="discrete-audio-emulation-sound_discretec---c-annotated-knowledge-graph-docum
 Audio Emulation (<code>sound_discrete.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../context/source/sound_discrete.html"><code>sound_discrete.c</code></a>. Deze
+href="../../../context/source/sound_discrete.html"><code>sound_discrete.c</code></a>. Deze
 module emuleert de analoge discrete circuits van de <em>Phoenix</em>
 arcadehardware (555 astabiele multivibratoren, RC-filters, effect-mixers
 en het 18-bits polynoom ruisgenerator-circuit).</p>
@@ -23,7 +23,7 @@ Initialisatie</h2>
 <h3 id="sound_discrete_init"><code>sound_discrete_init</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/sound_discrete.html#L412-L426"><code>sound_discrete_init</code></a>
+href="../../../context/source/sound_discrete.html#L412-L426"><code>sound_discrete_init</code></a>
 bouwt de 18-bits pseudo-random opzoektabel (<code>build_poly18</code>)
 en stelt de initiële waarden in voor de 555-timers
 (<code>astable_init</code>) en RC-ontladingsnetwerken
@@ -34,16 +34,16 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>build_poly18</code> — <a
-href="../../context/source/sound_discrete.html#L55"><code>sound_discrete.c#L55</code></a></li>
+href="../../../context/source/sound_discrete.html#L55"><code>sound_discrete.c#L55</code></a></li>
 <li><code>astable_init</code> — <a
-href="../../context/source/sound_discrete.html#L72"><code>sound_discrete.c#L72</code></a></li>
+href="../../../context/source/sound_discrete.html#L72"><code>sound_discrete.c#L72</code></a></li>
 <li><code>rcdisc4_init</code> — <a
-href="../../context/source/sound_discrete.html#L171"><code>sound_discrete.c#L171</code></a></li>
+href="../../../context/source/sound_discrete.html#L171"><code>sound_discrete.c#L171</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
-href="../../context/source/sound.html#L61"><code>sound.c#L61</code></a></li>
+href="../../../context/source/sound.html#L61"><code>sound.c#L61</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -52,7 +52,7 @@ href="../../context/source/sound.html#L61"><code>sound.c#L61</code></a></li>
 <h3 id="sound_discrete_step"><code>sound_discrete_step</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/sound_discrete.html#L428-L455"><code>sound_discrete_step</code></a>
+href="../../../context/source/sound_discrete.html#L428-L455"><code>sound_discrete_step</code></a>
 voert één discreet-analoge iteratiestap uit voor effect 1 (vogelgeluiden
 / spelerkogels) en effect 2 (alien geluiden / sirens) en mixen de
 resultaten via <code>mix_discrete_sources</code>.</p>
@@ -63,19 +63,19 @@ Koppelingen</strong></h4>
 <ul>
 <li><code>astable_step_energy</code> / <code>astable_step_count_f</code>
 — <a
-href="../../context/source/sound_discrete.html#L81"><code>sound_discrete.c#L81</code></a></li>
+href="../../../context/source/sound_discrete.html#L81"><code>sound_discrete.c#L81</code></a></li>
 <li><code>rcdisc4_step</code> — <a
-href="../../context/source/sound_discrete.html#L187"><code>sound_discrete.c#L187</code></a></li>
+href="../../../context/source/sound_discrete.html#L187"><code>sound_discrete.c#L187</code></a></li>
 <li><code>note_energy</code> — <a
-href="../../context/source/sound_discrete.html#L249"><code>sound_discrete.c#L249</code></a></li>
+href="../../../context/source/sound_discrete.html#L249"><code>sound_discrete.c#L249</code></a></li>
 <li><code>mix_discrete_sources</code> — <a
-href="../../context/source/sound_discrete.html#L312"><code>sound_discrete.c#L312</code></a></li>
+href="../../../context/source/sound_discrete.html#L312"><code>sound_discrete.c#L312</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="sound.html#sound_render_frame"><code>sound_render_frame</code></a> —
-<a href="../../context/source/sound.html#L177"><code>sound.c#L177</code></a></li>
+<a href="../../../context/source/sound.html#L177"><code>sound.c#L177</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -84,7 +84,7 @@ Poly18)</h2>
 <h3 id="sound_discrete_noise"><code>sound_discrete_noise</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../context/source/sound_discrete.html#L382-L409"><code>sound_discrete_noise</code></a>
+href="../../../context/source/sound_discrete.html#L382-L409"><code>sound_discrete_noise</code></a>
 simuleert de laad- en ontlaadcurven van condensatoren C24 en C25
 (ruisenveloppen voor explosies) en combineert dit met de 18-bits LFSR
 poly-bit uitgang.</p>
@@ -94,15 +94,15 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>update_c24</code> — <a
-href="../../context/source/sound_discrete.html#L332"><code>sound_discrete.c#L332</code></a></li>
+href="../../../context/source/sound_discrete.html#L332"><code>sound_discrete.c#L332</code></a></li>
 <li><code>update_c25</code> — <a
-href="../../context/source/sound_discrete.html#L357"><code>sound_discrete.c#L357</code></a></li>
+href="../../../context/source/sound_discrete.html#L357"><code>sound_discrete.c#L357</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="sound.html#sound_render_frame"><code>sound_render_frame</code></a> —
-<a href="../../context/source/sound.html#L178"><code>sound.c#L178</code></a></li>
+<a href="../../../context/source/sound.html#L178"><code>sound.c#L178</code></a></li>
 </ul></li>
 </ul>
 </body></html>
