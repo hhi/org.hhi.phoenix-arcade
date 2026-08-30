@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>state_play.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>state_play.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;state_play.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;phoenix_tables.h&quot;</span>
+<span class="line" id="L3" data-line="3">#include &quot;z80_core.h&quot;</span>
+<span class="line" id="L4" data-line="4">#include &quot;coverage.h&quot;</span>
+<span class="line" id="L5" data-line="5">#include &quot;game_constants.h&quot;</span>
+<span class="line" id="L6" data-line="6"> </span>
+<span class="line" id="L7" data-line="7"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L8" data-line="8"> </span>
+<span class="line" id="L9" data-line="9"><span class="comment">// Stubs for game logic</span></span>
+<span class="line" id="L10" data-line="10"><span class="keyword">extern</span> <span class="keyword">void</span> update_scroll_register_and_fill_background(<span class="keyword">void</span>); <span class="comment">// L06F0</span></span>
+<span class="line" id="L11" data-line="11"><span class="keyword">extern</span> uint8_t get_animation_chrs_aliens_fade_in(<span class="keyword">void</span>); <span class="comment">// L085A</span></span>
+<span class="line" id="L12" data-line="12"><span class="keyword">extern</span> <span class="keyword">void</span> init_alien_control_states_05fa(uint8_t d, uint8_t e); <span class="comment">// L05FA</span></span>
+<span class="line" id="L13" data-line="13"><span class="keyword">extern</span> <span class="keyword">void</span> alien_data_controller(<span class="keyword">void</span>); <span class="comment">// L0A50</span></span>
+<span class="line" id="L14" data-line="14"> </span>
+<span class="line" id="L15" data-line="15"><span class="comment">// Stubs for the various level types</span></span>
+<span class="line" id="L16" data-line="16"><span class="keyword">static</span> <span class="keyword">void</span> level_1_3_B_player_alive_aliens(<span class="keyword">void</span>) {</span>
+<span class="line" id="L17" data-line="17">    coverage_hit(&quot;level_1_3_B_player_alive_aliens&quot;);</span>
+<span class="line" id="L18" data-line="18">    <span class="keyword">extern</span> <span class="keyword">void</span> l2000_alien_wave_main_loop(<span class="keyword">void</span>);</span>
+<span class="line" id="L19" data-line="19">    l2000_alien_wave_main_loop();</span>
+<span class="line" id="L20" data-line="20">} <span class="comment">// L2000</span></span>
+<span class="line" id="L21" data-line="21">/*</span>
+<span class="line" id="L22" data-line="22"> * Translates L2260</span>
+<span class="line" id="L23" data-line="23"> * Draws one spiral column step.</span>
+<span class="line" id="L24" data-line="24"> * [ASM: <span class="number">2260</span>-<span class="number">2291</span>]</span>
+<span class="line" id="L25" data-line="25"> */</span>
+<span class="line" id="L26" data-line="26"><span class="keyword">static</span> <span class="keyword">void</span> l2260_spiral_draw(uint8_t a, uint8_t b) {</span>
+<span class="line" id="L27" data-line="27">    uint8_t c = a;</span>
+<span class="line" id="L28" data-line="28">    uint8_t d_reg = (a &gt;&gt; <span class="number">3</span>) | (a &lt;&lt; <span class="number">5</span>); <span class="comment">// RRCA 3x</span></span>
+<span class="line" id="L29" data-line="29">    uint8_t e = d_reg &amp; <span class="number">0x1F</span>;</span>
+<span class="line" id="L30" data-line="30">    a = d_reg &amp; <span class="number">0xE0</span>;</span>
+<span class="line" id="L31" data-line="31">    </span>
+<span class="line" id="L32" data-line="32">    <span class="comment">// ADD $B0</span></span>
+<span class="line" id="L33" data-line="33">    uint16_t add_res = a + <span class="number">0xB0</span>;</span>
+<span class="line" id="L34" data-line="34">    uint8_t l = add_res &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L35" data-line="35">    uint8_t carry = (add_res &gt; <span class="number">0xFF</span>) ? <span class="number">1</span> : <span class="number">0</span>;</span>
+<span class="line" id="L36" data-line="36">    </span>
+<span class="line" id="L37" data-line="37">    <span class="comment">// ADC $41</span></span>
+<span class="line" id="L38" data-line="38">    uint16_t adc_res = e + <span class="number">0x41</span> + carry;</span>
+<span class="line" id="L39" data-line="39">    uint8_t h = adc_res &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L40" data-line="40">    </span>
+<span class="line" id="L41" data-line="41">    uint16_t hl = (h &lt;&lt; <span class="number">8</span>) | l;</span>
+<span class="line" id="L42" data-line="42">    </span>
+<span class="line" id="L43" data-line="43">    <span class="comment">// SUB C (on L)</span></span>
+<span class="line" id="L44" data-line="44">    uint8_t a_l = (hl &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L45" data-line="45">    a_l -= c;</span>
+<span class="line" id="L46" data-line="46">    hl = (hl &amp; <span class="number">0xFF00</span>) | a_l;</span>
+<span class="line" id="L47" data-line="47">    </span>
+<span class="line" id="L48" data-line="48">    c++;</span>
+<span class="line" id="L49" data-line="49">    uint8_t e_count = (c &lt;&lt; <span class="number">1</span>) | (c &gt;&gt; <span class="number">7</span>); <span class="comment">// RLCA</span></span>
+<span class="line" id="L50" data-line="50">    </span>
+<span class="line" id="L51" data-line="51">    <span class="comment">// Guard is narrower than mem_write&#x27;s own RAM bound (hl must land</span></span>
+<span class="line" id="L52" data-line="52">    <span class="comment">// specifically in the $4000-$43FF foreground screen) -- preserved</span></span>
+<span class="line" id="L53" data-line="53">    <span class="comment">// rather than widened.</span></span>
+<span class="line" id="L54" data-line="54">    <span class="keyword">while</span> (e_count &gt; <span class="number">0</span>) {</span>
+<span class="line" id="L55" data-line="55">        uint8_t d_count = c;</span>
+<span class="line" id="L56" data-line="56"> </span>
+<span class="line" id="L57" data-line="57">        <span class="keyword">while</span> (d_count &gt; <span class="number">0</span>) {</span>
+<span class="line" id="L58" data-line="58">            <span class="keyword">if</span> (hl &gt;= <span class="number">0x4000</span> &amp;&amp; hl &lt; <span class="number">0x4400</span>) mem_write(hl, b);</span>
+<span class="line" id="L59" data-line="59">            hl++;</span>
+<span class="line" id="L60" data-line="60">            <span class="keyword">if</span> (hl &gt;= <span class="number">0x4000</span> &amp;&amp; hl &lt; <span class="number">0x4400</span>) mem_write(hl, b);</span>
+<span class="line" id="L61" data-line="61">            hl++;</span>
+<span class="line" id="L62" data-line="62">            d_count--;</span>
+<span class="line" id="L63" data-line="63">        }</span>
+<span class="line" id="L64" data-line="64">        </span>
+<span class="line" id="L65" data-line="65">        uint8_t a_reg = hl &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L66" data-line="66">        a_reg -= c;</span>
+<span class="line" id="L67" data-line="67">        a_reg -= c;</span>
+<span class="line" id="L68" data-line="68">        uint8_t carry_sub = (a_reg &lt; <span class="number">0x20</span>) ? <span class="number">1</span> : <span class="number">0</span>;</span>
+<span class="line" id="L69" data-line="69">        a_reg -= <span class="number">0x20</span>;</span>
+<span class="line" id="L70" data-line="70">        </span>
+<span class="line" id="L71" data-line="71">        uint8_t h_reg = hl &gt;&gt; <span class="number">8</span>;</span>
+<span class="line" id="L72" data-line="72">        h_reg -= carry_sub; <span class="comment">// SBC 00</span></span>
+<span class="line" id="L73" data-line="73">        hl = (h_reg &lt;&lt; <span class="number">8</span>) | a_reg;</span>
+<span class="line" id="L74" data-line="74">        </span>
+<span class="line" id="L75" data-line="75">        e_count--;</span>
+<span class="line" id="L76" data-line="76">    }</span>
+<span class="line" id="L77" data-line="77">}</span>
+<span class="line" id="L78" data-line="78"> </span>
+<span class="line" id="L79" data-line="79">/*</span>
+<span class="line" id="L80" data-line="80"> * Translates L2292</span>
+<span class="line" id="L81" data-line="81"> * Spiral end: restore starfield (level &gt;= <span class="number">8</span>) or clear background.</span>
+<span class="line" id="L82" data-line="82"> * [ASM: <span class="number">2292</span>-22B3]</span>
+<span class="line" id="L83" data-line="83"> */</span>
+<span class="line" id="L84" data-line="84"><span class="keyword">static</span> <span class="keyword">void</span> l2292_spiral_routine(<span class="keyword">void</span>) {</span>
+<span class="line" id="L85" data-line="85">    <span class="keyword">extern</span> <span class="keyword">void</span> clear_background(<span class="keyword">void</span>);</span>
+<span class="line" id="L86" data-line="86">    <span class="keyword">extern</span> <span class="keyword">void</span> hw_write_scroll_register(uint8_t);</span>
+<span class="line" id="L87" data-line="87">    uint8_t a;</span>
+<span class="line" id="L88" data-line="88"> </span>
+<span class="line" id="L89" data-line="89">    <span class="keyword">if</span> (state.LevelAndRound &amp; <span class="number">0x08</span>) {</span>
+<span class="line" id="L90" data-line="90">        <span class="comment">// 229B-22B0: restore the starfield (T1C00) over the mothership,</span></span>
+<span class="line" id="L91" data-line="91">        <span class="comment">// writing the background backwards from $4B3F down to $4800</span></span>
+<span class="line" id="L92" data-line="92">        uint16_t hl = <span class="number">0x1C00</span>;</span>
+<span class="line" id="L93" data-line="93">        uint16_t de = <span class="number">0x4B3F</span>;</span>
+<span class="line" id="L94" data-line="94">        <span class="keyword">while</span> ((de &gt;&gt; <span class="number">8</span>) != <span class="number">0x47</span>) {</span>
+<span class="line" id="L95" data-line="95">            mem_write(de, phoenix_starfield_page[hl - <span class="number">0x1C00</span>]);</span>
+<span class="line" id="L96" data-line="96">            hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + <span class="number">1</span>) &amp; <span class="number">0xFF</span>); <span class="comment">// INC L: stays in page</span></span>
+<span class="line" id="L97" data-line="97">            de--;</span>
+<span class="line" id="L98" data-line="98">            mem_write(de, phoenix_starfield_page[hl - <span class="number">0x1C00</span>]);</span>
+<span class="line" id="L99" data-line="99">            hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + <span class="number">1</span>) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L100" data-line="100">            de--;</span>
+<span class="line" id="L101" data-line="101">        }</span>
+<span class="line" id="L102" data-line="102">        a = <span class="number">0x71</span>; <span class="comment">// L22E0</span></span>
+<span class="line" id="L103" data-line="103">    } <span class="keyword">else</span> {</span>
+<span class="line" id="L104" data-line="104">        <span class="comment">// L22F0</span></span>
+<span class="line" id="L105" data-line="105">        clear_background();</span>
+<span class="line" id="L106" data-line="106">        a = <span class="number">0x00</span>;</span>
+<span class="line" id="L107" data-line="107">    }</span>
+<span class="line" id="L108" data-line="108"> </span>
+<span class="line" id="L109" data-line="109">    <span class="comment">// L22E2</span></span>
+<span class="line" id="L110" data-line="110">    state.CounterB9 = a;</span>
+<span class="line" id="L111" data-line="111">    hw_write_scroll_register(a);</span>
+<span class="line" id="L112" data-line="112">}</span>
+<span class="line" id="L113" data-line="113"> </span>
+<span class="line" id="L114" data-line="114">/*</span>
+<span class="line" id="L115" data-line="115"> * Translates L2230</span>
+<span class="line" id="L116" data-line="116"> * Game level <span class="number">4</span>, <span class="number">6</span> and <span class="number">8</span>: the &#x27;spiral fill&#x27; animation.</span>
+<span class="line" id="L117" data-line="117"> * [ASM: <span class="number">2230</span>-225F]</span>
+<span class="line" id="L118" data-line="118"> */</span>
+<span class="line" id="L119" data-line="119"><span class="keyword">static</span> <span class="keyword">void</span> level_4_6_8_spiral_fill(<span class="keyword">void</span>) {</span>
+<span class="line" id="L120" data-line="120">    coverage_hit(&quot;level_4_6_8_spiral_fill&quot;);</span>
+<span class="line" id="L121" data-line="121">    uint8_t a = state.M439C;</span>
+<span class="line" id="L122" data-line="122">    state.M439C++;</span>
+<span class="line" id="L123" data-line="123">    </span>
+<span class="line" id="L124" data-line="124">    <span class="comment">// RRCA</span></span>
+<span class="line" id="L125" data-line="125">    a = (a &gt;&gt; <span class="number">1</span>) | (a &lt;&lt; <span class="number">7</span>);</span>
+<span class="line" id="L126" data-line="126">    a &amp;= <span class="number">0x3F</span>;</span>
+<span class="line" id="L127" data-line="127">    </span>
+<span class="line" id="L128" data-line="128">    <span class="keyword">if</span> (a == <span class="number">0x0D</span>) {</span>
+<span class="line" id="L129" data-line="129">        l2292_spiral_routine();</span>
+<span class="line" id="L130" data-line="130">        <span class="keyword">return</span>;</span>
+<span class="line" id="L131" data-line="131">    }</span>
+<span class="line" id="L132" data-line="132">    </span>
+<span class="line" id="L133" data-line="133">    uint8_t b = <span class="number">0x1F</span>; <span class="comment">// Asterisk</span></span>
+<span class="line" id="L134" data-line="134">    <span class="keyword">if</span> (a &lt; <span class="number">0x0D</span>) {</span>
+<span class="line" id="L135" data-line="135">        l2260_spiral_draw(a, b);</span>
+<span class="line" id="L136" data-line="136">        <span class="keyword">return</span>;</span>
+<span class="line" id="L137" data-line="137">    }</span>
+<span class="line" id="L138" data-line="138">    </span>
+<span class="line" id="L139" data-line="139">    b = <span class="number">0x00</span>; <span class="comment">// Space</span></span>
+<span class="line" id="L140" data-line="140">    a -= <span class="number">0x0E</span>;</span>
+<span class="line" id="L141" data-line="141">    <span class="keyword">if</span> (a != <span class="number">0x0D</span>) {</span>
+<span class="line" id="L142" data-line="142">        l2260_spiral_draw(a, b);</span>
+<span class="line" id="L143" data-line="143">        <span class="keyword">return</span>;</span>
+<span class="line" id="L144" data-line="144">    }</span>
+<span class="line" id="L145" data-line="145">    </span>
+<span class="line" id="L146" data-line="146">    state.LevelAndRound++;</span>
+<span class="line" id="L147" data-line="147">    state.GameState = GAME_STATE_INIT_ROUND;</span>
+<span class="line" id="L148" data-line="148">}</span>
+<span class="line" id="L149" data-line="149"><span class="keyword">static</span> <span class="keyword">void</span> level_5_7_birds_fade_in(<span class="keyword">void</span>) {</span>
+<span class="line" id="L150" data-line="150">    coverage_hit(&quot;level_5_7_birds_fade_in&quot;);</span>
+<span class="line" id="L151" data-line="151">    <span class="keyword">extern</span> <span class="keyword">void</span> process_birds(<span class="keyword">void</span>);</span>
+<span class="line" id="L152" data-line="152">    process_birds();</span>
+<span class="line" id="L153" data-line="153">}</span>
+<span class="line" id="L154" data-line="154"> </span>
+<span class="line" id="L155" data-line="155"><span class="keyword">static</span> <span class="keyword">void</span> level_0_and_2_aliens_fade_in(<span class="keyword">void</span>);</span>
+<span class="line" id="L156" data-line="156"> </span>
+<span class="line" id="L157" data-line="157">/*</span>
+<span class="line" id="L158" data-line="158"> * Translates L22B4</span>
+<span class="line" id="L159" data-line="159"> * Game level <span class="number">9</span>: Mothership &#x27;fade in&#x27; (stars scroll down <span class="keyword">while</span> the</span>
+<span class="line" id="L160" data-line="160"> * mothership shape gets written into the background).</span>
+<span class="line" id="L161" data-line="161"> * [ASM: 22B4-22C5]</span>
+<span class="line" id="L162" data-line="162"> */</span>
+<span class="line" id="L163" data-line="163"><span class="keyword">static</span> <span class="keyword">void</span> level_9_mothership_fade_in(<span class="keyword">void</span>) {</span>
+<span class="line" id="L164" data-line="164">    coverage_hit(&quot;level_9_mothership_fade_in&quot;);</span>
+<span class="line" id="L165" data-line="165">    <span class="keyword">extern</span> <span class="keyword">void</span> stars_scroll_down(<span class="keyword">void</span>);</span>
+<span class="line" id="L166" data-line="166">    stars_scroll_down();</span>
+<span class="line" id="L167" data-line="167"> </span>
+<span class="line" id="L168" data-line="168">    state.CounterB4--;</span>
+<span class="line" id="L169" data-line="169"> </span>
+<span class="line" id="L170" data-line="170">    <span class="keyword">if</span> (state.CounterB4 == <span class="number">0x28</span>) {</span>
+<span class="line" id="L171" data-line="171">        state.M4367 = <span class="number">0xFF</span>; <span class="comment">// Mothership partially faded in</span></span>
+<span class="line" id="L172" data-line="172">        <span class="keyword">return</span>;</span>
+<span class="line" id="L173" data-line="173">    }</span>
+<span class="line" id="L174" data-line="174"> </span>
+<span class="line" id="L175" data-line="175">    <span class="comment">// L0848 tail: advance to next level/state once the counter hits 0</span></span>
+<span class="line" id="L176" data-line="176">    <span class="keyword">if</span> (state.CounterB4 != <span class="number">0</span>) {</span>
+<span class="line" id="L177" data-line="177">        <span class="keyword">return</span>;</span>
+<span class="line" id="L178" data-line="178">    }</span>
+<span class="line" id="L179" data-line="179">    state.LevelAndRound++;</span>
+<span class="line" id="L180" data-line="180">    state.GameState = GAME_STATE_INIT_ROUND;</span>
+<span class="line" id="L181" data-line="181">}</span>
+<span class="line" id="L182" data-line="182"> </span>
+<span class="line" id="L183" data-line="183">/*</span>
+<span class="line" id="L184" data-line="184"> * Translates L22CA</span>
+<span class="line" id="L185" data-line="185"> * Game level A: Mothership and aliens &#x27;fade in&#x27;.</span>
+<span class="line" id="L186" data-line="186"> * [ASM: 22CA-22DD]</span>
+<span class="line" id="L187" data-line="187"> */</span>
+<span class="line" id="L188" data-line="188"><span class="keyword">static</span> <span class="keyword">void</span> level_A_mothership_and_aliens_fade_in(<span class="keyword">void</span>) {</span>
+<span class="line" id="L189" data-line="189">    coverage_hit(&quot;level_A_mothership_and_aliens_fade_in&quot;);</span>
+<span class="line" id="L190" data-line="190">    <span class="keyword">if</span> (state.CounterB4 != <span class="number">0xC0</span>) {</span>
+<span class="line" id="L191" data-line="191">        level_0_and_2_aliens_fade_in(); <span class="comment">// JP L0834</span></span>
+<span class="line" id="L192" data-line="192">        <span class="keyword">return</span>;</span>
+<span class="line" id="L193" data-line="193">    }</span>
+<span class="line" id="L194" data-line="194"> </span>
+<span class="line" id="L195" data-line="195">    state.CounterB4 = <span class="number">0x30</span>;</span>
+<span class="line" id="L196" data-line="196">    state.M4367 = <span class="number">0xFF</span>;  <span class="comment">// Mothership partially faded in</span></span>
+<span class="line" id="L197" data-line="197">    state.M43BC = <span class="number">0x3F</span>;</span>
+<span class="line" id="L198" data-line="198">}</span>
+<span class="line" id="L199" data-line="199"> </span>
+<span class="line" id="L200" data-line="200">/*</span>
+<span class="line" id="L201" data-line="201"> * Translates L0834</span>
+<span class="line" id="L202" data-line="202"> * Game level <span class="number">0</span> and <span class="number">2</span>: Stars scrolling down and &#x27;aliens fade in&#x27;</span>
+<span class="line" id="L203" data-line="203"> * [ASM: <span class="number">0834</span>-<span class="number">0859</span>]</span>
+<span class="line" id="L204" data-line="204"> */</span>
+<span class="line" id="L205" data-line="205"><span class="keyword">static</span> <span class="keyword">void</span> level_0_and_2_aliens_fade_in(<span class="keyword">void</span>) {</span>
+<span class="line" id="L206" data-line="206">    coverage_hit(&quot;level_0_and_2_aliens_fade_in&quot;);</span>
+<span class="line" id="L207" data-line="207">    update_scroll_register_and_fill_background();</span>
+<span class="line" id="L208" data-line="208"> </span>
+<span class="line" id="L209" data-line="209">    state.CounterB4--;</span>
+<span class="line" id="L210" data-line="210"> </span>
+<span class="line" id="L211" data-line="211">    <span class="keyword">if</span> (state.CounterB4 &gt;= <span class="number">0x15</span>) {</span>
+<span class="line" id="L212" data-line="212">        <span class="keyword">return</span>;</span>
+<span class="line" id="L213" data-line="213">    }</span>
+<span class="line" id="L214" data-line="214"> </span>
+<span class="line" id="L215" data-line="215">    uint8_t e_val = get_animation_chrs_aliens_fade_in();</span>
+<span class="line" id="L216" data-line="216">    <span class="keyword">extern</span> <span class="keyword">void</span> init_alien_control_states_05fa(uint8_t d, uint8_t e);</span>
+<span class="line" id="L217" data-line="217">    <span class="comment">// 085A: LD DE,$086C -- D (control state A) is 0x08 in every branch:</span></span>
+<span class="line" id="L218" data-line="218">    <span class="comment">// the draw bit, so the fading aliens actually get drawn</span></span>
+<span class="line" id="L219" data-line="219">    init_alien_control_states_05fa(<span class="number">0x08</span>, e_val);</span>
+<span class="line" id="L220" data-line="220">    alien_data_controller();</span>
+<span class="line" id="L221" data-line="221"> </span>
+<span class="line" id="L222" data-line="222">    <span class="keyword">if</span> (state.CounterB4 != <span class="number">0</span>) {</span>
+<span class="line" id="L223" data-line="223">        <span class="keyword">return</span>;</span>
+<span class="line" id="L224" data-line="224">    }</span>
+<span class="line" id="L225" data-line="225"> </span>
+<span class="line" id="L226" data-line="226">    <span class="comment">// Counter is 0, advance to next level/state</span></span>
+<span class="line" id="L227" data-line="227">    state.LevelAndRound++;</span>
+<span class="line" id="L228" data-line="228">    state.GameState = GAME_STATE_INIT_ROUND;</span>
+<span class="line" id="L229" data-line="229">}</span>
+<span class="line" id="L230" data-line="230"> </span>
+<span class="line" id="L231" data-line="231">/*</span>
+<span class="line" id="L232" data-line="232"> * Game state <span class="number">3</span>.</span>
+<span class="line" id="L233" data-line="233"> * Normal game play.</span>
+<span class="line" id="L234" data-line="234"> * Translates L0800 and its jump table T0814.</span>
+<span class="line" id="L235" data-line="235"> * [ASM: <span class="number">0800</span>-<span class="number">0833</span>]</span>
+<span class="line" id="L236" data-line="236"> */</span>
+<span class="line" id="L237" data-line="237"><span class="keyword">void</span> state_3_normal_game_play(<span class="keyword">void</span>) {</span>
+<span class="line" id="L238" data-line="238">    <span class="comment">// The jump table index is based on bits 0-3 of LevelAndRound.</span></span>
+<span class="line" id="L239" data-line="239">    uint8_t level = state.LevelAndRound &amp; LEVEL_PATTERN_MASK;</span>
+<span class="line" id="L240" data-line="240">    </span>
+<span class="line" id="L241" data-line="241">    <span class="keyword">switch</span> (level) {</span>
+<span class="line" id="L242" data-line="242">        <span class="keyword">case</span> LEVEL_PATTERN_ALIENS_FADE_IN_0: level_0_and_2_aliens_fade_in(); <span class="keyword">break</span>;</span>
+<span class="line" id="L243" data-line="243">        <span class="keyword">case</span> LEVEL_PATTERN_ALIENS_ACTIVE_1: level_1_3_B_player_alive_aliens(); <span class="keyword">break</span>;</span>
+<span class="line" id="L244" data-line="244">        <span class="keyword">case</span> LEVEL_PATTERN_ALIENS_FADE_IN_2: level_0_and_2_aliens_fade_in(); <span class="keyword">break</span>;</span>
+<span class="line" id="L245" data-line="245">        <span class="keyword">case</span> LEVEL_PATTERN_ALIENS_ACTIVE_3: level_1_3_B_player_alive_aliens(); <span class="keyword">break</span>;</span>
+<span class="line" id="L246" data-line="246">        <span class="keyword">case</span> LEVEL_PATTERN_BIRDS_SPIRAL_4: level_4_6_8_spiral_fill(); <span class="keyword">break</span>;</span>
+<span class="line" id="L247" data-line="247">        <span class="keyword">case</span> LEVEL_PATTERN_BIRDS_FADE_IN_5: level_5_7_birds_fade_in(); <span class="keyword">break</span>;</span>
+<span class="line" id="L248" data-line="248">        <span class="keyword">case</span> LEVEL_PATTERN_BIRDS_SPIRAL_6: level_4_6_8_spiral_fill(); <span class="keyword">break</span>;</span>
+<span class="line" id="L249" data-line="249">        <span class="keyword">case</span> LEVEL_PATTERN_BIRDS_FADE_IN_7: level_5_7_birds_fade_in(); <span class="keyword">break</span>;</span>
+<span class="line" id="L250" data-line="250">        <span class="keyword">case</span> LEVEL_PATTERN_BIRDS_SPIRAL_8: level_4_6_8_spiral_fill(); <span class="keyword">break</span>;</span>
+<span class="line" id="L251" data-line="251">        <span class="keyword">case</span> LEVEL_PATTERN_MOTHERSHIP_FADE_IN_9: level_9_mothership_fade_in(); <span class="keyword">break</span>;</span>
+<span class="line" id="L252" data-line="252">        <span class="keyword">case</span> LEVEL_PATTERN_MOTHERSHIP_AND_ALIENS_A: level_A_mothership_and_aliens_fade_in(); <span class="keyword">break</span>;</span>
+<span class="line" id="L253" data-line="253">        <span class="keyword">case</span> LEVEL_PATTERN_ALIENS_ACTIVE_B: level_1_3_B_player_alive_aliens(); <span class="keyword">break</span>;</span>
+<span class="line" id="L254" data-line="254">        <span class="keyword">case</span> <span class="number">0x0C</span>: </span>
+<span class="line" id="L255" data-line="255">        <span class="keyword">case</span> <span class="number">0x0D</span>:</span>
+<span class="line" id="L256" data-line="256">        <span class="keyword">case</span> <span class="number">0x0E</span>:</span>
+<span class="line" id="L257" data-line="257">        <span class="keyword">case</span> <span class="number">0x0F</span>:</span>
+<span class="line" id="L258" data-line="258">            <span class="comment">// &quot;not used in this context&quot; according to T0814</span></span>
+<span class="line" id="L259" data-line="259">            <span class="keyword">break</span>;</span>
+<span class="line" id="L260" data-line="260">    }</span>
+<span class="line" id="L261" data-line="261">}</span></code></pre></main></body></html>

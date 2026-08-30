@@ -14,6 +14,8 @@ c2-phoenix/native/c2_hires_sprite_assets.h
 !c-phoenix/c-annotated/knowledge-base-explorer/index.html
 !c-phoenix/context/Phoenix.html
 !c-phoenix/context/code-annotated.html
+!c-phoenix/context/source/
+!c-phoenix/context/source/*.html
 c2-phoenix/*.json
 c2-phoenix/*.html
 !c-phoenix/context/traces/two_player_last_grown_bird_compare/last-grown-bird-diff.html.zip

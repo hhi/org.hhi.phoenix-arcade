@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rom_compat_stubs.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>rom_compat_stubs.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &lt;stdint.h&gt;</span>
+<span class="line" id="L2" data-line="2"> </span>
+<span class="line" id="L3" data-line="3">#include &quot;phoenix_state.h&quot;</span>
+<span class="line" id="L4" data-line="4"> </span>
+<span class="line" id="L5" data-line="5"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L6" data-line="6"> </span>
+<span class="line" id="L7" data-line="7"><span class="comment">/* [ASM: 00B6-00B7] Dead code: no callers in the original ROM. */</span></span>
+<span class="line" id="L8" data-line="8"><span class="keyword">void</span> l00b6(<span class="keyword">void</span>) {}</span>
+<span class="line" id="L9" data-line="9"> </span>
+<span class="line" id="L10" data-line="10">/*</span>
+<span class="line" id="L11" data-line="11"> * [ASM: 14E0-14FD]</span>
+<span class="line" id="L12" data-line="12"> * Coin-check continuation of the slow-print path. It is centrally handled by</span>
+<span class="line" id="L13" data-line="13"> * wait_vblank_coin in the C port, so this compatibility entry point is empty.</span>
+<span class="line" id="L14" data-line="14"> */</span>
+<span class="line" id="L15" data-line="15"><span class="keyword">void</span> l14e0(<span class="keyword">void</span>) {}</span>
+<span class="line" id="L16" data-line="16"> </span>
+<span class="line" id="L17" data-line="17">/*</span>
+<span class="line" id="L18" data-line="18"> * [ASM: 1DF0-1DFF]</span>
+<span class="line" id="L19" data-line="19"> * Anti-piracy check <span class="keyword">for</span> the just-printed &quot;AMSTAR&quot; copyright text. On an</span>
+<span class="line" id="L20" data-line="20"> * unmodified ROM it returns immediately; <span class="keyword">do</span> not reduce this to a no-op.</span>
+<span class="line" id="L21" data-line="21"> */</span>
+<span class="line" id="L22" data-line="22"><span class="keyword">void</span> l1df0(<span class="keyword">void</span>) {</span>
+<span class="line" id="L23" data-line="23">    uint8_t a = (uint8_t)(state.ForegroundScreen[<span class="number">0x31D</span>] - <span class="number">1</span>);</span>
+<span class="line" id="L24" data-line="24">    <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L25" data-line="25">    state.CoinCount = a;</span>
+<span class="line" id="L26" data-line="26">}</span></code></pre></main></body></html>

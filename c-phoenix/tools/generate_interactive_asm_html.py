@@ -192,10 +192,9 @@ def render_scope_boundary(scope, boundary):
     if boundary == "start":
         included_labels = ", ".join(scope["labels"])
         return (
-            f'<div id="asm-{scope["start"]:04x}" class="c-function-boundary c-function-start">'
+            f'<div class="c-function-boundary c-function-start">'
             f'<span class="c-scope-next">C function ASM scope begins at ${scope["start"]:04X}</span>'
-            f'<a class="c-source-link" href="../{scope["file"]}#L{scope["line"]}" '
-            f'data-source="../{scope["file"]}" data-line="{scope["line"]}">'
+            f'<a class="c-static-source-link" href="source/{Path(scope["file"]).stem}.html#L{scope["line"]}">'
             f'{scope["function"]} — {scope["file"]}</a>'
             f'<code>ASM ${scope["start"]:04X}–${scope["end"]:04X}</code>'
             f'<span class="c-scope-labels">Includes: {included_labels}</span>'
@@ -212,8 +211,7 @@ def render_scope_boundary(scope, boundary):
 def render_data_representation(representation):
     return (
         '<p class="data-c-representation"><span>C data representation:</span>'
-        f'<a class="c-source-link" href="../{representation["file"]}#L{representation["line"]}" '
-        f'data-source="../{representation["file"]}" data-line="{representation["line"]}">'
+        f'<a class="c-static-source-link" href="source/{Path(representation["file"]).stem}.html#L{representation["line"]}">'
         f'{representation["symbol"]} — {representation["file"]}</a></p>'
     )
 
@@ -252,10 +250,9 @@ def render_inline(text):
         if c_source_match:
             source = c_source_match.group("source")
             line = c_source_match.group("line")
+            destination = f"source/{Path(source).stem}.html#L{line}"
             return (
-                f'<a class="c-source-link" href="{html.escape(href, quote=True)}" '
-                f'data-source="{html.escape(source, quote=True)}" '
-                f'data-line="{line}">{label}</a>'
+                f'<a class="c-static-source-link" href="{html.escape(destination, quote=True)}">{label}</a>'
             )
         return f'<a href="{html.escape(href, quote=True)}">{label}</a>'
 
@@ -306,17 +303,24 @@ def render_asm_tokens(text, labels, label_kinds, symbols, addresses, c_reference
     return "".join(parts)
 
 
-def render_code(line, labels, label_kinds, symbols, addresses, c_references):
+def render_code(line, labels, label_kinds, symbols, addresses, c_references, seen_anchors):
     # The source aligns columns with a wide leading margin; remove only that
     # margin in HTML so long annotations retain usable horizontal space.
     anchor = ""
     if match := DISPLAY_BYTES_RE.match(line):
         start = int(match.group(1), 16)
         byte_count = len(match.group(2).split())
-        anchor = "".join(f'<span id="asm-{start + offset:04x}"></span>' for offset in range(byte_count))
+        anchor = "".join(
+            f'<span id="asm-{start + offset:04x}"></span>'
+            for offset in range(byte_count) if not (start + offset in seen_anchors)
+        )
+        seen_anchors.update(range(start, start + byte_count))
     elif match := DISPLAY_ADDRESS_RE.match(line):
-        anchor = f'<span id="asm-{match.group(1).lower()}"></span>'
-    line = line.lstrip()
+        address = int(match.group(1), 16)
+        if address not in seen_anchors:
+            anchor = f'<span id="asm-{match.group(1).lower()}"></span>'
+            seen_anchors.add(address)
+    line = line.strip()
     code, separator, comment = line.partition(";")
     rendered = render_asm_tokens(code, labels, label_kinds, symbols, addresses, c_references)
     if separator:
@@ -327,6 +331,7 @@ def render_code(line, labels, label_kinds, symbols, addresses, c_references):
 
 
 def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_root=None):
+    seen_anchors = set()
     label_names = [match.group(1) for line in markdown.splitlines()
                    if (match := LABEL_HEADING_RE.match(line))]
     unique_labels = list(dict.fromkeys(label_names))
@@ -381,7 +386,7 @@ def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_roo
             continue
 
         if in_code:
-            parts.append(render_code(line, label_set, label_kinds, symbols, addresses, c_references))
+            parts.append(render_code(line, label_set, label_kinds, symbols, addresses, c_references, seen_anchors))
             continue
 
         heading_match = LABEL_HEADING_RE.match(line)
@@ -393,10 +398,9 @@ def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_roo
             tooltip = label_tooltip(name, addresses, c_references)
             scope = scopes.get(name)
             address = label_actual_address(name, addresses.get(name))
-            address_anchor = (
-                "" if scope and scope["start"] == address else
-                f'<span id="asm-{address:04x}"></span>' if address is not None else ""
-            )
+            # render_code emits the canonical byte-address anchors.  Do not
+            # duplicate one on the section heading.
+            address_anchor = ""
             if in_section:
                 parts.append("</section>")
                 in_section = False
@@ -533,7 +537,7 @@ def page_document(content, navigation):
     .label-ref:hover {{ color: var(--focus); }}
     .symbol-ref {{ color: #7ee787; text-decoration: underline dotted; text-underline-offset: .2em; cursor: help; }}
     #code-tooltip {{ position: fixed; z-index: 10; width: max-content; max-width: min(28rem, calc(100vw - 1rem)); padding: .45rem .6rem; border: 1px solid var(--border); border-radius: .35rem; background: #26343d; color: var(--text); font: .82rem/1.35 system-ui, sans-serif; white-space: normal; pointer-events: none; box-shadow: 0 .35rem 1rem #0008; }}
-    .c-source-link {{ color: #9ece6a; text-decoration: underline; text-underline-offset: .15em; }}
+    .c-source-link, .c-static-source-link {{ color: #9ece6a; text-decoration: underline; text-underline-offset: .15em; }}
     .data-c-representation {{ display: flex; flex-wrap: wrap; gap: .35rem .65rem; align-items: baseline; margin: -.35rem 0 .7rem; padding: .45rem .65rem; border-left: 3px solid #7ee787; background: color-mix(in srgb, #7ee787 9%, var(--panel)); font-size: .88rem; }} .data-c-representation span {{ color: var(--muted); }}
     .c-function-scope {{ margin: 2.75rem 0; padding: 1rem; border: 1px solid color-mix(in srgb, var(--accent) 62%, var(--border)); border-radius: .5rem; background: color-mix(in srgb, var(--accent) 5%, var(--code)); }} .c-function-scope .asm-section {{ position: relative; }} .c-function-scope .asm-section + .asm-section {{ border-top: 1px solid color-mix(in srgb, var(--border) 80%, transparent); margin-top: 1.25rem; padding-top: 1.25rem; }} .c-function-boundary {{ display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin: 0 0 .75rem; padding: .7rem .8rem; border: 1px dashed var(--accent); border-top: 3px solid var(--accent); border-radius: .35rem; background: #132e3c; color: var(--text); font-size: .84rem; }} .c-function-scope > .c-function-start {{ margin: 0 0 .75rem; }} .c-function-boundary .c-scope-next {{ flex-basis: 100%; color: var(--accent); font-weight: 800; letter-spacing: .025em; }} .c-function-boundary .c-scope-labels {{ flex-basis: 100%; color: var(--muted); font-weight: 500; }} .c-function-boundary code {{ color: var(--muted); }} .c-function-end {{ margin: .75rem 0 0; border-top: 1px dashed var(--border); background: transparent; }}
     #c-viewer {{ width: min(90rem, 96vw); height: min(90vh, 60rem); padding: 0; border: 1px solid var(--border); border-radius: .5rem; background: var(--panel); color: var(--text); }}

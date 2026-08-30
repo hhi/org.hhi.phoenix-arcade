@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bird_wave_behavior.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>bird_wave_behavior.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;bird_logic.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;z80_core.h&quot;</span>
+<span class="line" id="L3" data-line="3">#include &lt;stdint.h&gt;</span>
+<span class="line" id="L4" data-line="4">#include &lt;stdbool.h&gt;</span>
+<span class="line" id="L5" data-line="5"> </span>
+<span class="line" id="L6" data-line="6"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L7" data-line="7"> </span>
+<span class="line" id="L8" data-line="8"><span class="keyword">extern</span> <span class="keyword">void</span> draw_second_4_bird_objects(<span class="keyword">void</span>);</span>
+<span class="line" id="L9" data-line="9"><span class="keyword">extern</span> <span class="keyword">void</span> handle_animations_for_killed_aliens(<span class="keyword">void</span>);</span>
+<span class="line" id="L10" data-line="10"><span class="keyword">extern</span> <span class="keyword">void</span> refresh_bird_flight_parameters(<span class="keyword">void</span>);</span>
+<span class="line" id="L11" data-line="11"><span class="keyword">extern</span> <span class="keyword">void</span> update_second_four_birds(<span class="keyword">void</span>);</span>
+<span class="line" id="L12" data-line="12"> </span>
+<span class="line" id="L13" data-line="13"><span class="comment">/* [ASM: 3452-345B] Updates and renders bird structures 4-7. */</span></span>
+<span class="line" id="L14" data-line="14"><span class="keyword">void</span> update_second_bird_bank(<span class="keyword">void</span>) {</span>
+<span class="line" id="L15" data-line="15">    draw_second_4_bird_objects();</span>
+<span class="line" id="L16" data-line="16">    refresh_bird_flight_parameters();</span>
+<span class="line" id="L17" data-line="17">    update_second_four_birds();</span>
+<span class="line" id="L18" data-line="18">    handle_animations_for_killed_aliens();</span>
+<span class="line" id="L19" data-line="19">}</span>
+<span class="line" id="L20" data-line="20"> </span>
+<span class="line" id="L21" data-line="21"><span class="keyword">extern</span> <span class="keyword">void</span> drawNx2(uint16_t de, uint16_t screen_addr, uint16_t bc, <span class="keyword">int</span> n);</span>
+<span class="line" id="L22" data-line="22"> </span>
+<span class="line" id="L23" data-line="23"><span class="comment">// BM(off) reads relative to `base`; BM_SET writes. Both route through</span></span>
+<span class="line" id="L24" data-line="24"><span class="comment">// the bounds-checked mem_read/mem_write instead of raw pointer offsets.</span></span>
+<span class="line" id="L25" data-line="25">#define BM(off) mem_read((uint16_t)(base + (off)))</span>
+<span class="line" id="L26" data-line="26">#define BM_SET(off, val) mem_write((uint16_t)(base + (off)), (uint8_t)(val))</span>
+<span class="line" id="L27" data-line="27"> </span>
+<span class="line" id="L28" data-line="28">/*</span>
+<span class="line" id="L29" data-line="29"> * Translates L3744 (from L3628 when the phase nibble hits <span class="number">0</span>)</span>
+<span class="line" id="L30" data-line="30"> * Restart a climb phase: phase $<span class="number">11</span>, step X back, reset the frame.</span>
+<span class="line" id="L31" data-line="31"> * [ASM: <span class="number">3744</span>-<span class="number">3754</span>]</span>
+<span class="line" id="L32" data-line="32"> */</span>
+<span class="line" id="L33" data-line="33"><span class="keyword">static</span> <span class="keyword">void</span> l3744_restart(uint16_t base) {</span>
+<span class="line" id="L34" data-line="34">    BM_SET(<span class="number">6</span>, <span class="number">0x11</span>);</span>
+<span class="line" id="L35" data-line="35">    BM_SET(<span class="number">5</span>, BM(<span class="number">5</span>) - <span class="number">1</span>);</span>
+<span class="line" id="L36" data-line="36">    BM_SET(<span class="number">3</span>, <span class="number">0x07</span>);</span>
+<span class="line" id="L37" data-line="37">    uint8_t old = BM(<span class="number">2</span>);</span>
+<span class="line" id="L38" data-line="38">    BM_SET(<span class="number">2</span>, old + <span class="number">0x20</span>);</span>
+<span class="line" id="L39" data-line="39">    <span class="keyword">if</span> ((uint16_t)old + <span class="number">0x20</span> &gt; <span class="number">0xFF</span>) BM_SET(<span class="number">1</span>, BM(<span class="number">1</span>) + <span class="number">1</span>);</span>
+<span class="line" id="L40" data-line="40">}</span>
+<span class="line" id="L41" data-line="41"> </span>
+<span class="line" id="L42" data-line="42">/*</span>
+<span class="line" id="L43" data-line="43"> * Translates L3672 (descent target reached)</span>
+<span class="line" id="L44" data-line="44"> * Aim the next descent at the player: new Y target at <span class="keyword">struct</span>+<span class="number">7</span>.</span>
+<span class="line" id="L45" data-line="45"> * [ASM: <span class="number">3672</span>-<span class="number">3692</span>]</span>
+<span class="line" id="L46" data-line="46"> */</span>
+<span class="line" id="L47" data-line="47"><span class="keyword">static</span> <span class="keyword">void</span> l3672_aim(uint16_t base) {</span>
+<span class="line" id="L48" data-line="48">    uint8_t b = BM(<span class="number">5</span>);</span>
+<span class="line" id="L49" data-line="49">    uint8_t px = state.PlayerShipX &amp; <span class="number">0xF8</span>;</span>
+<span class="line" id="L50" data-line="50">    <span class="keyword">if</span> (px &lt; b) b = px;</span>
+<span class="line" id="L51" data-line="51">    uint8_t c = state.M436D;</span>
+<span class="line" id="L52" data-line="52">    state.M436D = (uint8_t)(c + <span class="number">8</span>);</span>
+<span class="line" id="L53" data-line="53">    uint8_t a = (uint8_t)(b - c);</span>
+<span class="line" id="L54" data-line="54">    BM_SET(<span class="number">7</span>, <span class="number">0x08</span>);</span>
+<span class="line" id="L55" data-line="55">    <span class="keyword">if</span> (b &lt; c) <span class="keyword">return</span>;   <span class="comment">// SUB borrow</span></span>
+<span class="line" id="L56" data-line="56">    <span class="keyword">if</span> (a &lt; <span class="number">0x08</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L57" data-line="57">    BM_SET(<span class="number">7</span>, a);</span>
+<span class="line" id="L58" data-line="58">}</span>
+<span class="line" id="L59" data-line="59"> </span>
+<span class="line" id="L60" data-line="60">/*</span>
+<span class="line" id="L61" data-line="61"> * Translates L3695 (climb completed a full row)</span>
+<span class="line" id="L62" data-line="62"> * When the climb reached its target, aim a new descent target.</span>
+<span class="line" id="L63" data-line="63"> * [ASM: <span class="number">3695</span>-36BB]</span>
+<span class="line" id="L64" data-line="64"> */</span>
+<span class="line" id="L65" data-line="65"><span class="keyword">static</span> <span class="keyword">void</span> l3695_aim_up(uint16_t base) {</span>
+<span class="line" id="L66" data-line="66">    uint8_t b = BM(<span class="number">5</span>);</span>
+<span class="line" id="L67" data-line="67">    <span class="keyword">if</span> (BM(<span class="number">7</span>) != b) <span class="keyword">return</span>;</span>
+<span class="line" id="L68" data-line="68">    BM_SET(<span class="number">6</span>, <span class="number">0</span>);</span>
+<span class="line" id="L69" data-line="69">    uint8_t px = state.PlayerShipX &amp; <span class="number">0xF8</span>;</span>
+<span class="line" id="L70" data-line="70">    <span class="keyword">if</span> (px &gt;= b) b = px;</span>
+<span class="line" id="L71" data-line="71">    uint8_t a = (uint8_t)(state.M436D + <span class="number">8</span>);</span>
+<span class="line" id="L72" data-line="72">    state.M436D = a;</span>
+<span class="line" id="L73" data-line="73">    uint16_t sum = a + b;</span>
+<span class="line" id="L74" data-line="74">    BM_SET(<span class="number">7</span>, <span class="number">0xC8</span>);</span>
+<span class="line" id="L75" data-line="75">    <span class="keyword">if</span> (sum &gt; <span class="number">0xFF</span>) <span class="keyword">return</span>;      <span class="comment">// RET C from ADD</span></span>
+<span class="line" id="L76" data-line="76">    <span class="keyword">if</span> ((sum &amp; <span class="number">0xFF</span>) &gt;= <span class="number">0xC8</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L77" data-line="77">    BM_SET(<span class="number">7</span>, (uint8_t)sum);</span>
+<span class="line" id="L78" data-line="78">}</span>
+<span class="line" id="L79" data-line="79"> </span>
+<span class="line" id="L80" data-line="80">/*</span>
+<span class="line" id="L81" data-line="81"> * Translates L3628 (phase &gt;= $<span class="number">10</span>: climbing)</span>
+<span class="line" id="L82" data-line="82"> * Move the bird up-left; phase low nibble is the per-frame step.</span>
+<span class="line" id="L83" data-line="83"> * [ASM: <span class="number">3628</span>-<span class="number">3666</span>]</span>
+<span class="line" id="L84" data-line="84"> */</span>
+<span class="line" id="L85" data-line="85"><span class="keyword">static</span> <span class="keyword">void</span> l3628_climb(uint16_t base, uint8_t phase) {</span>
+<span class="line" id="L86" data-line="86">    uint8_t b = phase &amp; <span class="number">0x0F</span>;</span>
+<span class="line" id="L87" data-line="87">    <span class="keyword">if</span> (b == <span class="number">0</span>) { l3744_restart(base); <span class="keyword">return</span>; }</span>
+<span class="line" id="L88" data-line="88"> </span>
+<span class="line" id="L89" data-line="89">    BM_SET(<span class="number">5</span>, BM(<span class="number">5</span>) - b);</span>
+<span class="line" id="L90" data-line="90">    uint8_t old3 = BM(<span class="number">3</span>);</span>
+<span class="line" id="L91" data-line="91">    uint8_t a = (uint8_t)(old3 - b);</span>
+<span class="line" id="L92" data-line="92">    BM_SET(<span class="number">3</span>, a);</span>
+<span class="line" id="L93" data-line="93">    <span class="keyword">if</span> (old3 &gt;= b) { l3695_aim_up(base); <span class="keyword">return</span>; } <span class="comment">// JP NC</span></span>
+<span class="line" id="L94" data-line="94"> </span>
+<span class="line" id="L95" data-line="95">    BM_SET(<span class="number">3</span>, a &amp; <span class="number">0x07</span>);</span>
+<span class="line" id="L96" data-line="96">    uint8_t old2 = BM(<span class="number">2</span>);</span>
+<span class="line" id="L97" data-line="97">    BM_SET(<span class="number">2</span>, old2 + <span class="number">0x20</span>);</span>
+<span class="line" id="L98" data-line="98">    <span class="keyword">if</span> ((uint16_t)old2 + <span class="number">0x20</span> &gt; <span class="number">0xFF</span>) BM_SET(<span class="number">1</span>, BM(<span class="number">1</span>) + <span class="number">1</span>);</span>
+<span class="line" id="L99" data-line="99"> </span>
+<span class="line" id="L100" data-line="100">    <span class="comment">// 3648-3666: new phase from the distance still to climb</span></span>
+<span class="line" id="L101" data-line="101">    a = (uint8_t)(BM(<span class="number">5</span>) - BM(<span class="number">7</span>));</span>
+<span class="line" id="L102" data-line="102">    a = (uint8_t)((a &gt;&gt; <span class="number">3</span>) | (a &lt;&lt; <span class="number">5</span>)) &amp; <span class="number">0x1F</span>; <span class="comment">// RRCA x3</span></span>
+<span class="line" id="L103" data-line="103">    uint8_t carry = (a &lt; b);</span>
+<span class="line" id="L104" data-line="104">    a++;</span>
+<span class="line" id="L105" data-line="105">    <span class="keyword">if</span> (!carry) {</span>
+<span class="line" id="L106" data-line="106">        uint8_t t = state.M436E;</span>
+<span class="line" id="L107" data-line="107">        <span class="keyword">if</span> (t == b) a = t;</span>
+<span class="line" id="L108" data-line="108">        <span class="keyword">else</span> a = (uint8_t)(b + <span class="number">1</span>);</span>
+<span class="line" id="L109" data-line="109">    }</span>
+<span class="line" id="L110" data-line="110">    BM_SET(<span class="number">6</span>, a | <span class="number">0x10</span>);</span>
+<span class="line" id="L111" data-line="111">}</span>
+<span class="line" id="L112" data-line="112"> </span>
+<span class="line" id="L113" data-line="113">/*</span>
+<span class="line" id="L114" data-line="114"> * Translates L366A (descent step stalled at the top rows)</span>
+<span class="line" id="L115" data-line="115"> * [ASM: 366A-<span class="number">3671</span>]</span>
+<span class="line" id="L116" data-line="116"> */</span>
+<span class="line" id="L117" data-line="117"><span class="keyword">static</span> <span class="keyword">void</span> l366a_stall(uint16_t base, uint8_t b) {</span>
+<span class="line" id="L118" data-line="118">    <span class="keyword">if</span> (b != <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L119" data-line="119">    BM_SET(<span class="number">6</span>, BM(<span class="number">6</span>) + <span class="number">1</span>);</span>
+<span class="line" id="L120" data-line="120">}</span>
+<span class="line" id="L121" data-line="121"> </span>
+<span class="line" id="L122" data-line="122">/*</span>
+<span class="line" id="L123" data-line="123"> * Translates L35E0 (phase &lt; $<span class="number">10</span>: descending)</span>
+<span class="line" id="L124" data-line="124"> * Move the bird down-right by the phase value; on target, aim again.</span>
+<span class="line" id="L125" data-line="125"> * [ASM: 35E0-<span class="number">3624</span>]</span>
+<span class="line" id="L126" data-line="126"> */</span>
+<span class="line" id="L127" data-line="127"><span class="keyword">static</span> <span class="keyword">void</span> l35e0_descend(uint16_t base) {</span>
+<span class="line" id="L128" data-line="128">    uint8_t phase = BM(<span class="number">6</span>);</span>
+<span class="line" id="L129" data-line="129">    <span class="keyword">if</span> (phase &gt;= <span class="number">0x10</span>) { l3628_climb(base, phase); <span class="keyword">return</span>; }</span>
+<span class="line" id="L130" data-line="130"> </span>
+<span class="line" id="L131" data-line="131">    uint8_t b = phase;</span>
+<span class="line" id="L132" data-line="132">    BM_SET(<span class="number">5</span>, BM(<span class="number">5</span>) + b);</span>
+<span class="line" id="L133" data-line="133">    uint8_t a = (uint8_t)(b + BM(<span class="number">3</span>));</span>
+<span class="line" id="L134" data-line="134">    BM_SET(<span class="number">3</span>, a);</span>
+<span class="line" id="L135" data-line="135">    <span class="keyword">if</span> (a &lt; <span class="number">0x08</span>) { l366a_stall(base, b); <span class="keyword">return</span>; }</span>
+<span class="line" id="L136" data-line="136">    BM_SET(<span class="number">3</span>, a &amp; <span class="number">0x07</span>);</span>
+<span class="line" id="L137" data-line="137"> </span>
+<span class="line" id="L138" data-line="138">    <span class="comment">// one screen row down: LSB -0x20 with borrow into the MSB</span></span>
+<span class="line" id="L139" data-line="139">    uint8_t old2 = BM(<span class="number">2</span>);</span>
+<span class="line" id="L140" data-line="140">    BM_SET(<span class="number">2</span>, old2 - <span class="number">0x20</span>);</span>
+<span class="line" id="L141" data-line="141">    <span class="keyword">if</span> (old2 &lt; <span class="number">0x20</span>) BM_SET(<span class="number">1</span>, BM(<span class="number">1</span>) - <span class="number">1</span>);</span>
+<span class="line" id="L142" data-line="142"> </span>
+<span class="line" id="L143" data-line="143">    uint8_t c = BM(<span class="number">5</span>);</span>
+<span class="line" id="L144" data-line="144">    a = BM(<span class="number">7</span>);</span>
+<span class="line" id="L145" data-line="145">    BM_SET(<span class="number">6</span>, <span class="number">0x10</span>);</span>
+<span class="line" id="L146" data-line="146">    a = (uint8_t)(a - c);</span>
+<span class="line" id="L147" data-line="147">    <span class="keyword">if</span> (a == <span class="number">0</span>) { l3672_aim(base); <span class="keyword">return</span>; }</span>
+<span class="line" id="L148" data-line="148"> </span>
+<span class="line" id="L149" data-line="149">    a--;</span>
+<span class="line" id="L150" data-line="150">    a = (uint8_t)((a &gt;&gt; <span class="number">3</span>) | (a &lt;&lt; <span class="number">5</span>)) &amp; <span class="number">0x1F</span>; <span class="comment">// RRCA x3</span></span>
+<span class="line" id="L151" data-line="151">    uint8_t carry = (a &lt; b);</span>
+<span class="line" id="L152" data-line="152">    a++;</span>
+<span class="line" id="L153" data-line="153">    BM_SET(<span class="number">6</span>, a);</span>
+<span class="line" id="L154" data-line="154">    <span class="keyword">if</span> (carry) <span class="keyword">return</span>;</span>
+<span class="line" id="L155" data-line="155">    a = state.M436E;</span>
+<span class="line" id="L156" data-line="156">    BM_SET(<span class="number">6</span>, a);</span>
+<span class="line" id="L157" data-line="157">    <span class="keyword">if</span> (a == b) <span class="keyword">return</span>;</span>
+<span class="line" id="L158" data-line="158">    BM_SET(<span class="number">6</span>, (uint8_t)(b + <span class="number">1</span>));</span>
+<span class="line" id="L159" data-line="159">}</span>
+<span class="line" id="L160" data-line="160"> </span>
+<span class="line" id="L161" data-line="161">/*</span>
+<span class="line" id="L162" data-line="162"> * Translates L36C0: advance the animation frame on even timer values.</span>
+<span class="line" id="L163" data-line="163"> * [ASM: 36C0-36C9]</span>
+<span class="line" id="L164" data-line="164"> */</span>
+<span class="line" id="L165" data-line="165"><span class="keyword">static</span> <span class="keyword">void</span> l36c0_animate(uint16_t base) {</span>
+<span class="line" id="L166" data-line="166">    <span class="keyword">if</span> (BM(<span class="number">4</span>) &amp; <span class="number">0x01</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L167" data-line="167">    BM_SET(<span class="number">3</span>, (uint8_t)(BM(<span class="number">3</span>) + <span class="number">1</span>) &amp; <span class="number">0x07</span>);</span>
+<span class="line" id="L168" data-line="168">}</span>
+<span class="line" id="L169" data-line="169"> </span>
+<span class="line" id="L170" data-line="170">/*</span>
+<span class="line" id="L171" data-line="171"> * Translates L36D2/L36EA/L370A: the growth/transform continuations.</span>
+<span class="line" id="L172" data-line="172"> * When the timer expires (and <span class="keyword">for</span> EA/0A the phase nibble is clear) the</span>
+<span class="line" id="L173" data-line="173"> * bird becomes the next type with a new timer; L370A can additionally</span>
+<span class="line" id="L174" data-line="174"> * roll a dive-transform gated by the random M436F.</span>
+<span class="line" id="L175" data-line="175"> * L36D2-L36E6, L36EA-L3706 and L370A-L373E.</span>
+<span class="line" id="L176" data-line="176"> */</span>
+<span class="line" id="L177" data-line="177"><span class="comment">/* [ASM: 36D2-36E6] */</span></span>
+<span class="line" id="L178" data-line="178"><span class="keyword">static</span> <span class="keyword">void</span> l36d2_grow(uint16_t base, uint8_t d1h, uint8_t d2h) {</span>
+<span class="line" id="L179" data-line="179">    <span class="keyword">if</span> (BM(<span class="number">4</span>) != <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L180" data-line="180">    BM_SET(<span class="number">4</span>, d1h);</span>
+<span class="line" id="L181" data-line="181">    BM_SET(<span class="number">0</span>, d2h);</span>
+<span class="line" id="L182" data-line="182">    state.M4368 |= <span class="number">0x01</span>;</span>
+<span class="line" id="L183" data-line="183">}</span>
+<span class="line" id="L184" data-line="184"> </span>
+<span class="line" id="L185" data-line="185"><span class="comment">/* [ASM: 36EA-3706] */</span></span>
+<span class="line" id="L186" data-line="186"><span class="keyword">static</span> <span class="keyword">void</span> l36ea_grow(uint16_t base, uint8_t d1h, uint8_t d2h) {</span>
+<span class="line" id="L187" data-line="187">    <span class="keyword">if</span> (BM(<span class="number">4</span>) != <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L188" data-line="188">    <span class="keyword">if</span> (BM(<span class="number">6</span>) &amp; <span class="number">0x0F</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L189" data-line="189">    BM_SET(<span class="number">4</span>, d1h);</span>
+<span class="line" id="L190" data-line="190">    BM_SET(<span class="number">0</span>, d2h);</span>
+<span class="line" id="L191" data-line="191">    state.M4368 |= <span class="number">0x02</span>;</span>
+<span class="line" id="L192" data-line="192">}</span>
+<span class="line" id="L193" data-line="193"> </span>
+<span class="line" id="L194" data-line="194"><span class="comment">/* [ASM: 370A-373E] */</span></span>
+<span class="line" id="L195" data-line="195"><span class="keyword">static</span> <span class="keyword">void</span> l370a_grow_or_dive(uint16_t base, uint8_t d1h, uint8_t d1l,</span>
+<span class="line" id="L196" data-line="196">                               uint8_t d2h, uint8_t d2l) {</span>
+<span class="line" id="L197" data-line="197">    <span class="keyword">if</span> (BM(<span class="number">4</span>) != <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L198" data-line="198">    <span class="keyword">if</span> (BM(<span class="number">6</span>) &amp; <span class="number">0x0F</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L199" data-line="199">    BM_SET(<span class="number">4</span>, d1h);</span>
+<span class="line" id="L200" data-line="200">    BM_SET(<span class="number">0</span>, d2h);</span>
+<span class="line" id="L201" data-line="201">    state.M4368 |= <span class="number">0x04</span>;</span>
+<span class="line" id="L202" data-line="202">    <span class="comment">// 3726-372C: random gate on the dive transform</span></span>
+<span class="line" id="L203" data-line="203">    <span class="keyword">if</span> (state.M436F &amp; d2l &amp; <span class="number">0xF0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L204" data-line="204">    BM_SET(<span class="number">0</span>, d2l &amp; <span class="number">0x0F</span>);</span>
+<span class="line" id="L205" data-line="205">    BM_SET(<span class="number">4</span>, d1l);</span>
+<span class="line" id="L206" data-line="206">    state.M4368 |= <span class="number">0x08</span>;</span>
+<span class="line" id="L207" data-line="207">}</span>
+<span class="line" id="L208" data-line="208"> </span>
+<span class="line" id="L209" data-line="209">/*</span>
+<span class="line" id="L210" data-line="210"> * Translates L35B0</span>
+<span class="line" id="L211" data-line="211"> * Per-bird behaviour step. T3F00 holds, per bird type, two data words</span>
+<span class="line" id="L212" data-line="212"> * and two routine addresses that the original chains together with</span>
+<span class="line" id="L213" data-line="213"> * four PUSHes and a RET (a continuation trampoline): the second</span>
+<span class="line" id="L214" data-line="214"> * address runs first, then control falls into the first address which</span>
+<span class="line" id="L215" data-line="215"> * pops the data words as parameters.</span>
+<span class="line" id="L216" data-line="216"> * [ASM: 35B0-35DB]</span>
+<span class="line" id="L217" data-line="217"> */</span>
+<span class="line" id="L218" data-line="218"><span class="keyword">void</span> update_bird_behavior(uint16_t base) {</span>
+<span class="line" id="L219" data-line="219">    uint8_t type = BM(<span class="number">0</span>);</span>
+<span class="line" id="L220" data-line="220">    <span class="keyword">if</span> (type == <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L221" data-line="221"> </span>
+<span class="line" id="L222" data-line="222">    <span class="comment">// 35B4-35BD: tick the type timer</span></span>
+<span class="line" id="L223" data-line="223">    <span class="keyword">if</span> (BM(<span class="number">4</span>) != <span class="number">0</span>) BM_SET(<span class="number">4</span>, BM(<span class="number">4</span>) - <span class="number">1</span>);</span>
+<span class="line" id="L224" data-line="224"> </span>
+<span class="line" id="L225" data-line="225">    <span class="keyword">extern</span> <span class="keyword">const</span> uint8_t phoenix_bird_behaviour_scripts[<span class="number">0x80</span>];</span>
+<span class="line" id="L226" data-line="226">    uint16_t tab = type * <span class="number">8</span>;</span>
+<span class="line" id="L227" data-line="227">    uint8_t d1h = phoenix_bird_behaviour_scripts[tab];</span>
+<span class="line" id="L228" data-line="228">    uint8_t d1l = phoenix_bird_behaviour_scripts[tab + <span class="number">1</span>];</span>
+<span class="line" id="L229" data-line="229">    uint8_t d2h = phoenix_bird_behaviour_scripts[tab + <span class="number">2</span>];</span>
+<span class="line" id="L230" data-line="230">    uint8_t d2l = phoenix_bird_behaviour_scripts[tab + <span class="number">3</span>];</span>
+<span class="line" id="L231" data-line="231">    uint16_t a1 = (phoenix_bird_behaviour_scripts[tab + <span class="number">4</span>] &lt;&lt; <span class="number">8</span>)</span>
+<span class="line" id="L232" data-line="232">                | phoenix_bird_behaviour_scripts[tab + <span class="number">5</span>];</span>
+<span class="line" id="L233" data-line="233">    uint16_t a2 = (phoenix_bird_behaviour_scripts[tab + <span class="number">6</span>] &lt;&lt; <span class="number">8</span>)</span>
+<span class="line" id="L234" data-line="234">                | phoenix_bird_behaviour_scripts[tab + <span class="number">7</span>];</span>
+<span class="line" id="L235" data-line="235"> </span>
+<span class="line" id="L236" data-line="236">    <span class="comment">// second address runs first</span></span>
+<span class="line" id="L237" data-line="237">    <span class="keyword">if</span> (a2 == <span class="number">0x35E0</span>) l35e0_descend(base);</span>
+<span class="line" id="L238" data-line="238">    <span class="keyword">else</span> <span class="keyword">if</span> (a2 == <span class="number">0x36C0</span>) l36c0_animate(base);</span>
+<span class="line" id="L239" data-line="239"> </span>
+<span class="line" id="L240" data-line="240">    <span class="comment">// then the continuation with the data words</span></span>
+<span class="line" id="L241" data-line="241">    <span class="keyword">if</span> (a1 == <span class="number">0x36D2</span>) l36d2_grow(base, d1h, d2h);</span>
+<span class="line" id="L242" data-line="242">    <span class="keyword">else</span> <span class="keyword">if</span> (a1 == <span class="number">0x36EA</span>) l36ea_grow(base, d1h, d2h);</span>
+<span class="line" id="L243" data-line="243">    <span class="keyword">else</span> <span class="keyword">if</span> (a1 == <span class="number">0x370A</span>) l370a_grow_or_dive(base, d1h, d1l, d2h, d2l);</span>
+<span class="line" id="L244" data-line="244">    <span class="comment">// 0x36CC: no continuation</span></span>
+<span class="line" id="L245" data-line="245">}</span>
+<span class="line" id="L246" data-line="246"> </span>
+<span class="line" id="L247" data-line="247">/*</span>
+<span class="line" id="L248" data-line="248"> * Translates L3498: updates bird structures <span class="number">0</span>-<span class="number">3</span>.</span>
+<span class="line" id="L249" data-line="249"> * [ASM: <span class="number">3498</span>-34A9]</span>
+<span class="line" id="L250" data-line="250"> */</span>
+<span class="line" id="L251" data-line="251"><span class="keyword">void</span> update_first_four_birds(<span class="keyword">void</span>) {</span>
+<span class="line" id="L252" data-line="252">    <span class="keyword">for</span> (uint16_t hl = <span class="number">0x4B70</span>; hl &lt; <span class="number">0x4B90</span>; hl += <span class="number">8</span>) {</span>
+<span class="line" id="L253" data-line="253">        update_bird_behavior(hl);</span>
+<span class="line" id="L254" data-line="254">    }</span>
+<span class="line" id="L255" data-line="255">}</span>
+<span class="line" id="L256" data-line="256"> </span>
+<span class="line" id="L257" data-line="257">/*</span>
+<span class="line" id="L258" data-line="258"> * Translates L34AA: updates bird structures <span class="number">4</span>-<span class="number">7</span>.</span>
+<span class="line" id="L259" data-line="259"> * [ASM: 34AA-34BB]</span>
+<span class="line" id="L260" data-line="260"> */</span>
+<span class="line" id="L261" data-line="261"><span class="keyword">void</span> update_second_four_birds(<span class="keyword">void</span>) {</span>
+<span class="line" id="L262" data-line="262">    <span class="keyword">for</span> (uint16_t hl = <span class="number">0x4B90</span>; hl &lt; <span class="number">0x4BB0</span>; hl += <span class="number">8</span>) {</span>
+<span class="line" id="L263" data-line="263">        update_bird_behavior(hl);</span>
+<span class="line" id="L264" data-line="264">    }</span>
+<span class="line" id="L265" data-line="265">}</span>
+<span class="line" id="L266" data-line="266"> </span>
+<span class="line" id="L267" data-line="267"><span class="keyword">extern</span> uint8_t get_random_number(<span class="keyword">void</span>);</span>
+<span class="line" id="L268" data-line="268"> </span>
+<span class="line" id="L269" data-line="269"><span class="comment">/* [ASM: 3560-359F] Refreshes shared flight parameters for the bird wave. */</span></span>
+<span class="line" id="L270" data-line="270"><span class="keyword">void</span> refresh_bird_flight_parameters(<span class="keyword">void</span>) {</span>
+<span class="line" id="L271" data-line="271">    uint8_t a = get_random_number();</span>
+<span class="line" id="L272" data-line="272">    uint8_t b = a;</span>
+<span class="line" id="L273" data-line="273">    a &lt;&lt;= <span class="number">2</span>;</span>
+<span class="line" id="L274" data-line="274">    uint8_t c = a;</span>
+<span class="line" id="L275" data-line="275">    a &lt;&lt;= <span class="number">2</span>;</span>
+<span class="line" id="L276" data-line="276">    a |= b;</span>
+<span class="line" id="L277" data-line="277">    state.M436F = a;</span>
+<span class="line" id="L278" data-line="278">    </span>
+<span class="line" id="L279" data-line="279">    a = state.LevelAndRound;</span>
+<span class="line" id="L280" data-line="280">    <span class="keyword">if</span> (a &gt;= <span class="number">0x40</span>) {</span>
+<span class="line" id="L281" data-line="281">        a = <span class="number">0x30</span>;</span>
+<span class="line" id="L282" data-line="282">    }</span>
+<span class="line" id="L283" data-line="283">    a &amp;= <span class="number">0x30</span>;</span>
+<span class="line" id="L284" data-line="284">    a &gt;&gt;= <span class="number">1</span>;</span>
+<span class="line" id="L285" data-line="285">    b = a;</span>
+<span class="line" id="L286" data-line="286">    </span>
+<span class="line" id="L287" data-line="287">    a = state.BirdsLeft - <span class="number">1</span>;</span>
+<span class="line" id="L288" data-line="288">    <span class="keyword">if</span> (a &gt;= <span class="number">4</span>) {</span>
+<span class="line" id="L289" data-line="289">        a = <span class="number">3</span>;</span>
+<span class="line" id="L290" data-line="290">    }</span>
+<span class="line" id="L291" data-line="291">    a &lt;&lt;= <span class="number">1</span>;</span>
+<span class="line" id="L292" data-line="292">    a |= b;</span>
+<span class="line" id="L293" data-line="293">    b = a;</span>
+<span class="line" id="L294" data-line="294">    </span>
+<span class="line" id="L295" data-line="295">    a = state.Counter9A;</span>
+<span class="line" id="L296" data-line="296">    a &lt;&lt;= <span class="number">2</span>;</span>
+<span class="line" id="L297" data-line="297">    a &amp;= <span class="number">0x20</span>;</span>
+<span class="line" id="L298" data-line="298">    a |= b;</span>
+<span class="line" id="L299" data-line="299">    a += <span class="number">0x80</span>;</span>
+<span class="line" id="L300" data-line="300">    </span>
+<span class="line" id="L301" data-line="301">    <span class="keyword">extern</span> <span class="keyword">const</span> uint8_t phoenix_bird_formation_params[<span class="number">0x40</span>];</span>
+<span class="line" id="L302" data-line="302">    uint8_t param_idx = (uint8_t)(a - <span class="number">0x80</span>);</span>
+<span class="line" id="L303" data-line="303">    state.M436E = phoenix_bird_formation_params[param_idx];</span>
+<span class="line" id="L304" data-line="304">    param_idx++;</span>
+<span class="line" id="L305" data-line="305">    a = phoenix_bird_formation_params[param_idx];</span>
+<span class="line" id="L306" data-line="306">    a += c;</span>
+<span class="line" id="L307" data-line="307">    a &amp;= <span class="number">0xF8</span>;</span>
+<span class="line" id="L308" data-line="308">    state.M436D = a;</span>
+<span class="line" id="L309" data-line="309">}</span>
+<span class="line" id="L310" data-line="310"> </span>
+<span class="line" id="L311" data-line="311"><span class="comment">/* [ASM: 3A00-3A0F] */</span></span>
+<span class="line" id="L312" data-line="312"><span class="keyword">static</span> bool l3a00(uint8_t* out_d) {</span>
+<span class="line" id="L313" data-line="313">    uint8_t a = state.BirdsLeft;</span>
+<span class="line" id="L314" data-line="314">    a -= <span class="number">0x0C</span>;</span>
+<span class="line" id="L315" data-line="315">    a = (~a) + <span class="number">1</span>;</span>
+<span class="line" id="L316" data-line="316">    *out_d = a;</span>
+<span class="line" id="L317" data-line="317">    </span>
+<span class="line" id="L318" data-line="318">    a = state.Counter9B; <span class="comment">// 439B</span></span>
+<span class="line" id="L319" data-line="319">    <span class="keyword">if</span> (a &amp; <span class="number">0x02</span>) {</span>
+<span class="line" id="L320" data-line="320">        <span class="keyword">return</span> true; </span>
+<span class="line" id="L321" data-line="321">    }</span>
+<span class="line" id="L322" data-line="322">    <span class="keyword">return</span> false;</span>
+<span class="line" id="L323" data-line="323">}</span>
+<span class="line" id="L324" data-line="324"> </span>
+<span class="line" id="L325" data-line="325">/*</span>
+<span class="line" id="L326" data-line="326"> * Translates L395C</span>
+<span class="line" id="L327" data-line="327"> * Tests one bird as a dive-bomb candidate. Returns false to let the</span>
+<span class="line" id="L328" data-line="328"> * caller&#x27;s loop <span class="keyword">continue</span> trying the next bird; returns true once a</span>
+<span class="line" id="L329" data-line="329"> * candidate passes and L25B7 is reached -- in the original this is a</span>
+<span class="line" id="L330" data-line="330"> * tail jump whose <span class="keyword">double</span> POP unconditionally aborts all the way back</span>
+<span class="line" id="L331" data-line="331"> * to try_spawn_bird_dive_bomb&#x27;s own caller, whether or not L25B7 actually found</span>
+<span class="line" id="L332" data-line="332"> * a free bullet slot.</span>
+<span class="line" id="L333" data-line="333"> */</span>
+<span class="line" id="L334" data-line="334">/*</span>
+<span class="line" id="L335" data-line="335"> * [ASM: 395C-397B]</span>
+<span class="line" id="L336" data-line="336"> */</span>
+<span class="line" id="L337" data-line="337"><span class="keyword">static</span> bool l395c(uint16_t* hl_ptr, uint8_t b, uint8_t c) {</span>
+<span class="line" id="L338" data-line="338">    uint16_t hl = *hl_ptr;</span>
+<span class="line" id="L339" data-line="339"> </span>
+<span class="line" id="L340" data-line="340">    uint8_t a = mem_read(hl);</span>
+<span class="line" id="L341" data-line="341">    <span class="keyword">if</span> (a &lt; <span class="number">5</span>) <span class="keyword">return</span> false;</span>
+<span class="line" id="L342" data-line="342"> </span>
+<span class="line" id="L343" data-line="343">    hl += <span class="number">5</span>;</span>
+<span class="line" id="L344" data-line="344">    a = mem_read(hl);</span>
+<span class="line" id="L345" data-line="345">    <span class="keyword">if</span> (a &lt; b) <span class="keyword">return</span> false;</span>
+<span class="line" id="L346" data-line="346">    <span class="keyword">if</span> (a &gt;= c) <span class="keyword">return</span> false;</span>
+<span class="line" id="L347" data-line="347"> </span>
+<span class="line" id="L348" data-line="348">    a -= <span class="number">4</span>;</span>
+<span class="line" id="L349" data-line="349">    b = a;</span>
+<span class="line" id="L350" data-line="350">    hl -= <span class="number">3</span>;</span>
+<span class="line" id="L351" data-line="351"> </span>
+<span class="line" id="L352" data-line="352">    a = (uint8_t)(state.B4BD2 + mem_read(hl));</span>
+<span class="line" id="L353" data-line="353">    a &amp;= <span class="number">0x1F</span>;</span>
+<span class="line" id="L354" data-line="354">    a &lt;&lt;= <span class="number">3</span>;</span>
+<span class="line" id="L355" data-line="355">    a += <span class="number">8</span>;</span>
+<span class="line" id="L356" data-line="356">    c = a;</span>
+<span class="line" id="L357" data-line="357"> </span>
+<span class="line" id="L358" data-line="358">    <span class="keyword">extern</span> <span class="keyword">void</span> l25b7(uint8_t b, uint8_t c);</span>
+<span class="line" id="L359" data-line="359">    l25b7(b, c);</span>
+<span class="line" id="L360" data-line="360">    <span class="keyword">return</span> true;</span>
+<span class="line" id="L361" data-line="361">}</span>
+<span class="line" id="L362" data-line="362"> </span>
+<span class="line" id="L363" data-line="363"><span class="comment">/* [ASM: 3930-395B] Attempts to allocate one bird dive-bomb. */</span></span>
+<span class="line" id="L364" data-line="364"><span class="keyword">void</span> try_spawn_bird_dive_bomb(<span class="keyword">void</span>) {</span>
+<span class="line" id="L365" data-line="365">    uint8_t a = state.B4BD2 &amp; <span class="number">0x1E</span>;</span>
+<span class="line" id="L366" data-line="366">    <span class="keyword">extern</span> <span class="keyword">const</span> uint8_t phoenix_bird_dive_spawn_positions[<span class="number">0x20</span>];</span>
+<span class="line" id="L367" data-line="367"> </span>
+<span class="line" id="L368" data-line="368">    uint8_t e = phoenix_bird_dive_spawn_positions[a];</span>
+<span class="line" id="L369" data-line="369">    uint8_t l = phoenix_bird_dive_spawn_positions[a + <span class="number">1</span>];</span>
+<span class="line" id="L370" data-line="370">    uint8_t h = <span class="number">0x4B</span>;</span>
+<span class="line" id="L371" data-line="371">    uint16_t hl = (h &lt;&lt; <span class="number">8</span>) | l;</span>
+<span class="line" id="L372" data-line="372">    </span>
+<span class="line" id="L373" data-line="373">    uint8_t d;</span>
+<span class="line" id="L374" data-line="374">    <span class="keyword">if</span> (!l3a00(&amp;d)) {</span>
+<span class="line" id="L375" data-line="375">        <span class="keyword">return</span>; </span>
+<span class="line" id="L376" data-line="376">    }</span>
+<span class="line" id="L377" data-line="377">    </span>
+<span class="line" id="L378" data-line="378">    a = state.M439F + d;</span>
+<span class="line" id="L379" data-line="379">    uint8_t c = a;</span>
+<span class="line" id="L380" data-line="380">    </span>
+<span class="line" id="L381" data-line="381">    a = state.M439E - d;</span>
+<span class="line" id="L382" data-line="382">    uint8_t b = a;</span>
+<span class="line" id="L383" data-line="383">    </span>
+<span class="line" id="L384" data-line="384">    <span class="keyword">while</span> (e != <span class="number">0</span>) {</span>
+<span class="line" id="L385" data-line="385">        <span class="keyword">if</span> (l395c(&amp;hl, b, c)) <span class="keyword">return</span>; <span class="comment">// L25B7 always ends the search</span></span>
+<span class="line" id="L386" data-line="386">        hl += <span class="number">8</span>;</span>
+<span class="line" id="L387" data-line="387">        e--;</span>
+<span class="line" id="L388" data-line="388">    }</span>
+<span class="line" id="L389" data-line="389">}</span>
+<span class="line" id="L390" data-line="390"> </span>
+<span class="line" id="L391" data-line="391">/*</span>
+<span class="line" id="L392" data-line="392"> * Translates L3980</span>
+<span class="line" id="L393" data-line="393"> * Low-flying bird versus player: when the bird layer scroll (B4BD2) is</span>
+<span class="line" id="L394" data-line="394"> * in the low band, park the real bullet <span class="keyword">struct</span> and sweep a fake bullet</span>
+<span class="line" id="L395" data-line="395"> * across the player ship, reusing the bird collision test. A hit kills</span>
+<span class="line" id="L396" data-line="396"> * the player (or drains the shield).</span>
+<span class="line" id="L397" data-line="397"> * [ASM: <span class="number">3980</span>-39FD]</span>
+<span class="line" id="L398" data-line="398"> */</span>
+<span class="line" id="L399" data-line="399"><span class="keyword">void</span> check_bird_formation_player_collision(<span class="keyword">void</span>) {</span>
+<span class="line" id="L400" data-line="400">    uint8_t a = state.B4BD2;</span>
+<span class="line" id="L401" data-line="401">    <span class="keyword">if</span> (a &lt; <span class="number">0x0C</span> || (uint8_t)(a - <span class="number">0x0C</span>) &gt;= <span class="number">0x10</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L402" data-line="402"> </span>
+<span class="line" id="L403" data-line="403">    <span class="comment">// 3989-39A7: save the bullet struct, aim a fake bullet at the ship</span></span>
+<span class="line" id="L404" data-line="404">    state.B4BC0 = state.PlayerBulletState;</span>
+<span class="line" id="L405" data-line="405">    state.B4BC1 = state.PlayerBulletShape;</span>
+<span class="line" id="L406" data-line="406">    state.B4BC2 = state.PlayerBulletX;</span>
+<span class="line" id="L407" data-line="407">    state.B4BC3 = state.PlayerBulletY;</span>
+<span class="line" id="L408" data-line="408">    state.B4BC4 = state.PlayerBulletMSB;</span>
+<span class="line" id="L409" data-line="409">    state.B4BC5 = state.PlayerBulletLSB;</span>
+<span class="line" id="L410" data-line="410">    state.PlayerBulletMSB = state.PlayerShipMSB;</span>
+<span class="line" id="L411" data-line="411">    state.PlayerBulletLSB = state.PlayerShipLSB;</span>
+<span class="line" id="L412" data-line="412">    state.PlayerBulletState = <span class="number">0x08</span>;</span>
+<span class="line" id="L413" data-line="413"> </span>
+<span class="line" id="L414" data-line="414">    <span class="comment">// 39A9-39C0: odd frames test the ship&#x27;s left edge, even frames the</span></span>
+<span class="line" id="L415" data-line="415">    <span class="comment">// right edge one column back</span></span>
+<span class="line" id="L416" data-line="416">    uint16_t de = <span class="number">0x439E</span>;</span>
+<span class="line" id="L417" data-line="417">    <span class="keyword">if</span> ((state.Counter9B &amp; <span class="number">0x01</span>) == <span class="number">0</span>) {</span>
+<span class="line" id="L418" data-line="418">        de++;</span>
+<span class="line" id="L419" data-line="419">        uint16_t scr = (uint16_t)(((state.PlayerBulletMSB &lt;&lt; <span class="number">8</span>)</span>
+<span class="line" id="L420" data-line="420">                                   | state.PlayerBulletLSB) - <span class="number">0x20</span>);</span>
+<span class="line" id="L421" data-line="421">        state.PlayerBulletMSB = scr &gt;&gt; <span class="number">8</span>;</span>
+<span class="line" id="L422" data-line="422">        state.PlayerBulletLSB = scr &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L423" data-line="423">    }</span>
+<span class="line" id="L424" data-line="424">    state.PlayerBulletX = mem_read(de);</span>
+<span class="line" id="L425" data-line="425"> </span>
+<span class="line" id="L426" data-line="426">    <span class="keyword">extern</span> <span class="keyword">void</span> collision_detection_for_birds(<span class="keyword">void</span>);</span>
+<span class="line" id="L427" data-line="427">    <span class="comment">// 39C3-39D8: walk the test cell down the ship rows</span></span>
+<span class="line" id="L428" data-line="428">    <span class="keyword">while</span> (<span class="number">1</span>) {</span>
+<span class="line" id="L429" data-line="429">        collision_detection_for_birds();</span>
+<span class="line" id="L430" data-line="430">        <span class="keyword">if</span> ((state.PlayerBulletState &amp; <span class="number">0x08</span>) == <span class="number">0</span>) {</span>
+<span class="line" id="L431" data-line="431">            <span class="comment">// L39F0: a bird occupies the cell -&gt; it hit the player</span></span>
+<span class="line" id="L432" data-line="432">            <span class="keyword">if</span> (state.ShieldCount &lt; <span class="number">0xC0</span>) {</span>
+<span class="line" id="L433" data-line="433">                <span class="keyword">extern</span> <span class="keyword">void</span> l0cc4_player_killed(<span class="keyword">void</span>);</span>
+<span class="line" id="L434" data-line="434">                l0cc4_player_killed();</span>
+<span class="line" id="L435" data-line="435">                <span class="keyword">return</span>; <span class="comment">// JP $0CC4 -- no restore on a kill</span></span>
+<span class="line" id="L436" data-line="436">            }</span>
+<span class="line" id="L437" data-line="437">            state.ShieldCount--;</span>
+<span class="line" id="L438" data-line="438">            <span class="keyword">break</span>; <span class="comment">// JP L39DB</span></span>
+<span class="line" id="L439" data-line="439">        }</span>
+<span class="line" id="L440" data-line="440">        state.PlayerBulletLSB++;</span>
+<span class="line" id="L441" data-line="441">        <span class="keyword">if</span> ((state.PlayerBulletLSB &amp; <span class="number">0x1F</span>) &gt;= <span class="number">0x1D</span>) <span class="keyword">break</span>;</span>
+<span class="line" id="L442" data-line="442">    }</span>
+<span class="line" id="L443" data-line="443"> </span>
+<span class="line" id="L444" data-line="444">    <span class="comment">// L39DB: restore the real bullet struct</span></span>
+<span class="line" id="L445" data-line="445">    state.PlayerBulletState = state.B4BC0;</span>
+<span class="line" id="L446" data-line="446">    state.PlayerBulletShape = state.B4BC1;</span>
+<span class="line" id="L447" data-line="447">    state.PlayerBulletX = state.B4BC2;</span>
+<span class="line" id="L448" data-line="448">    state.PlayerBulletY = state.B4BC3;</span>
+<span class="line" id="L449" data-line="449">    state.PlayerBulletMSB = state.B4BC4;</span>
+<span class="line" id="L450" data-line="450">    state.PlayerBulletLSB = state.B4BC5;</span>
+<span class="line" id="L451" data-line="451">}</span></code></pre></main></body></html>

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>game_state_machine.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>game_state_machine.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;game_state_machine.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;state_init.h&quot;</span>
+<span class="line" id="L3" data-line="3">#include &quot;state_play.h&quot;</span>
+<span class="line" id="L4" data-line="4">#include &quot;state_endings.h&quot;</span>
+<span class="line" id="L5" data-line="5">#include &quot;coverage.h&quot;</span>
+<span class="line" id="L6" data-line="6">#include &quot;game_constants.h&quot;</span>
+<span class="line" id="L7" data-line="7"> </span>
+<span class="line" id="L8" data-line="8"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L9" data-line="9"> </span>
+<span class="line" id="L10" data-line="10"><span class="comment">// Hardware stubs (assuming these exist in phoenix_hw.h or similar)</span></span>
+<span class="line" id="L11" data-line="11"><span class="keyword">extern</span> <span class="keyword">void</span> hw_write_video_register(uint8_t val);</span>
+<span class="line" id="L12" data-line="12"><span class="keyword">extern</span> <span class="keyword">void</span> hw_write_scroll_register(uint8_t val);</span>
+<span class="line" id="L13" data-line="13"> </span>
+<span class="line" id="L14" data-line="14"><span class="comment">// Utility subroutines (stubs for now)</span></span>
+<span class="line" id="L15" data-line="15"><span class="keyword">extern</span> <span class="keyword">void</span> clear_foreground(<span class="keyword">void</span>);</span>
+<span class="line" id="L16" data-line="16"><span class="keyword">extern</span> <span class="keyword">void</span> print_text_lines(uint16_t addr, uint8_t count);</span>
+<span class="line" id="L17" data-line="17">#include &quot;utilities.h&quot;</span>
+<span class="line" id="L18" data-line="18"><span class="keyword">extern</span> <span class="keyword">void</span> print_number(uint16_t screen_addr, uint16_t data_addr, uint8_t num_digits);</span>
+<span class="line" id="L19" data-line="19"><span class="keyword">extern</span> <span class="keyword">void</span> delete_digits(uint16_t screen_addr, uint8_t num_digits);</span>
+<span class="line" id="L20" data-line="20"> </span>
+<span class="line" id="L21" data-line="21"><span class="comment">// Prototypes for the individual state functions</span></span>
+<span class="line" id="L22" data-line="22"><span class="keyword">static</span> <span class="keyword">void</span> state_0_new_game_start(<span class="keyword">void</span>);</span>
+<span class="line" id="L23" data-line="23"><span class="keyword">static</span> <span class="keyword">void</span> state_1_flashing_score(<span class="keyword">void</span>);</span>
+<span class="line" id="L24" data-line="24"><span class="keyword">static</span> <span class="keyword">void</span> l04a0_change_player_at_attract_mode(<span class="keyword">void</span>);</span>
+<span class="line" id="L25" data-line="25"><span class="keyword">extern</span> <span class="keyword">void</span> copy_memory_bank(uint8_t from_bank, uint8_t to_bank);</span>
+<span class="line" id="L26" data-line="26"> </span>
+<span class="line" id="L27" data-line="27"><span class="comment">// Helper translations</span></span>
+<span class="line" id="L28" data-line="28"><span class="keyword">static</span> <span class="keyword">void</span> set_bits_video_register(<span class="keyword">void</span>);</span>
+<span class="line" id="L29" data-line="29"><span class="keyword">static</span> <span class="keyword">void</span> l07f0(<span class="keyword">void</span>);</span>
+<span class="line" id="L30" data-line="30"> </span>
+<span class="line" id="L31" data-line="31"><span class="comment">// [ASM: 0400-041D]</span></span>
+<span class="line" id="L32" data-line="32"><span class="keyword">void</span> game_state_machine(<span class="keyword">void</span>) {</span>
+<span class="line" id="L33" data-line="33">    coverage_hit(&quot;game_state_machine&quot;);</span>
+<span class="line" id="L34" data-line="34">    <span class="keyword">switch</span> (state.GameState) {</span>
+<span class="line" id="L35" data-line="35">        <span class="keyword">case</span> GAME_STATE_NEW_GAME: coverage_hit(&quot;state_0_new_game_start&quot;); state_0_new_game_start(); <span class="keyword">break</span>;</span>
+<span class="line" id="L36" data-line="36">        <span class="keyword">case</span> GAME_STATE_SCORE_FLASH: coverage_hit(&quot;state_1_flashing_score&quot;); state_1_flashing_score(); <span class="keyword">break</span>;</span>
+<span class="line" id="L37" data-line="37">        <span class="keyword">case</span> GAME_STATE_INIT_ROUND: coverage_hit(&quot;state_2_init_game_and_level_data&quot;); state_2_init_game_and_level_data(); <span class="keyword">break</span>;</span>
+<span class="line" id="L38" data-line="38">        <span class="keyword">case</span> GAME_STATE_PLAYING: coverage_hit(&quot;state_3_normal_game_play&quot;); state_3_normal_game_play(); <span class="keyword">break</span>;</span>
+<span class="line" id="L39" data-line="39">        <span class="keyword">case</span> GAME_STATE_PLAYER_EXPLODING: coverage_hit(&quot;state_4_player_ship_explosion&quot;); state_4_player_ship_explosion(); <span class="keyword">break</span>;</span>
+<span class="line" id="L40" data-line="40">        <span class="keyword">case</span> GAME_STATE_GAME_OVER: coverage_hit(&quot;state_5_game_over_text&quot;); state_5_game_over_text(); <span class="keyword">break</span>;</span>
+<span class="line" id="L41" data-line="41">        <span class="keyword">case</span> GAME_STATE_MOTHERSHIP_EXPLODING: coverage_hit(&quot;state_6_mother_ship_explosion&quot;); state_6_mother_ship_explosion(); <span class="keyword">break</span>;</span>
+<span class="line" id="L42" data-line="42">        <span class="keyword">case</span> GAME_STATE_MOTHERSHIP_SCORE: coverage_hit(&quot;state_7_mother_ship_score_display&quot;); state_7_mother_ship_score_display(); <span class="keyword">break</span>;</span>
+<span class="line" id="L43" data-line="43">        <span class="keyword">default</span>: <span class="keyword">break</span>;</span>
+<span class="line" id="L44" data-line="44">    }</span>
+<span class="line" id="L45" data-line="45">}</span>
+<span class="line" id="L46" data-line="46"> </span>
+<span class="line" id="L47" data-line="47">/*</span>
+<span class="line" id="L48" data-line="48"> * Game state <span class="number">0</span>.</span>
+<span class="line" id="L49" data-line="49"> * New game start.</span>
+<span class="line" id="L50" data-line="50"> * Translates Z80 label L0430</span>
+<span class="line" id="L51" data-line="51"> * [ASM: <span class="number">0430</span>-045B]</span>
+<span class="line" id="L52" data-line="52"> * [ASM: 04A0-04AB]</span>
+<span class="line" id="L53" data-line="53"> */</span>
+<span class="line" id="L54" data-line="54"><span class="keyword">static</span> <span class="keyword">void</span> state_0_new_game_start(<span class="keyword">void</span>) {</span>
+<span class="line" id="L55" data-line="55">    state.GameState = GAME_STATE_SCORE_FLASH;</span>
+<span class="line" id="L56" data-line="56">    state.CounterA5 = <span class="number">0x80</span>;</span>
+<span class="line" id="L57" data-line="57"> </span>
+<span class="line" id="L58" data-line="58">    uint8_t previous_mode = state.GameAndDemoOrSplash;</span>
+<span class="line" id="L59" data-line="59">    state.GameAndDemoOrSplash = <span class="number">0x00</span>;</span>
+<span class="line" id="L60" data-line="60"> </span>
+<span class="line" id="L61" data-line="61">    <span class="keyword">if</span> (previous_mode == <span class="number">0x02</span>) {</span>
+<span class="line" id="L62" data-line="62">        <span class="keyword">return</span>;</span>
+<span class="line" id="L63" data-line="63">    }</span>
+<span class="line" id="L64" data-line="64"> </span>
+<span class="line" id="L65" data-line="65">    <span class="comment">// 0440: restore GameAndDemoOrSplash (it wasn&#x27;t &#x27;intro splash&#x27;)</span></span>
+<span class="line" id="L66" data-line="66">    state.GameAndDemoOrSplash = previous_mode;</span>
+<span class="line" id="L67" data-line="67"> </span>
+<span class="line" id="L68" data-line="68">    <span class="comment">// 0441-0445: a real one-player game in progress leaves the current</span></span>
+<span class="line" id="L69" data-line="69">    <span class="comment">// (already-correct) bank alone.</span></span>
+<span class="line" id="L70" data-line="70">    <span class="keyword">if</span> (state.GameOrAttract == <span class="number">0x01</span>) {</span>
+<span class="line" id="L71" data-line="71">        <span class="keyword">return</span>;</span>
+<span class="line" id="L72" data-line="72">    }</span>
+<span class="line" id="L73" data-line="73"> </span>
+<span class="line" id="L74" data-line="74">    <span class="comment">// 0446-0449: during the normal attract-mode demo (&#x27;game and demo for</span></span>
+<span class="line" id="L75" data-line="75">    <span class="comment">// player 1&#x27;), swap to the &#x27;player 2&#x27; bank.</span></span>
+<span class="line" id="L76" data-line="76">    <span class="keyword">if</span> (state.GameAndDemoOrSplash == <span class="number">0x00</span>) {</span>
+<span class="line" id="L77" data-line="77">        l04a0_change_player_at_attract_mode();</span>
+<span class="line" id="L78" data-line="78">        <span class="keyword">return</span>;</span>
+<span class="line" id="L79" data-line="79">    }</span>
+<span class="line" id="L80" data-line="80"> </span>
+<span class="line" id="L81" data-line="81">    <span class="comment">// 044C-045B: switching away from player 2&#x27;s perspective back to</span></span>
+<span class="line" id="L82" data-line="82">    <span class="comment">// player 1&#x27;s, but only if player 1 still has lives to continue with.</span></span>
+<span class="line" id="L83" data-line="83">    <span class="keyword">if</span> (state.Player1Lives == <span class="number">0x00</span>) {</span>
+<span class="line" id="L84" data-line="84">        <span class="keyword">return</span>;</span>
+<span class="line" id="L85" data-line="85">    }</span>
+<span class="line" id="L86" data-line="86">    state.GameAndDemoOrSplash = <span class="number">0x00</span>;</span>
+<span class="line" id="L87" data-line="87">    <span class="keyword">if</span> (state.GameOrAttract == <span class="number">0x02</span>) {</span>
+<span class="line" id="L88" data-line="88">        coverage_hit(&quot;two_player_turn_switch&quot;);</span>
+<span class="line" id="L89" data-line="89">    }</span>
+<span class="line" id="L90" data-line="90">    copy_memory_bank(<span class="number">1</span>, <span class="number">0</span>);</span>
+<span class="line" id="L91" data-line="91">}</span>
+<span class="line" id="L92" data-line="92"> </span>
+<span class="line" id="L93" data-line="93">/*</span>
+<span class="line" id="L94" data-line="94"> * Translates L04A0</span>
+<span class="line" id="L95" data-line="95"> * Changing the player at attract mode.</span>
+<span class="line" id="L96" data-line="96"> * [ASM: 04A0-04AB]</span>
+<span class="line" id="L97" data-line="97"> */</span>
+<span class="line" id="L98" data-line="98"><span class="keyword">static</span> <span class="keyword">void</span> l04a0_change_player_at_attract_mode(<span class="keyword">void</span>) {</span>
+<span class="line" id="L99" data-line="99">    state.GameAndDemoOrSplash = <span class="number">0x01</span>;</span>
+<span class="line" id="L100" data-line="100">    copy_memory_bank(<span class="number">0</span>, <span class="number">1</span>);</span>
+<span class="line" id="L101" data-line="101">}</span>
+<span class="line" id="L102" data-line="102"> </span>
+<span class="line" id="L103" data-line="103">/*</span>
+<span class="line" id="L104" data-line="104"> * Set lower bits of video <span class="keyword">register</span> <span class="keyword">for</span> color palette, memory bank.</span>
+<span class="line" id="L105" data-line="105"> * Translates Z80 label SetBitsVideoRegister (041E)</span>
+<span class="line" id="L106" data-line="106"> */</span>
+<span class="line" id="L107" data-line="107"><span class="keyword">static</span> <span class="keyword">void</span> set_bits_video_register(<span class="keyword">void</span>) {</span>
+<span class="line" id="L108" data-line="108">    uint8_t bank = state.GameAndDemoOrSplash &amp; <span class="number">0x01</span>;</span>
+<span class="line" id="L109" data-line="109">    uint8_t palette = state.LevelAndRound &amp; <span class="number">0x02</span>;</span>
+<span class="line" id="L110" data-line="110">    hw_write_video_register(bank | palette);</span>
+<span class="line" id="L111" data-line="111">}</span>
+<span class="line" id="L112" data-line="112"> </span>
+<span class="line" id="L113" data-line="113">/*</span>
+<span class="line" id="L114" data-line="114"> * Translates Z80 label L07F0</span>
+<span class="line" id="L115" data-line="115"> * Called from State <span class="number">1</span>.</span>
+<span class="line" id="L116" data-line="116"> * [ASM: 07F0-07FA]</span>
+<span class="line" id="L117" data-line="117"> */</span>
+<span class="line" id="L118" data-line="118"><span class="keyword">static</span> <span class="keyword">void</span> l07f0(<span class="keyword">void</span>) {</span>
+<span class="line" id="L119" data-line="119">    hw_write_scroll_register(state.CounterB9);</span>
+<span class="line" id="L120" data-line="120">    clear_foreground();</span>
+<span class="line" id="L121" data-line="121">    set_bits_video_register();</span>
+<span class="line" id="L122" data-line="122">}</span>
+<span class="line" id="L123" data-line="123"> </span>
+<span class="line" id="L124" data-line="124">/*</span>
+<span class="line" id="L125" data-line="125"> * Game state <span class="number">1</span>.</span>
+<span class="line" id="L126" data-line="126"> * Flashing of score1 or <span class="number">2</span>.</span>
+<span class="line" id="L127" data-line="127"> * Translates Z80 label L04AC</span>
+<span class="line" id="L128" data-line="128"> * [ASM: 04AC-04E4]</span>
+<span class="line" id="L129" data-line="129"> * [ASM: 04E6-04F9]</span>
+<span class="line" id="L130" data-line="130"> * [ASM: 04FB-<span class="number">0505</span>]</span>
+<span class="line" id="L131" data-line="131"> */</span>
+<span class="line" id="L132" data-line="132"><span class="keyword">static</span> <span class="keyword">void</span> state_1_flashing_score(<span class="keyword">void</span>) {</span>
+<span class="line" id="L133" data-line="133">    state.CounterA5--;</span>
+<span class="line" id="L134" data-line="134">    uint8_t a = state.CounterA5;</span>
+<span class="line" id="L135" data-line="135">    </span>
+<span class="line" id="L136" data-line="136">    state.GameState = GAME_STATE_INIT_ROUND;</span>
+<span class="line" id="L137" data-line="137">    <span class="keyword">if</span> (a == <span class="number">0</span>) {</span>
+<span class="line" id="L138" data-line="138">        <span class="keyword">return</span>;</span>
+<span class="line" id="L139" data-line="139">    }</span>
+<span class="line" id="L140" data-line="140">    </span>
+<span class="line" id="L141" data-line="141">    state.GameState = GAME_STATE_SCORE_FLASH;</span>
+<span class="line" id="L142" data-line="142"> </span>
+<span class="line" id="L143" data-line="143">    <span class="comment">// 04BA: JP Z,$07F0 -- een tail-jump: bij A == $7F vervangt L07F0 de</span></span>
+<span class="line" id="L144" data-line="144">    <span class="comment">// rest van dit frame volledig (een eerdere vertaling viel erna door</span></span>
+<span class="line" id="L145" data-line="145">    <span class="comment">// naar de flash-logica).</span></span>
+<span class="line" id="L146" data-line="146">    <span class="keyword">if</span> (a == <span class="number">0x7F</span>) {</span>
+<span class="line" id="L147" data-line="147">        l07f0();</span>
+<span class="line" id="L148" data-line="148">        <span class="keyword">return</span>;</span>
+<span class="line" id="L149" data-line="149">    }</span>
+<span class="line" id="L150" data-line="150"> </span>
+<span class="line" id="L151" data-line="151">    <span class="comment">// Reset Counter9A and Counter9B (0x439A and 0x439B)</span></span>
+<span class="line" id="L152" data-line="152">    state.Counter9A = <span class="number">0x00</span>;</span>
+<span class="line" id="L153" data-line="153">    state.Counter9B = <span class="number">0x00</span>;</span>
+<span class="line" id="L154" data-line="154"> </span>
+<span class="line" id="L155" data-line="155">    <span class="comment">// Every 8 frames, toggle visibility (a &amp; 0x08)</span></span>
+<span class="line" id="L156" data-line="156">    <span class="keyword">if</span> ((a &amp; <span class="number">0x08</span>) != <span class="number">0</span>) {</span>
+<span class="line" id="L157" data-line="157">        <span class="comment">// L04E6: Hide score</span></span>
+<span class="line" id="L158" data-line="158">        <span class="keyword">if</span> (state.GameAndDemoOrSplash == <span class="number">0</span>) {</span>
+<span class="line" id="L159" data-line="159">            delete_digits(<span class="number">0x4261</span>, <span class="number">6</span>); <span class="comment">// L04FB</span></span>
+<span class="line" id="L160" data-line="160">        } <span class="keyword">else</span> {</span>
+<span class="line" id="L161" data-line="161">            delete_digits(<span class="number">0x4021</span>, <span class="number">6</span>); <span class="comment">// L04FB</span></span>
+<span class="line" id="L162" data-line="162">        }</span>
+<span class="line" id="L163" data-line="163">    } <span class="keyword">else</span> {</span>
+<span class="line" id="L164" data-line="164">        <span class="comment">// 04C9: CALL $06E8 -- herprint eerst de statische headerregel</span></span>
+<span class="line" id="L165" data-line="165">        <span class="comment">// (&quot;SCORE1 HI-SCORE SCORE2&quot;, rij 0 van T1800). Zo herstelt de</span></span>
+<span class="line" id="L166" data-line="166">        <span class="comment">// ROM headerletters die tijdens het spel overschreven raken;</span></span>
+<span class="line" id="L167" data-line="167">        <span class="comment">// een eerdere vertaling sloeg dit over, waardoor beschadigde</span></span>
+<span class="line" id="L168" data-line="168">        <span class="comment">// headertegels blijvend zichtbaar bleven. Gevonden via scripted</span></span>
+<span class="line" id="L169" data-line="169">        <span class="comment">// lockstep (mutated_rank_05_score_573462, record 2159).</span></span>
+<span class="line" id="L170" data-line="170">        <span class="keyword">extern</span> <span class="keyword">void</span> print_text_lines(uint16_t screen_draw_info_addr, uint8_t columns);</span>
+<span class="line" id="L171" data-line="171">        print_text_lines(<span class="number">0x1800</span>, <span class="number">1</span>);</span>
+<span class="line" id="L172" data-line="172"> </span>
+<span class="line" id="L173" data-line="173">        <span class="comment">// L04DF: Show score</span></span>
+<span class="line" id="L174" data-line="174">        <span class="keyword">if</span> (state.GameAndDemoOrSplash == <span class="number">0</span>) {</span>
+<span class="line" id="L175" data-line="175">            print_number(<span class="number">0x4261</span>, <span class="number">0x4383</span>, <span class="number">6</span>); <span class="comment">// 04DF</span></span>
+<span class="line" id="L176" data-line="176">        } <span class="keyword">else</span> {</span>
+<span class="line" id="L177" data-line="177">            print_number(<span class="number">0x4021</span>, <span class="number">0x4387</span>, <span class="number">6</span>); <span class="comment">// 04DF</span></span>
+<span class="line" id="L178" data-line="178">        }</span>
+<span class="line" id="L179" data-line="179">    }</span>
+<span class="line" id="L180" data-line="180">}</span>
+<span class="line" id="L181" data-line="181"> </span>
+<span class="line" id="L182" data-line="182"><span class="comment">// States 4-7 are implemented in state_endings.c</span></span></code></pre></main></body></html>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>collision_detection.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>collision_detection.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;bird_logic.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;z80_core.h&quot;</span>
+<span class="line" id="L3" data-line="3">#include &quot;coverage.h&quot;</span>
+<span class="line" id="L4" data-line="4">#include &quot;phoenix_tables.h&quot;</span>
+<span class="line" id="L5" data-line="5">#include &lt;stdint.h&gt;</span>
+<span class="line" id="L6" data-line="6">#include &lt;stdio.h&gt;</span>
+<span class="line" id="L7" data-line="7"> </span>
+<span class="line" id="L8" data-line="8"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L9" data-line="9"> </span>
+<span class="line" id="L10" data-line="10"><span class="keyword">extern</span> <span class="keyword">void</span> draw_bird_shape_350c(uint8_t entry, uint16_t hl, uint16_t shape);</span>
+<span class="line" id="L11" data-line="11"> </span>
+<span class="line" id="L12" data-line="12">/*</span>
+<span class="line" id="L13" data-line="13"> * Translates L38A1</span>
+<span class="line" id="L14" data-line="14"> * Erase a hit bird from the background: draws the empty 4x4 shape.</span>
+<span class="line" id="L15" data-line="15"> * The shape address is formed from the letter &#x27;R&#x27; of the on-ROM</span>
+<span class="line" id="L16" data-line="16"> * &quot; AMSTAR ELECTRONICS CORP. &quot; copyright text -- another piracy trap:</span>
+<span class="line" id="L17" data-line="17"> * change that letter and dead birds leave garbage on screen.</span>
+<span class="line" id="L18" data-line="18"> * [ASM: 38A1-38B5]</span>
+<span class="line" id="L19" data-line="19"> */</span>
+<span class="line" id="L20" data-line="20"><span class="keyword">static</span> <span class="keyword">void</span> l38a1_erase_bird(uint16_t bird_struct) {</span>
+<span class="line" id="L21" data-line="21">    uint8_t d = mem_read(bird_struct + <span class="number">1</span>);</span>
+<span class="line" id="L22" data-line="22">    uint8_t e = mem_read(bird_struct + <span class="number">2</span>);</span>
+<span class="line" id="L23" data-line="23">    <span class="comment">// 38A9-38AF: &#x27;R&#x27; ($12) + $DE = $F0 -&gt; $17F0, the FourByFourEmpty shape</span></span>
+<span class="line" id="L24" data-line="24">    <span class="keyword">extern</span> <span class="keyword">const</span> uint8_t phoenix_bird_erase_shape_selector;</span>
+<span class="line" id="L25" data-line="25">    uint8_t l = (uint8_t)(phoenix_bird_erase_shape_selector + <span class="number">0xDE</span>);</span>
+<span class="line" id="L26" data-line="26">    <span class="comment">// 38B1: CALL $34DE -- the clip-guarded entry, NOT the bare $350C tail</span></span>
+<span class="line" id="L27" data-line="27">    <span class="keyword">extern</span> <span class="keyword">void</span> draw_bird_shape_34de(uint8_t entry, uint16_t screen, uint16_t shape);</span>
+<span class="line" id="L28" data-line="28">    draw_bird_shape_34de(<span class="number">0x20</span>, (uint16_t)((d &lt;&lt; <span class="number">8</span>) | e), <span class="number">0x1700</span> | l);</span>
+<span class="line" id="L29" data-line="29">}</span>
+<span class="line" id="L30" data-line="30"> </span>
+<span class="line" id="L31" data-line="31">/*</span>
+<span class="line" id="L32" data-line="32"> * Translates L38F8/L38FB/L3906</span>
+<span class="line" id="L33" data-line="33"> * Store a bird explosion in a free slot pair. Normal kills enter at</span>
+<span class="line" id="L34" data-line="34"> * $38F8 (slots $<span class="number">4370</span>/$<span class="number">4374</span>); bonus kills enter at $38FB with HL already</span>
+<span class="line" id="L35" data-line="35"> * on $<span class="number">4378</span> (slots $<span class="number">4378</span>/$437C).</span>
+<span class="line" id="L36" data-line="36"> * [ASM: 38F8-391B]</span>
+<span class="line" id="L37" data-line="37"> */</span>
+<span class="line" id="L38" data-line="38"><span class="keyword">static</span> <span class="keyword">void</span> bird_explosion_slot(uint16_t hl, uint8_t b, uint8_t c) {</span>
+<span class="line" id="L39" data-line="39">    <span class="keyword">if</span> (mem_read(hl) != <span class="number">0</span>) {</span>
+<span class="line" id="L40" data-line="40">        hl += <span class="number">4</span>;</span>
+<span class="line" id="L41" data-line="41">        <span class="keyword">if</span> (mem_read(hl) != <span class="number">0</span>) <span class="keyword">return</span>; <span class="comment">// both slots busy</span></span>
+<span class="line" id="L42" data-line="42">    }</span>
+<span class="line" id="L43" data-line="43">    mem_write(hl, b);</span>
+<span class="line" id="L44" data-line="44">    mem_write(hl + <span class="number">1</span>, c);</span>
+<span class="line" id="L45" data-line="45">    mem_write(hl + <span class="number">2</span>, state.PlayerBulletMSB);</span>
+<span class="line" id="L46" data-line="46">    mem_write(hl + <span class="number">3</span>, state.PlayerBulletLSB);</span>
+<span class="line" id="L47" data-line="47">    state.PlayerBulletState &amp;= <span class="number">0xF7</span>; <span class="comment">// bullet is used up</span></span>
+<span class="line" id="L48" data-line="48">}</span>
+<span class="line" id="L49" data-line="49"> </span>
+<span class="line" id="L50" data-line="50">/*</span>
+<span class="line" id="L51" data-line="51"> * Translates L3844 (small bird tiles, tile-$<span class="number">90</span> &lt; $<span class="number">50</span>)</span>
+<span class="line" id="L52" data-line="52"> * Returns <span class="number">1</span> when the bird was killed (the original pops the <span class="keyword">return</span></span>
+<span class="line" id="L53" data-line="53"> * address and returns straight to L3800&#x27;s caller).</span>
+<span class="line" id="L54" data-line="54"> * [ASM: <span class="number">3844</span>-388D] and [ASM: <span class="number">3894</span>-389C]</span>
+<span class="line" id="L55" data-line="55"> */</span>
+<span class="line" id="L56" data-line="56"><span class="keyword">static</span> uint8_t l3844_small_bird_hit(uint8_t b, uint8_t c, uint16_t bird_struct) {</span>
+<span class="line" id="L57" data-line="57">    <span class="comment">// 3844-384B: pixel mask from T3B60</span></span>
+<span class="line" id="L58" data-line="58">    <span class="keyword">if</span> ((phoenix_bird_hitmask_page[(uint8_t)(b + <span class="number">0x60</span>)] &amp; c) == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span>
+<span class="line" id="L59" data-line="59">    coverage_hit(&quot;small_bird_hit&quot;);</span>
+<span class="line" id="L60" data-line="60"> </span>
+<span class="line" id="L61" data-line="61">    l38a1_erase_bird(bird_struct);</span>
+<span class="line" id="L62" data-line="62"> </span>
+<span class="line" id="L63" data-line="63">    <span class="comment">// 384F-3857: take the bird type, clear the struct entry</span></span>
+<span class="line" id="L64" data-line="64">    uint8_t type = mem_read(bird_struct);</span>
+<span class="line" id="L65" data-line="65">    mem_write(bird_struct, <span class="number">0</span>);</span>
+<span class="line" id="L66" data-line="66">    uint8_t d = mem_read(bird_struct + <span class="number">4</span>);</span>
+<span class="line" id="L67" data-line="67"> </span>
+<span class="line" id="L68" data-line="68">    state.BirdsLeft--;</span>
+<span class="line" id="L69" data-line="69"> </span>
+<span class="line" id="L70" data-line="70">    <span class="keyword">if</span> (type &lt; <span class="number">0x0B</span>) {</span>
+<span class="line" id="L71" data-line="71">        <span class="comment">// L3894: plain bird, score 050</span></span>
+<span class="line" id="L72" data-line="72">        state.M4364 = <span class="number">0xFF</span>;</span>
+<span class="line" id="L73" data-line="73">        bird_explosion_slot(<span class="number">0x4370</span>, <span class="number">0x0D</span>, <span class="number">0x05</span>);</span>
+<span class="line" id="L74" data-line="74">        <span class="keyword">return</span> <span class="number">1</span>;</span>
+<span class="line" id="L75" data-line="75">    }</span>
+<span class="line" id="L76" data-line="76"> </span>
+<span class="line" id="L77" data-line="77">    <span class="comment">// 3862-388D: grown bird, bonus explosion; score depends on type and</span></span>
+<span class="line" id="L78" data-line="78">    <span class="comment">// the height byte at struct+4</span></span>
+<span class="line" id="L79" data-line="79">    state.M4369 = <span class="number">0xFF</span>;</span>
+<span class="line" id="L80" data-line="80">    coverage_hit(&quot;grown_bird_bonus_explosion&quot;);</span>
+<span class="line" id="L81" data-line="81">    uint8_t sc = <span class="number">0x10</span>; <span class="comment">// score 100 nibble pair (B=0x10, C=0x10)</span></span>
+<span class="line" id="L82" data-line="82">    <span class="keyword">if</span> (type != <span class="number">0x0F</span>) {</span>
+<span class="line" id="L83" data-line="83">        sc = (uint8_t)(((d &gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x7C</span>) + <span class="number">0x30</span>);</span>
+<span class="line" id="L84" data-line="84">        <span class="keyword">if</span> (type != <span class="number">0x0E</span>) {</span>
+<span class="line" id="L85" data-line="85">            sc &gt;&gt;= <span class="number">1</span>;</span>
+<span class="line" id="L86" data-line="86">            <span class="keyword">if</span> (type &lt; <span class="number">0x0C</span>) sc &gt;&gt;= <span class="number">1</span>;</span>
+<span class="line" id="L87" data-line="87">        }</span>
+<span class="line" id="L88" data-line="88">    }</span>
+<span class="line" id="L89" data-line="89">    bird_explosion_slot(<span class="number">0x4378</span>, <span class="number">0x10</span>, sc);</span>
+<span class="line" id="L90" data-line="90">    <span class="keyword">return</span> <span class="number">1</span>;</span>
+<span class="line" id="L91" data-line="91">}</span>
+<span class="line" id="L92" data-line="92"> </span>
+<span class="line" id="L93" data-line="93">/*</span>
+<span class="line" id="L94" data-line="94"> * Translates L38BC (large tiles, tile-$<span class="number">90</span> &gt;= $<span class="number">20</span>: eggs and grown birds)</span>
+<span class="line" id="L95" data-line="95"> * An egg (type $0B/$0C) transforms into a bird via table T3DB8 instead</span>
+<span class="line" id="L96" data-line="96"> * of dying.</span>
+<span class="line" id="L97" data-line="97"> * [ASM: 38BC-38F1]</span>
+<span class="line" id="L98" data-line="98"> */</span>
+<span class="line" id="L99" data-line="99"><span class="keyword">static</span> uint8_t l38bc_large_hit(uint8_t b, uint8_t c, uint16_t bird_struct) {</span>
+<span class="line" id="L100" data-line="100">    <span class="keyword">if</span> ((phoenix_bird_hitmask_page[(uint8_t)(b + <span class="number">0xB0</span>)] &amp; c) == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span>
+<span class="line" id="L101" data-line="101">    coverage_hit(&quot;large_bird_or_egg_hit&quot;);</span>
+<span class="line" id="L102" data-line="102"> </span>
+<span class="line" id="L103" data-line="103">    l38a1_erase_bird(bird_struct);</span>
+<span class="line" id="L104" data-line="104"> </span>
+<span class="line" id="L105" data-line="105">    <span class="comment">// 38C7-38E8: egg types transform into a bird type from T3DB8</span></span>
+<span class="line" id="L106" data-line="106">    uint8_t type = mem_read(bird_struct);</span>
+<span class="line" id="L107" data-line="107">    uint8_t idx = (uint8_t)(type - <span class="number">0x0B</span>);</span>
+<span class="line" id="L108" data-line="108">    <span class="keyword">if</span> (idx &lt; <span class="number">0x03</span>) {</span>
+<span class="line" id="L109" data-line="109">        uint8_t threshold = mem_read(bird_struct + <span class="number">5</span>);</span>
+<span class="line" id="L110" data-line="110">        <span class="comment">// 38D8-38DF: CP (HL) sets carry = (PlayerBulletX &lt; threshold);</span></span>
+<span class="line" id="L111" data-line="111">        <span class="comment">// RLA folds that carry into bit0 of PlayerBulletX, then two RLCAs</span></span>
+<span class="line" id="L112" data-line="112">        <span class="comment">// rotate it up to bit2 -- i.e. AND $04 isolates exactly the</span></span>
+<span class="line" id="L113" data-line="113">        <span class="comment">// &quot;PlayerBulletX &lt; threshold&quot; flag, giving side=4 when true.</span></span>
+<span class="line" id="L114" data-line="114">        uint8_t side = (state.PlayerBulletX &lt; threshold) ? <span class="number">4</span> : <span class="number">0</span>;</span>
+<span class="line" id="L115" data-line="115">        uint8_t l = (uint8_t)(idx | side) + <span class="number">0xB8</span>;</span>
+<span class="line" id="L116" data-line="116">        <span class="keyword">extern</span> <span class="keyword">const</span> uint8_t phoenix_egg_transformation_types[<span class="number">0x08</span>];</span>
+<span class="line" id="L117" data-line="117">        mem_write(bird_struct, phoenix_egg_transformation_types[l - <span class="number">0xB8</span>]);</span>
+<span class="line" id="L118" data-line="118">    }</span>
+<span class="line" id="L119" data-line="119"> </span>
+<span class="line" id="L120" data-line="120">    <span class="comment">// L38E9</span></span>
+<span class="line" id="L121" data-line="121">    state.M4366 = <span class="number">0xFF</span>;</span>
+<span class="line" id="L122" data-line="122">    bird_explosion_slot(<span class="number">0x4370</span>, <span class="number">0x07</span>, <span class="number">0x02</span>);</span>
+<span class="line" id="L123" data-line="123">    <span class="keyword">return</span> <span class="number">1</span>;</span>
+<span class="line" id="L124" data-line="124">}</span>
+<span class="line" id="L125" data-line="125"> </span>
+<span class="line" id="L126" data-line="126">/*</span>
+<span class="line" id="L127" data-line="127"> * Translates L3800</span>
+<span class="line" id="L128" data-line="128"> * Player bullet versus bird collision. The bullet position is looked</span>
+<span class="line" id="L129" data-line="129"> * up in the scroll-corrected background; bird tiles start at $<span class="number">90</span>.</span>
+<span class="line" id="L130" data-line="130"> * [ASM: <span class="number">3800</span>-<span class="number">3841</span>] and [ASM: 391C-<span class="number">3922</span>]</span>
+<span class="line" id="L131" data-line="131"> */</span>
+<span class="line" id="L132" data-line="132"><span class="keyword">void</span> collision_detection_for_birds(<span class="keyword">void</span>) {</span>
+<span class="line" id="L133" data-line="133">    coverage_hit(&quot;collision_detection_for_birds&quot;);</span>
+<span class="line" id="L134" data-line="134">    <span class="keyword">if</span> ((state.PlayerBulletState &amp; <span class="number">0x08</span>) == <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L135" data-line="135"> </span>
+<span class="line" id="L136" data-line="136">    <span class="comment">// 3806-381E: background cell for the bullet, corrected for the</span></span>
+<span class="line" id="L137" data-line="137">    <span class="comment">// vertical scroll position of the bird layer (B4BD2)</span></span>
+<span class="line" id="L138" data-line="138">    uint8_t d = (uint8_t)(state.PlayerBulletMSB + <span class="number">0x08</span>);</span>
+<span class="line" id="L139" data-line="139">    uint8_t e = (uint8_t)(((state.PlayerBulletLSB - state.B4BD2) &amp; <span class="number">0x1F</span>)</span>
+<span class="line" id="L140" data-line="140">                          | (state.PlayerBulletLSB &amp; <span class="number">0xE0</span>));</span>
+<span class="line" id="L141" data-line="141">    uint16_t cell = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L142" data-line="142">    <span class="comment">// An out-of-range cell reads as 0 via mem_read, which the tile&lt;0x90</span></span>
+<span class="line" id="L143" data-line="143">    <span class="comment">// check just below rejects the same way the old explicit range guard</span></span>
+<span class="line" id="L144" data-line="144">    <span class="comment">// did -- same early exit, one less redundant bound check.</span></span>
+<span class="line" id="L145" data-line="145">    uint8_t tile = mem_read(cell);</span>
+<span class="line" id="L146" data-line="146"> </span>
+<span class="line" id="L147" data-line="147">    <span class="comment">// 381F-3822: bird tiles are $90 and up</span></span>
+<span class="line" id="L148" data-line="148">    <span class="keyword">if</span> (tile &lt; <span class="number">0x90</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L149" data-line="149">    uint8_t b = (uint8_t)(tile - <span class="number">0x90</span>);</span>
+<span class="line" id="L150" data-line="150"> </span>
+<span class="line" id="L151" data-line="151">    <span class="comment">// 3824-382E: pixel mask for the bullet X within the cell (T3E00)</span></span>
+<span class="line" id="L152" data-line="152">    uint8_t c = phoenix_bullet_pixel_masks[state.PlayerBulletX &amp; <span class="number">0x07</span>];</span>
+<span class="line" id="L153" data-line="153"> </span>
+<span class="line" id="L154" data-line="154">    <span class="comment">// 382F-3839: bird structure address from the cell row</span></span>
+<span class="line" id="L155" data-line="155">    uint8_t off = (uint8_t)((e &amp; <span class="number">0x0E</span>) &lt;&lt; <span class="number">2</span>);</span>
+<span class="line" id="L156" data-line="156">    uint16_t bird_struct = <span class="number">0x4B00</span> | (uint8_t)(<span class="number">0xA8</span> - off);</span>
+<span class="line" id="L157" data-line="157"> </span>
+<span class="line" id="L158" data-line="158">    <span class="comment">// 383B-3841 + L391C: small-tile test, then large-tile test</span></span>
+<span class="line" id="L159" data-line="159">    <span class="keyword">if</span> (b &lt; <span class="number">0x50</span>) {</span>
+<span class="line" id="L160" data-line="160">        <span class="keyword">if</span> (l3844_small_bird_hit(b, c, bird_struct)) <span class="keyword">return</span>;</span>
+<span class="line" id="L161" data-line="161">    }</span>
+<span class="line" id="L162" data-line="162">    <span class="keyword">if</span> (b &gt;= <span class="number">0x20</span>) {</span>
+<span class="line" id="L163" data-line="163">        l38bc_large_hit(b, c, bird_struct);</span>
+<span class="line" id="L164" data-line="164">    }</span>
+<span class="line" id="L165" data-line="165">}</span>
+<span class="line" id="L166" data-line="166"> </span>
+<span class="line" id="L167" data-line="167">/*</span>
+<span class="line" id="L168" data-line="168"> * Translates L3462</span>
+<span class="line" id="L169" data-line="169"> * No birds left: rate-limited (every other call, via Counter9B bit <span class="number">0</span>)</span>
+<span class="line" id="L170" data-line="170"> * bomb/animation upkeep, then hand off to L2204&#x27;s shared round-transition</span>
+<span class="line" id="L171" data-line="171"> * countdown (M43B6) -- the same path the alien-wave end (l21ba) uses.</span>
+<span class="line" id="L172" data-line="172"> * [ASM: <span class="number">3462</span>-346D]</span>
+<span class="line" id="L173" data-line="173"> */</span>
+<span class="line" id="L174" data-line="174"><span class="keyword">void</span> l3462_no_birds_left(<span class="keyword">void</span>) {</span>
+<span class="line" id="L175" data-line="175">    coverage_hit(&quot;no_birds_left&quot;);</span>
+<span class="line" id="L176" data-line="176">    <span class="comment">// 3462-3466: LD A,(Counter9B); RRCA; RET C</span></span>
+<span class="line" id="L177" data-line="177">    <span class="keyword">if</span> ((state.Counter9B &amp; <span class="number">0x01</span>) != <span class="number">0</span>) <span class="keyword">return</span>;</span>
+<span class="line" id="L178" data-line="178"> </span>
+<span class="line" id="L179" data-line="179">    <span class="keyword">extern</span> <span class="keyword">void</span> process_enemy_bombs(<span class="keyword">void</span>); <span class="comment">// 0C40</span></span>
+<span class="line" id="L180" data-line="180">    <span class="keyword">extern</span> <span class="keyword">void</span> handle_animations_for_killed_aliens(<span class="keyword">void</span>); <span class="comment">// 0FC0</span></span>
+<span class="line" id="L181" data-line="181">    <span class="keyword">extern</span> <span class="keyword">void</span> l2204(<span class="keyword">void</span>); <span class="comment">// 2204</span></span>
+<span class="line" id="L182" data-line="182">    process_enemy_bombs();</span>
+<span class="line" id="L183" data-line="183">    handle_animations_for_killed_aliens();</span>
+<span class="line" id="L184" data-line="184">    l2204();</span>
+<span class="line" id="L185" data-line="185">}</span></code></pre></main></body></html>

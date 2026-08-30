@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hw_video_audio.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>hw_video_audio.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;hw_video_audio.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;phoenix_hw.h&quot;</span>
+<span class="line" id="L3" data-line="3">#include &quot;phoenix_state.h&quot;</span>
+<span class="line" id="L4" data-line="4">#include &quot;phoenix_tables.h&quot;</span>
+<span class="line" id="L5" data-line="5">#include &quot;utilities.h&quot;</span>
+<span class="line" id="L6" data-line="6">#include &quot;z80_core.h&quot;</span>
+<span class="line" id="L7" data-line="7">#include &lt;stdio.h&gt;</span>
+<span class="line" id="L8" data-line="8"> </span>
+<span class="line" id="L9" data-line="9"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L10" data-line="10"> </span>
+<span class="line" id="L11" data-line="11">/* The platform owns timing. SDL waits <span class="keyword">for</span> its video thread; embedded ports</span>
+<span class="line" id="L12" data-line="12"> * <span class="keyword">return</span> after scheduling their host-driven frame. */</span>
+<span class="line" id="L13" data-line="13"><span class="keyword">extern</span> bool platform_wait_vblank(<span class="keyword">void</span>);</span>
+<span class="line" id="L14" data-line="14"> </span>
+<span class="line" id="L15" data-line="15"><span class="keyword">extern</span> <span class="keyword">void</span> game_state_machine(<span class="keyword">void</span>);</span>
+<span class="line" id="L16" data-line="16"><span class="keyword">extern</span> <span class="keyword">void</span> update_scores_and_sound(<span class="keyword">void</span>);</span>
+<span class="line" id="L17" data-line="17"><span class="keyword">extern</span> uint8_t coin_checking(<span class="keyword">void</span>);</span>
+<span class="line" id="L18" data-line="18"><span class="keyword">extern</span> <span class="keyword">void</span> prompt_for_start_game(<span class="keyword">void</span>);</span>
+<span class="line" id="L19" data-line="19"><span class="keyword">extern</span> <span class="keyword">void</span> splash_and_demo(<span class="keyword">void</span>);</span>
+<span class="line" id="L20" data-line="20"><span class="keyword">extern</span> <span class="keyword">void</span> update_sound_control_ram(uint8_t a);</span>
+<span class="line" id="L21" data-line="21"><span class="keyword">extern</span> <span class="keyword">void</span> init_sound_screen(<span class="keyword">void</span>);</span>
+<span class="line" id="L22" data-line="22"><span class="keyword">extern</span> <span class="keyword">void</span> print_text_lines(uint16_t screen_draw_info_addr, uint8_t columns);</span>
+<span class="line" id="L23" data-line="23"> </span>
+<span class="line" id="L24" data-line="24">/*</span>
+<span class="line" id="L25" data-line="25"> * Translates <span class="number">0080</span> WaitVBlankCoin</span>
+<span class="line" id="L26" data-line="26"> * Wait <span class="keyword">for</span> the vertical blanking and then handle coin counting</span>
+<span class="line" id="L27" data-line="27"> * [ASM: <span class="number">0080</span>-00B5]</span>
+<span class="line" id="L28" data-line="28"> */</span>
+<span class="line" id="L29" data-line="29">bool wait_vblank_coin(<span class="keyword">void</span>) {</span>
+<span class="line" id="L30" data-line="30">    <span class="keyword">if</span> (!platform_wait_vblank()) <span class="keyword">return</span> false;</span>
+<span class="line" id="L31" data-line="31"> </span>
+<span class="line" id="L32" data-line="32">    <span class="comment">// Lockstep verification snapshot, same point as jphoenix&#x27;s interrupt()</span></span>
+<span class="line" id="L33" data-line="33">    <span class="keyword">extern</span> <span class="keyword">void</span> platform_ram_dump_hook(<span class="keyword">void</span>);</span>
+<span class="line" id="L34" data-line="34">    platform_ram_dump_hook();</span>
+<span class="line" id="L35" data-line="35"> </span>
+<span class="line" id="L36" data-line="36">    <span class="comment">// Render and queue this frame&#x27;s audio, matching jphoenix&#x27;s</span></span>
+<span class="line" id="L37" data-line="37">    <span class="comment">// endFrame() (called once per vblank interrupt).</span></span>
+<span class="line" id="L38" data-line="38">    <span class="keyword">extern</span> <span class="keyword">void</span> platform_audio_frame_hook(<span class="keyword">void</span>);</span>
+<span class="line" id="L39" data-line="39">    platform_audio_frame_hook();</span>
+<span class="line" id="L40" data-line="40"> </span>
+<span class="line" id="L41" data-line="41">    <span class="comment">// 008E-0097: read IN0 from hardware, shift current value to previous</span></span>
+<span class="line" id="L42" data-line="42">    uint8_t new_in0 = hw_read_inputs();</span>
+<span class="line" id="L43" data-line="43">    state.IN0Previous = state.IN0Current;</span>
+<span class="line" id="L44" data-line="44">    state.IN0Current = new_in0;</span>
+<span class="line" id="L45" data-line="45"> </span>
+<span class="line" id="L46" data-line="46">    <span class="comment">// 0098-009A: AddOneToMem($439B) -&gt; 16-bit counter 439A:439B</span></span>
+<span class="line" id="L47" data-line="47">    state.Counter9B++;</span>
+<span class="line" id="L48" data-line="48">    <span class="keyword">if</span> (state.Counter9B == <span class="number">0</span>) {</span>
+<span class="line" id="L49" data-line="49">        state.Counter9A++;</span>
+<span class="line" id="L50" data-line="50">    }</span>
+<span class="line" id="L51" data-line="51"> </span>
+<span class="line" id="L52" data-line="52">    <span class="keyword">if</span> (state.CoinCount == <span class="number">9</span>) <span class="keyword">return</span> true;</span>
+<span class="line" id="L53" data-line="53"> </span>
+<span class="line" id="L54" data-line="54">    <span class="comment">// 00A6-00AB: CheckInputBits bit 0 -- coin input transitioned 1 -&gt; 0</span></span>
+<span class="line" id="L55" data-line="55">    <span class="keyword">if</span> ((state.IN0Current &amp; <span class="number">0x01</span>) == <span class="number">0</span> &amp;&amp; (state.IN0Previous &amp; <span class="number">0x01</span>) != <span class="number">0</span>) {</span>
+<span class="line" id="L56" data-line="56">        state.CoinCount++;</span>
+<span class="line" id="L57" data-line="57">        mem_write(<span class="number">0x4142</span>, state.CoinCount + <span class="number">0x20</span>);</span>
+<span class="line" id="L58" data-line="58">    }</span>
+<span class="line" id="L59" data-line="59">    <span class="keyword">return</span> true;</span>
+<span class="line" id="L60" data-line="60">}</span>
+<span class="line" id="L61" data-line="61">/*</span>
+<span class="line" id="L62" data-line="62"> * Translates ClearRAMBank</span>
+<span class="line" id="L63" data-line="63"> * [ASM: 006B-<span class="number">0077</span>]</span>
+<span class="line" id="L64" data-line="64"> */</span>
+<span class="line" id="L65" data-line="65"><span class="keyword">void</span> clear_ram_bank(<span class="keyword">void</span>) {</span>
+<span class="line" id="L66" data-line="66">    <span class="comment">// 006B: LD HL,$4BF8</span></span>
+<span class="line" id="L67" data-line="67">    <span class="comment">// 006E: LD A,$3F</span></span>
+<span class="line" id="L68" data-line="68">    <span class="comment">// 0070: LD (HL),$00</span></span>
+<span class="line" id="L69" data-line="69">    <span class="comment">// 0072: DEC HL</span></span>
+<span class="line" id="L70" data-line="70">    <span class="comment">// 0073: CP H</span></span>
+<span class="line" id="L71" data-line="71">    <span class="comment">// 0074: JP NZ,$0070</span></span>
+<span class="line" id="L72" data-line="72">    <span class="comment">// Note: We just use memset for 0x4000 to 0x4BF8 (inclusive)</span></span>
+<span class="line" id="L73" data-line="73">    <span class="comment">// The ASM clears downwards until H reaches 0x3F (so 0x4000 is included)</span></span>
+<span class="line" id="L74" data-line="74">    <span class="keyword">for</span> (uint16_t addr = <span class="number">0x4000</span>; addr &lt;= <span class="number">0x4BF8</span>; addr++) {</span>
+<span class="line" id="L75" data-line="75">        mem_write(addr, <span class="number">0</span>);</span>
+<span class="line" id="L76" data-line="76">    }</span>
+<span class="line" id="L77" data-line="77">}</span>
+<span class="line" id="L78" data-line="78"> </span>
+<span class="line" id="L79" data-line="79">/*</span>
+<span class="line" id="L80" data-line="80"> * Translates InitSoundScreen</span>
+<span class="line" id="L81" data-line="81"> * [ASM: <span class="number">0050</span>-006A]</span>
+<span class="line" id="L82" data-line="82"> */</span>
+<span class="line" id="L83" data-line="83"><span class="keyword">void</span> init_sound_screen(<span class="keyword">void</span>) {</span>
+<span class="line" id="L84" data-line="84">    <span class="comment">// 0050: LD H,$68; 0052: LD (HL),$00</span></span>
+<span class="line" id="L85" data-line="85">    hw_write_sound_b(<span class="number">0</span>);</span>
+<span class="line" id="L86" data-line="86">    </span>
+<span class="line" id="L87" data-line="87">    <span class="comment">// 0054: LD H,$60; 0056: LD (HL),$00</span></span>
+<span class="line" id="L88" data-line="88">    hw_write_sound_a(<span class="number">0</span>);</span>
+<span class="line" id="L89" data-line="89">    </span>
+<span class="line" id="L90" data-line="90">    <span class="comment">// 0058: LD H,$58; 005A: LD (HL),$00</span></span>
+<span class="line" id="L91" data-line="91">    hw_write_scroll_register(<span class="number">0</span>); <span class="comment">// wait, scroll is just written via I/O</span></span>
+<span class="line" id="L92" data-line="92">    </span>
+<span class="line" id="L93" data-line="93">    <span class="comment">// 005C: CALL $006B (ClearRAMBank)</span></span>
+<span class="line" id="L94" data-line="94">    clear_ram_bank();</span>
+<span class="line" id="L95" data-line="95">    </span>
+<span class="line" id="L96" data-line="96">    <span class="comment">// 005F: LD H,$50; 0061: LD (HL),$01</span></span>
+<span class="line" id="L97" data-line="97">    hw_write_video_register(<span class="number">0x01</span>); <span class="comment">// Second memory bank</span></span>
+<span class="line" id="L98" data-line="98">    </span>
+<span class="line" id="L99" data-line="99">    <span class="comment">// 0063: CALL $006B (ClearRAMBank)</span></span>
+<span class="line" id="L100" data-line="100">    clear_ram_bank(); <span class="comment">// We don&#x27;t emulate double banking properly yet, but we&#x27;ll call it to stay true to logic</span></span>
+<span class="line" id="L101" data-line="101">    </span>
+<span class="line" id="L102" data-line="102">    <span class="comment">// 0066: LD H,$50; 0068: LD (HL),$00</span></span>
+<span class="line" id="L103" data-line="103">    hw_write_video_register(<span class="number">0x00</span>); <span class="comment">// Back to first memory bank</span></span>
+<span class="line" id="L104" data-line="104">}</span>
+<span class="line" id="L105" data-line="105"> </span>
+<span class="line" id="L106" data-line="106"> </span>
+<span class="line" id="L107" data-line="107">/*</span>
+<span class="line" id="L108" data-line="108"> * Translates <span class="number">0x0000</span></span>
+<span class="line" id="L109" data-line="109"> * Reset vector, the main entry point of the game.</span>
+<span class="line" id="L110" data-line="110"> * [ASM: <span class="number">0000</span>-004F]</span>
+<span class="line" id="L111" data-line="111"> */</span>
+<span class="line" id="L112" data-line="112"><span class="keyword">void</span> phoenix_main_loop(<span class="keyword">void</span>) {</span>
+<span class="line" id="L113" data-line="113">    init_sound_screen();</span>
+<span class="line" id="L114" data-line="114">    print_text_lines(<span class="number">0x1800</span>, <span class="number">3</span>);</span>
+<span class="line" id="L115" data-line="115">    </span>
+<span class="line" id="L116" data-line="116">    <span class="keyword">while</span> (wait_vblank_coin()) {</span>
+<span class="line" id="L117" data-line="117">        phoenix_run_game_frame();</span>
+<span class="line" id="L118" data-line="118">    }</span>
+<span class="line" id="L119" data-line="119">}</span>
+<span class="line" id="L120" data-line="120"> </span>
+<span class="line" id="L121" data-line="121">/* Execute the non-timing part of reset-vector code once. Host adapters call</span>
+<span class="line" id="L122" data-line="122"> * this after wait_vblank_coin(), which keeps the game mechanics independent</span>
+<span class="line" id="L123" data-line="123"> * of SDL, Redot, or a browser event loop. */</span>
+<span class="line" id="L124" data-line="124"><span class="keyword">void</span> phoenix_run_game_frame(<span class="keyword">void</span>) {</span>
+<span class="line" id="L125" data-line="125">    <span class="keyword">if</span> (state.GameOrAttract == <span class="number">0</span>) {</span>
+<span class="line" id="L126" data-line="126">        <span class="comment">// 002D-0035: mute the TMS36XX and mirror it in RAM</span></span>
+<span class="line" id="L127" data-line="127">        hw_write_sound_a(<span class="number">0x0F</span>);</span>
+<span class="line" id="L128" data-line="128">        hw_write_sound_b(<span class="number">0x0F</span>);</span>
+<span class="line" id="L129" data-line="129">        update_sound_control_ram(<span class="number">0x0F</span>);</span>
+<span class="line" id="L130" data-line="130"> </span>
+<span class="line" id="L131" data-line="131">        <span class="keyword">if</span> (coin_checking() &gt; <span class="number">0</span>) {</span>
+<span class="line" id="L132" data-line="132">            prompt_for_start_game();</span>
+<span class="line" id="L133" data-line="133">        } <span class="keyword">else</span> {</span>
+<span class="line" id="L134" data-line="134">            splash_and_demo();</span>
+<span class="line" id="L135" data-line="135">        }</span>
+<span class="line" id="L136" data-line="136">    } <span class="keyword">else</span> {</span>
+<span class="line" id="L137" data-line="137">        game_state_machine();</span>
+<span class="line" id="L138" data-line="138">        update_scores_and_sound();</span>
+<span class="line" id="L139" data-line="139">    }</span>
+<span class="line" id="L140" data-line="140">}</span>
+<span class="line" id="L141" data-line="141"> </span>
+<span class="line" id="L142" data-line="142">/*</span>
+<span class="line" id="L143" data-line="143"> * Translates L03A0</span>
+<span class="line" id="L144" data-line="144"> * Clear the background.</span>
+<span class="line" id="L145" data-line="145"> * [ASM: 03A0-03AF]</span>
+<span class="line" id="L146" data-line="146"> */</span>
+<span class="line" id="L147" data-line="147"><span class="keyword">void</span> clear_background(<span class="keyword">void</span>) {</span>
+<span class="line" id="L148" data-line="148">    <span class="comment">// ASM 03A0: Clears from 0x4B3F down to 0x4800 with 0x00</span></span>
+<span class="line" id="L149" data-line="149">    <span class="comment">// 0x4800 to 0x4B3F is exactly 832 bytes (26 columns).</span></span>
+<span class="line" id="L150" data-line="150">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0x0800</span>; i &lt; <span class="number">0x0800</span> + <span class="number">832</span>; i++) {</span>
+<span class="line" id="L151" data-line="151">        mem_write(i + <span class="number">0x4000</span>, <span class="number">0x00</span>);</span>
+<span class="line" id="L152" data-line="152">    }</span>
+<span class="line" id="L153" data-line="153">}</span>
+<span class="line" id="L154" data-line="154"> </span>
+<span class="line" id="L155" data-line="155">/*</span>
+<span class="line" id="L156" data-line="156"> * Render sprites - abstracted loop over sprite structures</span>
+<span class="line" id="L157" data-line="157"> */</span>
+<span class="line" id="L158" data-line="158"><span class="keyword">void</span> render_sprites(<span class="keyword">void</span>) {</span>
+<span class="line" id="L159" data-line="159">    <span class="comment">// Translates the high level sprite looping and rendering (L0718)</span></span>
+<span class="line" id="L160" data-line="160">    <span class="comment">// Here we iterate over the alien and bird active slots and push to the frame buffer</span></span>
+<span class="line" id="L161" data-line="161">    uint16_t sprite_base = <span class="number">0x4B70</span>;</span>
+<span class="line" id="L162" data-line="162">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i++) {</span>
+<span class="line" id="L163" data-line="163">        uint8_t ctrl = mem_read(sprite_base + (i*<span class="number">4</span>));</span>
+<span class="line" id="L164" data-line="164">        <span class="keyword">if</span> (ctrl &amp; <span class="number">0x18</span>) {</span>
+<span class="line" id="L165" data-line="165">            <span class="comment">// Draw active sprite to framebuffer (emulator core responsibility)</span></span>
+<span class="line" id="L166" data-line="166">        }</span>
+<span class="line" id="L167" data-line="167">    }</span>
+<span class="line" id="L168" data-line="168">}</span>
+<span class="line" id="L169" data-line="169"> </span>
+<span class="line" id="L170" data-line="170"><span class="keyword">extern</span> <span class="keyword">void</span> update_scores_and_sound(<span class="keyword">void</span>);</span>
+<span class="line" id="L171" data-line="171"> </span>
+<span class="line" id="L172" data-line="172"><span class="keyword">void</span> update_audio_registers(<span class="keyword">void</span>) {</span>
+<span class="line" id="L173" data-line="173">    <span class="comment">// Translates L2700 Sound Control</span></span>
+<span class="line" id="L174" data-line="174">    update_scores_and_sound();</span>
+<span class="line" id="L175" data-line="175">}</span>
+<span class="line" id="L176" data-line="176"> </span>
+<span class="line" id="L177" data-line="177">/*</span>
+<span class="line" id="L178" data-line="178"> * Translates PrintScore</span>
+<span class="line" id="L179" data-line="179"> * Used only to skip the printing when both players are dead.</span>
+<span class="line" id="L180" data-line="180"> * Actually <span class="number">0280</span>-<span class="number">0285</span> is L0280 (Compare HL/BC) but here <span class="number">0280</span>-02A4 includes it?</span>
+<span class="line" id="L181" data-line="181"> * Wait, I will just implement clear_and_print_scores etc.</span>
+<span class="line" id="L182" data-line="182"> */</span>
+<span class="line" id="L183" data-line="183"> </span>
+<span class="line" id="L184" data-line="184">/*</span>
+<span class="line" id="L185" data-line="185"> * Translates ClearAndPrintScores</span>
+<span class="line" id="L186" data-line="186"> * [ASM: 032E-034E]</span>
+<span class="line" id="L187" data-line="187"> */</span>
+<span class="line" id="L188" data-line="188"><span class="keyword">void</span> clear_and_print_scores(<span class="keyword">void</span>) {</span>
+<span class="line" id="L189" data-line="189">    <span class="comment">// 032E: LD HL,$4380 ... to $4387 (Clear scores)</span></span>
+<span class="line" id="L190" data-line="190">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0x4380</span>; i &lt;= <span class="number">0x4387</span>; i++) {</span>
+<span class="line" id="L191" data-line="191">        mem_write(i, <span class="number">0</span>);</span>
+<span class="line" id="L192" data-line="192">    }</span>
+<span class="line" id="L193" data-line="193">    </span>
+<span class="line" id="L194" data-line="194">    <span class="comment">// print player 1 score</span></span>
+<span class="line" id="L195" data-line="195">    <span class="comment">// 033A: LD L,$83</span></span>
+<span class="line" id="L196" data-line="196">    <span class="comment">// 033C: LD DE,$4261</span></span>
+<span class="line" id="L197" data-line="197">    <span class="comment">// 033F: LD B,$06</span></span>
+<span class="line" id="L198" data-line="198">    print_number(<span class="number">0x4261</span>, <span class="number">0x4383</span>, <span class="number">6</span>);</span>
+<span class="line" id="L199" data-line="199">    </span>
+<span class="line" id="L200" data-line="200">    <span class="comment">// print player 2 score</span></span>
+<span class="line" id="L201" data-line="201">    print_number(<span class="number">0x4021</span>, <span class="number">0x4387</span>, <span class="number">6</span>);</span>
+<span class="line" id="L202" data-line="202">}</span>
+<span class="line" id="L203" data-line="203"> </span>
+<span class="line" id="L204" data-line="204">/*</span>
+<span class="line" id="L205" data-line="205"> * Translates UpdateLivesScreen</span>
+<span class="line" id="L206" data-line="206"> * [ASM: <span class="number">0367</span>-<span class="number">0376</span>]</span>
+<span class="line" id="L207" data-line="207"> */</span>
+<span class="line" id="L208" data-line="208"><span class="keyword">void</span> update_lives_screen(<span class="keyword">void</span>) {</span>
+<span class="line" id="L209" data-line="209">    uint8_t p1 = state.Player1Lives;</span>
+<span class="line" id="L210" data-line="210">    mem_write(<span class="number">0x42A2</span>, p1 | <span class="number">0x20</span>);</span>
+<span class="line" id="L211" data-line="211"> </span>
+<span class="line" id="L212" data-line="212">    uint8_t p2 = state.Player2Lives;</span>
+<span class="line" id="L213" data-line="213">    mem_write(<span class="number">0x4062</span>, p2 | <span class="number">0x20</span>);</span>
+<span class="line" id="L214" data-line="214">}</span>
+<span class="line" id="L215" data-line="215"> </span>
+<span class="line" id="L216" data-line="216">/*</span>
+<span class="line" id="L217" data-line="217"> * Translates UpdateSoundControlRAM</span>
+<span class="line" id="L218" data-line="218"> * [ASM: <span class="number">0377</span>-037D]</span>
+<span class="line" id="L219" data-line="219"> */</span>
+<span class="line" id="L220" data-line="220"><span class="keyword">void</span> update_sound_control_ram(uint8_t a) {</span>
+<span class="line" id="L221" data-line="221">    state.SoundControlA = a;</span>
+<span class="line" id="L222" data-line="222">    state.SoundControlB = a;</span>
+<span class="line" id="L223" data-line="223">}</span>
+<span class="line" id="L224" data-line="224"> </span>
+<span class="line" id="L225" data-line="225">/*</span>
+<span class="line" id="L226" data-line="226"> * Translates ClearForeground</span>
+<span class="line" id="L227" data-line="227"> * [ASM: <span class="number">0380</span>-039D]</span>
+<span class="line" id="L228" data-line="228"> */</span>
+<span class="line" id="L229" data-line="229"><span class="keyword">void</span> clear_foreground(<span class="keyword">void</span>) {</span>
+<span class="line" id="L230" data-line="230">    <span class="comment">// ASM 0380: Clears from 0x433F down to 0x4000, skipping L &amp; 0x1F &lt; 4</span></span>
+<span class="line" id="L231" data-line="231">    <span class="comment">// 0x433F means 832 bytes (26 columns of 32 bytes)</span></span>
+<span class="line" id="L232" data-line="232">    <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; <span class="number">26</span>; col++) {</span>
+<span class="line" id="L233" data-line="233">        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">4</span>; row &lt; <span class="number">32</span>; row++) {</span>
+<span class="line" id="L234" data-line="234">            uint16_t addr = <span class="number">0x4000</span> + (col * <span class="number">32</span>) + row;</span>
+<span class="line" id="L235" data-line="235">            mem_write(addr, <span class="number">0x00</span>);</span>
+<span class="line" id="L236" data-line="236">        }</span>
+<span class="line" id="L237" data-line="237">    }</span>
+<span class="line" id="L238" data-line="238">}</span>
+<span class="line" id="L239" data-line="239"> </span>
+<span class="line" id="L240" data-line="240">/*</span>
+<span class="line" id="L241" data-line="241"> * Translates SetBitsVideoRegister</span>
+<span class="line" id="L242" data-line="242"> * [ASM: 041E-042E]</span>
+<span class="line" id="L243" data-line="243"> */</span>
+<span class="line" id="L244" data-line="244"><span class="keyword">void</span> set_bits_video_register(<span class="keyword">void</span>) {</span>
+<span class="line" id="L245" data-line="245">    <span class="keyword">extern</span> <span class="keyword">void</span> hw_write_video_register(uint8_t);</span>
+<span class="line" id="L246" data-line="246">    uint8_t bank = state.GameAndDemoOrSplash &amp; <span class="number">0x01</span>;</span>
+<span class="line" id="L247" data-line="247">    uint8_t palette = state.LevelAndRound &amp; <span class="number">0x02</span>;</span>
+<span class="line" id="L248" data-line="248">    hw_write_video_register(bank | palette);</span>
+<span class="line" id="L249" data-line="249">}</span>
+<span class="line" id="L250" data-line="250"> </span>
+<span class="line" id="L251" data-line="251"><span class="comment">// Translates CopyMemoryBank [ASM: 0460-049D] -- real implementation now</span></span>
+<span class="line" id="L252" data-line="252"><span class="comment">// lives in platform_sdl.c, where the two physical VRAM banks live.</span></span>
+<span class="line" id="L253" data-line="253"> </span>
+<span class="line" id="L254" data-line="254">/*</span>
+<span class="line" id="L255" data-line="255"> * Translates StarsScrollDown</span>
+<span class="line" id="L256" data-line="256"> * [ASM: 067A-06AF]</span>
+<span class="line" id="L257" data-line="257"> */</span>
+<span class="line" id="L258" data-line="258"><span class="keyword">void</span> stars_scroll_down(<span class="keyword">void</span>) {</span>
+<span class="line" id="L259" data-line="259">    <span class="keyword">extern</span> <span class="keyword">void</span> hw_write_scroll_register(uint8_t);</span>
+<span class="line" id="L260" data-line="260"> </span>
+<span class="line" id="L261" data-line="261">    uint8_t a = state.CounterB9;</span>
+<span class="line" id="L262" data-line="262">    state.CounterB9--;</span>
+<span class="line" id="L263" data-line="263">    hw_write_scroll_register(a);</span>
+<span class="line" id="L264" data-line="264">    </span>
+<span class="line" id="L265" data-line="265">    <span class="keyword">if</span> ((a &amp; <span class="number">0x07</span>) != <span class="number">0</span>) {</span>
+<span class="line" id="L266" data-line="266">        <span class="keyword">return</span>; <span class="comment">// continue after 8 pixels</span></span>
+<span class="line" id="L267" data-line="267">    }</span>
+<span class="line" id="L268" data-line="268">    </span>
+<span class="line" id="L269" data-line="269">    <span class="comment">// Fill the background with stars or mothership</span></span>
+<span class="line" id="L270" data-line="270">    uint8_t b = <span class="number">0x20</span>;</span>
+<span class="line" id="L271" data-line="271">    uint8_t c = <span class="number">0x47</span>;</span>
+<span class="line" id="L272" data-line="272">    uint16_t de = <span class="number">0x4B21</span>; <span class="comment">// BackgroundScreen + 321</span></span>
+<span class="line" id="L273" data-line="273">    </span>
+<span class="line" id="L274" data-line="274">    a = state.CounterB9;</span>
+<span class="line" id="L275" data-line="275">    a = (a &gt;&gt; <span class="number">3</span>) | (a &lt;&lt; <span class="number">5</span>); <span class="comment">// RRCA 3 times</span></span>
+<span class="line" id="L276" data-line="276">    a &amp;= <span class="number">0x1F</span>;</span>
+<span class="line" id="L277" data-line="277">    </span>
+<span class="line" id="L278" data-line="278">    uint8_t e = (de &amp; <span class="number">0xFF</span>) + a;</span>
+<span class="line" id="L279" data-line="279">    de = (de &amp; <span class="number">0xFF00</span>) | e;</span>
+<span class="line" id="L280" data-line="280">    </span>
+<span class="line" id="L281" data-line="281">    uint16_t hl = (state.M43B2 &lt;&lt; <span class="number">8</span>) | state.M43B3;</span>
+<span class="line" id="L282" data-line="282"> </span>
+<span class="line" id="L283" data-line="283">    <span class="keyword">while</span> (<span class="number">1</span>) {</span>
+<span class="line" id="L284" data-line="284">        mem_write(de, phoenix_starfield_or_mothership_byte(hl));</span>
+<span class="line" id="L285" data-line="285">        hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + <span class="number">1</span>) &amp; <span class="number">0xFF</span>); <span class="comment">// INC L</span></span>
+<span class="line" id="L286" data-line="286">        </span>
+<span class="line" id="L287" data-line="287">        uint16_t sub_result = (de &amp; <span class="number">0xFF</span>) - b;</span>
+<span class="line" id="L288" data-line="288">        de = (de &amp; <span class="number">0xFF00</span>) | (sub_result &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L289" data-line="289">        </span>
+<span class="line" id="L290" data-line="290">        <span class="keyword">if</span> (!(sub_result &gt; <span class="number">0xFF</span>)) { <span class="comment">// JP NC (No carry/borrow)</span></span>
+<span class="line" id="L291" data-line="291">            <span class="keyword">continue</span>;</span>
+<span class="line" id="L292" data-line="292">        }</span>
+<span class="line" id="L293" data-line="293">        </span>
+<span class="line" id="L294" data-line="294">        uint8_t d = (de &gt;&gt; <span class="number">8</span>) - <span class="number">1</span>; <span class="comment">// DEC D</span></span>
+<span class="line" id="L295" data-line="295">        de = (d &lt;&lt; <span class="number">8</span>) | (de &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L296" data-line="296">        </span>
+<span class="line" id="L297" data-line="297">        <span class="keyword">if</span> (d != c) { <span class="comment">// CP C; JP NZ</span></span>
+<span class="line" id="L298" data-line="298">            <span class="keyword">continue</span>;</span>
+<span class="line" id="L299" data-line="299">        }</span>
+<span class="line" id="L300" data-line="300">        </span>
+<span class="line" id="L301" data-line="301">        <span class="keyword">break</span>;</span>
+<span class="line" id="L302" data-line="302">    }</span>
+<span class="line" id="L303" data-line="303">    </span>
+<span class="line" id="L304" data-line="304">    state.M43B3 = hl &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L305" data-line="305">}</span>
+<span class="line" id="L306" data-line="306"> </span>
+<span class="line" id="L307" data-line="307">/*</span>
+<span class="line" id="L308" data-line="308"> * Translates L07DC</span>
+<span class="line" id="L309" data-line="309"> * Draws a 2x2 character block to the background.</span>
+<span class="line" id="L310" data-line="310"> * [ASM: 07DC-07EF]</span>
+<span class="line" id="L311" data-line="311"> */</span>
+<span class="line" id="L312" data-line="312"><span class="keyword">void</span> draw_background_2x2(uint16_t de, uint16_t hl) {</span>
+<span class="line" id="L313" data-line="313">    <span class="comment">// 07DC: LD A,(HL); 07DD: LD (DE),A</span></span>
+<span class="line" id="L314" data-line="314">    mem_write(de, phoenix_background_2x2_byte(hl));</span>
+<span class="line" id="L315" data-line="315"> </span>
+<span class="line" id="L316" data-line="316">    <span class="comment">// 07DE: INC HL; 07DF: INC DE</span></span>
+<span class="line" id="L317" data-line="317">    hl++;</span>
+<span class="line" id="L318" data-line="318">    de++;</span>
+<span class="line" id="L319" data-line="319"> </span>
+<span class="line" id="L320" data-line="320">    <span class="comment">// 07E0: LD A,(HL); 07E1: LD (DE),A</span></span>
+<span class="line" id="L321" data-line="321">    mem_write(de, phoenix_background_2x2_byte(hl));</span>
+<span class="line" id="L322" data-line="322"> </span>
+<span class="line" id="L323" data-line="323">    <span class="comment">// 07E2: INC HL; 07E3: DEC DE</span></span>
+<span class="line" id="L324" data-line="324">    hl++;</span>
+<span class="line" id="L325" data-line="325">    de--;</span>
+<span class="line" id="L326" data-line="326"> </span>
+<span class="line" id="L327" data-line="327">    <span class="comment">// 07E4: CALL $0217 (RightOneColumn)</span></span>
+<span class="line" id="L328" data-line="328">    de = right_one_column(de);</span>
+<span class="line" id="L329" data-line="329"> </span>
+<span class="line" id="L330" data-line="330">    <span class="comment">// 07E7: LD A,(HL); 07E8: LD (DE),A</span></span>
+<span class="line" id="L331" data-line="331">    mem_write(de, phoenix_background_2x2_byte(hl));</span>
+<span class="line" id="L332" data-line="332"> </span>
+<span class="line" id="L333" data-line="333">    <span class="comment">// 07E9: INC HL; 07EA: INC DE</span></span>
+<span class="line" id="L334" data-line="334">    hl++;</span>
+<span class="line" id="L335" data-line="335">    de++;</span>
+<span class="line" id="L336" data-line="336"> </span>
+<span class="line" id="L337" data-line="337">    <span class="comment">// 07EB: LD A,(HL); 07EC: LD (DE),A</span></span>
+<span class="line" id="L338" data-line="338">    mem_write(de, phoenix_background_2x2_byte(hl));</span>
+<span class="line" id="L339" data-line="339"> </span>
+<span class="line" id="L340" data-line="340">    <span class="comment">// 07ED: DEC BC (we don&#x27;t strictly need to do this as BC is only used by caller if they loop, but 06E4 doesn&#x27;t loop)</span></span>
+<span class="line" id="L341" data-line="341">    <span class="comment">// 07EE: RET</span></span>
+<span class="line" id="L342" data-line="342">}</span>
+<span class="line" id="L343" data-line="343"> </span>
+<span class="line" id="L344" data-line="344">/*</span>
+<span class="line" id="L345" data-line="345"> * Translates AddPlanetsToBackground</span>
+<span class="line" id="L346" data-line="346"> * [ASM: 06B0-06E7]</span>
+<span class="line" id="L347" data-line="347"> */</span>
+<span class="line" id="L348" data-line="348"><span class="keyword">void</span> add_planets_to_background(<span class="keyword">void</span>) {</span>
+<span class="line" id="L349" data-line="349">    <span class="keyword">if</span> (state.CounterB9 != state.M43AB) {</span>
+<span class="line" id="L350" data-line="350">        <span class="keyword">return</span>;</span>
+<span class="line" id="L351" data-line="351">    }</span>
+<span class="line" id="L352" data-line="352"> </span>
+<span class="line" id="L353" data-line="353">    uint8_t c = state.CounterB9;</span>
+<span class="line" id="L354" data-line="354">    </span>
+<span class="line" id="L355" data-line="355">    <span class="comment">// 06B9: LD A,(HL) -&gt; HL is 43AB</span></span>
+<span class="line" id="L356" data-line="356">    <span class="comment">// 06BA: INC L -&gt; HL is 43AC</span></span>
+<span class="line" id="L357" data-line="357">    <span class="comment">// 06BB: ADD A,(HL) -&gt; A = 43AB + 43AC</span></span>
+<span class="line" id="L358" data-line="358">    <span class="comment">// 06BC: DEC L -&gt; HL is 43AB</span></span>
+<span class="line" id="L359" data-line="359">    <span class="comment">// 06BD: LD (HL),A -&gt; 43AB = A</span></span>
+<span class="line" id="L360" data-line="360">    state.M43AB += state.M43AC;</span>
+<span class="line" id="L361" data-line="361">    </span>
+<span class="line" id="L362" data-line="362">    <span class="comment">// 06BE: INC L, 06BF: INC L -&gt; HL is 43AD</span></span>
+<span class="line" id="L363" data-line="363">    <span class="comment">// 06C0: INC (HL) -&gt; 43AD++</span></span>
+<span class="line" id="L364" data-line="364">    state.M43AD++;</span>
+<span class="line" id="L365" data-line="365">    </span>
+<span class="line" id="L366" data-line="366">    <span class="comment">// 06C1: LD B,(HL)</span></span>
+<span class="line" id="L367" data-line="367">    uint8_t b = state.M43AD;</span>
+<span class="line" id="L368" data-line="368">    </span>
+<span class="line" id="L369" data-line="369">    <span class="comment">// 06C2: INC L -&gt; HL is 43AE</span></span>
+<span class="line" id="L370" data-line="370">    <span class="comment">// 06C3: INC (HL) -&gt; 43AE++</span></span>
+<span class="line" id="L371" data-line="371">    state.M43AE++;</span>
+<span class="line" id="L372" data-line="372">    </span>
+<span class="line" id="L373" data-line="373">    <span class="comment">// 06C4: LD A,(HL)</span></span>
+<span class="line" id="L374" data-line="374">    uint8_t a = state.M43AE;</span>
+<span class="line" id="L375" data-line="375">    </span>
+<span class="line" id="L376" data-line="376">    <span class="comment">// 06C5: LD HL,$1E20</span></span>
+<span class="line" id="L377" data-line="377">    uint16_t hl = <span class="number">0x1E20</span>;</span>
+<span class="line" id="L378" data-line="378">    </span>
+<span class="line" id="L379" data-line="379">    <span class="comment">// 06C8: AND $1F; 06CA: ADD A,L; 06CB: LD L,A</span></span>
+<span class="line" id="L380" data-line="380">    a &amp;= <span class="number">0x1F</span>;</span>
+<span class="line" id="L381" data-line="381">    hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + a) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L382" data-line="382">    </span>
+<span class="line" id="L383" data-line="383">    <span class="comment">// 06CC: LD D,(HL)</span></span>
+<span class="line" id="L384" data-line="384">    uint8_t d = phoenix_planet_galaxy_page[hl - <span class="number">0x1E20</span>];</span>
+<span class="line" id="L385" data-line="385">    </span>
+<span class="line" id="L386" data-line="386">    <span class="comment">// 06CD: ADD $20; 06CF: LD L,A -- Z80&#x27;s A was already updated by the</span></span>
+<span class="line" id="L387" data-line="387">    <span class="comment">// 06CA &quot;ADD A,L&quot; folded into hl above (A==L after 06CB), so hl.L (not</span></span>
+<span class="line" id="L388" data-line="388">    <span class="comment">// the stale pre-06CA `a`) holds the correct value to add $20 to.</span></span>
+<span class="line" id="L389" data-line="389">    a = (hl + <span class="number">0x20</span>) &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L390" data-line="390">    hl = (hl &amp; <span class="number">0xFF00</span>) | a;</span>
+<span class="line" id="L391" data-line="391">    </span>
+<span class="line" id="L392" data-line="392">    <span class="comment">// 06D0: LD E,(HL)</span></span>
+<span class="line" id="L393" data-line="393">    uint8_t e = phoenix_planet_galaxy_page[hl - <span class="number">0x1E20</span>];</span>
+<span class="line" id="L394" data-line="394">    </span>
+<span class="line" id="L395" data-line="395">    <span class="comment">// 06D1: LD A,C; 06D2-06D4: RRCA x3; 06D5: AND $1E</span></span>
+<span class="line" id="L396" data-line="396">    a = c;</span>
+<span class="line" id="L397" data-line="397">    a = (a &gt;&gt; <span class="number">3</span>) | (a &lt;&lt; <span class="number">5</span>);</span>
+<span class="line" id="L398" data-line="398">    a &amp;= <span class="number">0x1E</span>;</span>
+<span class="line" id="L399" data-line="399">    </span>
+<span class="line" id="L400" data-line="400">    <span class="comment">// 06D7: ADD A,E; 06D8: ADD $02; 06DA: LD E,A</span></span>
+<span class="line" id="L401" data-line="401">    a = (a + e + <span class="number">0x02</span>) &amp; <span class="number">0xFF</span>;</span>
+<span class="line" id="L402" data-line="402">    e = a;</span>
+<span class="line" id="L403" data-line="403">    </span>
+<span class="line" id="L404" data-line="404">    uint16_t de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L405" data-line="405">    </span>
+<span class="line" id="L406" data-line="406">    <span class="comment">// 06DB: LD HL,$1E60</span></span>
+<span class="line" id="L407" data-line="407">    hl = <span class="number">0x1E60</span>;</span>
+<span class="line" id="L408" data-line="408">    </span>
+<span class="line" id="L409" data-line="409">    <span class="comment">// 06DE: LD A,B; 06DF: AND $1F; 06E1: ADD A,L; 06E2: LD L,A</span></span>
+<span class="line" id="L410" data-line="410">    a = b;</span>
+<span class="line" id="L411" data-line="411">    a &amp;= <span class="number">0x1F</span>;</span>
+<span class="line" id="L412" data-line="412">    hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + a) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L413" data-line="413">    </span>
+<span class="line" id="L414" data-line="414">    <span class="comment">// 06E3: LD L,(HL)</span></span>
+<span class="line" id="L415" data-line="415">    hl = (hl &amp; <span class="number">0xFF00</span>) | phoenix_planet_galaxy_page[hl - <span class="number">0x1E20</span>];</span>
+<span class="line" id="L416" data-line="416">    </span>
+<span class="line" id="L417" data-line="417">    <span class="comment">// 06E4: CALL $07DC</span></span>
+<span class="line" id="L418" data-line="418">    draw_background_2x2(de, hl);</span>
+<span class="line" id="L419" data-line="419">}</span>
+<span class="line" id="L420" data-line="420"> </span>
+<span class="line" id="L421" data-line="421">/*</span>
+<span class="line" id="L422" data-line="422"> * Translates AddGalaxiesToBackground</span>
+<span class="line" id="L423" data-line="423"> * [ASM: <span class="number">2040</span>-208A]</span>
+<span class="line" id="L424" data-line="424"> */</span>
+<span class="line" id="L425" data-line="425"><span class="keyword">void</span> add_galaxies_to_background(<span class="keyword">void</span>) {</span>
+<span class="line" id="L426" data-line="426">    <span class="comment">// 2040-2048: only act when CounterB9 reaches the galaxy schedule value</span></span>
+<span class="line" id="L427" data-line="427">    <span class="keyword">if</span> (state.CounterB9 != state.M43AF) {</span>
+<span class="line" id="L428" data-line="428">        <span class="keyword">return</span>;</span>
+<span class="line" id="L429" data-line="429">    }</span>
+<span class="line" id="L430" data-line="430">    uint8_t c = state.CounterB9;</span>
+<span class="line" id="L431" data-line="431"> </span>
+<span class="line" id="L432" data-line="432">    <span class="comment">// 2049-204D: 43AF -= 43B0 (schedule next galaxy event)</span></span>
+<span class="line" id="L433" data-line="433">    state.M43AF -= state.M43B0;</span>
+<span class="line" id="L434" data-line="434"> </span>
+<span class="line" id="L435" data-line="435">    <span class="comment">// 204E-2051: 43B1++ selects the next of the 16 small galaxies</span></span>
+<span class="line" id="L436" data-line="436">    state.M43B1++;</span>
+<span class="line" id="L437" data-line="437">    uint8_t a = state.M43B1;</span>
+<span class="line" id="L438" data-line="438"> </span>
+<span class="line" id="L439" data-line="439">    <span class="comment">// 2052-2061: T1E80 lookup: character, screen MSB, screen LSB</span></span>
+<span class="line" id="L440" data-line="440">    uint16_t hl = <span class="number">0x1E80</span>;</span>
+<span class="line" id="L441" data-line="441">    a &amp;= <span class="number">0x1F</span>;</span>
+<span class="line" id="L442" data-line="442">    hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + a) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L443" data-line="443">    uint8_t chr = phoenix_planet_galaxy_page[hl - <span class="number">0x1E20</span>];           <span class="comment">// 2059: LD B,(HL)</span></span>
+<span class="line" id="L444" data-line="444">    hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + <span class="number">0x20</span>) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L445" data-line="445">    uint8_t d = phoenix_planet_galaxy_page[hl - <span class="number">0x1E20</span>];             <span class="comment">// 205D: LD D,(HL)</span></span>
+<span class="line" id="L446" data-line="446">    hl = (hl &amp; <span class="number">0xFF00</span>) | ((hl + <span class="number">0x20</span>) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L447" data-line="447">    uint8_t e = phoenix_planet_galaxy_page[hl - <span class="number">0x1E20</span>];             <span class="comment">// 2061: LD E,(HL)</span></span>
+<span class="line" id="L448" data-line="448"> </span>
+<span class="line" id="L449" data-line="449">    <span class="comment">// 2062-206A: vary the row with CounterB9 bits</span></span>
+<span class="line" id="L450" data-line="450">    a = c;</span>
+<span class="line" id="L451" data-line="451">    a = (uint8_t)((a &gt;&gt; <span class="number">3</span>) | (a &lt;&lt; <span class="number">5</span>));  <span class="comment">// RRCA x3</span></span>
+<span class="line" id="L452" data-line="452">    a &amp;= <span class="number">0x1F</span>;</span>
+<span class="line" id="L453" data-line="453">    a = (uint8_t)(a + e + <span class="number">1</span>);            <span class="comment">// ADD A,E; INC A</span></span>
+<span class="line" id="L454" data-line="454">    e = a;</span>
+<span class="line" id="L455" data-line="455"> </span>
+<span class="line" id="L456" data-line="456">    <span class="comment">// 206B-206C: write the single galaxy character to the background</span></span>
+<span class="line" id="L457" data-line="457">    uint16_t de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L458" data-line="458">    mem_write(de, chr);</span>
+<span class="line" id="L459" data-line="459">}</span>
+<span class="line" id="L460" data-line="460"> </span>
+<span class="line" id="L461" data-line="461">/*</span>
+<span class="line" id="L462" data-line="462"> * Translates L06F0</span>
+<span class="line" id="L463" data-line="463"> * [ASM: 06F0-06F8]</span>
+<span class="line" id="L464" data-line="464"> */</span>
+<span class="line" id="L465" data-line="465"><span class="keyword">void</span> update_scroll_register_and_fill_background(<span class="keyword">void</span>) {</span>
+<span class="line" id="L466" data-line="466">    stars_scroll_down();</span>
+<span class="line" id="L467" data-line="467">    add_galaxies_to_background();</span>
+<span class="line" id="L468" data-line="468">    add_planets_to_background();</span>
+<span class="line" id="L469" data-line="469">}</span>
+<span class="line" id="L470" data-line="470"> </span>
+<span class="line" id="L471" data-line="471"><span class="comment">// IN0 ($7000) and DSW0 ($7800) port reads.</span></span>
+<span class="line" id="L472" data-line="472">uint8_t read_in0(<span class="keyword">void</span>) { <span class="keyword">extern</span> uint8_t hw_read_inputs(<span class="keyword">void</span>); <span class="keyword">return</span> hw_read_inputs(); }</span>
+<span class="line" id="L473" data-line="473">uint8_t read_dsw0(<span class="keyword">void</span>) { <span class="keyword">extern</span> uint8_t hw_read_dsw(<span class="keyword">void</span>); <span class="keyword">return</span> hw_read_dsw(); }</span></code></pre></main></body></html>

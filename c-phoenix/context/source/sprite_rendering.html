@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sprite_rendering.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>sprite_rendering.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;sprite_rendering.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;phoenix_state.h&quot;</span>
+<span class="line" id="L3" data-line="3">#include &quot;phoenix_tables.h&quot;</span>
+<span class="line" id="L4" data-line="4">#include &quot;z80_core.h&quot;</span>
+<span class="line" id="L5" data-line="5">#include &lt;stdbool.h&gt;</span>
+<span class="line" id="L6" data-line="6"> </span>
+<span class="line" id="L7" data-line="7"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L8" data-line="8"><span class="keyword">extern</span> uint16_t right_one_column(uint16_t de);</span>
+<span class="line" id="L9" data-line="9"> </span>
+<span class="line" id="L10" data-line="10">/*</span>
+<span class="line" id="L11" data-line="11"> * Helper to jump into the Bit4 / Bit3 jump table logic.</span>
+<span class="line" id="L12" data-line="12"> */</span>
+<span class="line" id="L13" data-line="13"><span class="keyword">static</span> <span class="keyword">void</span> execute_bit4_function(uint8_t func_idx, uint16_t bc, uint16_t de, uint16_t hl) {</span>
+<span class="line" id="L14" data-line="14">    (<span class="keyword">void</span>)bc; (<span class="keyword">void</span>)hl;</span>
+<span class="line" id="L15" data-line="15">    <span class="keyword">extern</span> uint16_t right_one_column(uint16_t de);</span>
+<span class="line" id="L16" data-line="16"> </span>
+<span class="line" id="L17" data-line="17">    <span class="keyword">switch</span> (func_idx) {</span>
+<span class="line" id="L18" data-line="18">        <span class="keyword">case</span> <span class="number">0</span>: <span class="comment">// 0001_xxxx (L0763) Delete 1x1 screen objects</span></span>
+<span class="line" id="L19" data-line="19">            {</span>
+<span class="line" id="L20" data-line="20">                uint8_t d = mem_read(de);</span>
+<span class="line" id="L21" data-line="21">                uint8_t e = mem_read(de + <span class="number">1</span>);</span>
+<span class="line" id="L22" data-line="22">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L23" data-line="23">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) {</span>
+<span class="line" id="L24" data-line="24">                    mem_write(target_de, <span class="number">0</span>);</span>
+<span class="line" id="L25" data-line="25">                }</span>
+<span class="line" id="L26" data-line="26">            }</span>
+<span class="line" id="L27" data-line="27">            <span class="keyword">break</span>;</span>
+<span class="line" id="L28" data-line="28"> </span>
+<span class="line" id="L29" data-line="29">        <span class="keyword">case</span> <span class="number">1</span>: <span class="comment">// 0011_xxxx (L0779) Delete 2x1 screen objects</span></span>
+<span class="line" id="L30" data-line="30">            {</span>
+<span class="line" id="L31" data-line="31">                uint8_t d = mem_read(de);</span>
+<span class="line" id="L32" data-line="32">                uint8_t e = mem_read(de + <span class="number">1</span>);</span>
+<span class="line" id="L33" data-line="33">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L34" data-line="34"> </span>
+<span class="line" id="L35" data-line="35">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, <span class="number">0</span>); <span class="comment">// delete left part</span></span>
+<span class="line" id="L36" data-line="36">                target_de = right_one_column(target_de);</span>
+<span class="line" id="L37" data-line="37">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, <span class="number">0</span>); <span class="comment">// delete right part</span></span>
+<span class="line" id="L38" data-line="38">            }</span>
+<span class="line" id="L39" data-line="39">            <span class="keyword">break</span>;</span>
+<span class="line" id="L40" data-line="40"> </span>
+<span class="line" id="L41" data-line="41">        <span class="keyword">case</span> <span class="number">3</span>: <span class="comment">// 0111_xxxx (L079E) Delete 1x2 screen objects</span></span>
+<span class="line" id="L42" data-line="42">            {</span>
+<span class="line" id="L43" data-line="43">                uint8_t d = mem_read(de);</span>
+<span class="line" id="L44" data-line="44">                uint8_t e = mem_read(de + <span class="number">1</span>);</span>
+<span class="line" id="L45" data-line="45">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L46" data-line="46"> </span>
+<span class="line" id="L47" data-line="47">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, <span class="number">0</span>); <span class="comment">// delete upper part</span></span>
+<span class="line" id="L48" data-line="48">                target_de = (target_de &amp; <span class="number">0xFF00</span>) | ((target_de + <span class="number">1</span>) &amp; <span class="number">0xFF</span>); <span class="comment">// INC E actually.</span></span>
+<span class="line" id="L49" data-line="49">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, <span class="number">0</span>); <span class="comment">// delete lower part</span></span>
+<span class="line" id="L50" data-line="50">            }</span>
+<span class="line" id="L51" data-line="51">            <span class="keyword">break</span>;</span>
+<span class="line" id="L52" data-line="52"> </span>
+<span class="line" id="L53" data-line="53">        <span class="keyword">case</span> <span class="number">4</span>: <span class="comment">// 1001_xxxx (L07BE) Delete 2x2 screen objects</span></span>
+<span class="line" id="L54" data-line="54">            {</span>
+<span class="line" id="L55" data-line="55">                uint8_t d = mem_read(de);</span>
+<span class="line" id="L56" data-line="56">                uint8_t e = mem_read(de + <span class="number">1</span>);</span>
+<span class="line" id="L57" data-line="57">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L58" data-line="58"> </span>
+<span class="line" id="L59" data-line="59">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, <span class="number">0</span>); <span class="comment">// delete upper left part</span></span>
+<span class="line" id="L60" data-line="60">                uint16_t next_de = (target_de &amp; <span class="number">0xFF00</span>) | ((target_de + <span class="number">1</span>) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L61" data-line="61">                <span class="keyword">if</span> (next_de &gt;= <span class="number">0x4000</span> &amp;&amp; next_de &lt; <span class="number">0x4400</span>) mem_write(next_de, <span class="number">0</span>); <span class="comment">// delete upper right part</span></span>
+<span class="line" id="L62" data-line="62"> </span>
+<span class="line" id="L63" data-line="63">                target_de = right_one_column(target_de);</span>
+<span class="line" id="L64" data-line="64">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, <span class="number">0</span>); <span class="comment">// delete lower left part</span></span>
+<span class="line" id="L65" data-line="65"> </span>
+<span class="line" id="L66" data-line="66">                next_de = (target_de &amp; <span class="number">0xFF00</span>) | ((target_de + <span class="number">1</span>) &amp; <span class="number">0xFF</span>);</span>
+<span class="line" id="L67" data-line="67">                <span class="keyword">if</span> (next_de &gt;= <span class="number">0x4000</span> &amp;&amp; next_de &lt; <span class="number">0x4400</span>) mem_write(next_de, <span class="number">0</span>); <span class="comment">// delete lower right part</span></span>
+<span class="line" id="L68" data-line="68">            }</span>
+<span class="line" id="L69" data-line="69">            <span class="keyword">break</span>;</span>
+<span class="line" id="L70" data-line="70"> </span>
+<span class="line" id="L71" data-line="71">        <span class="keyword">default</span>:</span>
+<span class="line" id="L72" data-line="72">            <span class="comment">// Not used</span></span>
+<span class="line" id="L73" data-line="73">            <span class="keyword">break</span>;</span>
+<span class="line" id="L74" data-line="74">    }</span>
+<span class="line" id="L75" data-line="75">}</span>
+<span class="line" id="L76" data-line="76"> </span>
+<span class="line" id="L77" data-line="77"><span class="keyword">static</span> <span class="keyword">void</span> execute_bit3_function(uint8_t func_idx, uint16_t bc, uint16_t de, uint16_t hl) {</span>
+<span class="line" id="L78" data-line="78">    (<span class="keyword">void</span>)hl;</span>
+<span class="line" id="L79" data-line="79">    <span class="keyword">extern</span> <span class="keyword">void</span> draw_background_2x2(uint16_t de_reg, uint16_t hl_reg);</span>
+<span class="line" id="L80" data-line="80"> </span>
+<span class="line" id="L81" data-line="81">    <span class="keyword">switch</span> (func_idx) {</span>
+<span class="line" id="L82" data-line="82">        <span class="keyword">case</span> <span class="number">0</span>: <span class="comment">// xxxx_1000 (L076D) Draw 1x1 screen objects</span></span>
+<span class="line" id="L83" data-line="83">            {</span>
+<span class="line" id="L84" data-line="84">                uint8_t d = mem_read(de + <span class="number">2</span>);</span>
+<span class="line" id="L85" data-line="85">                uint8_t e = mem_read(de + <span class="number">3</span>);</span>
+<span class="line" id="L86" data-line="86">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L87" data-line="87"> </span>
+<span class="line" id="L88" data-line="88">                uint8_t b_val = mem_read(bc);</span>
+<span class="line" id="L89" data-line="89">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, b_val);</span>
+<span class="line" id="L90" data-line="90">            }</span>
+<span class="line" id="L91" data-line="91">            <span class="keyword">break</span>;</span>
+<span class="line" id="L92" data-line="92"> </span>
+<span class="line" id="L93" data-line="93">        <span class="keyword">case</span> <span class="number">1</span>: <span class="comment">// xxxx_1001 (L0788) Draw 2x1 screen objects</span></span>
+<span class="line" id="L94" data-line="94">            {</span>
+<span class="line" id="L95" data-line="95">                uint8_t d = mem_read(de + <span class="number">2</span>);</span>
+<span class="line" id="L96" data-line="96">                uint8_t e = mem_read(de + <span class="number">3</span>);</span>
+<span class="line" id="L97" data-line="97">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L98" data-line="98"> </span>
+<span class="line" id="L99" data-line="99">                uint8_t b_val = mem_read(bc);</span>
+<span class="line" id="L100" data-line="100">                uint16_t src_hl = <span class="number">0x1400</span> | b_val;</span>
+<span class="line" id="L101" data-line="101"> </span>
+<span class="line" id="L102" data-line="102">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, phoenix_sprite_character_block_shapes[src_hl - <span class="number">0x1400</span>]);</span>
+<span class="line" id="L103" data-line="103">                src_hl++;</span>
+<span class="line" id="L104" data-line="104"> </span>
+<span class="line" id="L105" data-line="105">                target_de = right_one_column(target_de);</span>
+<span class="line" id="L106" data-line="106"> </span>
+<span class="line" id="L107" data-line="107">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, phoenix_sprite_character_block_shapes[src_hl - <span class="number">0x1400</span>]);</span>
+<span class="line" id="L108" data-line="108">            }</span>
+<span class="line" id="L109" data-line="109">            <span class="keyword">break</span>;</span>
+<span class="line" id="L110" data-line="110"> </span>
+<span class="line" id="L111" data-line="111">        <span class="keyword">case</span> <span class="number">3</span>: <span class="comment">// xxxx_1011 (L07AA) Draw 1x2 screen objects</span></span>
+<span class="line" id="L112" data-line="112">            {</span>
+<span class="line" id="L113" data-line="113">                uint8_t d = mem_read(de + <span class="number">2</span>);</span>
+<span class="line" id="L114" data-line="114">                uint8_t e = mem_read(de + <span class="number">3</span>);</span>
+<span class="line" id="L115" data-line="115">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L116" data-line="116"> </span>
+<span class="line" id="L117" data-line="117">                uint8_t b_val = mem_read(bc);</span>
+<span class="line" id="L118" data-line="118">                uint16_t src_hl = <span class="number">0x1400</span> | b_val;</span>
+<span class="line" id="L119" data-line="119"> </span>
+<span class="line" id="L120" data-line="120">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, phoenix_sprite_character_block_shapes[src_hl - <span class="number">0x1400</span>]);</span>
+<span class="line" id="L121" data-line="121">                src_hl++;</span>
+<span class="line" id="L122" data-line="122">                target_de = (target_de &amp; <span class="number">0xFF00</span>) | ((target_de + <span class="number">1</span>) &amp; <span class="number">0xFF</span>); <span class="comment">// INC E</span></span>
+<span class="line" id="L123" data-line="123">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) mem_write(target_de, phoenix_sprite_character_block_shapes[src_hl - <span class="number">0x1400</span>]);</span>
+<span class="line" id="L124" data-line="124">            }</span>
+<span class="line" id="L125" data-line="125">            <span class="keyword">break</span>;</span>
+<span class="line" id="L126" data-line="126"> </span>
+<span class="line" id="L127" data-line="127">        <span class="keyword">case</span> <span class="number">4</span>: <span class="comment">// xxxx_1100 (L07D2) Draw 2x2 screen objects</span></span>
+<span class="line" id="L128" data-line="128">            {</span>
+<span class="line" id="L129" data-line="129">                uint8_t d = mem_read(de + <span class="number">2</span>);</span>
+<span class="line" id="L130" data-line="130">                uint8_t e = mem_read(de + <span class="number">3</span>);</span>
+<span class="line" id="L131" data-line="131">                uint16_t target_de = (d &lt;&lt; <span class="number">8</span>) | e;</span>
+<span class="line" id="L132" data-line="132"> </span>
+<span class="line" id="L133" data-line="133">                uint8_t b_val = mem_read(bc);</span>
+<span class="line" id="L134" data-line="134">                uint16_t src_hl = <span class="number">0x1400</span> | b_val;</span>
+<span class="line" id="L135" data-line="135"> </span>
+<span class="line" id="L136" data-line="136">                <span class="keyword">if</span> (target_de &gt;= <span class="number">0x4000</span> &amp;&amp; target_de &lt; <span class="number">0x4400</span>) draw_background_2x2(target_de, src_hl);</span>
+<span class="line" id="L137" data-line="137">            }</span>
+<span class="line" id="L138" data-line="138">            <span class="keyword">break</span>;</span>
+<span class="line" id="L139" data-line="139"> </span>
+<span class="line" id="L140" data-line="140">        <span class="keyword">default</span>:</span>
+<span class="line" id="L141" data-line="141">            <span class="comment">// Not used</span></span>
+<span class="line" id="L142" data-line="142">            <span class="keyword">break</span>;</span>
+<span class="line" id="L143" data-line="143">    }</span>
+<span class="line" id="L144" data-line="144">}</span>
+<span class="line" id="L145" data-line="145"> </span>
+<span class="line" id="L146" data-line="146">/*</span>
+<span class="line" id="L147" data-line="147"> * Translates Bit4Controller</span>
+<span class="line" id="L148" data-line="148"> * [ASM: <span class="number">0720</span>-073F]</span>
+<span class="line" id="L149" data-line="149"> */</span>
+<span class="line" id="L150" data-line="150"><span class="keyword">void</span> bit4_controller(uint16_t bc, uint16_t de, uint16_t hl) {</span>
+<span class="line" id="L151" data-line="151">    <span class="comment">// 0720: LD A,(BC)</span></span>
+<span class="line" id="L152" data-line="152">    uint8_t a = mem_read(bc);</span>
+<span class="line" id="L153" data-line="153"> </span>
+<span class="line" id="L154" data-line="154">    <span class="comment">// 0722: AND $10</span></span>
+<span class="line" id="L155" data-line="155">    <span class="keyword">if</span> ((a &amp; <span class="number">0x10</span>) == <span class="number">0</span>) {</span>
+<span class="line" id="L156" data-line="156">        <span class="keyword">return</span>; <span class="comment">// 0724: RET Z</span></span>
+<span class="line" id="L157" data-line="157">    }</span>
+<span class="line" id="L158" data-line="158"> </span>
+<span class="line" id="L159" data-line="159">    <span class="comment">// 0726: AND $EF</span></span>
+<span class="line" id="L160" data-line="160">    a &amp;= <span class="number">0xEF</span>;</span>
+<span class="line" id="L161" data-line="161"> </span>
+<span class="line" id="L162" data-line="162">    <span class="comment">// 0728: LD (BC),A</span></span>
+<span class="line" id="L163" data-line="163">    mem_write(bc, a);</span>
+<span class="line" id="L164" data-line="164">    </span>
+<span class="line" id="L165" data-line="165">    <span class="comment">// 0729: RLCA 3x</span></span>
+<span class="line" id="L166" data-line="166">    a = (a &lt;&lt; <span class="number">3</span>) | (a &gt;&gt; <span class="number">5</span>);</span>
+<span class="line" id="L167" data-line="167">    </span>
+<span class="line" id="L168" data-line="168">    <span class="comment">// 072C: AND $07</span></span>
+<span class="line" id="L169" data-line="169">    a &amp;= <span class="number">0x07</span>;</span>
+<span class="line" id="L170" data-line="170">    </span>
+<span class="line" id="L171" data-line="171">    <span class="comment">// The jump table offset maps directly to a function index</span></span>
+<span class="line" id="L172" data-line="172">    execute_bit4_function(a, bc, de, hl);</span>
+<span class="line" id="L173" data-line="173">}</span>
+<span class="line" id="L174" data-line="174"> </span>
+<span class="line" id="L175" data-line="175">/*</span>
+<span class="line" id="L176" data-line="176"> * Translates Bit3Controller</span>
+<span class="line" id="L177" data-line="177"> * [ASM: <span class="number">0740</span>-07EE]</span>
+<span class="line" id="L178" data-line="178"> */</span>
+<span class="line" id="L179" data-line="179"><span class="keyword">void</span> bit3_controller(uint16_t bc, uint16_t de, uint16_t hl) {</span>
+<span class="line" id="L180" data-line="180">    <span class="comment">// 0740: LD A,(BC)</span></span>
+<span class="line" id="L181" data-line="181">    uint8_t a = mem_read(bc);</span>
+<span class="line" id="L182" data-line="182"> </span>
+<span class="line" id="L183" data-line="183">    <span class="comment">// 0742: AND $08</span></span>
+<span class="line" id="L184" data-line="184">    <span class="keyword">if</span> ((a &amp; <span class="number">0x08</span>) == <span class="number">0</span>) {</span>
+<span class="line" id="L185" data-line="185">        <span class="keyword">return</span>; <span class="comment">// 0744: RET Z</span></span>
+<span class="line" id="L186" data-line="186">    }</span>
+<span class="line" id="L187" data-line="187"> </span>
+<span class="line" id="L188" data-line="188">    <span class="comment">// 0746: AND $07</span></span>
+<span class="line" id="L189" data-line="189">    uint8_t h_reg = a &amp; <span class="number">0x07</span>;</span>
+<span class="line" id="L190" data-line="190"> </span>
+<span class="line" id="L191" data-line="191">    <span class="comment">// 0749: RRCA 3x on the value (a &amp; 0x07)</span></span>
+<span class="line" id="L192" data-line="192">    uint8_t rotated = (h_reg &gt;&gt; <span class="number">3</span>) | (h_reg &lt;&lt; <span class="number">5</span>);</span>
+<span class="line" id="L193" data-line="193"> </span>
+<span class="line" id="L194" data-line="194">    <span class="comment">// 074C: OR H (top bits)</span></span>
+<span class="line" id="L195" data-line="195">    a = rotated | h_reg;</span>
+<span class="line" id="L196" data-line="196"> </span>
+<span class="line" id="L197" data-line="197">    <span class="comment">// 074D: OR $18</span></span>
+<span class="line" id="L198" data-line="198">    a |= <span class="number">0x18</span>;</span>
+<span class="line" id="L199" data-line="199"> </span>
+<span class="line" id="L200" data-line="200">    <span class="comment">// 074F: LD (BC),A</span></span>
+<span class="line" id="L201" data-line="201">    mem_write(bc, a);</span>
+<span class="line" id="L202" data-line="202">    </span>
+<span class="line" id="L203" data-line="203">    <span class="comment">// 0750: INC BC (go to control state B)</span></span>
+<span class="line" id="L204" data-line="204">    bc++;</span>
+<span class="line" id="L205" data-line="205">    </span>
+<span class="line" id="L206" data-line="206">    <span class="comment">// execute function based on top_bits (which is now in h_reg)</span></span>
+<span class="line" id="L207" data-line="207">    execute_bit3_function(h_reg, bc, de, hl);</span>
+<span class="line" id="L208" data-line="208">}</span>
+<span class="line" id="L209" data-line="209"> </span>
+<span class="line" id="L210" data-line="210">/*</span>
+<span class="line" id="L211" data-line="211"> * Translates UpdateScreenObjects</span>
+<span class="line" id="L212" data-line="212"> * [ASM: <span class="number">0718</span>-071F]</span>
+<span class="line" id="L213" data-line="213"> * Note: original asm uses CALL $<span class="number">0718</span> which falls through to $<span class="number">0720</span> and then JP $<span class="number">0740</span>.</span>
+<span class="line" id="L214" data-line="214"> */</span>
+<span class="line" id="L215" data-line="215"><span class="keyword">void</span> update_screen_objects(uint16_t alien_state_addr, uint16_t screen_ram_addr) {</span>
+<span class="line" id="L216" data-line="216">    uint16_t hl = <span class="number">0x4400</span>; <span class="comment">// 0718: LD HL,$4400</span></span>
+<span class="line" id="L217" data-line="217">    </span>
+<span class="line" id="L218" data-line="218">    <span class="comment">// 071B: CALL $0720 (Bit4Controller)</span></span>
+<span class="line" id="L219" data-line="219">    bit4_controller(alien_state_addr, screen_ram_addr, hl);</span>
+<span class="line" id="L220" data-line="220">    </span>
+<span class="line" id="L221" data-line="221">    <span class="comment">// 071B: JP $0740 (Bit3Controller)</span></span>
+<span class="line" id="L222" data-line="222">    bit3_controller(alien_state_addr, screen_ram_addr, hl);</span>
+<span class="line" id="L223" data-line="223">}</span>
+<span class="line" id="L224" data-line="224"> </span></code></pre></main></body></html>

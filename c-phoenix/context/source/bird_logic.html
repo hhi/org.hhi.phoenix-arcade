@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bird_logic.c — Phoenix C source</title>
+<style>
+:root { color-scheme: dark; --bg:#101419; --panel:#182027; --code:#0c1116; --text:#d8e0e8; --muted:#92a2b2; --accent:#77d7ff; --border:#2d3a44; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; } header { position:sticky; top:0; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--panel); } header a { color:var(--accent); } main { padding:1.5rem 2rem; } pre { margin:0; overflow:auto; padding:1rem; border:1px solid var(--border); background:var(--code); font:.86rem/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; } .line { display:block; padding:0 .5rem; min-height:1.45em; } .line::before { content:attr(data-line); display:inline-block; width:4.5em; margin-right:1em; color:var(--muted); text-align:right; user-select:none; } .line:target { background:#4b3f1a; outline:1px solid #ffd166; } .keyword { color:#c099ff; } .number { color:#9ece6a; } .string { color:#e6b673; } .comment { color:#9aa8b7; font-style:italic; }
+</style></head><body><header><a href="../code-annotated.html">← Back to Phoenix ASM</a><h1>bird_logic.c</h1></header><main><pre><code><span class="line" id="L1" data-line="1">#include &quot;bird_logic.h&quot;</span>
+<span class="line" id="L2" data-line="2">#include &quot;coverage.h&quot;</span>
+<span class="line" id="L3" data-line="3"> </span>
+<span class="line" id="L4" data-line="4"><span class="keyword">extern</span> PhoenixState state;</span>
+<span class="line" id="L5" data-line="5"> </span>
+<span class="line" id="L6" data-line="6"><span class="keyword">extern</span> <span class="keyword">void</span> player_update(<span class="keyword">void</span>); <span class="comment">// 0876</span></span>
+<span class="line" id="L7" data-line="7"><span class="keyword">extern</span> <span class="keyword">void</span> collision_detection_for_birds(<span class="keyword">void</span>); <span class="comment">// 3800</span></span>
+<span class="line" id="L8" data-line="8"><span class="keyword">extern</span> <span class="keyword">void</span> birds_vertical_movement_update(<span class="keyword">void</span>); <span class="comment">// 2600</span></span>
+<span class="line" id="L9" data-line="9"><span class="keyword">extern</span> <span class="keyword">void</span> check_bird_formation_player_collision(<span class="keyword">void</span>); <span class="comment">// 3980</span></span>
+<span class="line" id="L10" data-line="10"><span class="keyword">extern</span> <span class="keyword">void</span> draw_first_4_bird_objects(<span class="keyword">void</span>); <span class="comment">// 3474</span></span>
+<span class="line" id="L11" data-line="11"><span class="keyword">extern</span> <span class="keyword">void</span> draw_second_4_bird_objects(<span class="keyword">void</span>); <span class="comment">// 3486</span></span>
+<span class="line" id="L12" data-line="12"><span class="keyword">extern</span> <span class="keyword">void</span> refresh_bird_flight_parameters(<span class="keyword">void</span>); <span class="comment">// 3560</span></span>
+<span class="line" id="L13" data-line="13"><span class="keyword">extern</span> <span class="keyword">void</span> update_first_four_birds(<span class="keyword">void</span>); <span class="comment">// 3498</span></span>
+<span class="line" id="L14" data-line="14"><span class="keyword">extern</span> <span class="keyword">void</span> update_second_four_birds(<span class="keyword">void</span>); <span class="comment">// 34AA</span></span>
+<span class="line" id="L15" data-line="15"><span class="keyword">extern</span> <span class="keyword">void</span> handle_animations_for_killed_aliens(<span class="keyword">void</span>); <span class="comment">// 0FC0</span></span>
+<span class="line" id="L16" data-line="16"><span class="keyword">extern</span> <span class="keyword">void</span> try_spawn_bird_dive_bomb(<span class="keyword">void</span>); <span class="comment">// 3930</span></span>
+<span class="line" id="L17" data-line="17"><span class="keyword">extern</span> <span class="keyword">void</span> process_enemy_bombs(<span class="keyword">void</span>); <span class="comment">// 0C40</span></span>
+<span class="line" id="L18" data-line="18"><span class="keyword">extern</span> <span class="keyword">void</span> l3462_no_birds_left(<span class="keyword">void</span>);</span>
+<span class="line" id="L19" data-line="19"><span class="keyword">extern</span> <span class="keyword">void</span> update_second_bird_bank(<span class="keyword">void</span>); <span class="comment">// 3452</span></span>
+<span class="line" id="L20" data-line="20"> </span>
+<span class="line" id="L21" data-line="21">/*</span>
+<span class="line" id="L22" data-line="22"> * Translates L3400</span>
+<span class="line" id="L23" data-line="23"> * Handles bird egg hatching, spawning, and flight paths.</span>
+<span class="line" id="L24" data-line="24"> * [ASM: <span class="number">3400</span>-<span class="number">3436</span>]</span>
+<span class="line" id="L25" data-line="25"> * [ASM: <span class="number">3438</span>-344D]</span>
+<span class="line" id="L26" data-line="26"> */</span>
+<span class="line" id="L27" data-line="27"><span class="keyword">void</span> process_birds(<span class="keyword">void</span>) {</span>
+<span class="line" id="L28" data-line="28">    coverage_hit(&quot;process_birds&quot;);</span>
+<span class="line" id="L29" data-line="29">    player_update();</span>
+<span class="line" id="L30" data-line="30">    collision_detection_for_birds();</span>
+<span class="line" id="L31" data-line="31">    birds_vertical_movement_update();</span>
+<span class="line" id="L32" data-line="32">    collision_detection_for_birds();</span>
+<span class="line" id="L33" data-line="33">    check_bird_formation_player_collision();</span>
+<span class="line" id="L34" data-line="34">    </span>
+<span class="line" id="L35" data-line="35">    <span class="keyword">if</span> (state.BirdsLeft == <span class="number">0</span>) {</span>
+<span class="line" id="L36" data-line="36">        l3462_no_birds_left();</span>
+<span class="line" id="L37" data-line="37">        <span class="keyword">return</span>;</span>
+<span class="line" id="L38" data-line="38">    }</span>
+<span class="line" id="L39" data-line="39">    </span>
+<span class="line" id="L40" data-line="40">    <span class="keyword">if</span> (state.BirdsLeft &gt;= <span class="number">4</span>) {</span>
+<span class="line" id="L41" data-line="41">        <span class="keyword">if</span> ((state.Counter9B &amp; <span class="number">0x01</span>) != <span class="number">0</span>) {</span>
+<span class="line" id="L42" data-line="42">            update_second_bird_bank();</span>
+<span class="line" id="L43" data-line="43">        } <span class="keyword">else</span> {</span>
+<span class="line" id="L44" data-line="44">            draw_first_4_bird_objects();</span>
+<span class="line" id="L45" data-line="45">            refresh_bird_flight_parameters();</span>
+<span class="line" id="L46" data-line="46">            update_first_four_birds();</span>
+<span class="line" id="L47" data-line="47">            try_spawn_bird_dive_bomb();</span>
+<span class="line" id="L48" data-line="48">            process_enemy_bombs(); </span>
+<span class="line" id="L49" data-line="49">        }</span>
+<span class="line" id="L50" data-line="50">        <span class="keyword">return</span>;</span>
+<span class="line" id="L51" data-line="51">    }</span>
+<span class="line" id="L52" data-line="52">    </span>
+<span class="line" id="L53" data-line="53">    draw_first_4_bird_objects();</span>
+<span class="line" id="L54" data-line="54">    draw_second_4_bird_objects();</span>
+<span class="line" id="L55" data-line="55">    refresh_bird_flight_parameters();</span>
+<span class="line" id="L56" data-line="56">    update_first_four_birds();</span>
+<span class="line" id="L57" data-line="57">    update_second_four_birds();</span>
+<span class="line" id="L58" data-line="58">    </span>
+<span class="line" id="L59" data-line="59">    <span class="keyword">if</span> ((state.Counter9B &amp; <span class="number">0x01</span>) != <span class="number">0</span>) {</span>
+<span class="line" id="L60" data-line="60">        handle_animations_for_killed_aliens();</span>
+<span class="line" id="L61" data-line="61">    } <span class="keyword">else</span> {</span>
+<span class="line" id="L62" data-line="62">        try_spawn_bird_dive_bomb();</span>
+<span class="line" id="L63" data-line="63">        process_enemy_bombs();</span>
+<span class="line" id="L64" data-line="64">    }</span>
+<span class="line" id="L65" data-line="65"> </span>
+<span class="line" id="L66" data-line="66">}</span>
+<span class="line" id="L67" data-line="67"> </span>
+<span class="line" id="L68" data-line="68"> </span>
+<span class="line" id="L69" data-line="69"><span class="keyword">void</span> bird_flight_path(<span class="keyword">void</span>) {</span>
+<span class="line" id="L70" data-line="70">    coverage_hit(&quot;bird_flight_path&quot;);</span>
+<span class="line" id="L71" data-line="71">    <span class="comment">// Calls L3800 to process complex geometric dive bombing</span></span>
+<span class="line" id="L72" data-line="72">    collision_detection_for_birds();</span>
+<span class="line" id="L73" data-line="73">}</span>
+<span class="line" id="L74" data-line="74"> </span>
+<span class="line" id="L75" data-line="75"><span class="keyword">extern</span> <span class="keyword">void</span> drawbirdobject(uint16_t bird_struct_addr);</span>
+<span class="line" id="L76" data-line="76"> </span>
+<span class="line" id="L77" data-line="77">/*</span>
+<span class="line" id="L78" data-line="78"> * Draw bird objects <span class="number">0</span> to <span class="number">3</span>.</span>
+<span class="line" id="L79" data-line="79"> * [ASM: <span class="number">3474</span>-<span class="number">3485</span>]</span>
+<span class="line" id="L80" data-line="80"> */</span>
+<span class="line" id="L81" data-line="81"><span class="keyword">void</span> draw_first_4_bird_objects(<span class="keyword">void</span>) {</span>
+<span class="line" id="L82" data-line="82">    uint16_t addr = <span class="number">0x4B70</span>;</span>
+<span class="line" id="L83" data-line="83">    <span class="keyword">while</span> (addr &lt; <span class="number">0x4B90</span>) {</span>
+<span class="line" id="L84" data-line="84">        drawbirdobject(addr);</span>
+<span class="line" id="L85" data-line="85">        addr += <span class="number">0x08</span>;</span>
+<span class="line" id="L86" data-line="86">    }</span>
+<span class="line" id="L87" data-line="87">}</span>
+<span class="line" id="L88" data-line="88"> </span>
+<span class="line" id="L89" data-line="89">/*</span>
+<span class="line" id="L90" data-line="90"> * Draw bird objects <span class="number">4</span> to <span class="number">7</span>.</span>
+<span class="line" id="L91" data-line="91"> * [ASM: <span class="number">3486</span>-<span class="number">3497</span>]</span>
+<span class="line" id="L92" data-line="92"> */</span>
+<span class="line" id="L93" data-line="93"><span class="keyword">void</span> draw_second_4_bird_objects(<span class="keyword">void</span>) {</span>
+<span class="line" id="L94" data-line="94">    uint16_t addr = <span class="number">0x4B90</span>;</span>
+<span class="line" id="L95" data-line="95">    <span class="keyword">while</span> (addr &lt; <span class="number">0x4BB0</span>) {</span>
+<span class="line" id="L96" data-line="96">        drawbirdobject(addr);</span>
+<span class="line" id="L97" data-line="97">        addr += <span class="number">0x08</span>;</span>
+<span class="line" id="L98" data-line="98">    }</span>
+<span class="line" id="L99" data-line="99">}</span></code></pre></main></body></html>
