@@ -336,6 +336,7 @@ help:
 
 interactive-asm:
 	@echo "Generating interactive Phoenix ASM documentation..."
+	@python3 tools/generate_code_annotated_asm.py
 	@python3 tools/generate_annotated_asm.py
 	@python3 tools/generate_interactive_asm_html.py
 	@python3 tools/generate_interactive_asm_html.py context/code-annotated.md context/code-annotated.html

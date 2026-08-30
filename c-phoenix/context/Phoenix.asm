@@ -1911,16 +1911,16 @@ Bit4Controller:
                        JP      (HL)                ; jump to control function
 
 ; LSB jump table:
-;.....not used
-;........not used
-;...........not used
+;.....ROM target $076C; not modelled by the C port.
+;........ROM target $07FF; not modelled by the C port.
+;...........ROM target $078A; not modelled by the C port.
 ;..............0763..................control state A: 0001_xxxx...Delete 1x1 screen objects.
 ;.................0779...............control state A: 0011_xxxx...Delete 2x1 screen objects.
-;....................not used
+;....................ROM target $07FF; not modelled by the C port.
 ;.......................079E.........control state A: 0111_xxxx...Delete 1x2 screen objects.
 ;..........................07BE......control state A: 1001_xxxx...Delete 2x2 screen objects.
 T0735:
-                       .DB $00, $00, $00, L0763 & $FF, L0779 & $FF, $00, L079E & $FF, L07BE & $FF
+                       .DB $6C, $FF, $8A, L0763 & $FF, L0779 & $FF, $FF, L079E & $FF, L07BE & $FF
 
                        .ORG $0740
 ;*****************************************************************************
@@ -1949,16 +1949,16 @@ Bit3Controller:
                        JP      (HL)                ; jump to control function
 
 ; LSB jump table:
-;.....not used
-;........not used
+;.....ROM target $075E; not modelled by the C port.
+;........ROM target $070A; not modelled by the C port.
 ;...........076D.....................control state A: xxxx_1000...Draw 1x1 screen objects.
 ;..............0788..................control state A: xxxx_1001...Draw 2x1 screen objects.
-;.................not used
+;.................ROM target $07FF; not modelled by the C port.
 ;....................07AA............control state A: xxxx_1011...Draw 1x2 screen objects.
 ;.......................07D2.........control state A: xxxx_1100...Draw 2x2 screen objects.
-;..........................not used
+;..........................ROM target $07FF; not modelled by the C port.
 T0759:
-                       .DB $00, $00, L076D & $FF, L0788 & $FF, $00, L07AA & $FF, L07D2 & $FF
+                       .DB $5E, $0A, L076D & $FF, L0788 & $FF, $FF, L07AA & $FF, L07D2 & $FF, $FF
 
                        .ORG $0763
 ;*****************************************************************************
