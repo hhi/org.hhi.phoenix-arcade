@@ -176,6 +176,9 @@ kg-check:
 	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
 	python3 c-phoenix/c-annotated/tools/generate_topic_index.py --check
 	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_explorer.py --graph c-phoenix/c-annotated/knowledge-graph.json --output c-phoenix/c-annotated/knowledge-base-explorer/index.html --check
+	python3 c-phoenix/tools/generate_interactive_asm_html.py c-phoenix/context/Phoenix.md c-phoenix/context/Phoenix.html --check
+	python3 c-phoenix/tools/generate_interactive_asm_html.py c-phoenix/context/code-annotated.md c-phoenix/context/code-annotated.html --check
+	python3 c-phoenix/c-annotated/tools/check_knowledge_base_explorer_links.py
 
 kg-annotations:
 	python3 c-phoenix/c-annotated/tools/check_asm_annotations.py

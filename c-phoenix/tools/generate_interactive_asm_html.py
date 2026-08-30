@@ -4,6 +4,7 @@
 import argparse
 import html
 import re
+import sys
 from pathlib import Path
 
 
@@ -14,6 +15,8 @@ LABEL_HEADING_RE = re.compile(
 ORG_RE = re.compile(r"\.ORG\s+\$([0-9A-Fa-f]+)")
 LEGACY_LABEL_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):\s*$")
 LEGACY_ADDRESS_RE = re.compile(r"^([0-9A-Fa-f]{4}):")
+DISPLAY_ADDRESS_RE = re.compile(r"^\s*([0-9A-Fa-f]{4}):")
+DISPLAY_BYTES_RE = re.compile(r"^\s*([0-9A-Fa-f]{4}):\s*((?:[0-9A-Fa-f]{2}\s*)+)")
 C_PORT_RE = re.compile(
     r"\*\*Ported to C:\*\* \[`(?P<function>[^`]+)`\]\(\.\./(?P<file>[^#]+\.c)#L(?P<line>\d+)\).*?"
     r"\(ASM: `(?P<ranges>[^`]+)`\)"
@@ -189,7 +192,7 @@ def render_scope_boundary(scope, boundary):
     if boundary == "start":
         included_labels = ", ".join(scope["labels"])
         return (
-            '<div class="c-function-boundary c-function-start">'
+            f'<div id="asm-{scope["start"]:04x}" class="c-function-boundary c-function-start">'
             f'<span class="c-scope-next">C function ASM scope begins at ${scope["start"]:04X}</span>'
             f'<a class="c-source-link" href="../{scope["file"]}#L{scope["line"]}" '
             f'data-source="../{scope["file"]}" data-line="{scope["line"]}">'
@@ -306,6 +309,13 @@ def render_asm_tokens(text, labels, label_kinds, symbols, addresses, c_reference
 def render_code(line, labels, label_kinds, symbols, addresses, c_references):
     # The source aligns columns with a wide leading margin; remove only that
     # margin in HTML so long annotations retain usable horizontal space.
+    anchor = ""
+    if match := DISPLAY_BYTES_RE.match(line):
+        start = int(match.group(1), 16)
+        byte_count = len(match.group(2).split())
+        anchor = "".join(f'<span id="asm-{start + offset:04x}"></span>' for offset in range(byte_count))
+    elif match := DISPLAY_ADDRESS_RE.match(line):
+        anchor = f'<span id="asm-{match.group(1).lower()}"></span>'
     line = line.lstrip()
     code, separator, comment = line.partition(";")
     rendered = render_asm_tokens(code, labels, label_kinds, symbols, addresses, c_references)
@@ -313,7 +323,7 @@ def render_code(line, labels, label_kinds, symbols, addresses, c_references):
         rendered += f'<span class="comment">;{html.escape(comment)}</span>'
     if CONTROL_FLOW_SEPARATOR_RE.match(code):
         rendered += '<span class="control-separator" aria-hidden="true"></span>'
-    return rendered
+    return f"{anchor}{rendered}"
 
 
 def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_root=None):
@@ -382,6 +392,11 @@ def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_roo
             kind = label_kinds[name]
             tooltip = label_tooltip(name, addresses, c_references)
             scope = scopes.get(name)
+            address = label_actual_address(name, addresses.get(name))
+            address_anchor = (
+                "" if scope and scope["start"] == address else
+                f'<span id="asm-{address:04x}"></span>' if address is not None else ""
+            )
             if in_section:
                 parts.append("</section>")
                 in_section = False
@@ -394,7 +409,7 @@ def render_markdown(markdown, legacy_assembly="", legacy_markdown="", source_roo
                 parts.append(render_scope_boundary(scope, "start"))
                 active_scope = scope
             parts.append(
-                f'<section class="asm-section" id="{label_id(name)}">'
+                f'{address_anchor}<section class="asm-section" id="{label_id(name)}">'
                 f'<h3><a class="permalink" href="#{label_id(name)}" '
                 f'data-tooltip="{html.escape(tooltip, quote=True)}">{name}</a>'
                 f'{" " + render_inline(heading_match.group("reference")) if heading_match.group("reference") else ""}'
@@ -607,6 +622,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input", nargs="?", default="context/Phoenix.md")
     parser.add_argument("output", nargs="?", default="context/Phoenix.html")
+    parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
 
     source = Path(args.input)
@@ -618,8 +634,16 @@ def main():
         legacy_assembly.read_text(encoding="utf-8") if legacy_assembly.exists() else "",
         legacy_markdown.read_text(encoding="utf-8") if legacy_markdown.exists() else "",
     )
-    destination.write_text(page_document(content, navigation), encoding="utf-8")
+    rendered = page_document(content, navigation)
+    if args.check:
+        if not destination.exists() or destination.read_text(encoding="utf-8") != rendered:
+            print(f"{destination} is stale; run make -C c-phoenix interactive-asm", file=sys.stderr)
+            return 1
+        print(f"{destination} is current with {labels} labels")
+        return 0
+    destination.write_text(rendered, encoding="utf-8")
     print(f"{destination} generated successfully with {labels} labels")
+    return 0
 
 
 if __name__ == "__main__":

@@ -338,6 +338,7 @@ interactive-asm:
 	@echo "Generating interactive Phoenix ASM documentation..."
 	@python3 tools/generate_annotated_asm.py
 	@python3 tools/generate_interactive_asm_html.py
+	@python3 tools/generate_interactive_asm_html.py context/code-annotated.md context/code-annotated.html
 
 interactive-asm-view: interactive-asm interactive-asm-view-only
 
@@ -358,6 +359,7 @@ docs:
 	@python3 tools/generate_mappings.py
 	@python3 tools/generate_annotated_asm.py
 	@python3 tools/generate_interactive_asm_html.py
+	@python3 tools/generate_interactive_asm_html.py context/code-annotated.md context/code-annotated.html
 	@python3 tools/generate_callgraph.py
 	@python3 tools/generate_file_callgraph.py
 	@python3 tools/generate_func_prefix_callgraph.py

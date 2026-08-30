@@ -13,7 +13,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L0000:
 
 > [!NOTE]
-> **Ported to C:** [`phoenix_main_loop`](../hw_video_audio.c#L123) in `hw_video_audio.c` (ASM: `0000-004F`)
+> **Ported to C:** [`phoenix_main_loop`](../hw_video_audio.c#L112) in `hw_video_audio.c` (ASM: `0000-004F`)
 
 ```asm
 0000: 00              NOP                         ; Start/restart and interrupts end up at 0008
@@ -87,7 +87,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### InitSoundScreen:
 
 > [!NOTE]
-> **Ported to C:** [`init_sound_screen`](../hw_video_audio.c#L94) in `hw_video_audio.c` (ASM: `0050-006A`)
+> **Ported to C:** [`init_sound_screen`](../hw_video_audio.c#L83) in `hw_video_audio.c` (ASM: `0050-006A`)
 
 ```asm
 0050: 26 68           LD      H,$68               ; 68xx sound B
@@ -117,7 +117,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### ClearRAMBank:
 
 > [!NOTE]
-> **Ported to C:** [`clear_ram_bank`](../hw_video_audio.c#L76) in `hw_video_audio.c` (ASM: `006B-0077`)
+> **Ported to C:** [`clear_ram_bank`](../hw_video_audio.c#L65) in `hw_video_audio.c` (ASM: `006B-0077`)
 
 ```asm
 006B: 21 F8 4B        LD      HL,$4BF8            ; {+ram.Stack} Highest point ... skip the top of the stack
@@ -164,7 +164,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### WaitVBlankCoin:
 
 > [!NOTE]
-> **Ported to C:** [`wait_vblank_coin`](../hw_video_audio.c#L30) in `hw_video_audio.c` (ASM: `0080-00B5`)
+> **Ported to C:** [`wait_vblank_coin`](../hw_video_audio.c#L29) in `hw_video_audio.c` (ASM: `0080-00B5`)
 
 ```asm
 0080: 26 78           LD      H,$78               ; 78xx DSW0 Check ...
@@ -997,7 +997,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### ClearAndPrintScores:
 
 > [!NOTE]
-> **Ported to C:** [`clear_and_print_scores`](../hw_video_audio.c#L196) in `hw_video_audio.c` (ASM: `032E-034E`)
+> **Ported to C:** [`clear_and_print_scores`](../hw_video_audio.c#L188) in `hw_video_audio.c` (ASM: `032E-034E`)
 
 ```asm
 032E: 21 80 43        LD      HL,$4380            ; {+ram.M4380} Clear scores..
@@ -1060,7 +1060,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### UpdateLivesScreen:
 
 > [!NOTE]
-> **Ported to C:** [`update_lives_screen`](../hw_video_audio.c#L216) in `hw_video_audio.c` (ASM: `0367-0376`)
+> **Ported to C:** [`update_lives_screen`](../hw_video_audio.c#L208) in `hw_video_audio.c` (ASM: `0367-0376`)
 
 ```asm
 0367: 2E 90           LD      L,$90               ; LSB of Player1Lives
@@ -1081,7 +1081,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### UpdateSoundControlRAM:
 
 > [!NOTE]
-> **Ported to C:** [`update_sound_control_ram`](../hw_video_audio.c#L228) in `hw_video_audio.c` (ASM: `0377-037D`)
+> **Ported to C:** [`update_sound_control_ram`](../hw_video_audio.c#L220) in `hw_video_audio.c` (ASM: `0377-037D`)
 
 ```asm
 0377: 21 8C 43        LD      HL,$438C            ; {+ram.SoundControlA}
@@ -1105,7 +1105,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### ClearForeground:
 
 > [!NOTE]
-> **Ported to C:** [`clear_foreground`](../hw_video_audio.c#L237) in `hw_video_audio.c` (ASM: `0380-039D`)
+> **Ported to C:** [`clear_foreground`](../hw_video_audio.c#L229) in `hw_video_audio.c` (ASM: `0380-039D`)
 
 ```asm
 0380: 21 3F 43        LD      HL,$433F            ; {+ram.ForegroundScreen+33F} End of foreground screen
@@ -1149,7 +1149,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### ClearBackground:
 
 > [!NOTE]
-> **Ported to C:** [`clear_background`](../hw_video_audio.c#L155) in `hw_video_audio.c` (ASM: `03A0-03AF`)
+> **Ported to C:** [`clear_background`](../hw_video_audio.c#L147) in `hw_video_audio.c` (ASM: `03A0-03AF`)
 
 ```asm
 03A0: 21 3F 4B        LD      HL,$4B3F            ; {+ram.BackgroundScreen+33F} End of background screen memory
@@ -1304,7 +1304,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### SetBitsVideoRegister:
 
 > [!NOTE]
-> **Ported to C:** [`set_bits_video_register`](../hw_video_audio.c#L252) in `hw_video_audio.c` (ASM: `041E-042E`)
+> **Ported to C:** [`set_bits_video_register`](../hw_video_audio.c#L244) in `hw_video_audio.c` (ASM: `041E-042E`)
 
 ```asm
 041E: 3A A3 43        LD      A,($43A3)           ; {ram.GameAndDemoOrSplash}
@@ -1376,7 +1376,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### CopyMemoryBank:
 
 > [!NOTE]
-> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L95) in `platform_sdl.c` (ASM: `0460-049D`)
+> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L105) in `platform_sdl.c` (ASM: `0460-049D`)
 
 ```asm
 0460: 21 00 50        LD      HL,$5000            ; 50xx video register
@@ -1985,7 +1985,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### StarsScrollDown:
 
 > [!NOTE]
-> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `067A-06AF`)
+> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L258) in `hw_video_audio.c` (ASM: `067A-06AF`)
 
 ```asm
 067A: 21 B9 43        LD      HL,$43B9            ; {+ram.CounterB9}
@@ -2039,7 +2039,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### AddPlanetsToBackground:
 
 > [!NOTE]
-> **Ported to C:** [`add_planets_to_background`](../hw_video_audio.c#L356) in `hw_video_audio.c` (ASM: `06B0-06E7`)
+> **Ported to C:** [`add_planets_to_background`](../hw_video_audio.c#L348) in `hw_video_audio.c` (ASM: `06B0-06E7`)
 
 ```asm
 06B0: 21 AB 43        LD      HL,$43AB            ; {+ram.M43AB} counter value for (2x2) planets
@@ -2108,7 +2108,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L06F0:
 
 > [!NOTE]
-> **Ported to C:** [`update_scroll_register_and_fill_background`](../hw_video_audio.c#L473) in `hw_video_audio.c` (ASM: `06F0-06F8`)
+> **Ported to C:** [`update_scroll_register_and_fill_background`](../hw_video_audio.c#L465) in `hw_video_audio.c` (ASM: `06F0-06F8`)
 
 > [!NOTE]
 > **Ported to C:** [`l06f0`](../misc_logic.c#L12) in `misc_logic.c` (ASM: `06F0-0701`)
@@ -2479,7 +2479,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### L07DC:
 
 > [!NOTE]
-> **Ported to C:** [`draw_background_2x2`](../hw_video_audio.c#L320) in `hw_video_audio.c` (ASM: `07DC-07EF`)
+> **Ported to C:** [`draw_background_2x2`](../hw_video_audio.c#L312) in `hw_video_audio.c` (ASM: `07DC-07EF`)
 
 ```asm
 07DC: 7E              LD      A,(HL)              ; Entry point for general draw
@@ -6032,7 +6032,7 @@ Gegenereerd uit [code-annotated.asm](code-annotated.asm). Functieannotaties verw
 ### AddGalaxiesToBackground:
 
 > [!NOTE]
-> **Ported to C:** [`add_galaxies_to_background`](../hw_video_audio.c#L433) in `hw_video_audio.c` (ASM: `2040-208A`)
+> **Ported to C:** [`add_galaxies_to_background`](../hw_video_audio.c#L425) in `hw_video_audio.c` (ASM: `2040-208A`)
 
 ```asm
 2040: 21 AF 43        LD      HL,$43AF            ; {+ram.M43AF}

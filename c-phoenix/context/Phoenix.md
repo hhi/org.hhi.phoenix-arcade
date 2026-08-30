@@ -515,7 +515,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 ;*****************************************************************************
 ```
 > [!NOTE]
-> **Ported to C:** [`phoenix_main_loop`](../hw_video_audio.c#L123) in `hw_video_audio.c` (ASM: `0000-004F`)
+> **Ported to C:** [`phoenix_main_loop`](../hw_video_audio.c#L112) in `hw_video_audio.c` (ASM: `0000-004F`)
 
 ```asm
                        .ORG $0000
@@ -589,7 +589,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`init_sound_screen`](../hw_video_audio.c#L94) in `hw_video_audio.c` (ASM: `0050-006A`)
+> **Ported to C:** [`init_sound_screen`](../hw_video_audio.c#L83) in `hw_video_audio.c` (ASM: `0050-006A`)
 
 ```asm
                        .ORG $0050
@@ -656,7 +656,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`wait_vblank_coin`](../hw_video_audio.c#L30) in `hw_video_audio.c` (ASM: `0080-00B5`)
+> **Ported to C:** [`wait_vblank_coin`](../hw_video_audio.c#L29) in `hw_video_audio.c` (ASM: `0080-00B5`)
 
 ```asm
                        .ORG $0080
@@ -1380,7 +1380,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`clear_and_print_scores`](../hw_video_audio.c#L196) in `hw_video_audio.c` (ASM: `032E-034E`)
+> **Ported to C:** [`clear_and_print_scores`](../hw_video_audio.c#L188) in `hw_video_audio.c` (ASM: `032E-034E`)
 
 ```asm
                        .ORG $032E
@@ -1474,7 +1474,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`clear_foreground`](../hw_video_audio.c#L237) in `hw_video_audio.c` (ASM: `0380-039D`)
+> **Ported to C:** [`clear_foreground`](../hw_video_audio.c#L229) in `hw_video_audio.c` (ASM: `0380-039D`)
 
 ```asm
                        .ORG $0380
@@ -1514,7 +1514,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`clear_background`](../hw_video_audio.c#L155) in `hw_video_audio.c` (ASM: `03A0-03AF`)
+> **Ported to C:** [`clear_background`](../hw_video_audio.c#L147) in `hw_video_audio.c` (ASM: `03A0-03AF`)
 
 ```asm
                        .ORG $03A0
@@ -1721,7 +1721,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L95) in `platform_sdl.c` (ASM: `0460-049D`)
+> **Ported to C:** [`copy_memory_bank`](../platform_sdl.c#L105) in `platform_sdl.c` (ASM: `0460-049D`)
 
 ```asm
                        .ORG $0460
@@ -2275,7 +2275,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L266) in `hw_video_audio.c` (ASM: `067A-06AF`)
+> **Ported to C:** [`stars_scroll_down`](../hw_video_audio.c#L258) in `hw_video_audio.c` (ASM: `067A-06AF`)
 
 ```asm
                        .ORG $067A
@@ -2330,7 +2330,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`add_planets_to_background`](../hw_video_audio.c#L356) in `hw_video_audio.c` (ASM: `06B0-06E7`)
+> **Ported to C:** [`add_planets_to_background`](../hw_video_audio.c#L348) in `hw_video_audio.c` (ASM: `06B0-06E7`)
 
 ```asm
                        .ORG $06B0
@@ -6206,7 +6206,7 @@ DSW0                   .EQU $7800       ;DIP switch settings
 
 ```
 > [!NOTE]
-> **Ported to C:** [`add_galaxies_to_background`](../hw_video_audio.c#L433) in `hw_video_audio.c` (ASM: `2040-208A`)
+> **Ported to C:** [`add_galaxies_to_background`](../hw_video_audio.c#L425) in `hw_video_audio.c` (ASM: `2040-208A`)
 
 ```asm
                        .ORG $2040
