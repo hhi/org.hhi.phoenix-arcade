@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><title>hw-video-audio</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>hw-video-audio</h1><pre># Hardware Video &amp; Audio (`hw_video_audio.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`hw_video_audio.c`](../../hw_video_audio.c). This module implements the Z80 reset entry point (`RESET`), 60Hz VBlank interrupt handling, VRAM video buffer synchronization, and audio mixing calls.
+
+---
+
+## Table of Contents
+1. [VBlank Interrupt &amp; Main Loop](#1-vblank-interrupt--main-loop)
+
+---
+
+## 1. VBlank Interrupt &amp; Main Loop
+
+### `phoenix_main_loop`
+#### **Description**
+The function [`phoenix_main_loop`](../../hw_video_audio.c#L123) (Z80 ROM: `$0000–$004F`) triggers 60 times per second to update VRAM video pages `$4000–$433F` and sound dispatchers.</pre></body></html>

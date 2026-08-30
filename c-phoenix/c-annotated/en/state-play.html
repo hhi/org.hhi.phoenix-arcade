@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><title>state-play</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>state-play</h1><pre># State Play Level Dispatcher (`state_play.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`state_play.c`](../../state_play.c). This module dispatches active gameplay frames across 12 level phases (Wave 1 aliens, Wave 3 aliens, Wave 5 birds, Wave 7 birds, Mothership descent, etc.).
+
+---
+
+## Table of Contents
+1. [Level Phase Dispatcher](#1-level-phase-dispatcher)
+
+---
+
+## 1. Level Phase Dispatcher
+
+### `state_play_dispatcher`
+#### **Description**
+The function [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16) (Z80 ROM: `$01A0–$0200`) checks `LevelAndRound` to route execution to `alien_wave_main_loop`, `process_birds`, or `mothership_tile_hit_check`.</pre></body></html>

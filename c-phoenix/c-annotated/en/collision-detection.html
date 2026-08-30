@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><title>collision-detection</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>collision-detection</h1><pre># Collision Detection (`collision_detection.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`collision_detection.c`](../../collision_detection.c). This module handles VRAM tile scanning, pixel mask collision detection, and explosion slot assignments for birds, eggs, and bullets.
+
+---
+
+## Table of Contents
+1. [VRAM Tile &amp; Pixel Mask Scans](#1-vram-tile--pixel-mask-scans)
+2. [Bird &amp; Egg Collision Slots](#2-bird--egg-collision-slots)
+
+---
+
+## 1. VRAM Tile &amp; Pixel Mask Scans
+
+### `l38bc_large_hit`
+#### **Description**
+The function [`l38bc_large_hit`](../../collision_detection.c#L45-L95) (Z80 ROM: `$38BC–$38F1`) executes bounding box and VRAM pixel mask collision checks for large bird sprites.
+
+#### **Knowledge Graph Links**
+* **Called By (Incoming Calls / Backlinks):**
+  - [`process_birds`](bird-logic.md#process_birds) — [`bird_logic.c`](../../bird_logic.c)
+
+---
+
+## 2. Bird &amp; Egg Collision Slots
+
+### `bird_explosion_slot`
+#### **Description**
+The function [`bird_explosion_slot`](../../collision_detection.c#L110-L150) (Z80 ROM: `$38F2–$3920`) assigns a free explosion slot in RAM array `0x4378–$437C` upon a fatal projectile hit.</pre></body></html>

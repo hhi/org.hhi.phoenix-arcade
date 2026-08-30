@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><title>player-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>player-logic</h1><pre># Player Logic (`player_logic.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`player_logic.c`](../../player_logic.c). This module manages player ship movement controls (left/right joystick), shield force field activation (5-second duration counter), player bullet firing, and speed throttling.
+
+---
+
+## Table of Contents
+1. [Player Movement &amp; Joystick Control](#1-player-movement--joystick-control)
+2. [Force Field Shield Activation](#2-force-field-shield-activation)
+3. [Player Bullet Spawning](#3-player-bullet-spawning)
+
+---
+
+## 1. Player Movement &amp; Joystick Control
+
+### `player_update`
+#### **Description**
+The function [`player_update`](../../player_logic.c#L45-L110) (Z80 ROM: `$0876–$0885`) reads player input ports ($5000) and updates player ship X position on screen (`$43C0`).
+
+#### **Knowledge Graph Links**
+* **Called By (Incoming Calls / Backlinks):**
+  - [`l2000_alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop) — [`alien_wave.c`](../../alien_wave.c)
+
+---
+
+## 2. Force Field Shield Activation
+
+### `draw_shields`
+#### **Description**
+The function [`draw_shields`](../../player_logic.c#L294) (Z80 ROM: `$0AA0–$0AC1`) draws the shield in the damage state selected by `ShieldCount`. When active, it protects the player ship from collisions and enemy fire.
+
+---
+
+## 3. Player Bullet Spawning
+
+### `spawn_player_bullet`
+#### **Description**
+The function [`spawn_player_bullet`](../../player_logic.c#L180-L220) (Z80 ROM: `$093D–$0961`) spawns player bullet objects in RAM when fire button inputs are detected.</pre></body></html>

@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><title>sound-discrete</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>sound-discrete</h1><pre># Discrete Audio Emulation (`sound_discrete.c`) - C-Annotated Knowledge Graph Documentatie
+
+Dit document bevat een geannoteerde analyse van alle functies in [`sound_discrete.c`](../../sound_discrete.c). Deze module emuleert de analoge discrete circuits van de *Phoenix* arcadehardware (555 astabiele multivibratoren, RC-filters, effect-mixers en het 18-bits polynoom ruisgenerator-circuit).
+
+---
+
+## Inhoudsopgave
+1. [Discreet Circuit Initialisatie](#1-discreet-circuit-initialisatie)
+2. [Analoge 555-Multivibrator &amp; RC-Simulatie](#2-analoge-555-multivibrator--rc-simulatie)
+3. [Ruissynthese (C24/C25 &amp; Poly18)](#3-ruissynthese-c24c25--poly18)
+
+---
+
+## 1. Discreet Circuit Initialisatie
+
+### `sound_discrete_init`
+#### **Beschrijving**
+De functie [`sound_discrete_init`](../../sound_discrete.c#L412-L426) bouwt de 18-bits pseudo-random opzoektabel (`build_poly18`) en stelt de initiële waarden in voor de 555-timers (`astable_init`) en RC-ontladingsnetwerken (`rcdisc4_init`).
+
+#### **Knowledge Graph Koppelingen**
+* **Aanroepen (Outgoing Calls):**
+  - `build_poly18` — [`sound_discrete.c#L55`](../../sound_discrete.c#L55)
+  - `astable_init` — [`sound_discrete.c#L72`](../../sound_discrete.c#L72)
+  - `rcdisc4_init` — [`sound_discrete.c#L171`](../../sound_discrete.c#L171)
+* **Aangeroepen door (Incoming Calls / Backlinks):**
+  - [`sound_init`](sound.md#sound_init) — [`sound.c#L61`](../../sound.c#L61)
+
+---
+
+## 2. Analoge 555-Multivibrator &amp; RC-Simulatie
+
+### `sound_discrete_step`
+#### **Beschrijving**
+De functie [`sound_discrete_step`](../../sound_discrete.c#L428-L455) voert één discreet-analoge iteratiestap uit voor effect 1 (vogelgeluiden / spelerkogels) en effect 2 (alien geluiden / sirens) en mixen de resultaten via `mix_discrete_sources`.
+
+#### **Knowledge Graph Koppelingen**
+* **Aanroepen (Outgoing Calls):**
+  - `astable_step_energy` / `astable_step_count_f` — [`sound_discrete.c#L81`](../../sound_discrete.c#L81)
+  - `rcdisc4_step` — [`sound_discrete.c#L187`](../../sound_discrete.c#L187)
+  - `note_energy` — [`sound_discrete.c#L249`](../../sound_discrete.c#L249)
+  - `mix_discrete_sources` — [`sound_discrete.c#L312`](../../sound_discrete.c#L312)
+* **Aangeroepen door (Incoming Calls / Backlinks):**
+  - [`sound_render_frame`](sound.md#sound_render_frame) — [`sound.c#L177`](../../sound.c#L177)
+
+---
+
+## 3. Ruissynthese (C24/C25 &amp; Poly18)
+
+### `sound_discrete_noise`
+#### **Beschrijving**
+De functie [`sound_discrete_noise`](../../sound_discrete.c#L382-L409) simuleert de laad- en ontlaadcurven van condensatoren C24 en C25 (ruisenveloppen voor explosies) en combineert dit met de 18-bits LFSR poly-bit uitgang.
+
+#### **Knowledge Graph Koppelingen**
+* **Aanroepen (Outgoing Calls):**
+  - `update_c24` — [`sound_discrete.c#L332`](../../sound_discrete.c#L332)
+  - `update_c25` — [`sound_discrete.c#L357`](../../sound_discrete.c#L357)
+* **Aangeroepen door (Incoming Calls / Backlinks):**
+  - [`sound_render_frame`](sound.md#sound_render_frame) — [`sound.c#L178`](../../sound.c#L178)</pre></body></html>

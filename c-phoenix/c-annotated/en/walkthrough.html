@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><title>walkthrough</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>walkthrough</h1><pre># Phoenix C-Port Architectural Walkthrough (`walkthrough.md`)
+
+This document provides a comprehensive technical walkthrough of the C-port architecture for the *Phoenix* Arcade Game (`c-phoenix`).
+
+---
+
+## Table of Contents
+1. [Core Engine Subsystems](#1-core-engine-subsystems)
+2. [Arcade Hardware Emulation](#2-arcade-hardware-emulation)
+
+---
+
+## 1. Core Engine Subsystems
+
+The *Phoenix* engine is divided into 4 primary entity subsystems:
+- **Alien Formations &amp; Breakouts:** Managed by `alien_wave.c` and `alien_logic.c`.
+- **Bird Swarms &amp; AI Scripts:** Managed by `bird_logic.c` and `bird_wave_behavior.c`.
+- **Mothership Descent &amp; Core Shielding:** Managed by `mothership_impl.c` and `mothership_logic.c`.
+- **Attract Mode &amp; Title Sequencer:** Managed by `attract_mode.c`.
+
+---
+
+## 2. Arcade Hardware Emulation
+
+Video rendering targets a 90° rotated 32x32 tile matrix VRAM buffer (`$4000–$433F`) combined with 44.1kHz discrete audio mixing.</pre></body></html>

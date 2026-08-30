@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset="utf-8"><title>state-play</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>state-play</h1><pre># Normal Gameplay (`state_play.c`) - C-Annotated Knowledge Graph Documentatie
+
+Dit document bevat een geannoteerde analyse van alle functies in [`state_play.c`](../../state_play.c). Deze module regelt GameState 3 (normale gameplay) en stuurt via een level-jumptable de 12 verschillende levelfases aan (aliens fade-in, alien waves, spiraalfill, vogel-waves en moederschip-intro&#x27;s).
+
+---
+
+## Inhoudsopgave
+1. [GameState 3: Level Dispatcher](#1-gamestate-3-level-dispatcher)
+2. [Alien Fade-In &amp; Active Waves](#2-alien-fade-in--active-waves)
+3. [Spiraalfill Animatie (Levels 4, 6, 8)](#3-spiraalfill-animatie-levels-4-6-8)
+4. [Vogel &amp; Moederschip Waves](#4-vogel--moederschip-waves)
+
+---
+
+## 1. GameState 3: Level Dispatcher
+
+### `state_3_normal_game_play`
+#### **Beschrijving**
+De functie [`state_3_normal_game_play`](../../state_play.c#L237-L260) (Z80 ROM: `$0800–$0833`) is het centrale verdeelstation voor actieve gameplay op basis van `state.LevelAndRound &amp; 0x0F`.
+
+#### **Context &amp; Aanroep**
+Aangeroepen in de hoofd-game-loop vanuit [`game_state_machine`](game-state-machine.md#game_state_machine).
+
+#### **Knowledge Graph Koppelingen**
+* **Aanroepen (Outgoing Calls):**
+  - [`level_0_and_2_aliens_fade_in`](#level_0_and_2_aliens_fade_in) — [`state_play.c#L242`](../../state_play.c#L242)
+  - [`level_1_3_B_player_alive_aliens`](#level_1_3_b_player_alive_aliens) — [`state_play.c#L243`](../../state_play.c#L243)
+  - [`level_4_6_8_spiral_fill`](#level_4_6_8_spiral_fill) — [`state_play.c#L246`](../../state_play.c#L246)
+  - [`level_5_7_birds_fade_in`](#level_5_7_birds_fade_in) — [`state_play.c#L247`](../../state_play.c#L247)
+  - [`level_9_mothership_fade_in`](#level_9_mothership_fade_in) — [`state_play.c#L251`](../../state_play.c#L251)
+  - [`level_A_mothership_and_aliens_fade_in`](#level_a_mothership_and_aliens_fade_in) — [`state_play.c#L252`](../../state_play.c#L252)
+* **Aangeroepen door (Incoming Calls / Backlinks):**
+  - [`game_state_machine`](game-state-machine.md#game_state_machine) — [`game_state_machine.c#L38`](../../game_state_machine.c#L38)
+
+---
+
+## 2. Alien Fade-In &amp; Active Waves
+
+### `level_0_and_2_aliens_fade_in`
+#### **Beschrijving**
+De functie [`level_0_and_2_aliens_fade_in`](../../state_play.c#L205-L229) (Z80 ROM: `$0834–$0859`) laat de aliens geleidelijk aan de bovenzijde van het scherm verschijnen bij het starten van levels 0 en 2.
+
+#### **Knowledge Graph Koppelingen**
+* **Aanroepen (Outgoing Calls):**
+  - [`coverage_hit`](coverage.md#coverage_hit) — [`coverage.c:L12`](../../coverage.c#L12)
+  - `update_scroll_register_and_fill_background` — [`hw_video_audio.c`](../../hw_video_audio.c)
+  - [`get_animation_chrs_aliens_fade_in`](alien-logic.md#get_animation_chrs_aliens_fade_in) — [`alien_logic.c#L31`](../../alien_logic.c#L31)
+  - [`init_alien_control_states_05fa`](alien-logic.md#init_alien_control_states_05fa) — [`alien_logic.c#L207`](../../alien_logic.c#L207)
+  - [`alien_data_controller`](alien-logic.md#alien_data_controller) — [`alien_logic.c#L274`](../../alien_logic.c#L274)
+
+---
+
+### `level_1_3_B_player_alive_aliens`
+#### **Beschrijving**
+Schakelt door naar de actieve alien-golf hoofdlus [`l2000_alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop).
+
+---
+
+## 3. Spiraalfill Animatie (Levels 4, 6, 8)
+
+### `level_4_6_8_spiral_fill` &amp; `l2260_spiral_draw`
+#### **Beschrijving**
+De functie [`level_4_6_8_spiral_fill`](../../state_play.c#L119-L148) (Z80 ROM: `$2230–$225F`) animeert de spiraalvormige tegelinvulling op de overgang tussen alien- en vogel-levels. [`l2260_spiral_draw`](../../state_play.c#L26-L77) berekent de geometrische kolomcoördinaten en tekent de asterisks/spaties.
+
+---
+
+## 4. Vogel &amp; Moederschip Waves
+
+### `level_5_7_birds_fade_in`, `level_9_mothership_fade_in` &amp; `level_A_mothership_and_aliens_fade_in`
+#### **Beschrijving**
+- [`level_5_7_birds_fade_in`](../../state_play.c#L149-L153): Start de vogel-golf via [`process_birds`](bird-logic.md#process_birds).
+- [`level_9_mothership_fade_in`](../../state_play.c#L163-L181) (Z80 ROM: `$22B4–$22C5`): Laat het moederschip in het achtergrond-VRAM verschijnen terwijl de sterren naar beneden scrollen.
+- [`level_A_mothership_and_aliens_fade_in`](../../state_play.c#L188-L198) (Z80 ROM: `$22CA–$22DD`): Combineert het verschijnen van het moederschip met de escort-aliens.</pre></body></html>

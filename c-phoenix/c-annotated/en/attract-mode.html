@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><title>attract-mode</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>attract-mode</h1><pre># Attract Mode &amp; Title Screen (`attract_mode.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`attract_mode.c`](../../attract_mode.c). This module controls title splash sequencing, credit counter, coin insertion, high score display, and demonstration gameplay.
+
+---
+
+## Table of Contents
+1. [Attract Mode Sequencer](#1-attract-mode-sequencer)
+2. [Coin &amp; Credit Management](#2-coin--credit-management)
+3. [Intro Bird Animation](#3-intro-bird-animation)
+
+---
+
+## 1. Attract Mode Sequencer
+
+### `splash_and_demo`
+#### **Description**
+The function [`splash_and_demo`](../../attract_mode.c#L32-L107) (Z80 ROM: `$00E3–$0145`) manages the frame sequence for title screen displays, copyright text, high score tables, and automated demonstration gameplay.
+
+#### **Knowledge Graph Links**
+* **Calls (Outgoing Calls):**
+  - [`draw_intro_bird_animation_frame`](#draw_intro_bird_animation_frame) — [`attract_mode.c:L85`](../../attract_mode.c#L85)
+  - `draw_high_score_table` — [`scoring.c`](../../scoring.c)
+* **Called By (Incoming Calls / Backlinks):**
+  - [`game_state_machine`](game-state-machine.md#game_state_machine) — [`game_state_machine.c:L30`](../../game_state_machine.c#L30)
+
+---
+
+## 2. Coin &amp; Credit Management
+
+### `prompt_for_start_game` &amp; `decrement_coins`
+#### **Description**
+The function [`prompt_for_start_game`](../../attract_mode.c#L293) (Z80 ROM: `$0288–$02EE`) shows the start prompt once credits are present, and [`decrement_coins`](../../attract_mode.c#L366) (Z80 ROM: `$02CB–$02EF`) deducts the credits when a game begins. Coin chute input itself is read by [`check_coin_event`](scoring.md#check_coin_event) in `scoring.c`.
+
+---
+
+## 3. Intro Bird Animation
+
+### `draw_intro_bird_animation_frame`
+#### **Description**
+The function [`draw_intro_bird_animation_frame`](../../attract_mode.c#L170-L210) (Z80 ROM: `$21DC–$2210`) renders the 32-step intro bird animation gliding across the top title screen.</pre></body></html>

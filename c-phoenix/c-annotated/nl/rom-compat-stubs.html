@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><title>rom-compat-stubs</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>rom-compat-stubs</h1><pre># ROM Compatibility Stubs (`rom_compat_stubs.c`) - C-Annotated Knowledge Graph Documentatie
+
+Dit document bevat een geannoteerde analyse van de functies in [`rom_compat_stubs.c`](../../rom_compat_stubs.c). Deze module bevat ROM-compatibiliteit stubs en de originele anti-piraterij beveiligingscontrole op de copyrighttekst.
+
+---
+
+## 1. ROM-compatibiliteit &amp; Anti-piraterij
+
+### `l1df0`
+#### **Beschrijving**
+De functie [`l1df0`](../../rom_compat_stubs.c#L22-L26) (Z80 ROM: `$1DF0–$1DFF`) leest het VRAM-geheugenadres van de copyrighttekst (&quot;AMSTAR ELECTRONICS CORP.&quot;) op offset `0x31D` en controleert of de ROM niet gekraakt of gewijzigd is.
+
+#### **Knowledge Graph Koppelingen**
+* **Aanroepen (Outgoing Calls):**
+  - geen
+* **Aangeroepen door (Incoming Calls / Backlinks):**
+  - [`state_5_game_over_text`](state-endings.md#state_5_game_over_text) — [`state_endings.c#L93`](../../state_endings.c#L93)</pre></body></html>

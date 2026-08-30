@@ -177,6 +177,7 @@ kg-check:
 	python3 c-phoenix/c-annotated/tools/check_knowledge_graph_drift.py
 	python3 c-phoenix/c-annotated/tools/generate_topic_index.py --check
 	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_explorer.py --graph c-phoenix/c-annotated/knowledge-graph.json --output c-phoenix/c-annotated/knowledge-base-explorer/index.html --check
+	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_docs.py --graph c-phoenix/c-annotated/knowledge-graph.json --check
 	python3 c-phoenix/tools/generate_interactive_asm_html.py c-phoenix/context/Phoenix.md c-phoenix/context/Phoenix.html --check
 	python3 c-phoenix/tools/generate_interactive_asm_html.py c-phoenix/context/code-annotated.md c-phoenix/context/code-annotated.html --check
 	python3 c-phoenix/c-annotated/tools/check_knowledge_base_explorer_links.py
@@ -195,6 +196,7 @@ kg-generate:
 	$(MAKE) kg-explorer
 
 kg-explorer:
+	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_docs.py --graph c-phoenix/c-annotated/knowledge-graph.json
 	python3 c-phoenix/c-annotated/tools/generate_knowledge_base_explorer.py --graph c-phoenix/c-annotated/knowledge-graph.json --output c-phoenix/c-annotated/knowledge-base-explorer/index.html
 
 # The architecture SVGs are rendered from a template inside

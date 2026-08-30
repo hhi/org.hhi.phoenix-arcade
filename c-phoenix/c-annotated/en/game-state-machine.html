@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><title>game-state-machine</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>game-state-machine</h1><pre># Game State Machine (`game_state_machine.c`) - C-Annotated Knowledge Graph Documentation
+
+This document contains an annotated analysis of all functions in [`game_state_machine.c`](../../game_state_machine.c). This module implements the central game state machine loop (States 0 through 7) controlling game lifecycle transitions.
+
+---
+
+## Table of Contents
+1. [Central State Machine Loop](#1-central-state-machine-loop)
+
+---
+
+## 1. Central State Machine Loop
+
+### `game_state_machine`
+#### **Description**
+The function [`game_state_machine`](../../game_state_machine.c#L35-L95) (Z80 ROM: `$0400–$041D`) evaluates current state enum `GameState` and dispatches execution to active state handlers.
+
+#### **Knowledge Graph Links**
+* **Calls (Outgoing Calls):**
+  - [`splash_and_demo`](attract-mode.md#splash_and_demo) — [`attract_mode.c`](../../attract_mode.c)
+  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
+  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
+  - [`state_4_player_ship_explosion`](state-endings.md#state_4_player_ship_explosion) — [`state_endings.c#L33`](../../state_endings.c#L33)</pre></body></html>
