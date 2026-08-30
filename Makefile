@@ -166,6 +166,7 @@ documentation-check:
 # validate_documentation.py, which also covers animations/ and the
 # repository-root READMEs and therefore stays in the monorepo-wide tools/).
 kg-check:
+	python3 c-phoenix/tools/audit_asm_sources.py
 	python3 c-phoenix/c-annotated/tools/check_asm_annotations.py
 	python3 c-phoenix/c-annotated/tools/check_prose_rom_ranges.py
 	python3 c-phoenix/c-annotated/tools/check_symbol_links.py
