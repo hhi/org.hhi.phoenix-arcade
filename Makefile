@@ -1,4 +1,4 @@
-.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only web web-package c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-explorer kg-visual kg-drift kg-coverage links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
+.PHONY: help build all clean c-build c-asm-docs c-asm-view c-asm-view-only c-bottargets c-botsearch c-tracer-view c-tracer-view-only c2-build c2-run c2-tracer-view c2-tracer-view-only c2-demo-view c2-demo-view-only j-build j-tracer-view j-tracer-view-only web web-package c-test j-test c2-test verify documentation-check kg-check kg-annotations kg-claims kg-topics kg-generate kg-explorer kg-visual kg-drift kg-coverage asm-source-audit links large-files public-audit romcheck romnormalize rombuild romprepare gen-phoenix-tables
 
 ROM_DIR ?= roms/local
 ROM_SET ?= roms/phoenix-amstar/rom-set.json
@@ -36,6 +36,7 @@ help:
 	@echo "  make j-test       Run JPhoenix verification"
 	@echo "  make verify       Build and verify both projects"
 	@echo "  make kg-check     Validate ASM annotations, the knowledge graph, and check for drift"
+	@echo "  make asm-source-audit  Optionally compare ASM documentation bytes with program.rom"
 	@echo "  make kg-annotations Report [ASM: ...] tags the generator cannot see"
 	@echo "  make kg-generate  Regenerate c-phoenix/c-annotated/knowledge-graph.json"
 	@echo "  make kg-explorer  Regenerate the interactive knowledge-base explorer"
@@ -166,7 +167,6 @@ documentation-check:
 # validate_documentation.py, which also covers animations/ and the
 # repository-root READMEs and therefore stays in the monorepo-wide tools/).
 kg-check:
-	python3 c-phoenix/tools/audit_asm_sources.py
 	python3 c-phoenix/c-annotated/tools/check_asm_annotations.py
 	python3 c-phoenix/c-annotated/tools/check_prose_rom_ranges.py
 	python3 c-phoenix/c-annotated/tools/check_symbol_links.py
@@ -180,6 +180,9 @@ kg-check:
 	python3 c-phoenix/tools/generate_interactive_asm_html.py c-phoenix/context/Phoenix.md c-phoenix/context/Phoenix.html --check
 	python3 c-phoenix/tools/generate_interactive_asm_html.py c-phoenix/context/code-annotated.md c-phoenix/context/code-annotated.html --check
 	python3 c-phoenix/c-annotated/tools/check_knowledge_base_explorer_links.py
+
+asm-source-audit:
+	python3 c-phoenix/tools/audit_asm_sources.py
 
 kg-annotations:
 	python3 c-phoenix/c-annotated/tools/check_asm_annotations.py
