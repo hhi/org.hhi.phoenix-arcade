@@ -1,60 +1,120 @@
-<!doctype html><html><head><meta charset="utf-8"><title>mothership-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>mothership-logic</h1><pre># Mothership Logic (`mothership_logic.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`mothership_logic.c`](../../mothership_logic.c). Deze module behandelt de logica voor het moederschip (level 5), inclusief het wissen van het moederschip en de bonusscore-berekening bij het vernietigen van de kern.
-
----
-
-## Inhoudsopgave
-1. [Moederschip Animatie &amp; Wissen](#1-moederschip-animatie--wissen)
-2. [Kern-vernietiging &amp; Bonusscore](#2-kern-vernietiging--bonusscore)
-
----
-
-## 1. Moederschip Animatie &amp; Wissen
-
-### `mothership_descent_logic`
-#### **Beschrijving**
-De functie [`mothership_descent_logic`](../../mothership_logic.c#L12-L15) roept de animatieroutine op vaste RAM-slots aan.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l2351_mothership_animation`](mothership-impl.md#l2351_mothership_animation) — [`mothership_impl.c#L12`](../../mothership_impl.c#L12)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
----
-
-### `erase_mothership`
-#### **Beschrijving**
-De functie [`erase_mothership`](../../mothership_logic.c#L22-L30) (Z80 ROM: `$246A–$2475`) wist de weergave van het moederschip van het voorgrondscherm.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `draw_image_c_by_b` — [`sprite_rendering.c`](../../sprite_rendering.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
-#### **Stap-voor-stap werking**
-Herstelt het achtergrond-sterrenveld op schermadres `0x4AC6` door 20 kolommen bij 9 rijen (`0x14` x `0x09`) te overschrijven met de achtergrondtegels van ROM `0x1C00` via `draw_image_c_by_b(0x1C00, 0x4AC6, 0x09, 0x14)`.
-
----
-
-## 2. Kern-vernietiging &amp; Bonusscore
-
-### `mothership_core_hit_check`
-#### **Beschrijving**
-De functie [`mothership_core_hit_check`](../../mothership_logic.c#L48-L76) (Z80 ROM: `$2520–$254F`) berekenen de bonusscore bij een voltreffer op de kern van het moederschip, slaat deze op in BCD-formaat en toont de score op het scherm.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `clear_foreground` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - [`print_number`](utilities.md#print_number) — [`utilities.c:L80`](../../utilities.c#L80)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - `process_player_bullet_vs_mothership` — [`weapon_collision.c`](../../weapon_collision.c)
-
-#### **Stap-voor-stap werking**
-1. **Scherm schonen:** Roept `clear_foreground()` aan om overbodige sprites te wissen.
-2. **Bonusscore berekenen:** Roept `CounterB9` op met offset `0x60`, voert een `RRCA` rotatie uit en voegt de ronde-bits toe (`LevelAndRound &amp; 0xF0`). Klem de waarde op maximaal `$90`.
-3. **BCD-correctie:** Voert DAA BCD-correctie uit op de bonuswaarde.
-4. **Opslaan in RAM:** Slaat de BCD-score op in `state.M439D` (MSB) en `state.M439E` (LSB).
-5. **Score afdrukken:** Roept `print_number(screen, 0x439E, 4)` aan om de 4-cijferige bonusscore af te drukken op positie `DE - $5E`.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>mothership-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="mothership-logic-mothership_logicc---c-annotated-knowledge-graph-documentatie">Mothership
+Logic (<code>mothership_logic.c</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../mothership_logic.c"><code>mothership_logic.c</code></a>.
+Deze module behandelt de logica voor het moederschip (level 5),
+inclusief het wissen van het moederschip en de bonusscore-berekening bij
+het vernietigen van de kern.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-moederschip-animatie--wissen">Moederschip Animatie &amp;
+Wissen</a></li>
+<li><a href="#2-kern-vernietiging--bonusscore">Kern-vernietiging &amp;
+Bonusscore</a></li>
+</ol>
+<hr />
+<h2 id="1-moederschip-animatie--wissen">1. Moederschip Animatie &amp;
+Wissen</h2>
+<h3
+id="mothership_descent_logic"><code>mothership_descent_logic</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../mothership_logic.c#L12-L15"><code>mothership_descent_logic</code></a>
+roept de animatieroutine op vaste RAM-slots aan.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="mothership-impl.html#l2351_mothership_animation"><code>l2351_mothership_animation</code></a>
+— <a
+href="../../mothership_impl.c#L12"><code>mothership_impl.c#L12</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="erase_mothership"><code>erase_mothership</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../mothership_logic.c#L22-L30"><code>erase_mothership</code></a>
+(Z80 ROM: <code>$246A–$2475</code>) wist de weergave van het moederschip
+van het voorgrondscherm.</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>draw_image_c_by_b</code> — <a
+href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Herstelt het achtergrond-sterrenveld op schermadres
+<code>0x4AC6</code> door 20 kolommen bij 9 rijen (<code>0x14</code> x
+<code>0x09</code>) te overschrijven met de achtergrondtegels van ROM
+<code>0x1C00</code> via
+<code>draw_image_c_by_b(0x1C00, 0x4AC6, 0x09, 0x14)</code>.</p>
+<hr />
+<h2 id="2-kern-vernietiging--bonusscore">2. Kern-vernietiging &amp;
+Bonusscore</h2>
+<h3
+id="mothership_core_hit_check"><code>mothership_core_hit_check</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../mothership_logic.c#L48-L76"><code>mothership_core_hit_check</code></a>
+(Z80 ROM: <code>$2520–$254F</code>) berekenen de bonusscore bij een
+voltreffer op de kern van het moederschip, slaat deze op in BCD-formaat
+en toont de score op het scherm.</p>
+<h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>clear_foreground</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><a href="utilities.html#print_number"><code>print_number</code></a> —
+<a href="../../utilities.c#L80"><code>utilities.c:L80</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><code>process_player_bullet_vs_mothership</code> — <a
+href="../../weapon_collision.c"><code>weapon_collision.c</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Scherm schonen:</strong> Roept
+<code>clear_foreground()</code> aan om overbodige sprites te
+wissen.</li>
+<li><strong>Bonusscore berekenen:</strong> Roept <code>CounterB9</code>
+op met offset <code>0x60</code>, voert een <code>RRCA</code> rotatie uit
+en voegt de ronde-bits toe (<code>LevelAndRound &amp; 0xF0</code>). Klem
+de waarde op maximaal <code>$90</code>.</li>
+<li><strong>BCD-correctie:</strong> Voert DAA BCD-correctie uit op de
+bonuswaarde.</li>
+<li><strong>Opslaan in RAM:</strong> Slaat de BCD-score op in
+<code>state.M439D</code> (MSB) en <code>state.M439E</code> (LSB).</li>
+<li><strong>Score afdrukken:</strong> Roept
+<code>print_number(screen, 0x439E, 4)</code> aan om de 4-cijferige
+bonusscore af te drukken op positie <code>DE - $5E</code>.</li>
+</ol>
+</body></html>

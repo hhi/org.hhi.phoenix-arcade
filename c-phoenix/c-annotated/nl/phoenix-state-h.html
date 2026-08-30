@@ -1,66 +1,107 @@
-<!doctype html><html><head><meta charset="utf-8"><title>phoenix-state-h</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>phoenix-state-h</h1><pre># Arcade RAM Memory Map (`phoenix_state.h`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van de centrale RAM-geheugenkaart in [`phoenix_state.h`](../../phoenix_state.h). De `PhoenixState` structuur bevat de exacte, gepackte 3KB geheugenspiegeling van het Arcade RAM (`$4000–$4BFF`).
-
----
-
-## Inhoudsopgave
-1. [Geheugenkaart Structuur Overview](#1-geheugenkaart-structuur-overview)
-2. [VRAM &amp; Scherm-buffers](#2-vram--scherm-buffers)
-3. [Speler- &amp; Kogel-status (Grid $43C0–$43DF)](#3-speler--kogel-status-grid-43c043df)
-4. [Score-, Levens- &amp; Geluids-RAM ($4380–$43A0)](#4-score--levens--geluids-ram-438043a0)
-5. [Level- &amp; Besturingsvariabelen](#5-level--besturingsvariabelen)
-
----
-
-## 1. Geheugenkaart Structuur Overview
-
-### `PhoenixState`
-#### **Beschrijving**
-De structuur [`PhoenixState`](../../phoenix_state.h#L8-L349) is de centrale toestand van de game. Elk veld komt exact overeen met een 8-bits RAM-locatie in de oorspronkelijke Z80 hardware architecture.
-
-#### **Knowledge Graph Koppelingen**
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - Vrijwel alle C-functies in `c-phoenix` raadplegen en muteren de globale instantie `extern PhoenixState state;`.
-
----
-
-## 2. VRAM &amp; Scherm-buffers
-
-### `ForegroundScreen[832]` (`$4000–$433F`)
-- 26 kolommen x 32 rijen voorgrondscherm VRAM.
-- Bevat de tegel-ID&#x27;s van actieve karakters, scores, spelerschip, kogels en zwerm-aliens.
-
----
-
-## 3. Speler- &amp; Kogel-status (Grid `$43C0–$43DF`)
-
-### Spelerschip &amp; Kogelgeheugens
-- `PlayerState` (`$4360`): Bit 3 (`0x08`) geeft aan of spelersbeweging actief is.
-- `PlayerShipX`, `PlayerShipY`: Spelerschipcoördinaten.
-- `PlayerBulletState`, `PlayerBulletX`, `PlayerBulletY`: Coördinaten en status van de primaire spelerkogel.
-- `AbovePlayerBulletState`, `AbovePlayerBulletX`, `AbovePlayerBulletY`: Coördinaten en status van de secundaire spelerkogel (level 3/B).
-- `ShieldCount` (`$43A6`): Aftelteller van het speler-krachtveld (5 seconden actieftijd).
-
----
-
-## 4. Score-, Levens- &amp; Geluids-RAM (`$4380–$43A0`)
-
-### Scores &amp; Audio Latches
-- `Score1high..Score1low` (`$4381–$4383`): 3-byte packed-BCD score voor Player 1.
-- `Score2high..Score2low` (`$4385–$4387`): 3-byte packed-BCD score voor Player 2.
-- `HiScorehigh..HiScorelow` (`$4389–$438B`): 3-byte packed-BCD High Score.
-- `SoundControlA` (`$438C`) / `SoundControlB` (`$438D`): Schaduw-spiegels voor hardware-geluidspoorten `$6000` en `$6800`.
-- `Player1Lives` (`$4390`) / `Player2Lives` (`$4391`): Resterend aantal levens.
-- `CoinCount` (`$438F`): Aantal geaccepteerde munten/credits.
-
----
-
-## 5. Level- &amp; Besturingsvariabelen
-
-### Spel- &amp; Besturingstoestanden
-- `GameState` (`$43A4`): Huidige status in de toestandsmachine (States 0 t/m 7, zie [`game-constants-h.md`](game-constants-h.md)).
-- `LevelAndRound` (`$43B8`): Hoge nibble is de ronde-teller, lage nibble is het levelpatroon.
-- `AliensLeft` (`$43BA`): Aantal resterende aliens in de wave.
-- `BirdsLeft` (`$43B9`): Aantal resterende vogels in de wave.
-- `B4BD2`: Verticale scroll-offset voor de vogel-laag.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>phoenix-state-h</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="arcade-ram-memory-map-phoenix_stateh---c-annotated-knowledge-graph-documentatie">Arcade
+RAM Memory Map (<code>phoenix_state.h</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van de centrale
+RAM-geheugenkaart in <a
+href="../../phoenix_state.h"><code>phoenix_state.h</code></a>. De
+<code>PhoenixState</code> structuur bevat de exacte, gepackte 3KB
+geheugenspiegeling van het Arcade RAM (<code>$4000–$4BFF</code>).</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-geheugenkaart-structuur-overview">Geheugenkaart
+Structuur Overview</a></li>
+<li><a href="#2-vram--scherm-buffers">VRAM &amp; Scherm-buffers</a></li>
+<li><a href="#3-speler--kogel-status-grid-43c043df">Speler- &amp;
+Kogel-status (Grid $43C0–$43DF)</a></li>
+<li><a href="#4-score--levens--geluids-ram-438043a0">Score-, Levens-
+&amp; Geluids-RAM ($4380–$43A0)</a></li>
+<li><a href="#5-level--besturingsvariabelen">Level- &amp;
+Besturingsvariabelen</a></li>
+</ol>
+<hr />
+<h2 id="1-geheugenkaart-structuur-overview">1. Geheugenkaart Structuur
+Overview</h2>
+<h3 id="phoenixstate"><code>PhoenixState</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De structuur <a
+href="../../phoenix_state.h#L8-L349"><code>PhoenixState</code></a> is de
+centrale toestand van de game. Elk veld komt exact overeen met een
+8-bits RAM-locatie in de oorspronkelijke Z80 hardware architecture.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li>Vrijwel alle C-functies in <code>c-phoenix</code> raadplegen en
+muteren de globale instantie
+<code>extern PhoenixState state;</code>.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-vram--scherm-buffers">2. VRAM &amp; Scherm-buffers</h2>
+<h3 id="foregroundscreen832-4000433f"><code>ForegroundScreen[832]</code>
+(<code>$4000–$433F</code>)</h3>
+<ul>
+<li>26 kolommen x 32 rijen voorgrondscherm VRAM.</li>
+<li>Bevat de tegel-ID's van actieve karakters, scores, spelerschip,
+kogels en zwerm-aliens.</li>
+</ul>
+<hr />
+<h2 id="3-speler---kogel-status-grid-43c043df">3. Speler- &amp;
+Kogel-status (Grid <code>$43C0–$43DF</code>)</h2>
+<h3 id="spelerschip--kogelgeheugens">Spelerschip &amp;
+Kogelgeheugens</h3>
+<ul>
+<li><code>PlayerState</code> (<code>$4360</code>): Bit 3
+(<code>0x08</code>) geeft aan of spelersbeweging actief is.</li>
+<li><code>PlayerShipX</code>, <code>PlayerShipY</code>:
+Spelerschipcoördinaten.</li>
+<li><code>PlayerBulletState</code>, <code>PlayerBulletX</code>,
+<code>PlayerBulletY</code>: Coördinaten en status van de primaire
+spelerkogel.</li>
+<li><code>AbovePlayerBulletState</code>,
+<code>AbovePlayerBulletX</code>, <code>AbovePlayerBulletY</code>:
+Coördinaten en status van de secundaire spelerkogel (level 3/B).</li>
+<li><code>ShieldCount</code> (<code>$43A6</code>): Aftelteller van het
+speler-krachtveld (5 seconden actieftijd).</li>
+</ul>
+<hr />
+<h2 id="4-score--levens---geluids-ram-438043a0">4. Score-, Levens- &amp;
+Geluids-RAM (<code>$4380–$43A0</code>)</h2>
+<h3 id="scores--audio-latches">Scores &amp; Audio Latches</h3>
+<ul>
+<li><code>Score1high..Score1low</code> (<code>$4381–$4383</code>):
+3-byte packed-BCD score voor Player 1.</li>
+<li><code>Score2high..Score2low</code> (<code>$4385–$4387</code>):
+3-byte packed-BCD score voor Player 2.</li>
+<li><code>HiScorehigh..HiScorelow</code> (<code>$4389–$438B</code>):
+3-byte packed-BCD High Score.</li>
+<li><code>SoundControlA</code> (<code>$438C</code>) /
+<code>SoundControlB</code> (<code>$438D</code>): Schaduw-spiegels voor
+hardware-geluidspoorten <code>$6000</code> en <code>$6800</code>.</li>
+<li><code>Player1Lives</code> (<code>$4390</code>) /
+<code>Player2Lives</code> (<code>$4391</code>): Resterend aantal
+levens.</li>
+<li><code>CoinCount</code> (<code>$438F</code>): Aantal geaccepteerde
+munten/credits.</li>
+</ul>
+<hr />
+<h2 id="5-level---besturingsvariabelen">5. Level- &amp;
+Besturingsvariabelen</h2>
+<h3 id="spel---besturingstoestanden">Spel- &amp;
+Besturingstoestanden</h3>
+<ul>
+<li><code>GameState</code> (<code>$43A4</code>): Huidige status in de
+toestandsmachine (States 0 t/m 7, zie <a
+href="game-constants-h.html"><code>game-constants-h.md</code></a>).</li>
+<li><code>LevelAndRound</code> (<code>$43B8</code>): Hoge nibble is de
+ronde-teller, lage nibble is het levelpatroon.</li>
+<li><code>AliensLeft</code> (<code>$43BA</code>): Aantal resterende
+aliens in de wave.</li>
+<li><code>BirdsLeft</code> (<code>$43B9</code>): Aantal resterende
+vogels in de wave.</li>
+<li><code>B4BD2</code>: Verticale scroll-offset voor de vogel-laag.</li>
+</ul>
+</body></html>

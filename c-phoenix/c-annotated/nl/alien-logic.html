@@ -1,639 +1,1240 @@
-<!doctype html><html><head><meta charset="utf-8"><title>alien-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>alien-logic</h1><pre># Alien Logic (`alien_logic.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een diepgaande, geannoteerde analyse van alle functies in [`alien_logic.c`](../../alien_logic.c) en [`alien_logic.h`](../../alien_logic.h). Elke functie is uitgewerkt volgens een **Knowledge Graph benadering** met uitgaande aanroepen (`Aanroepen`) en inkomende koppelingen (`Aangeroepen door / Backlinks`).
-
----
-
-## Inhoudsopgave
-1. [Initialisatie &amp; Posities](#1-initialisatie--posities)
-2. [Explosies &amp; Animaties voor Neergeschoten Aliens](#2-explosies--animaties-voor-neergeschoten-aliens)
-3. [Scherm- &amp; RAM-updates](#3-scherm--ram-updates)
-4. [Beweging &amp; Frame-animaties](#4-beweging--frame-animaties)
-5. [Breakout, Bomb-drop &amp; Pattern Schedulers](#5-breakout-bomb-drop--pattern-schedulers)
-6. [Aanvalslogica &amp; Dive-bomb Triggers](#6-aanvalslogica--dive-bomb-triggers)
-
----
-
-## 1. Initialisatie &amp; Posities
-
-### `init_alien_control_states`
-#### **Beschrijving**
-De functie [`init_alien_control_states`](../../alien_logic.c#L19-L25) (Z80 ROM: `$05EC–$05F9`) bepaalt de initiële vlieg- en besturingsparameters voor de aliens aan het begin van een nieuwe ronde of level.
-
-#### **Context &amp; Aanroep**
-Wordt aangeroepen tijdens het starten van een level vanuit de game-initialisatieroutine:
-```c
-init_alien_control_states();
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`init_alien_control_states_05fa`](#init_alien_control_states_05fa) — [`alien_logic.c:L24`](../../alien_logic.c#L24)
-  - `phoenix_alien_control_init_values` — [`phoenix_tables.c:L265`](../../phoenix_tables.c#L265)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
-
-#### **Stap-voor-stap werking**
-1. **Index bepalen:** Berekent de opzoek-index via `state.LevelAndRound &amp; 0x0F`.
-2. **Init-waarden ophalen:** Haalt uit de opzoektabel `phoenix_alien_control_init_values` twee initiële besturingsbytes op:
-   - `d`: Waarde voor Controlstate A (status- en animatiebits).
-   - `e`: Waarde voor Controlstate B (sprite/shape-index).
-3. **Overbrengen naar RAM:** Roept [`init_alien_control_states_05fa(d, e)`](#init_alien_control_states_05fa) aan om deze waarden toe te wijzen aan het geheugenblok van alle aliens.
-
----
-
-### `init_alien_control_states_05fa`
-#### **Beschrijving**
-De functie [`init_alien_control_states_05fa`](../../alien_logic.c#L207-L217) (Z80 ROM: `$05FA–$060D`) vult het geheugenblok van alle levende aliens met de gekozen controlestates `d` en `e`.
-
-#### **Context &amp; Aanroep**
-Aangeroepen door `init_alien_control_states`:
-```c
-init_alien_control_states_05fa(d, e);
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](#init_alien_control_states) — [`alien_logic.c:L24`](../../alien_logic.c#L24)
-
-#### **Geheugen- &amp; Structuur-context**
-De RAM-tabel voor de alien-besturing start op adres `0x4B70`. Elk alien-record is 4 bytes groot:
-- **Byte 0 (`HL`):** Controlstate A (`d`)
-- **Byte 1 (`HL+1`):** Controlstate B (`e`)
-- **Byte 2 (`HL+2`):** X-coördinaat op het scherm
-- **Byte 3 (`HL+3`):** Y-coördinaat op het scherm
-
-#### **Stap-voor-stap werking**
-1. **Statuscontrole:** Controleert of `state.AliensLeft == 0`. Zo ja, breekt de functie direct af.
-2. **RAM vullen:** Loopt over maximaal 16 aliens. Schrijft `d` naar Control A (`0x4B70 + i*4`) en `e` naar Control B (`0x4B71 + i*4`).
-3. **Pointer verhogen:** Ophoogt het geheugenadres steeds met 4 bytes (`hl += 4`).
-
----
-
-### `init_alien_positions`
-#### **Beschrijving**
-De functie [`init_alien_positions`](../../alien_logic.c#L224-L242) (Z80 ROM: `$0610–$0638`) initialiseert de X- en Y-startcoördinaten op het schermraster voor de formatie van maximaal 16 aliens.
-
-#### **Context &amp; Aanroep**
-Aangeroepen bij level-initialisatie:
-```c
-init_alien_positions();
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-  - `phoenix_alien_position_pointer_table` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_alien_position_layout_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
-
-#### **Stap-voor-stap werking**
-1. **Layout-pagina bepalen:** Berekent de index `(state.LevelAndRound &gt;&gt; 1) &amp; 0x0F` en zoekt in `phoenix_alien_position_pointer_table` het startadres/offset binnen de layoutpagina `phoenix_alien_position_layout_page` op.
-2. **Coördinaten wegschrijven:** Doorloopt alle levende aliens (max 16) en schrijft de opeenvolgende X- en Y-coördinaten weg naar RAM-adres `0x4B72` (offset `+2` en `+3` binnen het 4-byte record).
-3. **Pointer verhogen:** Springt na elke geschreven alien 3 bytes verder (`de += 3`), waardoor de coördinaten voor de volgende alien exact op `0x4B76`, `0x4B7A`, etc. terechtkomen.
-
----
-
-### `copy_init_values_for_16_aliens`
-#### **Beschrijving**
-De functie [`copy_init_values_for_16_aliens`](../../alien_logic.c#L249-L265) (Z80 ROM: `$0650–$0679`) initialiseert de pointers naar het bewegingspatroon voor de 16 aliens.
-
-#### **Context &amp; Aanroep**
-Aangeroepen tijdens de voorbereiding van een alien-golf.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-  - `phoenix_alien_layout_pointers` — [`phoenix_tables.c`](../../phoenix_tables.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
-
-#### **Stap-voor-stap werking**
-1. **Patroonadres ophalen:** Berekent de index via `state.LevelAndRound &amp; 0x0F` en haalt het 16-bit patroonpointeradres `(d, e)` op uit `phoenix_alien_layout_pointers`.
-2. **Tabel vullen:** Schrijft `d` (MSB) en `e` (LSB) opeenvolgend weg in de patroontabel op RAM-adres `0x4B50` (2 bytes per alien, in totaal 32 bytes voor 16 aliens: `0x4B50–0x4B6F`).
-
----
-
-### `get_animation_chrs_aliens_fade_in`
-#### **Beschrijving**
-De functie [`get_animation_chrs_aliens_fade_in`](../../alien_logic.c#L31-L37) (Z80 ROM: `$085A–$0871`) bepaalt het tegel/karakter-ID van aliens tijdens hun verschijning (fade-in) aan de start van een golf.
-
-#### **Context &amp; Aanroep**
-Aangeroepen in de rendering-lus zolang aliens aan het invliegen/verschijnen zijn.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - Geen (inspecteert `state.CounterB4`)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-Inspecteert de algemene timer `state.CounterB4` en retourneert de sprite-tegel ID op basis van drempelwaarden:
-- `a &gt;= 0x11` → `0x6C`
-- `a &gt;= 0x0D` → `0x6D`
-- `a &gt;= 0x09` → `0x6E`
-- `a &gt;= 0x05` → `0x6F`
-- Anders → `0x68`
-
----
-
-## 2. Explosies &amp; Animaties voor Neergeschoten Aliens
-
-### `handle_animations_for_killed_aliens`
-#### **Beschrijving**
-De functie [`handle_animations_for_killed_aliens`](../../alien_logic.c#L195-L200) (Z80 ROM: `$0FC0–$0FFF`) is de centrale aanroeproutine die in elke frame-update alle actieve explosies en bonusscore-animaties op het scherm verwerkt.
-
-#### **Context &amp; Aanroep**
-Wordt vanuit de hoofd-gameloop aangeroepen:
-```c
-void handle_animations_for_killed_aliens(void) {
-    l0fd8(0x4370); // Explosieslot 0 voor normale aliens
-    l0fd8(0x4374); // Explosieslot 1 voor normale aliens
-    l3758_bonus_explosion_animation(0x4378); // Bonusexplosieslot 0 voor volgroeide vogels
-    l3758_bonus_explosion_animation(0x437C); // Bonusexplosieslot 1 voor volgroeide vogels
-}
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l0fd8`](#l0fd8) — [`alien_logic.c:L196-L197`](../../alien_logic.c#L196-L197)
-  - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L198-L199`](../../alien_logic.c#L198-L199)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
----
-
-### `l0fd8`
-#### **Beschrijving**
-De functie [`l0fd8`](../../alien_logic.c#L43-L74) (Z80 ROM: `$0FD8–$0FEF`) is verantwoordelijk voor het bijwerken en tekenen van de explosie-animatie van een neergeschoten standaard alien op geheugenadres `hl` (`0x4370` of `0x4374`).
-
-#### **Context &amp; Aanroep**
-In de game-loop wordt `l0fd8` aangeroepen via `handle_animations_for_killed_aliens` voor twee vaste geheugenslots:
-```c
-l0fd8(0x4370); // Explosieslot 0
-l0fd8(0x4374); // Explosieslot 1
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`left_one_column`](utilities.md#left_one_column) — [`utilities.c:L45`](../../utilities.c#L45)
-  - `phoenix_alien_explosion_frames` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - [`drawNx2`](sprite-rendering.md#drawnx2) — [`sprite_rendering.c:L30`](../../sprite_rendering.c#L30)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`handle_animations_for_killed_aliens`](#handle_animations_for_killed_aliens) — [`alien_logic.c:L196-L197`](../../alien_logic.c#L196-L197)
-
-#### **Geheugen- &amp; Structuur-context**
-Elk explosieslot is 4 bytes groot:
-- **Byte 0 (`HL`):** Animatieteller / status (`0` = inactief, `&gt;0` = actieve explosie).
-- **Byte 1 (`HL+1`):** Niet gebruikt.
-- **Byte 2 &amp; 3 (`HL+2`, `HL+3`):** 16-bits schermankeradres (`DE`).
-
-#### **Stap-voor-stap werking van `l0fd8`**
-1. **Check of animatie actief is:**
-   Leest de animatieteller `a = mem_read(hl)` uit het RAM-slot. Als `a == 0`, is er geen actieve explosie in dit slot en stopt de functie direct. *(Z80: `LD A,(HL)` / `AND A` / `RET Z`)*.
-2. **Verlaag de animatieteller:**
-   Slaat de huidige waarde op in `b = a` en verlaagt de teller met 1 in het RAM (`mem_write(hl, a - 1)`). *(Z80: `LD B,(HL)` / `DEC (HL)`)*.
-3. **Schermcoördinaten uitlezen:**
-   Leest het 16-bits schermankeradres `de` uit het geheugenblok (op offset `+2` en `+3`).
-4. **Positie uitlijnen:**
-   Verschuift het schermadres 1 kolom naar links via `left_one_column(de)`. *(Z80: `CALL $0210`)*.
-5. **Explosieframe/sprite bepalen:**
-   Berekent de frame-index aan de hand van de resterende tijd: `offset = (b &amp; 0x0E) &gt;&gt; 1` (index 0..7). Zoekt het bijbehorende sprite-ID op in de opzoektabel `phoenix_alien_explosion_frames[offset]` en construeert het ROM-adres van het sprite-patroon (`0x1700 | img`).
-6. **Sprite tekenen:**
-   Roept `drawNx2(img_addr, de, 0xFFDF, 3)` aan om het explosie-frame (een 3x2 tegelmatrix) op het video-RAM te tekenen met een offset van `-33` (`0xFFDF`) tussen rijparen. *(Z80: `EX DE,HL`, `LD BC,$FFDF`, `JP $3540`)*.
-
----
-
-### `l3758_bonus_explosion_animation`
-#### **Beschrijving**
-De functie [`l3758_bonus_explosion_animation`](../../alien_logic.c#L166-L188) (Z80 ROM: `$3758–$37CC`) animeert de uitwaaierende bonusexplosie en scoreweergave van een gedode volgroeide vogel op adres `hl` (`0x4378` of `0x437C`).
-
-#### **Context &amp; Aanroep**
-Aangeroepen door `handle_animations_for_killed_aliens`:
-```c
-l3758_bonus_explosion_animation(0x4378);
-l3758_bonus_explosion_animation(0x437C);
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l37cc_erase_bonus_explosion`](#l37cc_erase_bonus_explosion) — [`alien_logic.c:L172`](../../alien_logic.c#L172)
-  - [`l37b0_print_bonus_score`](#l37b0_print_bonus_score) — [`alien_logic.c:L177`](../../alien_logic.c#L177)
-  - [`l3796_bonus_explosion_left`](#l3796_bonus_explosion_left) — [`alien_logic.c:L186`](../../alien_logic.c#L186)
-  - [`l3758_bonus_explosion_right`](#l3758_bonus_explosion_right) — [`alien_logic.c:L187`](../../alien_logic.c#L187)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`handle_animations_for_killed_aliens`](#handle_animations_for_killed_aliens) — [`alien_logic.c:L198-L199`](../../alien_logic.c#L198-L199)
-
-#### **Stap-voor-stap werking**
-1. **Statuscontrole:** Controleert `mem_read(hl) == 0`. Zo ja, keert direct terug.
-2. **Teller verlagen:** Verlaagt de teller `counter = mem_read(hl) - 1`.
-3. **Einde animatie (`counter == 0`):** De animatie is afgelopen; wist de restanten van het voorgrondscherm via [`l37cc_erase_bonus_explosion(hl)`](#l37cc_erase_bonus_explosion).
-4. **Even tellerstand (`(counter &amp; 1) == 0`):** Toont de behaalde bonusscorepunten in het midden van de explosie via [`l37b0_print_bonus_score(hl)`](#l37b0_print_bonus_score).
-5. **Oneven tellerstand:** Berekent de uitwaaier-offset `a = ((0x0F - counter) &amp; 0x0E) &lt;&lt; 4` en tekent de linker- en rechterhelften van de explosie via [`l3796_bonus_explosion_left(a, de)`](#l3796_bonus_explosion_left) en [`l3758_bonus_explosion_right(a, de)`](#l3758_bonus_explosion_right).
-
----
-
-### `l3796_bonus_explosion_left`
-#### **Beschrijving**
-De functie [`l3796_bonus_explosion_left`](../../alien_logic.c#L100-L107) (Z80 ROM: `$3796–$37AA`) tekent het linkerdeel van de uitwaaierende bonusexplosie op het scherm.
-
-#### **Context &amp; Aanroep**
-Aangeroepen vanuit `l3758_bonus_explosion_animation` tijdens oneven frames.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`drawNx2`](sprite-rendering.md#drawnx2) — [`sprite_rendering.c:L30`](../../sprite_rendering.c#L30)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L186`](../../alien_logic.c#L186)
-
-#### **Stap-voor-stap werking**
-1. **Schermadres berekenen:** Berekent het doel-RAM adres `hl = (a + 0x60) + de`.
-2. **Grenscontrole:** Controleert of het adres binnen het geldige schermbereik valt (`(uint32_t)hl + 0xBCC0 &gt; 0xFFFF` / Z80 `RET C`). Indien buiten bereik, breekt af.
-3. **Sprite rendering:** Tekent de 3x2 tegelmatrix vanaf ROM-tegel `0x17D0` via `drawNx2(0x17D0, hl, 0xFFDF, 3)`.
-
----
-
-### `l3758_bonus_explosion_right`
-#### **Beschrijving**
-De functie [`l3758_bonus_explosion_right`](../../alien_logic.c#L114-L126) (Z80 ROM: `$3772–$3792`) tekent het rechterdeel van de uitwaaierende bonusexplosie op het scherm.
-
-#### **Context &amp; Aanroep**
-Aangeroepen vanuit `l3758_bonus_explosion_animation` tijdens oneven frames.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-  - [`drawNx2`](sprite-rendering.md#drawnx2) — [`sprite_rendering.c:L30`](../../sprite_rendering.c#L30)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L187`](../../alien_logic.c#L187)
-
-#### **Stap-voor-stap werking**
-1. **Schermadres berekenen:** Berekent `target = de - a`.
-2. **Grenscontrole:** Controleert `target + 0xBFA0 &lt;= 0xFFFF` (Z80 `RET NC`). Indien ongeldig, breekt af.
-3. **Buffer schonen &amp; tekenen:** Wist 2 bytes op het startadres (`mem_write(target, 0)`), past de offset aan met `-33` (`0xFFDF`) en tekent de 3x2 tegelmatrix vanaf ROM-tegel `0x17D6` via `drawNx2`.
-
----
-
-### `l37b0_print_bonus_score`
-#### **Beschrijving**
-De functie [`l37b0_print_bonus_score`](../../alien_logic.c#L135-L156) (Z80 ROM: `$37B0–$37C6`) drukt de behaalde bonusscorepunten af op de exacte positie van de explosie.
-
-#### **Context &amp; Aanroep**
-Aangeroepen vanuit `l3758_bonus_explosion_animation` tijdens even frames.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-  - [`left_one_column`](utilities.md#left_one_column) — [`utilities.c:L45`](../../utilities.c#L45)
-  - [`right_one_column`](utilities.md#right_one_column) — [`utilities.c:L50`](../../utilities.c#L50)
-  - [`print_number`](utilities.md#print_number) — [`utilities.c:L80`](../../utilities.c#L80)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L177`](../../alien_logic.c#L177)
-
-#### **Stap-voor-stap werking**
-1. **Scorebyte uitlezen:** Haalt de scorebyte op uit `hl + 1`.
-2. **BCD-correctie (DAA simulatie):**
-   - `if ((a &amp; 0x0F) &gt; 0x09) a += 0x06;`
-   - `if (a &gt; 0x99) a += 0x60;`
-3. **Schermpositie bepalen:** Haalt het schermankeradres `de` op uit `hl + 2` en `hl + 3`.
-4. **Cijfers afdrukken:** Verschuift 1 kolom naar rechts (`right_one_column`), schrijft een vaste `&#x27;0&#x27;` (tegel `0x20`) voor het meest rechtse cijfer, verschuift 1 kolom naar links (`left_one_column`) en roept `print_number(de, score_addr, 2)` aan om de 2 BCD-scorecijfers af te drukken.
-
----
-
-### `l37cc_erase_bonus_explosion`
-#### **Beschrijving**
-De functie [`l37cc_erase_bonus_explosion`](../../alien_logic.c#L82-L93) (Z80 ROM: `$37CC–$37E5`) wist een complete schermkolom (26 rijen) van het voorgrondscherm zodra de bonusexplosieteller 0 bereikt.
-
-#### **Context &amp; Aanroep**
-Aangeroepen aan het einde van de bonusexplosie door `l3758_bonus_explosion_animation`.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L172`](../../alien_logic.c#L172)
-
-#### **Stap-voor-stap werking**
-1. **Voorgrondkolom bepalen:** Haalt het LSB van het schermadres uit `hl + 3` en berekent het voorgrondscherm-adres `0x4300 | ((a &amp; 0x1F) + 0x20)`.
-2. **Kolom wissen:** Doorloopt een lus van 26 stappen (`0x1A` rijen). In elke stap worden 2 opeenvolgende bytes op 0 gezet (`mem_write(addr, 0)`), waarna het adres met `-33` (`0xFFDF`) verminderd wordt om de volledige verticale kolom te wissen.
-
----
-
-## 3. Scherm- &amp; RAM-updates
-
-### `alien_data_controller`
-#### **Beschrijving**
-De functie [`alien_data_controller`](../../alien_logic.c#L274-L283) (Z80 ROM: `$0A50–$0A6B`) stuurt het verversen van de grafische voorgrond- RAM voor alle aliens aan.
-
-#### **Context &amp; Aanroep**
-Aangeroepen in de hoofd-gameloop:
-```c
-alien_data_controller();
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `update_screen_objects` — [`hw_video_audio.c`](../../hw_video_audio.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
-#### **Stap-voor-stap werking**
-Doorloopt een lus van 20 iteraties (voor 16 aliens + extra entiteiten) over twee parallelle geheugenbuffers:
-- `bc = 0x4B70` (grid control structure)
-- `de = 0x4BB0` (screen RAM structure)
-Roept per iteratie `update_screen_objects(bc, de)` aan en verhoogt beide pointers met 4 bytes (`bc += 4`, `de += 4`).
-
----
-
-### `get_screen_ram_address_for_all_aliens`
-#### **Beschrijving**
-De functie [`get_screen_ram_address_for_all_aliens`](../../alien_logic.c#L290-L320) (Z80 ROM: `$0A6C–$0A99`) berekent de video-RAM adressen voor alle actieve aliens en onderhoudt de positie-historie.
-
-#### **Context &amp; Aanroep**
-Aangeroepen voorafgaand aan het tekenen van het scherm.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-  - `get_screen_ram_address` — [`hw_video_audio.c`](../../hw_video_audio.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
-#### **Stap-voor-stap werking**
-1. **Lusspectrum:** Doorloopt 20 slots vanaf `bc = 0x4B70` en `de = 0x4BB3`.
-2. **Statuscontrole:** Leest Controlstate A (`mem_read(bc)`). Controleert of bits 3 of 4 actief zijn (`(a &amp; 0x18) != 0`).
-3. **Positiehistorie verschuiven:** Verschuift het adresverleden in RAM 2 bytes terug: leest de bytes op `4BB3` en `4BB2` en schrijft deze naar `4BB1` en `4BB0`.
-4. **Nieuw adres berekenen:** Roept `get_screen_ram_address(bc + 2, de - 1)` aan om de nieuwe coördinaten om te zetten naar een video-RAM adres op `4BB2/4BB3`.
-5. **Pointer ophooging:** Verhoogt beide pointers met 4 bytes (`bc += 4`, `de += 4`).
-
----
-
-## 4. Beweging &amp; Frame-animaties
-
-### `alien_movement_update`
-#### **Beschrijving**
-De functie [`alien_movement_update`](../../alien_logic.c#L335-L375) (Z80 ROM: `$0D1C–$0D67`) werkt de X/Y schermposities van alle vliegende aliens bij volgens hun toegewezen richtingsvectoren.
-
-#### **Context &amp; Aanroep**
-Aangeroepen in de bewegingsfase van de game loop.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `phoenix_alien_movement_byte` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_alien_direction_vectors` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **Lusspectrum:** Scant 16 aliens (`0x4B50 + i*2` voor patroonpointer, `0x4B70 + i*4` voor coördinaten).
-2. **Vliegbit controle:** Slaat aliens over waarvan bit 3 van Control A niet actief is (`(ctrl &amp; 0x08) == 0`).
-3. **Vliegroute uitlezen:** Haalt het 16-bit patroonadres op (big-endian) en bepaalt de bewegingsindex via `phoenix_alien_movement_byte(pattern)`.
-4. **Richtingsvector opzoeken:** Voert een bitrotatie uit (`RLCA`: `(idx &lt;&lt; 1) | (idx &gt;&gt; 7)`) en haalt de richtingsvectoren voor X en Y op uit `phoenix_alien_direction_vectors`.
-5. **Coördinaten bijwerken:** Past X-coördinaat (`grid + 2`) en/of Y-coördinaat (`grid + 3`) aan.
-6. **Rastergrensovergang:** Als de bijgewerkte coördinaat een 8-pixel rastergrens passeert (`(a &amp; 0x07) == 0`), wordt het LSB van de patroonpointer verhoogd (`mem_write(ptr_addr + 1, ... + 1)`), waardoor de alien overstapt naar het volgende route-segment.
-
----
-
-### `alien_animation_update`
-#### **Beschrijving**
-De functie [`alien_animation_update`](../../alien_logic.c#L382-L449) (Z80 ROM: `$0D70–$0DB5`, `$0DBB–$0DC6`, `$0DCC–$0DEE`) bepaalt de juiste sprite-animatieframe voor elke vliegende alien op basis van diens positie en vliegrichting.
-
-#### **Context &amp; Aanroep**
-Aangeroepen in de animatiefase van de game loop.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `phoenix_alien_movement_byte` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_alien_shape_offset_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **Lusspectrum:** Scant 16 aliens (`bc = 0x4B70`, `hl = 0x4B50`).
-2. **Patrooncontrole:** Indien actief (`ctrl_a &amp; 0x08`): leest patroonindex. Bij einde van een patroon (index 0) retarget de functie de pointer naar `state.M4394:M4395`.
-3. **Animatie-offset:** Berekent de animatie-offset `0xA0 + (list_index * 3)` in `phoenix_alien_shape_offset_page`. Schrijft de bijgewerkte Controlstate A weg.
-4. **Sprite-shape bepalen:** Evalueert `anim_byte2` uit de tabel:
-   - `0x01` (`L0DBB`): Gecombineerde Y/X-afhankelijke berekening (`res_a = x + y + anim_byte3`).
-   - `0x02` (`L0DCC`): X-afhankelijke berekening (`res_a = x + anim_byte3`).
-   - Anders (`0x04`): Y-afhankelijke berekening (`res_a = y + anim_byte3`).
-5. **Controlstate B bijwerken:** Haalt het uiteindelijke tegel/shape ID op uit `phoenix_alien_shape_offset_page[res_a]` en slaat dit op in Controlstate B (`bc + 1`).
-
----
-
-## 5. Breakout, Bomb-drop &amp; Pattern Schedulers
-
-### `l3264`
-#### **Beschrijving**
-De functie [`l3264`](../../alien_logic.c#L459-L493) (Z80 ROM: `$3264–$32AF`) roteert de startwaarde-pointer voor alien-bewegingen en herricht vliegende aliens naar nieuwe bewegingsroutes.
-
-#### **Context &amp; Aanroep**
-Aangeroepen door de breakout scheduler bij vliegroute-veranderingen.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **LSB roteren:** Slaat het oude LSB op in `state.M4356` en verhoogt `state.M4395` modulo 16 (`(old_lsb + 1) &amp; 0x0F`).
-2. **Pass controle:** Voert de retarget-scan pas uit zodra `state.M4350` de waarde 5 bereikt (reset de teller daarna naar 0).
-3. **Patroontabel scannen:** Doorloopt de patroonpointer-tabel op `0x4B50..0x4B6F` voor `state.M4353` paaren.
-4. **Retargeting:** Vervangt alle pointers die matchen met het oude patroon `state.M4394:M4356` door het nieuwe patroon `state.M4351:M4352`.
-
----
-
-### `l3074_breakout_delay`
-#### **Beschrijving**
-De functie [`l3074_breakout_delay`](../../alien_logic.c#L501-L518) (Z80 ROM: `$3074–$30A8`) berekent dynamisch de wachttijd (vertraging) voor de breakout- en bomb-drop schedulers.
-
-#### **Context &amp; Aanroep**
-Hulpfunctie voor de schedulers `l3028` en `l30ba`. Hoe hoger het level of hoe minder aliens er over zijn, hoe korter de vertraging (snellere aanvallen).
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`get_random_number`](utilities.md#get_random_number) — [`utilities.c:L15`](../../utilities.c#L15)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l3028`](#l3028) — [`alien_logic.c:L550`](../../alien_logic.c#L550)
-  - [`l30ba`](#l30ba) — [`alien_logic.c:L580`](../../alien_logic.c#L580)
-
-#### **Formule &amp; Werking**
-1. `c = 7 - ((LevelAndRound &gt;&gt; 1) &amp; 0x07)` (vertraging vermindert bij hogere levels).
-2. `c += 7 - ((a &gt;&gt; 4) &amp; 0x07)` (vertraging vermindert bij hogere rondes, gecapped op `$70`).
-3. `c += (AliensLeft &lt; 5) ? 0x10 : (AliensLeft - 5)` (minder dan 5 aliens voegt een vaste offset toe).
-4. `c += get_random_number() &amp; 0x07` (voegt 0 tot 7 willekeurige ruis toe).
-
----
-
-### `l3028`
-#### **Beschrijving**
-De functie [`l3028`](../../alien_logic.c#L528-L554) (Z80 ROM: `$3028–$3059`, `$305C–$306D`) is de **Breakout Scheduler**. Deze beheert wanneer en hoeveel aliens uit de formatie losbreken voor een aanvalsgolf.
-
-#### **Context &amp; Aanroep**
-Periodiek aangeroepen vanuit de game loop.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l3074_breakout_delay`](#l3074_breakout_delay) — [`alien_logic.c:L550`](../../alien_logic.c#L550)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **Grenzen testen:** Breekt direct af indien er reeds 3 of meer aliens in de breakout-golf vliegen (`state.M4357 &gt;= 3`) of als er een pass actief is (`state.M4350 &gt;= 4`).
-2. **Timer aftellen:** Als timer `state.M4358 != 0`: telt af. Zodra deze 0 bereikt, wordt de retarget-pass gewapend:
-   - `state.M4357++`, `state.M4350 = 0x04`, `state.M4353 = 0x10`, `state.M4354 = 0x50`, `state.M4351 = 0x2E`.
-   - Inspecteert speler X-pariteit (`state.PlayerShipX &amp; 0x01`): als de pariteit even is, wordt patroon LSB `M4352 = 0x40`, anders `0x00`.
-3. **Nieuwe aftelling inplannen:** Indien `M4358 == 0`: berekent en plant het volgende aftelmoment in via `l3074_breakout_delay()`.
-
----
-
-### `l30ba`
-#### **Beschrijving**
-De functie [`l30ba`](../../alien_logic.c#L562-L599) (Z80 ROM: `$30BA–$30D8`, `$30E4–$310F`, `$3112–$3121`) is de **Bomb-drop Scheduler**. Deze beheert de tijdsintervallen en slots voor het gooien van bommen door aliens.
-
-#### **Context &amp; Aanroep**
-Periodiek aangeroepen vanuit de game loop.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l3074_breakout_delay`](#l3074_breakout_delay) — [`alien_logic.c:L580`](../../alien_logic.c#L580)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **Bom-timers aftellen:** Telt drie per-bom aftelslots af (`state.M4359`, `state.M435A`, `state.M435B`).
-2. **Pass controle:** Indien `state.M4350 != 0` (er is al een pass gewapend), breekt af.
-3. **Drop-pass wapenen:** Als timer `state.M4355 != 0`: telt af; op 0 wordt `state.M4350 = 0x01` ingesteld om het bomwerpen te starten.
-4. **Nieuwe vertraging berekenen:** Indien `M4355 == 0`: berekent de nieuwe vertraging via `l3074_breakout_delay()`, past deze aan op basis van `state.Counter9A`, halveert de vertraging voor elk vrij bom-slot en stelt `state.M4355` in.
-
----
-
-### `l3124`
-#### **Beschrijving**
-De functie [`l3124`](../../alien_logic.c#L607-L620) (Z80 ROM: `$3124–$314E`) vormt **Pattern Retarget Fase 1 -&gt; 2**.
-
-#### **Context &amp; Aanroep**
-Onderdeel van de 6-fasen state machine voor patroonherrichting.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`get_random_number`](utilities.md#get_random_number) — [`utilities.c:L15`](../../utilities.c#L15)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-Indien `state.M4350 == 1`, schakelt de functie over naar fase 2 (`state.M4350 = 2`). Berekent het aantal te scannen patroonparen `state.M4353` op basis van het rondenummer (`((LevelAndRound &gt;&gt; 2) &amp; 0x0F) + 5`, begrensd op 5) verminderd met het aantal vliegende aliens `M4357` en een willekeurige waarde.
-
----
-
-### `l315a`
-#### **Beschrijving**
-De functie [`l315a`](../../alien_logic.c#L629-L653) (Z80 ROM: `$315A–$318E`, `$3192–$31AD`) vormt **Pattern Retarget Fase 2 -&gt; 3**.
-
-#### **Context &amp; Aanroep**
-Onderdeel van de 6-fasen state machine.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`get_random_number`](utilities.md#get_random_number) — [`utilities.c:L15`](../../utilities.c#L15)
-  - [`mem_read`](utilities.md#mem_read) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-Indien `state.M4350 == 2`, zoekt de functie vanaf een willekeurige alien-index door het geheugen naar de eerste actieve alien waarvan het bewegingspatroon nog overeenkomt met het oude patroon `state.M4394:M4356`. Slaat de gevonden positie op in `state.M4354` en schakelt over naar fase 3 (`state.M4350 = 3`).
-
----
-
-### `l31b4`
-#### **Beschrijving**
-De functie [`l31b4`](../../alien_logic.c#L662-L710) (Z80 ROM: `$31B4–$320D`, `$3210–$3228`) vormt **Pattern Retarget Fase 3 -&gt; 5**. Deze selecteert een nieuw gesloten-lus bewegingspatroon voor de geselecteerde alien.
-
-#### **Context &amp; Aanroep**
-Onderdeel van de 6-fasen state machine.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`get_random_number`](utilities.md#get_random_number) — [`utilities.c:L15`](../../utilities.c#L15)
-  - `phoenix_alien_distance_bands` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_alien_pattern_selectors` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_alien_closed_loop_pointers` — [`phoenix_tables.c`](../../phoenix_tables.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **Alien posities uitlezen:** Haalt de X- en Y-coördinaten op van de gekozen alien (`state.M4354`).
-2. **Afstand tot speler:** Berekent de afstand en relatieve positie (links of rechts) ten opzichte van `state.PlayerShipX`.
-3. **Patroon-tabellen raadplegen:** Berekent de afstandsband via `phoenix_alien_distance_bands` en bepaalt de index in `phoenix_alien_pattern_selectors`.
-4. **Nieuw patroon instellen:** Haalt het nieuwe MSB/LSB paar op uit `phoenix_alien_closed_loop_pointers`. Slaat de nieuwe patroonpointer op in `state.M4351` en `state.M4352` en schakelt over naar fase 5 (`state.M4350 = 5`).
-
----
-
-### `l322c`
-#### **Beschrijving**
-De functie [`l322c`](../../alien_logic.c#L718-L730) (Z80 ROM: `$322C–$325E`) vormt **Pattern Retarget Fase 4 -&gt; 6**. Deze voert een synchronisatiecontrole uit.
-
-#### **Context &amp; Aanroep**
-Onderdeel van de 6-fasen state machine.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`mem_read`](utilities.md#mem_read) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-Controleert of *alle* actieve aliens op het veld reeds op het oude patroon `M4394:M4356` vliegen. Indien zelfs maar één actieve alien een afwijkend patroon heeft, breekt de functie direct af. Als alle aliens gesynchroniseerd zijn, wordt fase 6 ingesteld (`state.M4350 = 6`).
-
----
-
-## 6. Aanvalslogica &amp; Dive-bomb Triggers
-
-### `l2560`
-#### **Beschrijving**
-De functie [`l2560`](../../alien_logic.c#L778-L794) (Z80 ROM: `$2560–$2595`) scant 8 kandidaat-aliens om te bepalen of een alien een gerichte duikvluchtaanval mag inzetten.
-
-#### **Context &amp; Aanroep**
-Aanvalscontrole vanuit de game loop:
-```c
-l2560();
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l2596`](#l2596) — [`alien_logic.c:L790`](../../alien_logic.c#L790)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_0_and_2_aliens_fade_in`](state-play.md#level_0_and_2_aliens_fade_in) — [`state_play.c#L205`](../../state_play.c#L205)
-
-#### **Stap-voor-stap werking**
-1. **RAM-blok selecteren:** Selecteert de te scannen RAM-basis (`0x4B70` of `0x4B90`) afhankelijk van frame-teller bit `state.Counter93 &amp; 0x01`.
-2. **Kaders berekenen:** Berekent dynamische afstandsgrenzen op basis van `state.M4357`, `state.M439E` en `state.M439F`.
-3. **Kandidaten scannen:** Doorloopt 8 kandidaten en roept per kandidaat [`l2596`](#l2596) aan. Stopt direct bij de eerste geslaagde kandidaat.
-
----
-
-### `l2596`
-#### **Beschrijving**
-De functie [`l2596`](../../alien_logic.c#L744-L769) (Z80 ROM: `$2596–$25B6`) voert de individuele geschiktheidscontrole uit van één alien voor een duikvlucht.
-
-#### **Context &amp; Aanroep**
-Aangeroepen door `l2560` voor elke kandidaat-alien.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `l25b7` — [`weapon_collision.c:L100`](../../weapon_collision.c#L100) / [`weapon-collision.md#l25b7`](weapon-collision.md#l25b7)
-  - [`mem_read`](utilities.md#mem_read) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l2560`](#l2560) — [`alien_logic.c:L790`](../../alien_logic.c#L790)
-
-#### **Stap-voor-stap werking &amp; Voorwaarden**
-1. **Actief bit:** Controleert of bit 3 in Controlstate A actief is (`a &amp; 0x08 != 0`); zo niet, retourneert `false`.
-2. **Sprite-shape:** Controleert of de sprite-vorm binnen de geldige grenzen valt (`a != 0x08` en `a &lt; 0x88`); zo niet, retourneert `false`.
-3. **X-positie venster:** Controleert of de X-coördinaat binnen het venster `[b, c[` valt.
-4. **Y-positie venster:** Controleert of de Y-coördinaat binnen het venster `[0x80, d[` valt.
-5. **Aanval starten:** Indien aan alle 4 voorwaarden voldaan is, roept de functie `l25b7(new_b, new_c)` aan om een vijandelijke kogel/aanvalsslot te claimen en retourneert `true`.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>alien-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="alien-logic-alien_logicc---c-annotated-knowledge-graph-documentatie">Alien
+Logic (<code>alien_logic.c</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat een diepgaande, geannoteerde analyse van alle
+functies in <a href="../../alien_logic.c"><code>alien_logic.c</code></a>
+en <a href="../../alien_logic.h"><code>alien_logic.h</code></a>. Elke
+functie is uitgewerkt volgens een <strong>Knowledge Graph
+benadering</strong> met uitgaande aanroepen (<code>Aanroepen</code>) en
+inkomende koppelingen (<code>Aangeroepen door / Backlinks</code>).</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-initialisatie--posities">Initialisatie &amp;
+Posities</a></li>
+<li><a
+href="#2-explosies--animaties-voor-neergeschoten-aliens">Explosies &amp;
+Animaties voor Neergeschoten Aliens</a></li>
+<li><a href="#3-scherm--ram-updates">Scherm- &amp; RAM-updates</a></li>
+<li><a href="#4-beweging--frame-animaties">Beweging &amp;
+Frame-animaties</a></li>
+<li><a href="#5-breakout-bomb-drop--pattern-schedulers">Breakout,
+Bomb-drop &amp; Pattern Schedulers</a></li>
+<li><a href="#6-aanvalslogica--dive-bomb-triggers">Aanvalslogica &amp;
+Dive-bomb Triggers</a></li>
+</ol>
+<hr />
+<h2 id="1-initialisatie--posities">1. Initialisatie &amp; Posities</h2>
+<h3
+id="init_alien_control_states"><code>init_alien_control_states</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L19-L25"><code>init_alien_control_states</code></a>
+(Z80 ROM: <code>$05EC–$05F9</code>) bepaalt de initiële vlieg- en
+besturingsparameters voor de aliens aan het begin van een nieuwe ronde
+of level.</p>
+<h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
+<p>Wordt aangeroepen tijdens het starten van een level vanuit de
+game-initialisatieroutine:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>init_alien_control_states<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></a>
+— <a
+href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+<li><code>phoenix_alien_control_init_values</code> — <a
+href="../../phoenix_tables.c#L265"><code>phoenix_tables.c:L265</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Index bepalen:</strong> Berekent de opzoek-index via
+<code>state.LevelAndRound &amp; 0x0F</code>.</li>
+<li><strong>Init-waarden ophalen:</strong> Haalt uit de opzoektabel
+<code>phoenix_alien_control_init_values</code> twee initiële
+besturingsbytes op:
+<ul>
+<li><code>d</code>: Waarde voor Controlstate A (status- en
+animatiebits).</li>
+<li><code>e</code>: Waarde voor Controlstate B
+(sprite/shape-index).</li>
+</ul></li>
+<li><strong>Overbrengen naar RAM:</strong> Roept <a
+href="#init_alien_control_states_05fa"><code>init_alien_control_states_05fa(d, e)</code></a>
+aan om deze waarden toe te wijzen aan het geheugenblok van alle
+aliens.</li>
+</ol>
+<hr />
+<h3
+id="init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L207-L217"><code>init_alien_control_states_05fa</code></a>
+(Z80 ROM: <code>$05FA–$060D</code>) vult het geheugenblok van alle
+levende aliens met de gekozen controlestates <code>d</code> en
+<code>e</code>.</p>
+<h4 id="context--aanroep-1"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen door <code>init_alien_control_states</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>init_alien_control_states_05fa<span class="op">(</span>d<span class="op">,</span> e<span class="op">);</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+</ul></li>
+</ul>
+<h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
+Structuur-context</strong></h4>
+<p>De RAM-tabel voor de alien-besturing start op adres
+<code>0x4B70</code>. Elk alien-record is 4 bytes groot:</p>
+<ul>
+<li><strong>Byte 0 (<code>HL</code>):</strong> Controlstate A
+(<code>d</code>)</li>
+<li><strong>Byte 1 (<code>HL+1</code>):</strong> Controlstate B
+(<code>e</code>)</li>
+<li><strong>Byte 2 (<code>HL+2</code>):</strong> X-coördinaat op het
+scherm</li>
+<li><strong>Byte 3 (<code>HL+3</code>):</strong> Y-coördinaat op het
+scherm</li>
+</ul>
+<h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Statuscontrole:</strong> Controleert of
+<code>state.AliensLeft == 0</code>. Zo ja, breekt de functie direct
+af.</li>
+<li><strong>RAM vullen:</strong> Loopt over maximaal 16 aliens. Schrijft
+<code>d</code> naar Control A (<code>0x4B70 + i*4</code>) en
+<code>e</code> naar Control B (<code>0x4B71 + i*4</code>).</li>
+<li><strong>Pointer verhogen:</strong> Ophoogt het geheugenadres steeds
+met 4 bytes (<code>hl += 4</code>).</li>
+</ol>
+<hr />
+<h3 id="init_alien_positions"><code>init_alien_positions</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L224-L242"><code>init_alien_positions</code></a>
+(Z80 ROM: <code>$0610–$0638</code>) initialiseert de X- en
+Y-startcoördinaten op het schermraster voor de formatie van maximaal 16
+aliens.</p>
+<h4 id="context--aanroep-2"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen bij level-initialisatie:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>init_alien_positions<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+<li><code>phoenix_alien_position_pointer_table</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_alien_position_layout_page</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-2"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Layout-pagina bepalen:</strong> Berekent de index
+<code>(state.LevelAndRound &gt;&gt; 1) &amp; 0x0F</code> en zoekt in
+<code>phoenix_alien_position_pointer_table</code> het startadres/offset
+binnen de layoutpagina <code>phoenix_alien_position_layout_page</code>
+op.</li>
+<li><strong>Coördinaten wegschrijven:</strong> Doorloopt alle levende
+aliens (max 16) en schrijft de opeenvolgende X- en Y-coördinaten weg
+naar RAM-adres <code>0x4B72</code> (offset <code>+2</code> en
+<code>+3</code> binnen het 4-byte record).</li>
+<li><strong>Pointer verhogen:</strong> Springt na elke geschreven alien
+3 bytes verder (<code>de += 3</code>), waardoor de coördinaten voor de
+volgende alien exact op <code>0x4B76</code>, <code>0x4B7A</code>, etc.
+terechtkomen.</li>
+</ol>
+<hr />
+<h3
+id="copy_init_values_for_16_aliens"><code>copy_init_values_for_16_aliens</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L249-L265"><code>copy_init_values_for_16_aliens</code></a>
+(Z80 ROM: <code>$0650–$0679</code>) initialiseert de pointers naar het
+bewegingspatroon voor de 16 aliens.</p>
+<h4 id="context--aanroep-3"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen tijdens de voorbereiding van een alien-golf.</p>
+<h4 id="knowledge-graph-koppelingen-3"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+<li><code>phoenix_alien_layout_pointers</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-3"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Patroonadres ophalen:</strong> Berekent de index via
+<code>state.LevelAndRound &amp; 0x0F</code> en haalt het 16-bit
+patroonpointeradres <code>(d, e)</code> op uit
+<code>phoenix_alien_layout_pointers</code>.</li>
+<li><strong>Tabel vullen:</strong> Schrijft <code>d</code> (MSB) en
+<code>e</code> (LSB) opeenvolgend weg in de patroontabel op RAM-adres
+<code>0x4B50</code> (2 bytes per alien, in totaal 32 bytes voor 16
+aliens: <code>0x4B50–0x4B6F</code>).</li>
+</ol>
+<hr />
+<h3
+id="get_animation_chrs_aliens_fade_in"><code>get_animation_chrs_aliens_fade_in</code></h3>
+<h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L31-L37"><code>get_animation_chrs_aliens_fade_in</code></a>
+(Z80 ROM: <code>$085A–$0871</code>) bepaalt het tegel/karakter-ID van
+aliens tijdens hun verschijning (fade-in) aan de start van een golf.</p>
+<h4 id="context--aanroep-4"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen in de rendering-lus zolang aliens aan het
+invliegen/verschijnen zijn.</p>
+<h4 id="knowledge-graph-koppelingen-4"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li>Geen (inspecteert <code>state.CounterB4</code>)</li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-4"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Inspecteert de algemene timer <code>state.CounterB4</code> en
+retourneert de sprite-tegel ID op basis van drempelwaarden:</p>
+<ul>
+<li><code>a &gt;= 0x11</code> → <code>0x6C</code></li>
+<li><code>a &gt;= 0x0D</code> → <code>0x6D</code></li>
+<li><code>a &gt;= 0x09</code> → <code>0x6E</code></li>
+<li><code>a &gt;= 0x05</code> → <code>0x6F</code></li>
+<li>Anders → <code>0x68</code></li>
+</ul>
+<hr />
+<h2 id="2-explosies--animaties-voor-neergeschoten-aliens">2. Explosies
+&amp; Animaties voor Neergeschoten Aliens</h2>
+<h3
+id="handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></h3>
+<h4 id="beschrijving-5"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L195-L200"><code>handle_animations_for_killed_aliens</code></a>
+(Z80 ROM: <code>$0FC0–$0FFF</code>) is de centrale aanroeproutine die in
+elke frame-update alle actieve explosies en bonusscore-animaties op het
+scherm verwerkt.</p>
+<h4 id="context--aanroep-5"><strong>Context &amp; Aanroep</strong></h4>
+<p>Wordt vanuit de hoofd-gameloop aangeroepen:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> handle_animations_for_killed_aliens<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    l0fd8<span class="op">(</span><span class="bn">0x4370</span><span class="op">);</span> <span class="co">// Explosieslot 0 voor normale aliens</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    l0fd8<span class="op">(</span><span class="bn">0x4374</span><span class="op">);</span> <span class="co">// Explosieslot 1 voor normale aliens</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    l3758_bonus_explosion_animation<span class="op">(</span><span class="bn">0x4378</span><span class="op">);</span> <span class="co">// Bonusexplosieslot 0 voor volgroeide vogels</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    l3758_bonus_explosion_animation<span class="op">(</span><span class="bn">0x437C</span><span class="op">);</span> <span class="co">// Bonusexplosieslot 1 voor volgroeide vogels</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-5"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="#l0fd8"><code>l0fd8</code></a> — <a
+href="../../alien_logic.c#L196-L197"><code>alien_logic.c:L196-L197</code></a></li>
+<li><a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+— <a
+href="../../alien_logic.c#L198-L199"><code>alien_logic.c:L198-L199</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="l0fd8"><code>l0fd8</code></h3>
+<h4 id="beschrijving-6"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L43-L74"><code>l0fd8</code></a> (Z80 ROM:
+<code>$0FD8–$0FEF</code>) is verantwoordelijk voor het bijwerken en
+tekenen van de explosie-animatie van een neergeschoten standaard alien
+op geheugenadres <code>hl</code> (<code>0x4370</code> of
+<code>0x4374</code>).</p>
+<h4 id="context--aanroep-6"><strong>Context &amp; Aanroep</strong></h4>
+<p>In de game-loop wordt <code>l0fd8</code> aangeroepen via
+<code>handle_animations_for_killed_aliens</code> voor twee vaste
+geheugenslots:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>l0fd8<span class="op">(</span><span class="bn">0x4370</span><span class="op">);</span> <span class="co">// Explosieslot 0</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>l0fd8<span class="op">(</span><span class="bn">0x4374</span><span class="op">);</span> <span class="co">// Explosieslot 1</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-6"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="utilities.html#left_one_column"><code>left_one_column</code></a> —
+<a href="../../utilities.c#L45"><code>utilities.c:L45</code></a></li>
+<li><code>phoenix_alien_explosion_frames</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><a href="sprite-rendering.html#drawnx2"><code>drawNx2</code></a> — <a
+href="../../sprite_rendering.c#L30"><code>sprite_rendering.c:L30</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
+— <a
+href="../../alien_logic.c#L196-L197"><code>alien_logic.c:L196-L197</code></a></li>
+</ul></li>
+</ul>
+<h4 id="geheugen---structuur-context-1"><strong>Geheugen- &amp;
+Structuur-context</strong></h4>
+<p>Elk explosieslot is 4 bytes groot:</p>
+<ul>
+<li><strong>Byte 0 (<code>HL</code>):</strong> Animatieteller / status
+(<code>0</code> = inactief, <code>&gt;0</code> = actieve explosie).</li>
+<li><strong>Byte 1 (<code>HL+1</code>):</strong> Niet gebruikt.</li>
+<li><strong>Byte 2 &amp; 3 (<code>HL+2</code>,
+<code>HL+3</code>):</strong> 16-bits schermankeradres
+(<code>DE</code>).</li>
+</ul>
+<h4 id="stap-voor-stap-werking-van-l0fd8"><strong>Stap-voor-stap werking
+van <code>l0fd8</code></strong></h4>
+<ol type="1">
+<li><strong>Check of animatie actief is:</strong> Leest de
+animatieteller <code>a = mem_read(hl)</code> uit het RAM-slot. Als
+<code>a == 0</code>, is er geen actieve explosie in dit slot en stopt de
+functie direct. <em>(Z80: <code>LD A,(HL)</code> / <code>AND A</code> /
+<code>RET Z</code>)</em>.</li>
+<li><strong>Verlaag de animatieteller:</strong> Slaat de huidige waarde
+op in <code>b = a</code> en verlaagt de teller met 1 in het RAM
+(<code>mem_write(hl, a - 1)</code>). <em>(Z80: <code>LD B,(HL)</code> /
+<code>DEC (HL)</code>)</em>.</li>
+<li><strong>Schermcoördinaten uitlezen:</strong> Leest het 16-bits
+schermankeradres <code>de</code> uit het geheugenblok (op offset
+<code>+2</code> en <code>+3</code>).</li>
+<li><strong>Positie uitlijnen:</strong> Verschuift het schermadres 1
+kolom naar links via <code>left_one_column(de)</code>. <em>(Z80:
+<code>CALL $0210</code>)</em>.</li>
+<li><strong>Explosieframe/sprite bepalen:</strong> Berekent de
+frame-index aan de hand van de resterende tijd:
+<code>offset = (b &amp; 0x0E) &gt;&gt; 1</code> (index 0..7). Zoekt het
+bijbehorende sprite-ID op in de opzoektabel
+<code>phoenix_alien_explosion_frames[offset]</code> en construeert het
+ROM-adres van het sprite-patroon (<code>0x1700 | img</code>).</li>
+<li><strong>Sprite tekenen:</strong> Roept
+<code>drawNx2(img_addr, de, 0xFFDF, 3)</code> aan om het explosie-frame
+(een 3x2 tegelmatrix) op het video-RAM te tekenen met een offset van
+<code>-33</code> (<code>0xFFDF</code>) tussen rijparen. <em>(Z80:
+<code>EX DE,HL</code>, <code>LD BC,$FFDF</code>,
+<code>JP $3540</code>)</em>.</li>
+</ol>
+<hr />
+<h3
+id="l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></h3>
+<h4 id="beschrijving-7"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L166-L188"><code>l3758_bonus_explosion_animation</code></a>
+(Z80 ROM: <code>$3758–$37CC</code>) animeert de uitwaaierende
+bonusexplosie en scoreweergave van een gedode volgroeide vogel op adres
+<code>hl</code> (<code>0x4378</code> of <code>0x437C</code>).</p>
+<h4 id="context--aanroep-7"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen door
+<code>handle_animations_for_killed_aliens</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>l3758_bonus_explosion_animation<span class="op">(</span><span class="bn">0x4378</span><span class="op">);</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>l3758_bonus_explosion_animation<span class="op">(</span><span class="bn">0x437C</span><span class="op">);</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-7"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#l37cc_erase_bonus_explosion"><code>l37cc_erase_bonus_explosion</code></a>
+— <a
+href="../../alien_logic.c#L172"><code>alien_logic.c:L172</code></a></li>
+<li><a
+href="#l37b0_print_bonus_score"><code>l37b0_print_bonus_score</code></a>
+— <a
+href="../../alien_logic.c#L177"><code>alien_logic.c:L177</code></a></li>
+<li><a
+href="#l3796_bonus_explosion_left"><code>l3796_bonus_explosion_left</code></a>
+— <a
+href="../../alien_logic.c#L186"><code>alien_logic.c:L186</code></a></li>
+<li><a
+href="#l3758_bonus_explosion_right"><code>l3758_bonus_explosion_right</code></a>
+— <a
+href="../../alien_logic.c#L187"><code>alien_logic.c:L187</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
+— <a
+href="../../alien_logic.c#L198-L199"><code>alien_logic.c:L198-L199</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-5"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Statuscontrole:</strong> Controleert
+<code>mem_read(hl) == 0</code>. Zo ja, keert direct terug.</li>
+<li><strong>Teller verlagen:</strong> Verlaagt de teller
+<code>counter = mem_read(hl) - 1</code>.</li>
+<li><strong>Einde animatie (<code>counter == 0</code>):</strong> De
+animatie is afgelopen; wist de restanten van het voorgrondscherm via <a
+href="#l37cc_erase_bonus_explosion"><code>l37cc_erase_bonus_explosion(hl)</code></a>.</li>
+<li><strong>Even tellerstand
+(<code>(counter &amp; 1) == 0</code>):</strong> Toont de behaalde
+bonusscorepunten in het midden van de explosie via <a
+href="#l37b0_print_bonus_score"><code>l37b0_print_bonus_score(hl)</code></a>.</li>
+<li><strong>Oneven tellerstand:</strong> Berekent de uitwaaier-offset
+<code>a = ((0x0F - counter) &amp; 0x0E) &lt;&lt; 4</code> en tekent de
+linker- en rechterhelften van de explosie via <a
+href="#l3796_bonus_explosion_left"><code>l3796_bonus_explosion_left(a, de)</code></a>
+en <a
+href="#l3758_bonus_explosion_right"><code>l3758_bonus_explosion_right(a, de)</code></a>.</li>
+</ol>
+<hr />
+<h3
+id="l3796_bonus_explosion_left"><code>l3796_bonus_explosion_left</code></h3>
+<h4 id="beschrijving-8"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L100-L107"><code>l3796_bonus_explosion_left</code></a>
+(Z80 ROM: <code>$3796–$37AA</code>) tekent het linkerdeel van de
+uitwaaierende bonusexplosie op het scherm.</p>
+<h4 id="context--aanroep-8"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen vanuit <code>l3758_bonus_explosion_animation</code>
+tijdens oneven frames.</p>
+<h4 id="knowledge-graph-koppelingen-8"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="sprite-rendering.html#drawnx2"><code>drawNx2</code></a> — <a
+href="../../sprite_rendering.c#L30"><code>sprite_rendering.c:L30</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+— <a
+href="../../alien_logic.c#L186"><code>alien_logic.c:L186</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-6"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Schermadres berekenen:</strong> Berekent het doel-RAM adres
+<code>hl = (a + 0x60) + de</code>.</li>
+<li><strong>Grenscontrole:</strong> Controleert of het adres binnen het
+geldige schermbereik valt
+(<code>(uint32_t)hl + 0xBCC0 &gt; 0xFFFF</code> / Z80
+<code>RET C</code>). Indien buiten bereik, breekt af.</li>
+<li><strong>Sprite rendering:</strong> Tekent de 3x2 tegelmatrix vanaf
+ROM-tegel <code>0x17D0</code> via
+<code>drawNx2(0x17D0, hl, 0xFFDF, 3)</code>.</li>
+</ol>
+<hr />
+<h3
+id="l3758_bonus_explosion_right"><code>l3758_bonus_explosion_right</code></h3>
+<h4 id="beschrijving-9"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L114-L126"><code>l3758_bonus_explosion_right</code></a>
+(Z80 ROM: <code>$3772–$3792</code>) tekent het rechterdeel van de
+uitwaaierende bonusexplosie op het scherm.</p>
+<h4 id="context--aanroep-9"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen vanuit <code>l3758_bonus_explosion_animation</code>
+tijdens oneven frames.</p>
+<h4 id="knowledge-graph-koppelingen-9"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+<li><a href="sprite-rendering.html#drawnx2"><code>drawNx2</code></a> — <a
+href="../../sprite_rendering.c#L30"><code>sprite_rendering.c:L30</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+— <a
+href="../../alien_logic.c#L187"><code>alien_logic.c:L187</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-7"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Schermadres berekenen:</strong> Berekent
+<code>target = de - a</code>.</li>
+<li><strong>Grenscontrole:</strong> Controleert
+<code>target + 0xBFA0 &lt;= 0xFFFF</code> (Z80 <code>RET NC</code>).
+Indien ongeldig, breekt af.</li>
+<li><strong>Buffer schonen &amp; tekenen:</strong> Wist 2 bytes op het
+startadres (<code>mem_write(target, 0)</code>), past de offset aan met
+<code>-33</code> (<code>0xFFDF</code>) en tekent de 3x2 tegelmatrix
+vanaf ROM-tegel <code>0x17D6</code> via <code>drawNx2</code>.</li>
+</ol>
+<hr />
+<h3
+id="l37b0_print_bonus_score"><code>l37b0_print_bonus_score</code></h3>
+<h4 id="beschrijving-10"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L135-L156"><code>l37b0_print_bonus_score</code></a>
+(Z80 ROM: <code>$37B0–$37C6</code>) drukt de behaalde bonusscorepunten
+af op de exacte positie van de explosie.</p>
+<h4 id="context--aanroep-10"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen vanuit <code>l3758_bonus_explosion_animation</code>
+tijdens even frames.</p>
+<h4 id="knowledge-graph-koppelingen-10"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+<li><a
+href="utilities.html#left_one_column"><code>left_one_column</code></a> —
+<a href="../../utilities.c#L45"><code>utilities.c:L45</code></a></li>
+<li><a
+href="utilities.html#right_one_column"><code>right_one_column</code></a> —
+<a href="../../utilities.c#L50"><code>utilities.c:L50</code></a></li>
+<li><a href="utilities.html#print_number"><code>print_number</code></a> —
+<a href="../../utilities.c#L80"><code>utilities.c:L80</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+— <a
+href="../../alien_logic.c#L177"><code>alien_logic.c:L177</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-8"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Scorebyte uitlezen:</strong> Haalt de scorebyte op uit
+<code>hl + 1</code>.</li>
+<li><strong>BCD-correctie (DAA simulatie):</strong>
+<ul>
+<li><code>if ((a &amp; 0x0F) &gt; 0x09) a += 0x06;</code></li>
+<li><code>if (a &gt; 0x99) a += 0x60;</code></li>
+</ul></li>
+<li><strong>Schermpositie bepalen:</strong> Haalt het schermankeradres
+<code>de</code> op uit <code>hl + 2</code> en <code>hl + 3</code>.</li>
+<li><strong>Cijfers afdrukken:</strong> Verschuift 1 kolom naar rechts
+(<code>right_one_column</code>), schrijft een vaste <code>'0'</code>
+(tegel <code>0x20</code>) voor het meest rechtse cijfer, verschuift 1
+kolom naar links (<code>left_one_column</code>) en roept
+<code>print_number(de, score_addr, 2)</code> aan om de 2
+BCD-scorecijfers af te drukken.</li>
+</ol>
+<hr />
+<h3
+id="l37cc_erase_bonus_explosion"><code>l37cc_erase_bonus_explosion</code></h3>
+<h4 id="beschrijving-11"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L82-L93"><code>l37cc_erase_bonus_explosion</code></a>
+(Z80 ROM: <code>$37CC–$37E5</code>) wist een complete schermkolom (26
+rijen) van het voorgrondscherm zodra de bonusexplosieteller 0
+bereikt.</p>
+<h4 id="context--aanroep-11"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen aan het einde van de bonusexplosie door
+<code>l3758_bonus_explosion_animation</code>.</p>
+<h4 id="knowledge-graph-koppelingen-11"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+— <a
+href="../../alien_logic.c#L172"><code>alien_logic.c:L172</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-9"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Voorgrondkolom bepalen:</strong> Haalt het LSB van het
+schermadres uit <code>hl + 3</code> en berekent het
+voorgrondscherm-adres
+<code>0x4300 | ((a &amp; 0x1F) + 0x20)</code>.</li>
+<li><strong>Kolom wissen:</strong> Doorloopt een lus van 26 stappen
+(<code>0x1A</code> rijen). In elke stap worden 2 opeenvolgende bytes op
+0 gezet (<code>mem_write(addr, 0)</code>), waarna het adres met
+<code>-33</code> (<code>0xFFDF</code>) verminderd wordt om de volledige
+verticale kolom te wissen.</li>
+</ol>
+<hr />
+<h2 id="3-scherm---ram-updates">3. Scherm- &amp; RAM-updates</h2>
+<h3 id="alien_data_controller"><code>alien_data_controller</code></h3>
+<h4 id="beschrijving-12"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L274-L283"><code>alien_data_controller</code></a>
+(Z80 ROM: <code>$0A50–$0A6B</code>) stuurt het verversen van de
+grafische voorgrond- RAM voor alle aliens aan.</p>
+<h4 id="context--aanroep-12"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen in de hoofd-gameloop:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>alien_data_controller<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-12"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>update_screen_objects</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-10"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Doorloopt een lus van 20 iteraties (voor 16 aliens + extra
+entiteiten) over twee parallelle geheugenbuffers:</p>
+<ul>
+<li><code>bc = 0x4B70</code> (grid control structure)</li>
+<li><code>de = 0x4BB0</code> (screen RAM structure) Roept per iteratie
+<code>update_screen_objects(bc, de)</code> aan en verhoogt beide
+pointers met 4 bytes (<code>bc += 4</code>, <code>de += 4</code>).</li>
+</ul>
+<hr />
+<h3
+id="get_screen_ram_address_for_all_aliens"><code>get_screen_ram_address_for_all_aliens</code></h3>
+<h4 id="beschrijving-13"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L290-L320"><code>get_screen_ram_address_for_all_aliens</code></a>
+(Z80 ROM: <code>$0A6C–$0A99</code>) berekent de video-RAM adressen voor
+alle actieve aliens en onderhoudt de positie-historie.</p>
+<h4 id="context--aanroep-13"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen voorafgaand aan het tekenen van het scherm.</p>
+<h4 id="knowledge-graph-koppelingen-13"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+<li><code>get_screen_ram_address</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-11"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Lusspectrum:</strong> Doorloopt 20 slots vanaf
+<code>bc = 0x4B70</code> en <code>de = 0x4BB3</code>.</li>
+<li><strong>Statuscontrole:</strong> Leest Controlstate A
+(<code>mem_read(bc)</code>). Controleert of bits 3 of 4 actief zijn
+(<code>(a &amp; 0x18) != 0</code>).</li>
+<li><strong>Positiehistorie verschuiven:</strong> Verschuift het
+adresverleden in RAM 2 bytes terug: leest de bytes op <code>4BB3</code>
+en <code>4BB2</code> en schrijft deze naar <code>4BB1</code> en
+<code>4BB0</code>.</li>
+<li><strong>Nieuw adres berekenen:</strong> Roept
+<code>get_screen_ram_address(bc + 2, de - 1)</code> aan om de nieuwe
+coördinaten om te zetten naar een video-RAM adres op
+<code>4BB2/4BB3</code>.</li>
+<li><strong>Pointer ophooging:</strong> Verhoogt beide pointers met 4
+bytes (<code>bc += 4</code>, <code>de += 4</code>).</li>
+</ol>
+<hr />
+<h2 id="4-beweging--frame-animaties">4. Beweging &amp;
+Frame-animaties</h2>
+<h3 id="alien_movement_update"><code>alien_movement_update</code></h3>
+<h4 id="beschrijving-14"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L335-L375"><code>alien_movement_update</code></a>
+(Z80 ROM: <code>$0D1C–$0D67</code>) werkt de X/Y schermposities van alle
+vliegende aliens bij volgens hun toegewezen richtingsvectoren.</p>
+<h4 id="context--aanroep-14"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen in de bewegingsfase van de game loop.</p>
+<h4 id="knowledge-graph-koppelingen-14"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>phoenix_alien_movement_byte</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_alien_direction_vectors</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-12"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Lusspectrum:</strong> Scant 16 aliens
+(<code>0x4B50 + i*2</code> voor patroonpointer,
+<code>0x4B70 + i*4</code> voor coördinaten).</li>
+<li><strong>Vliegbit controle:</strong> Slaat aliens over waarvan bit 3
+van Control A niet actief is (<code>(ctrl &amp; 0x08) == 0</code>).</li>
+<li><strong>Vliegroute uitlezen:</strong> Haalt het 16-bit patroonadres
+op (big-endian) en bepaalt de bewegingsindex via
+<code>phoenix_alien_movement_byte(pattern)</code>.</li>
+<li><strong>Richtingsvector opzoeken:</strong> Voert een bitrotatie uit
+(<code>RLCA</code>: <code>(idx &lt;&lt; 1) | (idx &gt;&gt; 7)</code>) en
+haalt de richtingsvectoren voor X en Y op uit
+<code>phoenix_alien_direction_vectors</code>.</li>
+<li><strong>Coördinaten bijwerken:</strong> Past X-coördinaat
+(<code>grid + 2</code>) en/of Y-coördinaat (<code>grid + 3</code>)
+aan.</li>
+<li><strong>Rastergrensovergang:</strong> Als de bijgewerkte coördinaat
+een 8-pixel rastergrens passeert (<code>(a &amp; 0x07) == 0</code>),
+wordt het LSB van de patroonpointer verhoogd
+(<code>mem_write(ptr_addr + 1, ... + 1)</code>), waardoor de alien
+overstapt naar het volgende route-segment.</li>
+</ol>
+<hr />
+<h3 id="alien_animation_update"><code>alien_animation_update</code></h3>
+<h4 id="beschrijving-15"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L382-L449"><code>alien_animation_update</code></a>
+(Z80 ROM: <code>$0D70–$0DB5</code>, <code>$0DBB–$0DC6</code>,
+<code>$0DCC–$0DEE</code>) bepaalt de juiste sprite-animatieframe voor
+elke vliegende alien op basis van diens positie en vliegrichting.</p>
+<h4 id="context--aanroep-15"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen in de animatiefase van de game loop.</p>
+<h4 id="knowledge-graph-koppelingen-15"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>phoenix_alien_movement_byte</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_alien_shape_offset_page</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-13"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Lusspectrum:</strong> Scant 16 aliens
+(<code>bc = 0x4B70</code>, <code>hl = 0x4B50</code>).</li>
+<li><strong>Patrooncontrole:</strong> Indien actief
+(<code>ctrl_a &amp; 0x08</code>): leest patroonindex. Bij einde van een
+patroon (index 0) retarget de functie de pointer naar
+<code>state.M4394:M4395</code>.</li>
+<li><strong>Animatie-offset:</strong> Berekent de animatie-offset
+<code>0xA0 + (list_index * 3)</code> in
+<code>phoenix_alien_shape_offset_page</code>. Schrijft de bijgewerkte
+Controlstate A weg.</li>
+<li><strong>Sprite-shape bepalen:</strong> Evalueert
+<code>anim_byte2</code> uit de tabel:
+<ul>
+<li><code>0x01</code> (<code>L0DBB</code>): Gecombineerde
+Y/X-afhankelijke berekening
+(<code>res_a = x + y + anim_byte3</code>).</li>
+<li><code>0x02</code> (<code>L0DCC</code>): X-afhankelijke berekening
+(<code>res_a = x + anim_byte3</code>).</li>
+<li>Anders (<code>0x04</code>): Y-afhankelijke berekening
+(<code>res_a = y + anim_byte3</code>).</li>
+</ul></li>
+<li><strong>Controlstate B bijwerken:</strong> Haalt het uiteindelijke
+tegel/shape ID op uit
+<code>phoenix_alien_shape_offset_page[res_a]</code> en slaat dit op in
+Controlstate B (<code>bc + 1</code>).</li>
+</ol>
+<hr />
+<h2 id="5-breakout-bomb-drop--pattern-schedulers">5. Breakout, Bomb-drop
+&amp; Pattern Schedulers</h2>
+<h3 id="l3264"><code>l3264</code></h3>
+<h4 id="beschrijving-16"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L459-L493"><code>l3264</code></a> (Z80 ROM:
+<code>$3264–$32AF</code>) roteert de startwaarde-pointer voor
+alien-bewegingen en herricht vliegende aliens naar nieuwe
+bewegingsroutes.</p>
+<h4 id="context--aanroep-16"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen door de breakout scheduler bij
+vliegroute-veranderingen.</p>
+<h4 id="knowledge-graph-koppelingen-16"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-14"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>LSB roteren:</strong> Slaat het oude LSB op in
+<code>state.M4356</code> en verhoogt <code>state.M4395</code> modulo 16
+(<code>(old_lsb + 1) &amp; 0x0F</code>).</li>
+<li><strong>Pass controle:</strong> Voert de retarget-scan pas uit zodra
+<code>state.M4350</code> de waarde 5 bereikt (reset de teller daarna
+naar 0).</li>
+<li><strong>Patroontabel scannen:</strong> Doorloopt de
+patroonpointer-tabel op <code>0x4B50..0x4B6F</code> voor
+<code>state.M4353</code> paaren.</li>
+<li><strong>Retargeting:</strong> Vervangt alle pointers die matchen met
+het oude patroon <code>state.M4394:M4356</code> door het nieuwe patroon
+<code>state.M4351:M4352</code>.</li>
+</ol>
+<hr />
+<h3 id="l3074_breakout_delay"><code>l3074_breakout_delay</code></h3>
+<h4 id="beschrijving-17"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L501-L518"><code>l3074_breakout_delay</code></a>
+(Z80 ROM: <code>$3074–$30A8</code>) berekent dynamisch de wachttijd
+(vertraging) voor de breakout- en bomb-drop schedulers.</p>
+<h4 id="context--aanroep-17"><strong>Context &amp; Aanroep</strong></h4>
+<p>Hulpfunctie voor de schedulers <code>l3028</code> en
+<code>l30ba</code>. Hoe hoger het level of hoe minder aliens er over
+zijn, hoe korter de vertraging (snellere aanvallen).</p>
+<h4 id="knowledge-graph-koppelingen-17"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="utilities.html#get_random_number"><code>get_random_number</code></a>
+— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="#l3028"><code>l3028</code></a> — <a
+href="../../alien_logic.c#L550"><code>alien_logic.c:L550</code></a></li>
+<li><a href="#l30ba"><code>l30ba</code></a> — <a
+href="../../alien_logic.c#L580"><code>alien_logic.c:L580</code></a></li>
+</ul></li>
+</ul>
+<h4 id="formule--werking"><strong>Formule &amp; Werking</strong></h4>
+<ol type="1">
+<li><code>c = 7 - ((LevelAndRound &gt;&gt; 1) &amp; 0x07)</code>
+(vertraging vermindert bij hogere levels).</li>
+<li><code>c += 7 - ((a &gt;&gt; 4) &amp; 0x07)</code> (vertraging
+vermindert bij hogere rondes, gecapped op <code>$70</code>).</li>
+<li><code>c += (AliensLeft &lt; 5) ? 0x10 : (AliensLeft - 5)</code>
+(minder dan 5 aliens voegt een vaste offset toe).</li>
+<li><code>c += get_random_number() &amp; 0x07</code> (voegt 0 tot 7
+willekeurige ruis toe).</li>
+</ol>
+<hr />
+<h3 id="l3028"><code>l3028</code></h3>
+<h4 id="beschrijving-18"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L528-L554"><code>l3028</code></a> (Z80 ROM:
+<code>$3028–$3059</code>, <code>$305C–$306D</code>) is de
+<strong>Breakout Scheduler</strong>. Deze beheert wanneer en hoeveel
+aliens uit de formatie losbreken voor een aanvalsgolf.</p>
+<h4 id="context--aanroep-18"><strong>Context &amp; Aanroep</strong></h4>
+<p>Periodiek aangeroepen vanuit de game loop.</p>
+<h4 id="knowledge-graph-koppelingen-18"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#l3074_breakout_delay"><code>l3074_breakout_delay</code></a> — <a
+href="../../alien_logic.c#L550"><code>alien_logic.c:L550</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-15"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Grenzen testen:</strong> Breekt direct af indien er reeds 3
+of meer aliens in de breakout-golf vliegen
+(<code>state.M4357 &gt;= 3</code>) of als er een pass actief is
+(<code>state.M4350 &gt;= 4</code>).</li>
+<li><strong>Timer aftellen:</strong> Als timer
+<code>state.M4358 != 0</code>: telt af. Zodra deze 0 bereikt, wordt de
+retarget-pass gewapend:
+<ul>
+<li><code>state.M4357++</code>, <code>state.M4350 = 0x04</code>,
+<code>state.M4353 = 0x10</code>, <code>state.M4354 = 0x50</code>,
+<code>state.M4351 = 0x2E</code>.</li>
+<li>Inspecteert speler X-pariteit
+(<code>state.PlayerShipX &amp; 0x01</code>): als de pariteit even is,
+wordt patroon LSB <code>M4352 = 0x40</code>, anders
+<code>0x00</code>.</li>
+</ul></li>
+<li><strong>Nieuwe aftelling inplannen:</strong> Indien
+<code>M4358 == 0</code>: berekent en plant het volgende aftelmoment in
+via <code>l3074_breakout_delay()</code>.</li>
+</ol>
+<hr />
+<h3 id="l30ba"><code>l30ba</code></h3>
+<h4 id="beschrijving-19"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L562-L599"><code>l30ba</code></a> (Z80 ROM:
+<code>$30BA–$30D8</code>, <code>$30E4–$310F</code>,
+<code>$3112–$3121</code>) is de <strong>Bomb-drop Scheduler</strong>.
+Deze beheert de tijdsintervallen en slots voor het gooien van bommen
+door aliens.</p>
+<h4 id="context--aanroep-19"><strong>Context &amp; Aanroep</strong></h4>
+<p>Periodiek aangeroepen vanuit de game loop.</p>
+<h4 id="knowledge-graph-koppelingen-19"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#l3074_breakout_delay"><code>l3074_breakout_delay</code></a> — <a
+href="../../alien_logic.c#L580"><code>alien_logic.c:L580</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-16"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Bom-timers aftellen:</strong> Telt drie per-bom aftelslots
+af (<code>state.M4359</code>, <code>state.M435A</code>,
+<code>state.M435B</code>).</li>
+<li><strong>Pass controle:</strong> Indien <code>state.M4350 != 0</code>
+(er is al een pass gewapend), breekt af.</li>
+<li><strong>Drop-pass wapenen:</strong> Als timer
+<code>state.M4355 != 0</code>: telt af; op 0 wordt
+<code>state.M4350 = 0x01</code> ingesteld om het bomwerpen te
+starten.</li>
+<li><strong>Nieuwe vertraging berekenen:</strong> Indien
+<code>M4355 == 0</code>: berekent de nieuwe vertraging via
+<code>l3074_breakout_delay()</code>, past deze aan op basis van
+<code>state.Counter9A</code>, halveert de vertraging voor elk vrij
+bom-slot en stelt <code>state.M4355</code> in.</li>
+</ol>
+<hr />
+<h3 id="l3124"><code>l3124</code></h3>
+<h4 id="beschrijving-20"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L607-L620"><code>l3124</code></a> (Z80 ROM:
+<code>$3124–$314E</code>) vormt <strong>Pattern Retarget Fase 1 -&gt;
+2</strong>.</p>
+<h4 id="context--aanroep-20"><strong>Context &amp; Aanroep</strong></h4>
+<p>Onderdeel van de 6-fasen state machine voor patroonherrichting.</p>
+<h4 id="knowledge-graph-koppelingen-20"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="utilities.html#get_random_number"><code>get_random_number</code></a>
+— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-17"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Indien <code>state.M4350 == 1</code>, schakelt de functie over naar
+fase 2 (<code>state.M4350 = 2</code>). Berekent het aantal te scannen
+patroonparen <code>state.M4353</code> op basis van het rondenummer
+(<code>((LevelAndRound &gt;&gt; 2) &amp; 0x0F) + 5</code>, begrensd op
+5) verminderd met het aantal vliegende aliens <code>M4357</code> en een
+willekeurige waarde.</p>
+<hr />
+<h3 id="l315a"><code>l315a</code></h3>
+<h4 id="beschrijving-21"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L629-L653"><code>l315a</code></a> (Z80 ROM:
+<code>$315A–$318E</code>, <code>$3192–$31AD</code>) vormt
+<strong>Pattern Retarget Fase 2 -&gt; 3</strong>.</p>
+<h4 id="context--aanroep-21"><strong>Context &amp; Aanroep</strong></h4>
+<p>Onderdeel van de 6-fasen state machine.</p>
+<h4 id="knowledge-graph-koppelingen-21"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="utilities.html#get_random_number"><code>get_random_number</code></a>
+— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-18"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Indien <code>state.M4350 == 2</code>, zoekt de functie vanaf een
+willekeurige alien-index door het geheugen naar de eerste actieve alien
+waarvan het bewegingspatroon nog overeenkomt met het oude patroon
+<code>state.M4394:M4356</code>. Slaat de gevonden positie op in
+<code>state.M4354</code> en schakelt over naar fase 3
+(<code>state.M4350 = 3</code>).</p>
+<hr />
+<h3 id="l31b4"><code>l31b4</code></h3>
+<h4 id="beschrijving-22"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L662-L710"><code>l31b4</code></a> (Z80 ROM:
+<code>$31B4–$320D</code>, <code>$3210–$3228</code>) vormt
+<strong>Pattern Retarget Fase 3 -&gt; 5</strong>. Deze selecteert een
+nieuw gesloten-lus bewegingspatroon voor de geselecteerde alien.</p>
+<h4 id="context--aanroep-22"><strong>Context &amp; Aanroep</strong></h4>
+<p>Onderdeel van de 6-fasen state machine.</p>
+<h4 id="knowledge-graph-koppelingen-22"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="utilities.html#get_random_number"><code>get_random_number</code></a>
+— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+<li><code>phoenix_alien_distance_bands</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_alien_pattern_selectors</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_alien_closed_loop_pointers</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-19"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Alien posities uitlezen:</strong> Haalt de X- en
+Y-coördinaten op van de gekozen alien (<code>state.M4354</code>).</li>
+<li><strong>Afstand tot speler:</strong> Berekent de afstand en
+relatieve positie (links of rechts) ten opzichte van
+<code>state.PlayerShipX</code>.</li>
+<li><strong>Patroon-tabellen raadplegen:</strong> Berekent de
+afstandsband via <code>phoenix_alien_distance_bands</code> en bepaalt de
+index in <code>phoenix_alien_pattern_selectors</code>.</li>
+<li><strong>Nieuw patroon instellen:</strong> Haalt het nieuwe MSB/LSB
+paar op uit <code>phoenix_alien_closed_loop_pointers</code>. Slaat de
+nieuwe patroonpointer op in <code>state.M4351</code> en
+<code>state.M4352</code> en schakelt over naar fase 5
+(<code>state.M4350 = 5</code>).</li>
+</ol>
+<hr />
+<h3 id="l322c"><code>l322c</code></h3>
+<h4 id="beschrijving-23"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L718-L730"><code>l322c</code></a> (Z80 ROM:
+<code>$322C–$325E</code>) vormt <strong>Pattern Retarget Fase 4 -&gt;
+6</strong>. Deze voert een synchronisatiecontrole uit.</p>
+<h4 id="context--aanroep-23"><strong>Context &amp; Aanroep</strong></h4>
+<p>Onderdeel van de 6-fasen state machine.</p>
+<h4 id="knowledge-graph-koppelingen-23"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-20"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Controleert of <em>alle</em> actieve aliens op het veld reeds op het
+oude patroon <code>M4394:M4356</code> vliegen. Indien zelfs maar één
+actieve alien een afwijkend patroon heeft, breekt de functie direct af.
+Als alle aliens gesynchroniseerd zijn, wordt fase 6 ingesteld
+(<code>state.M4350 = 6</code>).</p>
+<hr />
+<h2 id="6-aanvalslogica--dive-bomb-triggers">6. Aanvalslogica &amp;
+Dive-bomb Triggers</h2>
+<h3 id="l2560"><code>l2560</code></h3>
+<h4 id="beschrijving-24"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L778-L794"><code>l2560</code></a> (Z80 ROM:
+<code>$2560–$2595</code>) scant 8 kandidaat-aliens om te bepalen of een
+alien een gerichte duikvluchtaanval mag inzetten.</p>
+<h4 id="context--aanroep-24"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aanvalscontrole vanuit de game loop:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>l2560<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen-24"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="#l2596"><code>l2596</code></a> — <a
+href="../../alien_logic.c#L790"><code>alien_logic.c:L790</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
+— <a
+href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-21"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>RAM-blok selecteren:</strong> Selecteert de te scannen
+RAM-basis (<code>0x4B70</code> of <code>0x4B90</code>) afhankelijk van
+frame-teller bit <code>state.Counter93 &amp; 0x01</code>.</li>
+<li><strong>Kaders berekenen:</strong> Berekent dynamische
+afstandsgrenzen op basis van <code>state.M4357</code>,
+<code>state.M439E</code> en <code>state.M439F</code>.</li>
+<li><strong>Kandidaten scannen:</strong> Doorloopt 8 kandidaten en roept
+per kandidaat <a href="#l2596"><code>l2596</code></a> aan. Stopt direct
+bij de eerste geslaagde kandidaat.</li>
+</ol>
+<hr />
+<h3 id="l2596"><code>l2596</code></h3>
+<h4 id="beschrijving-25"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../alien_logic.c#L744-L769"><code>l2596</code></a> (Z80 ROM:
+<code>$2596–$25B6</code>) voert de individuele geschiktheidscontrole uit
+van één alien voor een duikvlucht.</p>
+<h4 id="context--aanroep-25"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen door <code>l2560</code> voor elke kandidaat-alien.</p>
+<h4 id="knowledge-graph-koppelingen-25"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>l25b7</code> — <a
+href="../../weapon_collision.c#L100"><code>weapon_collision.c:L100</code></a>
+/ <a
+href="weapon-collision.html#l25b7"><code>weapon-collision.md#l25b7</code></a></li>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="#l2560"><code>l2560</code></a> — <a
+href="../../alien_logic.c#L790"><code>alien_logic.c:L790</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking--voorwaarden"><strong>Stap-voor-stap
+werking &amp; Voorwaarden</strong></h4>
+<ol type="1">
+<li><strong>Actief bit:</strong> Controleert of bit 3 in Controlstate A
+actief is (<code>a &amp; 0x08 != 0</code>); zo niet, retourneert
+<code>false</code>.</li>
+<li><strong>Sprite-shape:</strong> Controleert of de sprite-vorm binnen
+de geldige grenzen valt (<code>a != 0x08</code> en
+<code>a &lt; 0x88</code>); zo niet, retourneert <code>false</code>.</li>
+<li><strong>X-positie venster:</strong> Controleert of de X-coördinaat
+binnen het venster <code>[b, c[</code> valt.</li>
+<li><strong>Y-positie venster:</strong> Controleert of de Y-coördinaat
+binnen het venster <code>[0x80, d[</code> valt.</li>
+<li><strong>Aanval starten:</strong> Indien aan alle 4 voorwaarden
+voldaan is, roept de functie <code>l25b7(new_b, new_c)</code> aan om een
+vijandelijke kogel/aanvalsslot te claimen en retourneert
+<code>true</code>.</li>
+</ol>
+</body></html>

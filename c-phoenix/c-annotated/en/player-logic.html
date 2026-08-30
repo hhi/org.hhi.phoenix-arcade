@@ -1,38 +1,56 @@
-<!doctype html><html><head><meta charset="utf-8"><title>player-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>player-logic</h1><pre># Player Logic (`player_logic.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`player_logic.c`](../../player_logic.c). This module manages player ship movement controls (left/right joystick), shield force field activation (5-second duration counter), player bullet firing, and speed throttling.
-
----
-
-## Table of Contents
-1. [Player Movement &amp; Joystick Control](#1-player-movement--joystick-control)
-2. [Force Field Shield Activation](#2-force-field-shield-activation)
-3. [Player Bullet Spawning](#3-player-bullet-spawning)
-
----
-
-## 1. Player Movement &amp; Joystick Control
-
-### `player_update`
-#### **Description**
-The function [`player_update`](../../player_logic.c#L45-L110) (Z80 ROM: `$0876–$0885`) reads player input ports ($5000) and updates player ship X position on screen (`$43C0`).
-
-#### **Knowledge Graph Links**
-* **Called By (Incoming Calls / Backlinks):**
-  - [`l2000_alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop) — [`alien_wave.c`](../../alien_wave.c)
-
----
-
-## 2. Force Field Shield Activation
-
-### `draw_shields`
-#### **Description**
-The function [`draw_shields`](../../player_logic.c#L294) (Z80 ROM: `$0AA0–$0AC1`) draws the shield in the damage state selected by `ShieldCount`. When active, it protects the player ship from collisions and enemy fire.
-
----
-
-## 3. Player Bullet Spawning
-
-### `spawn_player_bullet`
-#### **Description**
-The function [`spawn_player_bullet`](../../player_logic.c#L180-L220) (Z80 ROM: `$093D–$0961`) spawns player bullet objects in RAM when fire button inputs are detected.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>player-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="player-logic-player_logicc---c-annotated-knowledge-graph-documentation">Player
+Logic (<code>player_logic.c</code>) - C-Annotated Knowledge Graph
+Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../player_logic.c"><code>player_logic.c</code></a>. This module
+manages player ship movement controls (left/right joystick), shield
+force field activation (5-second duration counter), player bullet
+firing, and speed throttling.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-player-movement--joystick-control">Player Movement &amp;
+Joystick Control</a></li>
+<li><a href="#2-force-field-shield-activation">Force Field Shield
+Activation</a></li>
+<li><a href="#3-player-bullet-spawning">Player Bullet Spawning</a></li>
+</ol>
+<hr />
+<h2 id="1-player-movement--joystick-control">1. Player Movement &amp;
+Joystick Control</h2>
+<h3 id="player_update"><code>player_update</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../player_logic.c#L45-L110"><code>player_update</code></a> (Z80
+ROM: <code>$0876–$0885</code>) reads player input ports ($5000) and
+updates player ship X position on screen (<code>$43C0</code>).</p>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-wave.html#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
+— <a href="../../alien_wave.c"><code>alien_wave.c</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-force-field-shield-activation">2. Force Field Shield
+Activation</h2>
+<h3 id="draw_shields"><code>draw_shields</code></h3>
+<h4 id="description-1"><strong>Description</strong></h4>
+<p>The function <a
+href="../../player_logic.c#L294"><code>draw_shields</code></a> (Z80 ROM:
+<code>$0AA0–$0AC1</code>) draws the shield in the damage state selected
+by <code>ShieldCount</code>. When active, it protects the player ship
+from collisions and enemy fire.</p>
+<hr />
+<h2 id="3-player-bullet-spawning">3. Player Bullet Spawning</h2>
+<h3 id="spawn_player_bullet"><code>spawn_player_bullet</code></h3>
+<h4 id="description-2"><strong>Description</strong></h4>
+<p>The function <a
+href="../../player_logic.c#L180-L220"><code>spawn_player_bullet</code></a>
+(Z80 ROM: <code>$093D–$0961</code>) spawns player bullet objects in RAM
+when fire button inputs are detected.</p>
+</body></html>

@@ -1,136 +1,301 @@
-<!doctype html><html><head><meta charset="utf-8"><title>README</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>README</h1><pre># Phoenix C &amp; Header Annotated Knowledge Graph Documentatie
-
-Welkom bij de **C &amp; Header-Annotated Knowledge Graph Documentatie** voor de C-port van de *Phoenix* Arcade Game (`c-phoenix`).
-
-Deze directory bevat een volledige verzameling van **56 diepgaande geannoteerde documenten** (32 `.c` bronbestanden + 24 `.h` headerbestanden), waarin elk onderdeel uit het project tot op functie-, geheugenkaart- en hardwarepoort-niveau wordt ontleed en onderling met elkaar is verbonden.
-
----
-
-## 🎯 Doel &amp; Concept
-
-Het doel van deze documentatieset is het bieden van een navigeerbare, **interactieve Knowledge Graph** over de geporteerde C-codebase van *Phoenix*.
-
-Elke functie, structuur en header in elk document is voorzien van:
-1. **Functionaliteit &amp; Arcade-achtergrond:** Verhalende uitleg van het spelgedrag, RAM-kaart ($4000–$4BFF), I/O poorten en Z80 ROM-adresbereiken.
-2. **Geheugen- &amp; Structuur-context:** Gebruikte RAM-slots (zoals `$4370`, `$4B50`), registers, vlaggen en bitwise maskers.
-3. **Knowledge Graph Koppelingen:**
-   - **Aanroepen (Outgoing Calls):** Directe links naar de functies die door deze functie worden aangeroepen.
-   - **Aangeroepen door (Incoming Calls / Backlinks):** Directe links naar de functies die deze functie aanroepen.
-4. **Relatieve Verwijzingen:** Alle broncode- en documentatielinks gebruiken relatieve paden (bijv. `[phoenix_state.h](../../phoenix_state.h#L8)`).
-
-### Bronstatus
-
-De bron van waarheid is, in deze volgorde: **Z80 ASM/ROM → C-port → deze geannoteerde analyse → visuele toelichting**. Technische conclusies in de analyse horen daarom naar de relevante ASM-range, ROM-tabel of C-routine te verwijzen; conclusies zonder zo&#x27;n koppeling zijn interpretaties die nog gecontroleerd moeten worden.
-
-De machineleesbare kern en de instructies voor regeneratie staan in [`knowledge-graph.md`](../knowledge-graph.md); de gegenereerde data staat in [`knowledge-graph.json`](../knowledge-graph.json).
-
-### Interactieve verkenner
-
-[Open de Knowledge Base Explorer](../knowledge-base-explorer/index.html) om de
-gevalideerde graaf te doorzoeken en relaties te volgen tussen C-functies,
-Z80-routines, RAM/ROM-nodes, states, claims en de bestaande documentatie. Hij
-wordt uit `knowledge-graph.json` gegenereerd, voegt zelf geen claims toe en
-opent rechtstreeks via `file://`.
-
-![Overzicht van de Knowledge Base Explorer](../knowledge-base-explorer-overview.svg)
-
-### Hoe de lagen op elkaar aansluiten
-
-Van de Z80-hardware uit 1980 onderaan tot de doorbladerbare notities die je nu leest:
-
-![Meta-architectuur van de kennisgraaf: de lagen van Z80-hardware, via de ROM en de C-poort, tot de geannoteerde documenten en de Obsidian-vault](../kennisgraaf_meta_architectuur.svg)
-
-### Hoe een claim wordt gecontroleerd
-
-Niets hierin berust alleen op handwerk. Bronnen voeden generatoren, generatoren maken artefacten, en een reeks controles bewaakt de hele keten:
-
-![Verificatieketen van de kennisbank: bronnen voeden generatoren, generatoren maken artefacten, en geautomatiseerde controles verifiëren het resultaat](../kennisbank_verificatieketen.svg)
-
----
-
-## 🗂️ Inhoudsopgave van de C &amp; Header Annotated Bestanden
-
-### 🕸️ Afhankelijkheidsgrafen — welke pagina&#x27;s bij elkaar horen
-
-Elk `.c`-bestand hieronder heeft hier een geannoteerde pagina, maar die staan
-niet los van elkaar: één lezen betekent meestal eerst twee of drie andere lezen.
-De ontwerptijd-grafen in
-[`../../context/graphs/`](../../context/graphs/README.nl.md) tonen die
-structuur, gegenereerd uit dezelfde broncode die deze pagina&#x27;s annoteren.
-
-- [Bestands-callgraph](../../context/graphs/file_callgraph.md) 🕸️ — **de
-  afhankelijkheidsgraaf tussen bronbestanden.** Eén knoop per `.c`-bestand,
-  gegroepeerd in architectuurclusters. Gebruik hem om te zien welke geannoteerde
-  pagina&#x27;s je erbij nodig hebt, en tot welk cluster een bestand behoort.
-- [ROM-bank-callgraph](../../context/graphs/rom_bank_callgraph.md) 🧭 —
-  functies gesorteerd op de `[ASM: nnnn-nnnn]`-tag uit hun doc-commentaar,
-  dezelfde tag die de annotaties gebruiken. De brug tussen deze pagina&#x27;s,
-  [`context/mapping/`](../../context/mapping/README.nl.md) en `Phoenix.asm`.
-- [Domeinoverstijgende callgraph](../../context/graphs/cross_domain_callgraph.md) 🔀 —
-  alleen de aanroepen die hun eigen domein verlaten, en daar zitten de meeste
-  verrassingen in de port.
-
-Die grafen zijn een kaart, geen bewijs: ze komen uit een tekstuele scan, dus
-lees [hun README](../../context/graphs/README.nl.md) voor wat die scan niet
-ziet.
-
----
-
-### 🎨 Visuele Animaties &amp; Vliegpatronen
-- [`../../animations/nl/README.md`](../../animations/nl/README.md) 🎬 — **Visuele animatiegids &amp; SVG-analyse van alle vogel-animaties en vliegtrajecten in `c-phoenix/animations/`.**
-- [`../../animations/nl/animation-trajectory.md`](../../animations/nl/animation-trajectory.md) 🚀 — **Analyse van alle voorgeschreven vliegpatronen, ROM-clusters, vectoren en AI-scripts.**
-- [`../../animations/nl/animation-trajectory-detailed.md`](../../animations/nl/animation-trajectory-detailed.md) 📐 — **Gedetailleerde stap-voor-stap coördinatentabellen op het scherm-grid per individueel patroon.**
-- [`../../animations/nl/bird-animations.md`](../../animations/nl/bird-animations.md) 🦅 — **Analyse van de vogel-animatiefases.**
-
----
-
-### 1. Geheugenkaart, Hardware &amp; Core Headers (5 header-documenten)
-- [`phoenix-state-h.md`](phoenix-state-h.md) — Arcade RAM Geheugenkaart (`PhoenixState` struct, $4000–$4BFF) ([`phoenix_state.h`](../../phoenix_state.h)).
-- [`phoenix-hw-h.md`](phoenix-hw-h.md) — Hardware I/O poorten (`$5000`, `$5800`, `$6000`, `$6800`, `$7000`, `$7800`) en DIP-switches ([`phoenix_hw.h`](../../phoenix_hw.h)).
-- [`game-constants-h.md`](game-constants-h.md) — `PhoenixGameState` en `LEVEL_PATTERN_*` enums en knoppen-maskers ([`game_constants.h`](../../game_constants.h)).
-- [`phoenix-tables-h.md`](phoenix-tables-h.md) — Declaraties van ROM-opzoektabellen ([`phoenix_tables.h`](../../phoenix_tables.h)).
-- [`z80-core-h.md`](z80-core-h.md) — Z80 CPU bitrotatie en hulp-macros ([`z80_core.h`](../../z80_core.h)).
-
-### 2. Gameplay &amp; Entiteiten (8 C-bestanden + 5 H-bestanden)
-- [`alien-logic.md`](alien-logic.md) / [`alien-logic-h.md`](alien-logic-h.md) — Zwerm-aliens, vliegpatronen en explosieslots (`alien_logic.c` / `alien_logic.h`).
-- [`alien-wave.md`](alien-wave.md) — Hoofdlus voor alien-waves (level 1, 3 &amp; B), 4-frame interleaving en sterren-scrolling (`alien_wave.c`).
-- [`bird-logic.md`](bird-logic.md) / [`bird-logic-h.md`](bird-logic-h.md) — Hoofdlus voor vogel-waves (levels 5 &amp; 7) (`bird_logic.c` / `bird_logic.h`).
-- [`bird-wave-behavior.md`](bird-wave-behavior.md) — Vogel-toestandsmachine, ei-uitbroeden en duikvluchten (`bird_wave_behavior.c`).
-- [`birds-vertical-movement.md`](birds-vertical-movement.md) — Verticale scroll-registers (`B4BD2`) en afdaalsnelheden (`birds_vertical_movement.c`).
-- [`mothership-impl.md`](mothership-impl.md) — Moederschip tegel-inslag detectie, schild-doorboring en kern-explosies (`mothership_impl.c`).
-- [`mothership-logic.md`](mothership-logic.md) / [`mothership-logic-h.md`](mothership-logic-h.md) — Wissen van het moederschip en bonusscore-berekening (`mothership_logic.c` / `mothership_logic.h`).
-- [`player-logic.md`](player-logic.md) / [`player-logic-h.md`](player-logic-h.md) — Spelerschip besturing, schild-activatie (5s krachtveld) en kogelspawning (`player_logic.c` / `player_logic.h`).
-- [`player-explosion.md`](player-explosion.md) — Fragment-rendering en deeltjes-spatrasters (`player_explosion.c`).
-
-### 3. Botsing, Wapen &amp; Scoring (3 C-bestanden + 1 H-bestand)
-- [`collision-detection.md`](collision-detection.md) — VRAM tegel- &amp; pixelmasker botsingen met vogels/eieren (`collision_detection.c`).
-- [`weapon-collision.md`](weapon-collision.md) / [`weapon-collision-h.md`](weapon-collision-h.md) — Spelerkogels vs aliens, vijandelijke bommen en speler botsingen (`weapon_collision.c` / `weapon_collision.h`).
-- [`scoring.md`](scoring.md) — BCD-score optelling, High Score vergelijkingen en bonusleven-drempels (`scoring.c`).
-
-### 4. Game State Machine &amp; Modes (7 C-bestanden + 6 H-bestanden)
-- [`game-state-machine.md`](game-state-machine.md) / [`game-state-machine-h.md`](game-state-machine-h.md) — Centrale toestandsmachine (States 0 t/m 7) (`game_state_machine.c` / `game_state_machine.h`).
-- [`attract-mode.md`](attract-mode.md) / [`attract-mode-h.md`](attract-mode-h.md) — Splash-scherm sequencer, munten/credits en demo (`attract_mode.c` / `attract_mode.h`).
-- [`state-init.md`](state-init.md) / [`state-init-h.md`](state-init-h.md) — Level- &amp; game-initialisatie (State 2) (`state_init.c` / `state_init.h`).
-- [`state-play.md`](state-play.md) / [`state-play-h.md`](state-play-h.md) — Level dispatcher voor 12 levelfases (`state_play.c` / `state_play.h`).
-- [`state-endings.md`](state-endings.md) / [`state-endings-h.md`](state-endings-h.md) — Spelersexplosie (State 4), Game Over (State 5), Moederschipexplosie (State 6) (`state_endings.c` / `state_endings.h`).
-- [`init-global-level-data.md`](init-global-level-data.md) — Kopieert 12 configuratiebytes per levelpatroon naar RAM (`init_global_level_data.c`).
-- [`misc-logic.md`](misc-logic.md) — Achtergrond-sterrenstelsels en willekeurige bommen (`misc_logic.c`).
-
-### 5. Hardware, Rendering &amp; Audio (7 C-bestanden + 7 H-bestanden)
-- [`hw-video-audio.md`](hw-video-audio.md) / [`hw-video-audio-h.md`](hw-video-audio-h.md) — Main loop entry point (`RESET`), 60Hz VBlank (`hw_video_audio.c` / `hw_video_audio.h`).
-- [`sprite-rendering.md`](sprite-rendering.md) / [`sprite-rendering-h.md`](sprite-rendering-h.md) — 1x1, 2x1, 1x2 en 2x2 sprite rendering (`sprite_rendering.c` / `sprite_rendering.h`).
-- [`sound.md`](sound.md) / [`sound-h.md`](sound-h.md) — Audio mixer &amp; 44.1kHz frame renderer (`sound.c` / `sound.h`).
-- [`sound-discrete.md`](sound-discrete.md) / [`sound-discrete-h.md`](sound-discrete-h.md) — 555-multivibratoren, RC-circuits en Poly18 ruis (`sound_discrete.c` / `sound_discrete.h`).
-- [`sound-dispatcher.md`](sound-dispatcher.md) — Z80 per-frame sound dispatcher (`$3A10`), sirenes, intro-melodie (`sound_dispatcher.c`).
-- [`tms36xx.md`](tms36xx.md) / [`tms36xx-h.md`](tms36xx-h.md) — Texas Instruments TMS3615 / MM6221AA synthesizers (`tms36xx.c` / `tms36xx.h`).
-- [`mame-lofi-resampler.md`](mame-lofi-resampler.md) / [`mame-lofi-resampler-h.md`](mame-lofi-resampler-h.md) — 4-punts kubische resampler (`mame_lofi_resampler.c` / `mame_lofi_resampler.h`).
-
-### 6. Tabellen, Utilities, Platform &amp; Support (5 C-bestanden + 5 H-bestanden)
-- [`phoenix-tables.md`](phoenix-tables.md) — Geëxtraheerde Arcade ROM opzoektabellen (`phoenix_tables.c`).
-- [`utilities.md`](utilities.md) / [`utilities-h.md`](utilities-h.md) — RAM/VRAM abstracties (`mem_read`/`mem_write`), BCD-print (`utilities.c` / `utilities.h`).
-- [`platform-sdl.md`](platform-sdl.md) — SDL2 vensterbeheer en VRAM-bankswapping (`platform_sdl.c`).
-- [`coverage.md`](coverage.md) / [`coverage-h.md`](coverage-h.md) — Runtime-instrumentatie voor lockstep-testen (`coverage.c` / `coverage.h`).
-- [`rom-compat-stubs.md`](rom-compat-stubs.md) — ROM-compatibiliteit stubs en &quot;AMSTAR&quot; copyright-check (`rom_compat_stubs.c`).
-- [`runtime-call-trace.md`](runtime-call-trace.md) — Binaire profiling hooks (`runtime_call_trace.c`).
-- [`phoenix-render-assets-h.md`](phoenix-render-assets-h.md) — Tegel-assets en kleurenpaletten (`phoenix_render_assets.h`).
-- [`walkthrough.md`](walkthrough.md) — Samenvatting en opleveringsdocument.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>README</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="phoenix-c--header-annotated-knowledge-graph-documentatie">Phoenix C
+&amp; Header Annotated Knowledge Graph Documentatie</h1>
+<p>Welkom bij de <strong>C &amp; Header-Annotated Knowledge Graph
+Documentatie</strong> voor de C-port van de <em>Phoenix</em> Arcade Game
+(<code>c-phoenix</code>).</p>
+<p>Deze directory bevat een volledige verzameling van <strong>56
+diepgaande geannoteerde documenten</strong> (32 <code>.c</code>
+bronbestanden + 24 <code>.h</code> headerbestanden), waarin elk
+onderdeel uit het project tot op functie-, geheugenkaart- en
+hardwarepoort-niveau wordt ontleed en onderling met elkaar is
+verbonden.</p>
+<hr />
+<h2 id="dart-doel--concept">🎯 Doel &amp; Concept</h2>
+<p>Het doel van deze documentatieset is het bieden van een navigeerbare,
+<strong>interactieve Knowledge Graph</strong> over de geporteerde
+C-codebase van <em>Phoenix</em>.</p>
+<p>Elke functie, structuur en header in elk document is voorzien
+van:</p>
+<ol type="1">
+<li><strong>Functionaliteit &amp; Arcade-achtergrond:</strong>
+Verhalende uitleg van het spelgedrag, RAM-kaart ($4000–$4BFF), I/O
+poorten en Z80 ROM-adresbereiken.</li>
+<li><strong>Geheugen- &amp; Structuur-context:</strong> Gebruikte
+RAM-slots (zoals <code>$4370</code>, <code>$4B50</code>), registers,
+vlaggen en bitwise maskers.</li>
+<li><strong>Knowledge Graph Koppelingen:</strong>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong> Directe links naar de
+functies die door deze functie worden aangeroepen.</li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+Directe links naar de functies die deze functie aanroepen.</li>
+</ul></li>
+<li><strong>Relatieve Verwijzingen:</strong> Alle broncode- en
+documentatielinks gebruiken relatieve paden (bijv.
+<code>[phoenix_state.h](../../phoenix_state.h#L8)</code>).</li>
+</ol>
+<h3 id="bronstatus">Bronstatus</h3>
+<p>De bron van waarheid is, in deze volgorde: <strong>Z80 ASM/ROM →
+C-port → deze geannoteerde analyse → visuele toelichting</strong>.
+Technische conclusies in de analyse horen daarom naar de relevante
+ASM-range, ROM-tabel of C-routine te verwijzen; conclusies zonder zo'n
+koppeling zijn interpretaties die nog gecontroleerd moeten worden.</p>
+<p>De machineleesbare kern en de instructies voor regeneratie staan in
+<a href="../knowledge-graph.html"><code>knowledge-graph.md</code></a>; de
+gegenereerde data staat in <a
+href="../knowledge-graph.json"><code>knowledge-graph.json</code></a>.</p>
+<h3 id="interactieve-verkenner">Interactieve verkenner</h3>
+<p><a href="../knowledge-base-explorer/index.html">Open de Knowledge
+Base Explorer</a> om de gevalideerde graaf te doorzoeken en relaties te
+volgen tussen C-functies, Z80-routines, RAM/ROM-nodes, states, claims en
+de bestaande documentatie. Hij wordt uit
+<code>knowledge-graph.json</code> gegenereerd, voegt zelf geen claims
+toe en opent rechtstreeks via <code>file://</code>.</p>
+<p><img src="../knowledge-base-explorer-overview.svg"
+alt="Overzicht van de Knowledge Base Explorer" /></p>
+<h3 id="hoe-de-lagen-op-elkaar-aansluiten">Hoe de lagen op elkaar
+aansluiten</h3>
+<p>Van de Z80-hardware uit 1980 onderaan tot de doorbladerbare notities
+die je nu leest:</p>
+<p><img src="../kennisgraaf_meta_architectuur.svg"
+alt="Meta-architectuur van de kennisgraaf: de lagen van Z80-hardware, via de ROM en de C-poort, tot de geannoteerde documenten en de Obsidian-vault" /></p>
+<h3 id="hoe-een-claim-wordt-gecontroleerd">Hoe een claim wordt
+gecontroleerd</h3>
+<p>Niets hierin berust alleen op handwerk. Bronnen voeden generatoren,
+generatoren maken artefacten, en een reeks controles bewaakt de hele
+keten:</p>
+<p><img src="../kennisbank_verificatieketen.svg"
+alt="Verificatieketen van de kennisbank: bronnen voeden generatoren, generatoren maken artefacten, en geautomatiseerde controles verifiëren het resultaat" /></p>
+<hr />
+<h2
+id="card_index_dividers-inhoudsopgave-van-de-c--header-annotated-bestanden">🗂️
+Inhoudsopgave van de C &amp; Header Annotated Bestanden</h2>
+<h3
+id="spider_web-afhankelijkheidsgrafen--welke-paginas-bij-elkaar-horen">🕸️
+Afhankelijkheidsgrafen — welke pagina's bij elkaar horen</h3>
+<p>Elk <code>.c</code>-bestand hieronder heeft hier een geannoteerde
+pagina, maar die staan niet los van elkaar: één lezen betekent meestal
+eerst twee of drie andere lezen. De ontwerptijd-grafen in <a
+href="../../context/graphs/README.nl.html"><code>../../context/graphs/</code></a>
+tonen die structuur, gegenereerd uit dezelfde broncode die deze pagina's
+annoteren.</p>
+<ul>
+<li><a
+href="../../context/graphs/file_callgraph.html">Bestands-callgraph</a> 🕸️
+— <strong>de afhankelijkheidsgraaf tussen bronbestanden.</strong> Eén
+knoop per <code>.c</code>-bestand, gegroepeerd in architectuurclusters.
+Gebruik hem om te zien welke geannoteerde pagina's je erbij nodig hebt,
+en tot welk cluster een bestand behoort.</li>
+<li><a
+href="../../context/graphs/rom_bank_callgraph.html">ROM-bank-callgraph</a>
+🧭 — functies gesorteerd op de <code>[ASM: nnnn-nnnn]</code>-tag uit hun
+doc-commentaar, dezelfde tag die de annotaties gebruiken. De brug tussen
+deze pagina's, <a
+href="../../context/mapping/README.nl.html"><code>context/mapping/</code></a>
+en <code>Phoenix.asm</code>.</li>
+<li><a
+href="../../context/graphs/cross_domain_callgraph.html">Domeinoverstijgende
+callgraph</a> 🔀 — alleen de aanroepen die hun eigen domein verlaten, en
+daar zitten de meeste verrassingen in de port.</li>
+</ul>
+<p>Die grafen zijn een kaart, geen bewijs: ze komen uit een tekstuele
+scan, dus lees <a href="../../context/graphs/README.nl.html">hun
+README</a> voor wat die scan niet ziet.</p>
+<hr />
+<h3 id="art-visuele-animaties--vliegpatronen">🎨 Visuele Animaties &amp;
+Vliegpatronen</h3>
+<ul>
+<li><a
+href="../../animations/nl/README.html"><code>../../animations/nl/README.md</code></a>
+🎬 — <strong>Visuele animatiegids &amp; SVG-analyse van alle
+vogel-animaties en vliegtrajecten in
+<code>c-phoenix/animations/</code>.</strong></li>
+<li><a
+href="../../animations/nl/animation-trajectory.html"><code>../../animations/nl/animation-trajectory.md</code></a>
+🚀 — <strong>Analyse van alle voorgeschreven vliegpatronen,
+ROM-clusters, vectoren en AI-scripts.</strong></li>
+<li><a
+href="../../animations/nl/animation-trajectory-detailed.html"><code>../../animations/nl/animation-trajectory-detailed.md</code></a>
+📐 — <strong>Gedetailleerde stap-voor-stap coördinatentabellen op het
+scherm-grid per individueel patroon.</strong></li>
+<li><a
+href="../../animations/nl/bird-animations.html"><code>../../animations/nl/bird-animations.md</code></a>
+🦅 — <strong>Analyse van de vogel-animatiefases.</strong></li>
+</ul>
+<hr />
+<h3 id="1-geheugenkaart-hardware--core-headers-5-header-documenten">1.
+Geheugenkaart, Hardware &amp; Core Headers (5 header-documenten)</h3>
+<ul>
+<li><a href="phoenix-state-h.html"><code>phoenix-state-h.md</code></a> —
+Arcade RAM Geheugenkaart (<code>PhoenixState</code> struct, $4000–$4BFF)
+(<a href="../../phoenix_state.h"><code>phoenix_state.h</code></a>).</li>
+<li><a href="phoenix-hw-h.html"><code>phoenix-hw-h.md</code></a> —
+Hardware I/O poorten (<code>$5000</code>, <code>$5800</code>,
+<code>$6000</code>, <code>$6800</code>, <code>$7000</code>,
+<code>$7800</code>) en DIP-switches (<a
+href="../../phoenix_hw.h"><code>phoenix_hw.h</code></a>).</li>
+<li><a href="game-constants-h.html"><code>game-constants-h.md</code></a> —
+<code>PhoenixGameState</code> en <code>LEVEL_PATTERN_*</code> enums en
+knoppen-maskers (<a
+href="../../game_constants.h"><code>game_constants.h</code></a>).</li>
+<li><a href="phoenix-tables-h.html"><code>phoenix-tables-h.md</code></a> —
+Declaraties van ROM-opzoektabellen (<a
+href="../../phoenix_tables.h"><code>phoenix_tables.h</code></a>).</li>
+<li><a href="z80-core-h.html"><code>z80-core-h.md</code></a> — Z80 CPU
+bitrotatie en hulp-macros (<a
+href="../../z80_core.h"><code>z80_core.h</code></a>).</li>
+</ul>
+<h3 id="2-gameplay--entiteiten-8-c-bestanden--5-h-bestanden">2. Gameplay
+&amp; Entiteiten (8 C-bestanden + 5 H-bestanden)</h3>
+<ul>
+<li><a href="alien-logic.html"><code>alien-logic.md</code></a> / <a
+href="alien-logic-h.html"><code>alien-logic-h.md</code></a> —
+Zwerm-aliens, vliegpatronen en explosieslots (<code>alien_logic.c</code>
+/ <code>alien_logic.h</code>).</li>
+<li><a href="alien-wave.html"><code>alien-wave.md</code></a> — Hoofdlus
+voor alien-waves (level 1, 3 &amp; B), 4-frame interleaving en
+sterren-scrolling (<code>alien_wave.c</code>).</li>
+<li><a href="bird-logic.html"><code>bird-logic.md</code></a> / <a
+href="bird-logic-h.html"><code>bird-logic-h.md</code></a> — Hoofdlus voor
+vogel-waves (levels 5 &amp; 7) (<code>bird_logic.c</code> /
+<code>bird_logic.h</code>).</li>
+<li><a
+href="bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a> —
+Vogel-toestandsmachine, ei-uitbroeden en duikvluchten
+(<code>bird_wave_behavior.c</code>).</li>
+<li><a
+href="birds-vertical-movement.html"><code>birds-vertical-movement.md</code></a>
+— Verticale scroll-registers (<code>B4BD2</code>) en afdaalsnelheden
+(<code>birds_vertical_movement.c</code>).</li>
+<li><a href="mothership-impl.html"><code>mothership-impl.md</code></a> —
+Moederschip tegel-inslag detectie, schild-doorboring en kern-explosies
+(<code>mothership_impl.c</code>).</li>
+<li><a href="mothership-logic.html"><code>mothership-logic.md</code></a> /
+<a href="mothership-logic-h.html"><code>mothership-logic-h.md</code></a> —
+Wissen van het moederschip en bonusscore-berekening
+(<code>mothership_logic.c</code> /
+<code>mothership_logic.h</code>).</li>
+<li><a href="player-logic.html"><code>player-logic.md</code></a> / <a
+href="player-logic-h.html"><code>player-logic-h.md</code></a> —
+Spelerschip besturing, schild-activatie (5s krachtveld) en kogelspawning
+(<code>player_logic.c</code> / <code>player_logic.h</code>).</li>
+<li><a href="player-explosion.html"><code>player-explosion.md</code></a> —
+Fragment-rendering en deeltjes-spatrasters
+(<code>player_explosion.c</code>).</li>
+</ul>
+<h3 id="3-botsing-wapen--scoring-3-c-bestanden--1-h-bestand">3. Botsing,
+Wapen &amp; Scoring (3 C-bestanden + 1 H-bestand)</h3>
+<ul>
+<li><a
+href="collision-detection.html"><code>collision-detection.md</code></a> —
+VRAM tegel- &amp; pixelmasker botsingen met vogels/eieren
+(<code>collision_detection.c</code>).</li>
+<li><a href="weapon-collision.html"><code>weapon-collision.md</code></a> /
+<a href="weapon-collision-h.html"><code>weapon-collision-h.md</code></a> —
+Spelerkogels vs aliens, vijandelijke bommen en speler botsingen
+(<code>weapon_collision.c</code> /
+<code>weapon_collision.h</code>).</li>
+<li><a href="scoring.html"><code>scoring.md</code></a> — BCD-score
+optelling, High Score vergelijkingen en bonusleven-drempels
+(<code>scoring.c</code>).</li>
+</ul>
+<h3 id="4-game-state-machine--modes-7-c-bestanden--6-h-bestanden">4.
+Game State Machine &amp; Modes (7 C-bestanden + 6 H-bestanden)</h3>
+<ul>
+<li><a
+href="game-state-machine.html"><code>game-state-machine.md</code></a> / <a
+href="game-state-machine-h.html"><code>game-state-machine-h.md</code></a>
+— Centrale toestandsmachine (States 0 t/m 7)
+(<code>game_state_machine.c</code> /
+<code>game_state_machine.h</code>).</li>
+<li><a href="attract-mode.html"><code>attract-mode.md</code></a> / <a
+href="attract-mode-h.html"><code>attract-mode-h.md</code></a> —
+Splash-scherm sequencer, munten/credits en demo
+(<code>attract_mode.c</code> / <code>attract_mode.h</code>).</li>
+<li><a href="state-init.html"><code>state-init.md</code></a> / <a
+href="state-init-h.html"><code>state-init-h.md</code></a> — Level- &amp;
+game-initialisatie (State 2) (<code>state_init.c</code> /
+<code>state_init.h</code>).</li>
+<li><a href="state-play.html"><code>state-play.md</code></a> / <a
+href="state-play-h.html"><code>state-play-h.md</code></a> — Level
+dispatcher voor 12 levelfases (<code>state_play.c</code> /
+<code>state_play.h</code>).</li>
+<li><a href="state-endings.html"><code>state-endings.md</code></a> / <a
+href="state-endings-h.html"><code>state-endings-h.md</code></a> —
+Spelersexplosie (State 4), Game Over (State 5), Moederschipexplosie
+(State 6) (<code>state_endings.c</code> /
+<code>state_endings.h</code>).</li>
+<li><a
+href="init-global-level-data.html"><code>init-global-level-data.md</code></a>
+— Kopieert 12 configuratiebytes per levelpatroon naar RAM
+(<code>init_global_level_data.c</code>).</li>
+<li><a href="misc-logic.html"><code>misc-logic.md</code></a> —
+Achtergrond-sterrenstelsels en willekeurige bommen
+(<code>misc_logic.c</code>).</li>
+</ul>
+<h3 id="5-hardware-rendering--audio-7-c-bestanden--7-h-bestanden">5.
+Hardware, Rendering &amp; Audio (7 C-bestanden + 7 H-bestanden)</h3>
+<ul>
+<li><a href="hw-video-audio.html"><code>hw-video-audio.md</code></a> / <a
+href="hw-video-audio-h.html"><code>hw-video-audio-h.md</code></a> — Main
+loop entry point (<code>RESET</code>), 60Hz VBlank
+(<code>hw_video_audio.c</code> / <code>hw_video_audio.h</code>).</li>
+<li><a href="sprite-rendering.html"><code>sprite-rendering.md</code></a> /
+<a href="sprite-rendering-h.html"><code>sprite-rendering-h.md</code></a> —
+1x1, 2x1, 1x2 en 2x2 sprite rendering (<code>sprite_rendering.c</code> /
+<code>sprite_rendering.h</code>).</li>
+<li><a href="sound.html"><code>sound.md</code></a> / <a
+href="sound-h.html"><code>sound-h.md</code></a> — Audio mixer &amp;
+44.1kHz frame renderer (<code>sound.c</code> /
+<code>sound.h</code>).</li>
+<li><a href="sound-discrete.html"><code>sound-discrete.md</code></a> / <a
+href="sound-discrete-h.html"><code>sound-discrete-h.md</code></a> —
+555-multivibratoren, RC-circuits en Poly18 ruis
+(<code>sound_discrete.c</code> / <code>sound_discrete.h</code>).</li>
+<li><a href="sound-dispatcher.html"><code>sound-dispatcher.md</code></a> —
+Z80 per-frame sound dispatcher (<code>$3A10</code>), sirenes,
+intro-melodie (<code>sound_dispatcher.c</code>).</li>
+<li><a href="tms36xx.html"><code>tms36xx.md</code></a> / <a
+href="tms36xx-h.html"><code>tms36xx-h.md</code></a> — Texas Instruments
+TMS3615 / MM6221AA synthesizers (<code>tms36xx.c</code> /
+<code>tms36xx.h</code>).</li>
+<li><a
+href="mame-lofi-resampler.html"><code>mame-lofi-resampler.md</code></a> /
+<a
+href="mame-lofi-resampler-h.html"><code>mame-lofi-resampler-h.md</code></a>
+— 4-punts kubische resampler (<code>mame_lofi_resampler.c</code> /
+<code>mame_lofi_resampler.h</code>).</li>
+</ul>
+<h3
+id="6-tabellen-utilities-platform--support-5-c-bestanden--5-h-bestanden">6.
+Tabellen, Utilities, Platform &amp; Support (5 C-bestanden + 5
+H-bestanden)</h3>
+<ul>
+<li><a href="phoenix-tables.html"><code>phoenix-tables.md</code></a> —
+Geëxtraheerde Arcade ROM opzoektabellen
+(<code>phoenix_tables.c</code>).</li>
+<li><a href="utilities.html"><code>utilities.md</code></a> / <a
+href="utilities-h.html"><code>utilities-h.md</code></a> — RAM/VRAM
+abstracties (<code>mem_read</code>/<code>mem_write</code>), BCD-print
+(<code>utilities.c</code> / <code>utilities.h</code>).</li>
+<li><a href="platform-sdl.html"><code>platform-sdl.md</code></a> — SDL2
+vensterbeheer en VRAM-bankswapping (<code>platform_sdl.c</code>).</li>
+<li><a href="coverage.html"><code>coverage.md</code></a> / <a
+href="coverage-h.html"><code>coverage-h.md</code></a> —
+Runtime-instrumentatie voor lockstep-testen (<code>coverage.c</code> /
+<code>coverage.h</code>).</li>
+<li><a href="rom-compat-stubs.html"><code>rom-compat-stubs.md</code></a> —
+ROM-compatibiliteit stubs en "AMSTAR" copyright-check
+(<code>rom_compat_stubs.c</code>).</li>
+<li><a
+href="runtime-call-trace.html"><code>runtime-call-trace.md</code></a> —
+Binaire profiling hooks (<code>runtime_call_trace.c</code>).</li>
+<li><a
+href="phoenix-render-assets-h.html"><code>phoenix-render-assets-h.md</code></a>
+— Tegel-assets en kleurenpaletten
+(<code>phoenix_render_assets.h</code>).</li>
+<li><a href="walkthrough.html"><code>walkthrough.md</code></a> —
+Samenvatting en opleveringsdocument.</li>
+</ul>
+</body></html>

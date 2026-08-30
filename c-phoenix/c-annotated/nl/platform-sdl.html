@@ -1,31 +1,55 @@
-<!doctype html><html><head><meta charset="utf-8"><title>platform-sdl</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>platform-sdl</h1><pre># SDL2 Platform Host (`platform_sdl.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`platform_sdl.c`](../../platform_sdl.c). Deze module bevat de hoofd-entrypoint van de applicatie, het SDL2-vensterbeheer, toetsenbordinvoer, VRAM-bankswapping en de audio/video 60Hz vblank synchronisatie.
-
----
-
-## Inhoudsopgave
-1. [Platform Host &amp; Main Loop](#1-platform-host--main-loop)
-2. [Hardware Emulatie &amp; Bank-swapping](#2-hardware-emulatie--bank-swapping)
-
----
-
-## 1. Platform Host &amp; Main Loop
-
-### `main`
-#### **Beschrijving**
-De functie `main` initialiseert de SDL2 subsystemen (video en audio), opent het Phoenix-arcadevenster (256x224 schaalbaar), start de audio-stream thread en de 60Hz vblank-timer, en start de Z80-geporteerde hoofdlus [`phoenix_main_loop`](hw-video-audio.md#phoenix_main_loop).
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`sound_init`](sound.md#sound_init) — [`sound.c`](../../sound.c)
-  - [`phoenix_main_loop`](hw-video-audio.md#phoenix_main_loop) — [`hw_video_audio.c`](../../hw_video_audio.c)
-
----
-
-## 2. Hardware Emulatie &amp; Bank-swapping
-
-### `bank_swap_to` &amp; `copy_memory_bank`
-#### **Beschrijving**
-- `bank_swap_to`: Emuleert het fysieke bank-swappen van de twee 3KB VRAM-banken (Player 1 RAM versus Player 2 RAM).
-- [`copy_memory_bank`](../../platform_sdl.c#L90-L137) (Z80 ROM: `$0460–$049D`): Kopiëert de gedeelde header-rijen en achtergrondparameters tussen Player 1 en Player 2 banken.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>platform-sdl</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="sdl2-platform-host-platform_sdlc---c-annotated-knowledge-graph-documentatie">SDL2
+Platform Host (<code>platform_sdl.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../platform_sdl.c"><code>platform_sdl.c</code></a>. Deze module
+bevat de hoofd-entrypoint van de applicatie, het SDL2-vensterbeheer,
+toetsenbordinvoer, VRAM-bankswapping en de audio/video 60Hz vblank
+synchronisatie.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-platform-host--main-loop">Platform Host &amp; Main
+Loop</a></li>
+<li><a href="#2-hardware-emulatie--bank-swapping">Hardware Emulatie
+&amp; Bank-swapping</a></li>
+</ol>
+<hr />
+<h2 id="1-platform-host--main-loop">1. Platform Host &amp; Main
+Loop</h2>
+<h3 id="main"><code>main</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <code>main</code> initialiseert de SDL2 subsystemen (video
+en audio), opent het Phoenix-arcadevenster (256x224 schaalbaar), start
+de audio-stream thread en de 60Hz vblank-timer, en start de
+Z80-geporteerde hoofdlus <a
+href="hw-video-audio.html#phoenix_main_loop"><code>phoenix_main_loop</code></a>.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
+href="../../sound.c"><code>sound.c</code></a></li>
+<li><a
+href="hw-video-audio.html#phoenix_main_loop"><code>phoenix_main_loop</code></a>
+— <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-hardware-emulatie--bank-swapping">2. Hardware Emulatie &amp;
+Bank-swapping</h2>
+<h3 id="bank_swap_to--copy_memory_bank"><code>bank_swap_to</code> &amp;
+<code>copy_memory_bank</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<ul>
+<li><code>bank_swap_to</code>: Emuleert het fysieke bank-swappen van de
+twee 3KB VRAM-banken (Player 1 RAM versus Player 2 RAM).</li>
+<li><a
+href="../../platform_sdl.c#L90-L137"><code>copy_memory_bank</code></a>
+(Z80 ROM: <code>$0460–$049D</code>): Kopiëert de gedeelde header-rijen
+en achtergrondparameters tussen Player 1 en Player 2 banken.</li>
+</ul>
+</body></html>

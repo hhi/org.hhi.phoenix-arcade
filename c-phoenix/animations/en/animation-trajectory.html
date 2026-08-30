@@ -1,321 +1,871 @@
-<!doctype html><html><head><meta charset="utf-8"><title>animation-trajectory</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>animation-trajectory</h1><pre># Phoenix Animation Trajectories &amp; Prescribed Movement Patterns (`animation-trajectory.md`)
-
-This document provides an in-depth Knowledge Graph analysis of **prescribed movement patterns, vector tables, Z80 ROM clusters, ROM addresses, RAM data structures, and AI flight scripts** in the *Phoenix* Arcade codebase. The classification as **closed loop** or **open trajectory** is derived from ROM vectors; the directory contains 78 SVG files, including pattern representations and master overview animations.
-
----
-
-## Table of Contents
-1. [Overview of Flight Pattern Architecture &amp; Z80 Memory Loop](#1-overview-of-flight-pattern-architecture--z80-memory-loop)
-2. [Difference Between Closed Loop and Open Trajectory Patterns](#2-difference-between-closed-loop-and-open-trajectory-patterns)
-3. [Why Different Clusters &amp; Chapter Structuring?](#3-why-different-clusters--chapter-structuring)
-4. [Alien Cluster A Patterns — Wave 1 &amp; 3 Formations (Patterns 01 through 18)](#4-alien-cluster-a-patterns--wave-1--3-formations-patterns-01-through-18)
-5. [Alien Cluster B Patterns — Breakout &amp; Escorts (Patterns 19 through 36)](#5-alien-cluster-b-patterns--breakout--escorts-patterns-19-through-36)
-6. [Bird Flight Trajectories &amp; AI Behavior Scripts](#6-bird-flight-trajectories--ai-behavior-scripts)
-7. [Mothership &amp; Attract Mode Movement Paths](#7-mothership--attract-mode-movement-paths)
-8. [Execution Loop &amp; Mermaid Diagram](#8-execution-loop--mermaid-diagram)
-
----
-
-## 1. Overview of Flight Pattern Architecture &amp; Z80 Memory Loop
-
-In the *Phoenix* arcade hardware, enemy movements (aliens, birds, and mothership) are not calculated dynamically via physical forces, but controlled via **static vectorial lookup tables** stored in Z80 ROM in [`phoenix_tables.c`](../../phoenix_tables.c) / [`phoenix_tables.h`](../../phoenix_tables.h).
-
-### **Memory Map &amp; RAM Data Structures**
-Each active entity on screen utilizes a specific memory layout in Arcade RAM (`$4000–$4BFF`):
-
-| RAM Address / Offset | Variable / Register | Functional Description |
-|---|---|---|
-| `$43C0–$43DF` | `PlayerShipX` / Bullet Grid | Player ship coordinates and active player bullets |
-| `$4360–$437F` | `M436D`, `M436E`, `M436F` | Bird AI phase registers, descent targets, and random dive thresholds |
-| `$4B50–$4B6F` | `AlienPointerTable` | 16-bit RAM pointers indicating the active step in a flight pattern |
-| `$4800–$4B3F` | `BackgroundScreen` / VRAM | 90° rotated 32x32 tile matrix video buffer (832 bytes per page) |
-
-### **Vector Transformation &amp; Indexing**
-A RAM pointer (e.g. at offset `$4B50`) reads one step byte from ROM per frame. The byte is already a direction-vector number in the range `0x00–0x1F`; it is **not** masked at this point. The Z80 performs one `RLCA`, which is equivalent to multiplying this bounded value by two and therefore selects one pair in [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
-
-1. `vector_offset = step_byte × 2`
-2. `delta_x = phoenix_alien_direction_vectors[vector_offset]`
-3. `delta_y = phoenix_alien_direction_vectors[vector_offset + 1]`
-4. `x = x + delta_x`; `y = y + delta_y`
-
-In other words: each pattern byte chooses one `(delta_x, delta_y)` pair, and that pair moves the alien by one vector step.
-
----
-
-### **Master Overview Animation of All Flight Trajectories**
-The animated SVG below demonstrates the simultaneous operation of the entire Arcade vector system: the alien dive loop (cyan), the bird sine dive with bomb dropping (magenta/yellow), and the steady mothership descent trajectory (green):
-
-![Phoenix Master Flight Path Overview](../00_overview_flight_patterns.svg)
-
-#### **Knowledge Graph Links**
-* **Relevant C Source Files:**
-  - [`phoenix_tables.c`](../../phoenix_tables.c) → [`phoenix-tables.md`](../../c-annotated/en/phoenix-tables.md)
-  - [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](../../c-annotated/en/alien-logic.md)
-  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/en/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/en/bird-wave-behavior.md)
-  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/en/attract-mode.md)
-
----
-
-## 2. Difference Between Closed Loop and Open Trajectory Patterns
-
-Vector integration of the ROM patterns described below distinguishes **two movement pattern types** in the *Phoenix* engine:
-
-| Property | 🔄 Closed Loop Patterns | ↗️ Open Trajectory Patterns |
-|---|---|---|
-| **Net Displacement** | ΣΔX = 0 and ΣΔY = 0 | ΣΔX ≠ 0 or ΣΔY ≠ 0 |
-| **Shape &amp; Path** | The entity leaves its formation origin (X0, Y0), completes a circular, oval, or figure-8 loop, and **returns exactly to (X0, Y0)**. | The entity executes a screen-wide displacement or breakout sprint across the screen (e.g. downward or diagonally). |
-| **Typical Patterns** | Cluster A Patterns `01`, `02`, `07`, `10`, `11`, `12` &amp; Cluster B Pattern `23`. | Cluster A Patterns `03`, `04`, `05`, `06`, `08`, `09`, `13–18` &amp; Cluster B Patterns `19–22`, `24–36`. |
-| **End-of-Loop Logic** | At the `0x00` terminator, the pattern restarts seamlessly from the beginning at the same anchor address. | At the `0x00` terminator or screen boundary, the game engine triggers a breakout repositioning ([`l3028`](../../c-annotated/en/alien-logic.md#l3028)) or re-orientation ([`l3672_aim`](../../c-annotated/en/bird-wave-behavior.md#l3672_aim)). |
-
----
-
-## 3. Why Different Clusters &amp; Chapter Structuring?
-
-### **1. Why Separate ROM &quot;Clusters&quot;?**
-The C-port models movement data as two distinct ROM ranges (&quot;clusters&quot;), derived from table mappings and ASM address ranges:
-
-1. **Cluster A (ROM `$1000–$13FF` / 1024 bytes):**
-   - **Location:** ROM chip 1 at `$1000`.
-   - **Function:** Contains **Patterns 01 through 18** (`phoenix_alien_movement_cluster_a`). These are primarily closed formation loops used during **Alien Wave 1 and Wave 3** (orderly swarm formations with small and medium aliens).
-   - **Initialization:** The table [`phoenix_alien_layout_pointers`](../../phoenix_tables.h#L139) initializes alien pointers to the start of this ROM page at `$1000` by default.
-
-2. **Cluster B (ROM `$2C00–$2FFF` / 1024 bytes):**
-   - **Location:** ROM chip 3 at `$2C00`.
-   - **Function:** Contains **Patterns 19 through 36** (`phoenix_alien_movement_cluster_b`). These are primarily open breakout patterns used by **Breakout aliens** (aliens breaking out of formation) and **Mothership escort waves** (Levels 9, 10, and 11).
-   - **Breakout Mechanism:** The breakout scheduler [`l3028`](../../c-annotated/en/alien-logic.md#l3028) in `alien_logic.c` jumps directly to entry addresses `$2E00` and `$2E40` in Cluster B upon attack.
-
----
-
-### **2. Why This Chapter Organization? (Game Engine Subsystems)**
-The structure in this document aligns with the 4 physical game entity subsystems of the Arcade Z80 engine:
-
-- **Chapter 4 (Alien Cluster A):** Formation aliens in Waves 1 &amp; 3.
-- **Chapter 5 (Alien Cluster B):** Breakout attack aliens &amp; mothership escorts.
-- **Chapter 6 (Bird AI Scripts &amp; Dive Spawns):** Bird swarms in Waves 5 &amp; 7, including egg hatching, climbing, wing flapping, and sine dive-bombers.
-- **Chapter 7 (Mothership &amp; Attract Mode):** The 26x9 mothership tile matrix, Attract Mode intro bird, and background decorations.
-
----
-
-## 4. Alien Cluster A Patterns — Wave 1 &amp; 3 Formations (Patterns 01 through 18)
-
-### **Detailed Cluster A Analysis**
-- **ROM Address Range:** `$1000–$13FF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L73).
-- **Structure:** 18 closed-loop &amp; open-trajectory patterns (`T1020` through `T13D0`), each consisting of vector indices terminated by `0x00` and padded with `0xFF`.
-- **Closed vs Open:** Patterns `01`, `02`, `07`, `10`, `11`, `12` are **Closed Loops** (ΣΔ = (0,0)). Patterns `03`, `04`, `05`, `06`, `08`, `09`, `13–18` are **Open Trajectories**.
-
-### **Cluster A Overview Animation**
-![Alien Cluster A Overview Animation](../07_alien_closed_loop_cluster_a.svg)
-
----
-
-### **Detailed Pattern Breakdown (01 through 18)**
-
-#### Patterns 01 through 06
-| Pattern 01 (ROM $1020, 64b — Closed) | Pattern 02 (ROM $1064, 64b — Closed) |
-|---|---|
-| ![Alien Cluster A Pattern 01](../cluster_a/pattern_01.svg) | ![Alien Cluster A Pattern 02](../cluster_a/pattern_02.svg) |
-
-| Pattern 03 (ROM $10A8, 40b — Open) | Pattern 04 (ROM $10D4, 40b — Open) |
-|---|---|
-| ![Alien Cluster A Pattern 03](../cluster_a/pattern_03.svg) | ![Alien Cluster A Pattern 04](../cluster_a/pattern_04.svg) |
-
-| Pattern 05 (ROM $1100, 43b — Open) | Pattern 06 (ROM $1130, 43b — Open) |
-|---|---|
-| ![Alien Cluster A Pattern 05](../cluster_a/pattern_05.svg) | ![Alien Cluster A Pattern 06](../cluster_a/pattern_06.svg) |
-
----
-
-#### Patterns 07 through 12
-| Pattern 07 (ROM $1160, 64b — Closed) | Pattern 08 (ROM $11A4, 40b — Open) |
-|---|---|
-| ![Alien Cluster A Pattern 07](../cluster_a/pattern_07.svg) | ![Alien Cluster A Pattern 08](../cluster_a/pattern_08.svg) |
-
-| Pattern 09 (ROM $11D0, 45b — Open) | Pattern 10 (ROM $1200, 64b — Closed) |
-|---|---|
-| ![Alien Cluster A Pattern 09](../cluster_a/pattern_09.svg) | ![Alien Cluster A Pattern 10](../cluster_a/pattern_10.svg) |
-
-| Pattern 11 (ROM $1244, 64b — Closed) | Pattern 12 (ROM $1288, 64b — Closed) |
-|---|---|
-| ![Alien Cluster A Pattern 11](../cluster_a/pattern_11.svg) | ![Alien Cluster A Pattern 12](../cluster_a/pattern_12.svg) |
-
----
-
-#### Patterns 13 through 18
-| Pattern 13 (ROM $12CA, 53b — Open) | Pattern 14 (ROM $1300, 36b — Open) |
-|---|---|
-| ![Alien Cluster A Pattern 13](../cluster_a/pattern_13.svg) | ![Alien Cluster A Pattern 14](../cluster_a/pattern_14.svg) |
-
-| Pattern 15 (ROM $1328, 38b — Open) | Pattern 16 (ROM $1354, 69b — Open) |
-|---|---|
-| ![Alien Cluster A Pattern 15](../cluster_a/pattern_15.svg) | ![Alien Cluster A Pattern 16](../cluster_a/pattern_16.svg) |
-
-| Pattern 17 (ROM $139C, 49b — Open) | Pattern 18 (ROM $13D0, 43b — Open) |
-|---|---|
-| ![Alien Cluster A Pattern 17](../cluster_a/pattern_17.svg) | ![Alien Cluster A Pattern 18](../cluster_a/pattern_18.svg) |
-
----
-
-## 5. Alien Cluster B Patterns — Breakout &amp; Escorts (Patterns 19 through 36)
-
-### **Detailed Cluster B Analysis**
-- **ROM Address Range:** `$2C00–$2FFF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L423).
-- **Structure:** 18 patterns (patterns 19 through 36) primarily consisting of open breakout trajectories for diving aliens and mothership escort waves.
-- **Closed vs Open:** Pattern `23` is a **Closed Loop** (ΣΔ = (0,0)). Patterns `19–22`, `24–36` are **Open Trajectories** with net displacement across the screen.
-
-### **Cluster B Overview Animation**
-![Alien Cluster B Overview Animation](../08_alien_breakout_cluster_b.svg)
-
----
-
-### **Detailed Pattern Breakdown (19 through 36)**
-
-#### Patterns 19 through 24
-| Pattern 19 (ROM $2C00, 48b — Open) | Pattern 20 (ROM $2C34, 86b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 19](../cluster_b/pattern_19.svg) | ![Alien Cluster B Pattern 20](../cluster_b/pattern_20.svg) |
-
-| Pattern 21 (ROM $2C90, 53b — Open) | Pattern 22 (ROM $2CC8, 54b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 21](../cluster_b/pattern_21.svg) | ![Alien Cluster B Pattern 22](../cluster_b/pattern_22.svg) |
-
-| Pattern 23 (ROM $2D00, 64b — Closed) | Pattern 24 (ROM $2D44, 64b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 23](../cluster_b/pattern_23.svg) | ![Alien Cluster B Pattern 24](../cluster_b/pattern_24.svg) |
-
----
-
-#### Patterns 25 through 30
-| Pattern 25 (ROM $2D88, 52b — Open) | Pattern 26 (ROM $2DC0, 50b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 25](../cluster_b/pattern_25.svg) | ![Alien Cluster B Pattern 26](../cluster_b/pattern_26.svg) |
-
-| Pattern 27 (ROM $2E00, 28b — Breakout) | Pattern 28 (ROM $2E20, 28b — Breakout) |
-|---|---|
-| ![Alien Cluster B Pattern 27](../cluster_b/pattern_27.svg) | ![Alien Cluster B Pattern 28](../cluster_b/pattern_28.svg) |
-
-| Pattern 29 (ROM $2E40, 40b — Open) | Pattern 30 (ROM $2E6C, 32b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 29](../cluster_b/pattern_29.svg) | ![Alien Cluster B Pattern 30](../cluster_b/pattern_30.svg) |
-
----
-
-#### Patterns 31 through 36
-| Pattern 31 (ROM $2E90, 49b — Open) | Pattern 32 (ROM $2EC4, 48b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 31](../cluster_b/pattern_31.svg) | ![Alien Cluster B Pattern 32](../cluster_b/pattern_32.svg) |
-
-| Pattern 33 (ROM $2F00, 48b — Open) | Pattern 34 (ROM $2F34, 46b — Open) |
-|---|---|
-| ![Alien Cluster B Pattern 33](../cluster_b/pattern_33.svg) | ![Alien Cluster B Pattern 34](../cluster_b/pattern_34.svg) |
-
-| Pattern 35 (ROM $2F64, 50b — Escort) | Pattern 36 (ROM $2FA0, 94b — Escort) |
-|---|---|
-| ![Alien Cluster B Pattern 35](../cluster_b/pattern_35.svg) | ![Alien Cluster B Pattern 36](../cluster_b/pattern_36.svg) |
-
----
-
-## 6. Bird Flight Trajectories &amp; AI Behavior Scripts
-
-### **Detailed Analysis of Bird AI Subsystem**
-The bird AI subsystem in [`bird_wave_behavior.c`](../../bird_wave_behavior.c) and [`bird_logic.c`](../../bird_logic.c) is driven by 4 linked ROM lookup tables:
-
-1. **`phoenix_bird_behaviour_scripts` (ROM `$3F00–$3F7F` / 128 bytes):**
-   - 16 AI pattern scripts of 8 bytes each (two data words + two continuation routine addresses).
-   - Called by [`update_bird_behavior`](../../c-annotated/en/bird-wave-behavior.md#update_bird_behavior).
-   - **Functions in C:**
-     - `l35e0_descend()`: Descent phase where the bird accelerates downward and aims at the player.
-     - `l3628_climb()`: Climb phase where the bird climbs upward in steps.
-     - `l36c0_animate()`: Wing flapping animation timer.
-     - `l36d2_grow()` / `l36ea_grow()` / `l370a_grow_or_dive()`: Egg hatching, transformation into 4x4 matrix bird, and dive-bomber activation.
-
-2. **`phoenix_bird_dive_spawn_positions` (ROM `$3DC0–$3DDF` / 32 bytes):**
-   - 32 prescribed start and attack positions (`(sp_x, sp_y)` stored pairwise).
-   - Called by [`try_spawn_bird_dive_bomb`](../../c-annotated/en/bird-wave-behavior.md#try_spawn_bird_dive_bomb).
-
----
-
-### **1. Bird AI Behavior Scripts (ROM `$3F00–$3F7F`) — 16 Detailed AI Scripts**
-
-#### Scripts 00 through 07
-| Script 00 (ROM $3F00 — Formation Idle) | Script 01 (ROM $3F08 — Hatch/Flap) |
-|---|---|
-| ![Bird Script 00](../bird_scripts/bird_script_00.svg) | ![Bird Script 01](../bird_scripts/bird_script_01.svg) |
-
-| Script 02 (ROM $3F10 — Steep Dive) | Script 03 (ROM $3F18 — Swoop Flight) |
-|---|---|
-| ![Bird Script 02](../bird_scripts/bird_script_02.svg) | ![Bird Script 03](../bird_scripts/bird_script_03.svg) |
-
-| Script 04 (ROM $3F20 — Growth Script Init) | Script 05 (ROM $3F28 — Flap/Climb) |
-|---|---|
-| ![Bird Script 04](../bird_scripts/bird_script_04.svg) | ![Bird Script 05](../bird_scripts/bird_script_05.svg) |
-
-| Script 06 (ROM $3F30 — Dive Bomber) | Script 07 (ROM $3F38 — Deep Attack Loop) |
-|---|---|
-| ![Bird Script 06](../bird_scripts/bird_script_06.svg) | ![Bird Script 07](../bird_scripts/bird_script_07.svg) |
-
----
-
-#### Scripts 08 through 15
-| Script 08 (ROM $3F40 — Grown Bird Matrix) | Script 09 (ROM $3F48 — Heavy Descent) |
-|---|---|
-| ![Bird Script 08](../bird_scripts/bird_script_08.svg) | ![Bird Script 09](../bird_scripts/bird_script_09.svg) |
-
-| Script 10 (ROM $3F50 — Attack Sine) | Script 11 (ROM $3F58 — Escort Bombs) |
-|---|---|
-| ![Bird Script 10](../bird_scripts/bird_script_10.svg) | ![Bird Script 11](../bird_scripts/bird_script_11.svg) |
-
-| Script 12 (ROM $3F60 — Mothership Escort 1) | Script 13 (ROM $3F68 — Mothership Escort 2) |
-|---|---|
-| ![Bird Script 12](../bird_scripts/bird_script_12.svg) | ![Bird Script 13](../bird_scripts/bird_script_13.svg) |
-
-| Script 14 (ROM $3F70 — Swoop Escort) | Script 15 (ROM $3F78 — Terminal Dive) |
-|---|---|
-| ![Bird Script 14](../bird_scripts/bird_script_14.svg) | ![Bird Script 15](../bird_scripts/bird_script_15.svg) |
-
----
-
-### **2. Bird Dive &amp; Launch Positions (ROM `$3DC0–$3DDF`) — 16 Screen Coordinates**
-
-| Launch 00 &amp; 01 (ROM $3DC0 &amp; $3DC2) | Launch 02 &amp; 03 (ROM $3DC4 &amp; $3DC6) |
-|---|---|
-| ![Spawn 00](../bird_dive_spawns/dive_spawn_00.svg) | ![Spawn 02](../bird_dive_spawns/dive_spawn_02.svg) |
-
-| Launch 04 &amp; 05 (ROM $3DC8 &amp; $3DCA) | Launch 06 &amp; 07 (ROM $3DCC &amp; $3DCE) |
-|---|---|
-| ![Spawn 04](../bird_dive_spawns/dive_spawn_04.svg) | ![Spawn 06](../bird_dive_spawns/dive_spawn_06.svg) |
-
-| Launch 08 &amp; 09 (ROM $3DD0 &amp; $3DD2) | Launch 10 &amp; 11 (ROM $3DD4 &amp; $3DD6) |
-|---|---|
-| ![Spawn 08](../bird_dive_spawns/dive_spawn_08.svg) | ![Spawn 10](../bird_dive_spawns/dive_spawn_10.svg) |
-
-| Launch 12 &amp; 13 (ROM $3DD8 &amp; $3DDA) | Launch 14 &amp; 15 (ROM $3DDC &amp; $3DDE) |
-|---|---|
-| ![Spawn 12](../bird_dive_spawns/dive_spawn_12.svg) | ![Spawn 14](../bird_dive_spawns/dive_spawn_14.svg) |
-
----
-
-## 7. Mothership &amp; Attract Mode Movement Paths
-
-### **1. `phoenix_mothership_tile_page` (ROM `$1D00–$1DFF`)**
-- **Description:** Prescribed 26x9 tile matrix and descent speed table for the steady downward movement of the mothership in [`mothership_impl.c`](../../mothership_impl.c) and [`mothership_logic.c`](../../mothership_logic.c).
-
-![Mothership Descent Trajectory](../09_mothership_descent_trajectory.svg)
-
----
-
-### **2. `phoenix_intro_bird_anim_frames` (ROM `$233A–$2359`)**
-- **Description:** Prescribed 32-step frame and movement sequence for the bird gliding across the title screen in Attract Mode ([`attract-mode.md`](../../c-annotated/en/attract-mode.md)).
-- **Invocation:** [`draw_intro_bird_animation_frame`](../../c-annotated/en/attract-mode.md#draw_intro_bird_animation_frame) in `attract_mode.c`.
-
-![Intro Splash Bird Trajectory](../06_intro_splash_bird.svg)
-
----
-
-## 8. Execution Loop &amp; Mermaid Diagram
-
-```mermaid
-graph TD
+<!doctype html><html><head><meta charset="utf-8"><title>animation-trajectory</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="phoenix-animation-trajectories--prescribed-movement-patterns-animation-trajectorymd">Phoenix
+Animation Trajectories &amp; Prescribed Movement Patterns
+(<code>animation-trajectory.md</code>)</h1>
+<p>This document provides an in-depth Knowledge Graph analysis of
+<strong>prescribed movement patterns, vector tables, Z80 ROM clusters,
+ROM addresses, RAM data structures, and AI flight scripts</strong> in
+the <em>Phoenix</em> Arcade codebase. The classification as
+<strong>closed loop</strong> or <strong>open trajectory</strong> is
+derived from ROM vectors; the directory contains 78 SVG files, including
+pattern representations and master overview animations.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a
+href="#1-overview-of-flight-pattern-architecture--z80-memory-loop">Overview
+of Flight Pattern Architecture &amp; Z80 Memory Loop</a></li>
+<li><a
+href="#2-difference-between-closed-loop-and-open-trajectory-patterns">Difference
+Between Closed Loop and Open Trajectory Patterns</a></li>
+<li><a href="#3-why-different-clusters--chapter-structuring">Why
+Different Clusters &amp; Chapter Structuring?</a></li>
+<li><a
+href="#4-alien-cluster-a-patterns--wave-1--3-formations-patterns-01-through-18">Alien
+Cluster A Patterns — Wave 1 &amp; 3 Formations (Patterns 01 through
+18)</a></li>
+<li><a
+href="#5-alien-cluster-b-patterns--breakout--escorts-patterns-19-through-36">Alien
+Cluster B Patterns — Breakout &amp; Escorts (Patterns 19 through
+36)</a></li>
+<li><a href="#6-bird-flight-trajectories--ai-behavior-scripts">Bird
+Flight Trajectories &amp; AI Behavior Scripts</a></li>
+<li><a href="#7-mothership--attract-mode-movement-paths">Mothership
+&amp; Attract Mode Movement Paths</a></li>
+<li><a href="#8-execution-loop--mermaid-diagram">Execution Loop &amp;
+Mermaid Diagram</a></li>
+</ol>
+<hr />
+<h2 id="1-overview-of-flight-pattern-architecture--z80-memory-loop">1.
+Overview of Flight Pattern Architecture &amp; Z80 Memory Loop</h2>
+<p>In the <em>Phoenix</em> arcade hardware, enemy movements (aliens,
+birds, and mothership) are not calculated dynamically via physical
+forces, but controlled via <strong>static vectorial lookup
+tables</strong> stored in Z80 ROM in <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> / <a
+href="../../phoenix_tables.h"><code>phoenix_tables.h</code></a>.</p>
+<h3 id="memory-map--ram-data-structures"><strong>Memory Map &amp; RAM
+Data Structures</strong></h3>
+<p>Each active entity on screen utilizes a specific memory layout in
+Arcade RAM (<code>$4000–$4BFF</code>):</p>
+<table>
+<thead>
+<tr>
+<th>RAM Address / Offset</th>
+<th>Variable / Register</th>
+<th>Functional Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$43C0–$43DF</code></td>
+<td><code>PlayerShipX</code> / Bullet Grid</td>
+<td>Player ship coordinates and active player bullets</td>
+</tr>
+<tr>
+<td><code>$4360–$437F</code></td>
+<td><code>M436D</code>, <code>M436E</code>, <code>M436F</code></td>
+<td>Bird AI phase registers, descent targets, and random dive
+thresholds</td>
+</tr>
+<tr>
+<td><code>$4B50–$4B6F</code></td>
+<td><code>AlienPointerTable</code></td>
+<td>16-bit RAM pointers indicating the active step in a flight
+pattern</td>
+</tr>
+<tr>
+<td><code>$4800–$4B3F</code></td>
+<td><code>BackgroundScreen</code> / VRAM</td>
+<td>90° rotated 32x32 tile matrix video buffer (832 bytes per page)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vector-transformation--indexing"><strong>Vector Transformation
+&amp; Indexing</strong></h3>
+<p>A RAM pointer (e.g. at offset <code>$4B50</code>) reads one step byte
+from ROM per frame. The byte is already a direction-vector number in the
+range <code>0x00–0x1F</code>; it is <strong>not</strong> masked at this
+point. The Z80 performs one <code>RLCA</code>, which is equivalent to
+multiplying this bounded value by two and therefore selects one pair in
+<a
+href="../../phoenix_tables.h#L162"><code>phoenix_alien_direction_vectors</code></a>
+(ROM <code>$1700–$173F</code>):</p>
+<ol type="1">
+<li><code>vector_offset = step_byte × 2</code></li>
+<li><code>delta_x = phoenix_alien_direction_vectors[vector_offset]</code></li>
+<li><code>delta_y = phoenix_alien_direction_vectors[vector_offset + 1]</code></li>
+<li><code>x = x + delta_x</code>; <code>y = y + delta_y</code></li>
+</ol>
+<p>In other words: each pattern byte chooses one
+<code>(delta_x, delta_y)</code> pair, and that pair moves the alien by
+one vector step.</p>
+<hr />
+<h3
+id="master-overview-animation-of-all-flight-trajectories"><strong>Master
+Overview Animation of All Flight Trajectories</strong></h3>
+<p>The animated SVG below demonstrates the simultaneous operation of the
+entire Arcade vector system: the alien dive loop (cyan), the bird sine
+dive with bomb dropping (magenta/yellow), and the steady mothership
+descent trajectory (green):</p>
+<p><img src="../00_overview_flight_patterns.svg"
+alt="Phoenix Master Flight Path Overview" /></p>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Relevant C Source Files:</strong>
+<ul>
+<li><a href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> →
+<a
+href="../../c-annotated/en/phoenix-tables.html"><code>phoenix-tables.md</code></a></li>
+<li><a href="../../alien_logic.c"><code>alien_logic.c</code></a> → <a
+href="../../c-annotated/en/alien-logic.html"><code>alien-logic.md</code></a></li>
+<li><a href="../../bird_logic.c"><code>bird_logic.c</code></a> → <a
+href="../../c-annotated/en/bird-logic.html"><code>bird-logic.md</code></a></li>
+<li><a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+→ <a
+href="../../c-annotated/en/bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a></li>
+<li><a href="../../attract_mode.c"><code>attract_mode.c</code></a> → <a
+href="../../c-annotated/en/attract-mode.html"><code>attract-mode.md</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2
+id="2-difference-between-closed-loop-and-open-trajectory-patterns">2.
+Difference Between Closed Loop and Open Trajectory Patterns</h2>
+<p>Vector integration of the ROM patterns described below distinguishes
+<strong>two movement pattern types</strong> in the <em>Phoenix</em>
+engine:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>🔄 Closed Loop Patterns</th>
+<th>↗️ Open Trajectory Patterns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Net Displacement</strong></td>
+<td>ΣΔX = 0 and ΣΔY = 0</td>
+<td>ΣΔX ≠ 0 or ΣΔY ≠ 0</td>
+</tr>
+<tr>
+<td><strong>Shape &amp; Path</strong></td>
+<td>The entity leaves its formation origin (X0, Y0), completes a
+circular, oval, or figure-8 loop, and <strong>returns exactly to (X0,
+Y0)</strong>.</td>
+<td>The entity executes a screen-wide displacement or breakout sprint
+across the screen (e.g. downward or diagonally).</td>
+</tr>
+<tr>
+<td><strong>Typical Patterns</strong></td>
+<td>Cluster A Patterns <code>01</code>, <code>02</code>,
+<code>07</code>, <code>10</code>, <code>11</code>, <code>12</code> &amp;
+Cluster B Pattern <code>23</code>.</td>
+<td>Cluster A Patterns <code>03</code>, <code>04</code>,
+<code>05</code>, <code>06</code>, <code>08</code>, <code>09</code>,
+<code>13–18</code> &amp; Cluster B Patterns <code>19–22</code>,
+<code>24–36</code>.</td>
+</tr>
+<tr>
+<td><strong>End-of-Loop Logic</strong></td>
+<td>At the <code>0x00</code> terminator, the pattern restarts seamlessly
+from the beginning at the same anchor address.</td>
+<td>At the <code>0x00</code> terminator or screen boundary, the game
+engine triggers a breakout repositioning (<a
+href="../../c-annotated/en/alien-logic.html#l3028"><code>l3028</code></a>)
+or re-orientation (<a
+href="../../c-annotated/en/bird-wave-behavior.html#l3672_aim"><code>l3672_aim</code></a>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-why-different-clusters--chapter-structuring">3. Why Different
+Clusters &amp; Chapter Structuring?</h2>
+<h3 id="1-why-separate-rom-clusters"><strong>1. Why Separate ROM
+"Clusters"?</strong></h3>
+<p>The C-port models movement data as two distinct ROM ranges
+("clusters"), derived from table mappings and ASM address ranges:</p>
+<ol type="1">
+<li><p><strong>Cluster A (ROM <code>$1000–$13FF</code> / 1024
+bytes):</strong></p>
+<ul>
+<li><strong>Location:</strong> ROM chip 1 at <code>$1000</code>.</li>
+<li><strong>Function:</strong> Contains <strong>Patterns 01 through
+18</strong> (<code>phoenix_alien_movement_cluster_a</code>). These are
+primarily closed formation loops used during <strong>Alien Wave 1 and
+Wave 3</strong> (orderly swarm formations with small and medium
+aliens).</li>
+<li><strong>Initialization:</strong> The table <a
+href="../../phoenix_tables.h#L139"><code>phoenix_alien_layout_pointers</code></a>
+initializes alien pointers to the start of this ROM page at
+<code>$1000</code> by default.</li>
+</ul></li>
+<li><p><strong>Cluster B (ROM <code>$2C00–$2FFF</code> / 1024
+bytes):</strong></p>
+<ul>
+<li><strong>Location:</strong> ROM chip 3 at <code>$2C00</code>.</li>
+<li><strong>Function:</strong> Contains <strong>Patterns 19 through
+36</strong> (<code>phoenix_alien_movement_cluster_b</code>). These are
+primarily open breakout patterns used by <strong>Breakout
+aliens</strong> (aliens breaking out of formation) and
+<strong>Mothership escort waves</strong> (Levels 9, 10, and 11).</li>
+<li><strong>Breakout Mechanism:</strong> The breakout scheduler <a
+href="../../c-annotated/en/alien-logic.html#l3028"><code>l3028</code></a>
+in <code>alien_logic.c</code> jumps directly to entry addresses
+<code>$2E00</code> and <code>$2E40</code> in Cluster B upon attack.</li>
+</ul></li>
+</ol>
+<hr />
+<h3
+id="2-why-this-chapter-organization-game-engine-subsystems"><strong>2.
+Why This Chapter Organization? (Game Engine Subsystems)</strong></h3>
+<p>The structure in this document aligns with the 4 physical game entity
+subsystems of the Arcade Z80 engine:</p>
+<ul>
+<li><strong>Chapter 4 (Alien Cluster A):</strong> Formation aliens in
+Waves 1 &amp; 3.</li>
+<li><strong>Chapter 5 (Alien Cluster B):</strong> Breakout attack aliens
+&amp; mothership escorts.</li>
+<li><strong>Chapter 6 (Bird AI Scripts &amp; Dive Spawns):</strong> Bird
+swarms in Waves 5 &amp; 7, including egg hatching, climbing, wing
+flapping, and sine dive-bombers.</li>
+<li><strong>Chapter 7 (Mothership &amp; Attract Mode):</strong> The 26x9
+mothership tile matrix, Attract Mode intro bird, and background
+decorations.</li>
+</ul>
+<hr />
+<h2
+id="4-alien-cluster-a-patterns--wave-1--3-formations-patterns-01-through-18">4.
+Alien Cluster A Patterns — Wave 1 &amp; 3 Formations (Patterns 01
+through 18)</h2>
+<h3 id="detailed-cluster-a-analysis"><strong>Detailed Cluster A
+Analysis</strong></h3>
+<ul>
+<li><strong>ROM Address Range:</strong> <code>$1000–$13FF</code> (1024
+bytes) in <a
+href="../../phoenix_tables.c#L73"><code>phoenix_tables.c</code></a>.</li>
+<li><strong>Structure:</strong> 18 closed-loop &amp; open-trajectory
+patterns (<code>T1020</code> through <code>T13D0</code>), each
+consisting of vector indices terminated by <code>0x00</code> and padded
+with <code>0xFF</code>.</li>
+<li><strong>Closed vs Open:</strong> Patterns <code>01</code>,
+<code>02</code>, <code>07</code>, <code>10</code>, <code>11</code>,
+<code>12</code> are <strong>Closed Loops</strong> (ΣΔ = (0,0)). Patterns
+<code>03</code>, <code>04</code>, <code>05</code>, <code>06</code>,
+<code>08</code>, <code>09</code>, <code>13–18</code> are <strong>Open
+Trajectories</strong>.</li>
+</ul>
+<h3 id="cluster-a-overview-animation"><strong>Cluster A Overview
+Animation</strong></h3>
+<p><img src="../07_alien_closed_loop_cluster_a.svg"
+alt="Alien Cluster A Overview Animation" /></p>
+<hr />
+<h3 id="detailed-pattern-breakdown-01-through-18"><strong>Detailed
+Pattern Breakdown (01 through 18)</strong></h3>
+<h4 id="patterns-01-through-06">Patterns 01 through 06</h4>
+<table>
+<thead>
+<tr>
+<th>Pattern 01 (ROM $1020, 64b — Closed)</th>
+<th>Pattern 02 (ROM $1064, 64b — Closed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_01.svg"
+alt="Alien Cluster A Pattern 01" /></td>
+<td><img src="../cluster_a/pattern_02.svg"
+alt="Alien Cluster A Pattern 02" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 03 (ROM $10A8, 40b — Open)</th>
+<th>Pattern 04 (ROM $10D4, 40b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_03.svg"
+alt="Alien Cluster A Pattern 03" /></td>
+<td><img src="../cluster_a/pattern_04.svg"
+alt="Alien Cluster A Pattern 04" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 05 (ROM $1100, 43b — Open)</th>
+<th>Pattern 06 (ROM $1130, 43b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_05.svg"
+alt="Alien Cluster A Pattern 05" /></td>
+<td><img src="../cluster_a/pattern_06.svg"
+alt="Alien Cluster A Pattern 06" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patterns-07-through-12">Patterns 07 through 12</h4>
+<table>
+<thead>
+<tr>
+<th>Pattern 07 (ROM $1160, 64b — Closed)</th>
+<th>Pattern 08 (ROM $11A4, 40b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_07.svg"
+alt="Alien Cluster A Pattern 07" /></td>
+<td><img src="../cluster_a/pattern_08.svg"
+alt="Alien Cluster A Pattern 08" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 09 (ROM $11D0, 45b — Open)</th>
+<th>Pattern 10 (ROM $1200, 64b — Closed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_09.svg"
+alt="Alien Cluster A Pattern 09" /></td>
+<td><img src="../cluster_a/pattern_10.svg"
+alt="Alien Cluster A Pattern 10" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 11 (ROM $1244, 64b — Closed)</th>
+<th>Pattern 12 (ROM $1288, 64b — Closed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_11.svg"
+alt="Alien Cluster A Pattern 11" /></td>
+<td><img src="../cluster_a/pattern_12.svg"
+alt="Alien Cluster A Pattern 12" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patterns-13-through-18">Patterns 13 through 18</h4>
+<table>
+<thead>
+<tr>
+<th>Pattern 13 (ROM $12CA, 53b — Open)</th>
+<th>Pattern 14 (ROM $1300, 36b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_13.svg"
+alt="Alien Cluster A Pattern 13" /></td>
+<td><img src="../cluster_a/pattern_14.svg"
+alt="Alien Cluster A Pattern 14" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 15 (ROM $1328, 38b — Open)</th>
+<th>Pattern 16 (ROM $1354, 69b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_15.svg"
+alt="Alien Cluster A Pattern 15" /></td>
+<td><img src="../cluster_a/pattern_16.svg"
+alt="Alien Cluster A Pattern 16" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 17 (ROM $139C, 49b — Open)</th>
+<th>Pattern 18 (ROM $13D0, 43b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_17.svg"
+alt="Alien Cluster A Pattern 17" /></td>
+<td><img src="../cluster_a/pattern_18.svg"
+alt="Alien Cluster A Pattern 18" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2
+id="5-alien-cluster-b-patterns--breakout--escorts-patterns-19-through-36">5.
+Alien Cluster B Patterns — Breakout &amp; Escorts (Patterns 19 through
+36)</h2>
+<h3 id="detailed-cluster-b-analysis"><strong>Detailed Cluster B
+Analysis</strong></h3>
+<ul>
+<li><strong>ROM Address Range:</strong> <code>$2C00–$2FFF</code> (1024
+bytes) in <a
+href="../../phoenix_tables.c#L423"><code>phoenix_tables.c</code></a>.</li>
+<li><strong>Structure:</strong> 18 patterns (patterns 19 through 36)
+primarily consisting of open breakout trajectories for diving aliens and
+mothership escort waves.</li>
+<li><strong>Closed vs Open:</strong> Pattern <code>23</code> is a
+<strong>Closed Loop</strong> (ΣΔ = (0,0)). Patterns <code>19–22</code>,
+<code>24–36</code> are <strong>Open Trajectories</strong> with net
+displacement across the screen.</li>
+</ul>
+<h3 id="cluster-b-overview-animation"><strong>Cluster B Overview
+Animation</strong></h3>
+<p><img src="../08_alien_breakout_cluster_b.svg"
+alt="Alien Cluster B Overview Animation" /></p>
+<hr />
+<h3 id="detailed-pattern-breakdown-19-through-36"><strong>Detailed
+Pattern Breakdown (19 through 36)</strong></h3>
+<h4 id="patterns-19-through-24">Patterns 19 through 24</h4>
+<table>
+<thead>
+<tr>
+<th>Pattern 19 (ROM $2C00, 48b — Open)</th>
+<th>Pattern 20 (ROM $2C34, 86b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_19.svg"
+alt="Alien Cluster B Pattern 19" /></td>
+<td><img src="../cluster_b/pattern_20.svg"
+alt="Alien Cluster B Pattern 20" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 21 (ROM $2C90, 53b — Open)</th>
+<th>Pattern 22 (ROM $2CC8, 54b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_21.svg"
+alt="Alien Cluster B Pattern 21" /></td>
+<td><img src="../cluster_b/pattern_22.svg"
+alt="Alien Cluster B Pattern 22" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 23 (ROM $2D00, 64b — Closed)</th>
+<th>Pattern 24 (ROM $2D44, 64b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_23.svg"
+alt="Alien Cluster B Pattern 23" /></td>
+<td><img src="../cluster_b/pattern_24.svg"
+alt="Alien Cluster B Pattern 24" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patterns-25-through-30">Patterns 25 through 30</h4>
+<table>
+<thead>
+<tr>
+<th>Pattern 25 (ROM $2D88, 52b — Open)</th>
+<th>Pattern 26 (ROM $2DC0, 50b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_25.svg"
+alt="Alien Cluster B Pattern 25" /></td>
+<td><img src="../cluster_b/pattern_26.svg"
+alt="Alien Cluster B Pattern 26" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 27 (ROM $2E00, 28b — Breakout)</th>
+<th>Pattern 28 (ROM $2E20, 28b — Breakout)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_27.svg"
+alt="Alien Cluster B Pattern 27" /></td>
+<td><img src="../cluster_b/pattern_28.svg"
+alt="Alien Cluster B Pattern 28" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 29 (ROM $2E40, 40b — Open)</th>
+<th>Pattern 30 (ROM $2E6C, 32b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_29.svg"
+alt="Alien Cluster B Pattern 29" /></td>
+<td><img src="../cluster_b/pattern_30.svg"
+alt="Alien Cluster B Pattern 30" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patterns-31-through-36">Patterns 31 through 36</h4>
+<table>
+<thead>
+<tr>
+<th>Pattern 31 (ROM $2E90, 49b — Open)</th>
+<th>Pattern 32 (ROM $2EC4, 48b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_31.svg"
+alt="Alien Cluster B Pattern 31" /></td>
+<td><img src="../cluster_b/pattern_32.svg"
+alt="Alien Cluster B Pattern 32" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 33 (ROM $2F00, 48b — Open)</th>
+<th>Pattern 34 (ROM $2F34, 46b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_33.svg"
+alt="Alien Cluster B Pattern 33" /></td>
+<td><img src="../cluster_b/pattern_34.svg"
+alt="Alien Cluster B Pattern 34" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern 35 (ROM $2F64, 50b — Escort)</th>
+<th>Pattern 36 (ROM $2FA0, 94b — Escort)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_35.svg"
+alt="Alien Cluster B Pattern 35" /></td>
+<td><img src="../cluster_b/pattern_36.svg"
+alt="Alien Cluster B Pattern 36" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-bird-flight-trajectories--ai-behavior-scripts">6. Bird Flight
+Trajectories &amp; AI Behavior Scripts</h2>
+<h3 id="detailed-analysis-of-bird-ai-subsystem"><strong>Detailed
+Analysis of Bird AI Subsystem</strong></h3>
+<p>The bird AI subsystem in <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+and <a href="../../bird_logic.c"><code>bird_logic.c</code></a> is driven
+by 4 linked ROM lookup tables:</p>
+<ol type="1">
+<li><p><strong><code>phoenix_bird_behaviour_scripts</code> (ROM
+<code>$3F00–$3F7F</code> / 128 bytes):</strong></p>
+<ul>
+<li>16 AI pattern scripts of 8 bytes each (two data words + two
+continuation routine addresses).</li>
+<li>Called by <a
+href="../../c-annotated/en/bird-wave-behavior.html#update_bird_behavior"><code>update_bird_behavior</code></a>.</li>
+<li><strong>Functions in C:</strong>
+<ul>
+<li><code>l35e0_descend()</code>: Descent phase where the bird
+accelerates downward and aims at the player.</li>
+<li><code>l3628_climb()</code>: Climb phase where the bird climbs upward
+in steps.</li>
+<li><code>l36c0_animate()</code>: Wing flapping animation timer.</li>
+<li><code>l36d2_grow()</code> / <code>l36ea_grow()</code> /
+<code>l370a_grow_or_dive()</code>: Egg hatching, transformation into 4x4
+matrix bird, and dive-bomber activation.</li>
+</ul></li>
+</ul></li>
+<li><p><strong><code>phoenix_bird_dive_spawn_positions</code> (ROM
+<code>$3DC0–$3DDF</code> / 32 bytes):</strong></p>
+<ul>
+<li>32 prescribed start and attack positions (<code>(sp_x, sp_y)</code>
+stored pairwise).</li>
+<li>Called by <a
+href="../../c-annotated/en/bird-wave-behavior.html#try_spawn_bird_dive_bomb"><code>try_spawn_bird_dive_bomb</code></a>.</li>
+</ul></li>
+</ol>
+<hr />
+<h3
+id="1-bird-ai-behavior-scripts-rom-3f003f7f--16-detailed-ai-scripts"><strong>1.
+Bird AI Behavior Scripts (ROM <code>$3F00–$3F7F</code>) — 16 Detailed AI
+Scripts</strong></h3>
+<h4 id="scripts-00-through-07">Scripts 00 through 07</h4>
+<table>
+<thead>
+<tr>
+<th>Script 00 (ROM $3F00 — Formation Idle)</th>
+<th>Script 01 (ROM $3F08 — Hatch/Flap)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_00.svg"
+alt="Bird Script 00" /></td>
+<td><img src="../bird_scripts/bird_script_01.svg"
+alt="Bird Script 01" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 02 (ROM $3F10 — Steep Dive)</th>
+<th>Script 03 (ROM $3F18 — Swoop Flight)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_02.svg"
+alt="Bird Script 02" /></td>
+<td><img src="../bird_scripts/bird_script_03.svg"
+alt="Bird Script 03" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 04 (ROM $3F20 — Growth Script Init)</th>
+<th>Script 05 (ROM $3F28 — Flap/Climb)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_04.svg"
+alt="Bird Script 04" /></td>
+<td><img src="../bird_scripts/bird_script_05.svg"
+alt="Bird Script 05" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 06 (ROM $3F30 — Dive Bomber)</th>
+<th>Script 07 (ROM $3F38 — Deep Attack Loop)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_06.svg"
+alt="Bird Script 06" /></td>
+<td><img src="../bird_scripts/bird_script_07.svg"
+alt="Bird Script 07" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="scripts-08-through-15">Scripts 08 through 15</h4>
+<table>
+<thead>
+<tr>
+<th>Script 08 (ROM $3F40 — Grown Bird Matrix)</th>
+<th>Script 09 (ROM $3F48 — Heavy Descent)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_08.svg"
+alt="Bird Script 08" /></td>
+<td><img src="../bird_scripts/bird_script_09.svg"
+alt="Bird Script 09" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 10 (ROM $3F50 — Attack Sine)</th>
+<th>Script 11 (ROM $3F58 — Escort Bombs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_10.svg"
+alt="Bird Script 10" /></td>
+<td><img src="../bird_scripts/bird_script_11.svg"
+alt="Bird Script 11" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 12 (ROM $3F60 — Mothership Escort 1)</th>
+<th>Script 13 (ROM $3F68 — Mothership Escort 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_12.svg"
+alt="Bird Script 12" /></td>
+<td><img src="../bird_scripts/bird_script_13.svg"
+alt="Bird Script 13" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 14 (ROM $3F70 — Swoop Escort)</th>
+<th>Script 15 (ROM $3F78 — Terminal Dive)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_14.svg"
+alt="Bird Script 14" /></td>
+<td><img src="../bird_scripts/bird_script_15.svg"
+alt="Bird Script 15" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3
+id="2-bird-dive--launch-positions-rom-3dc03ddf--16-screen-coordinates"><strong>2.
+Bird Dive &amp; Launch Positions (ROM <code>$3DC0–$3DDF</code>) — 16
+Screen Coordinates</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Launch 00 &amp; 01 (ROM $3DC0 &amp; $3DC2)</th>
+<th>Launch 02 &amp; 03 (ROM $3DC4 &amp; $3DC6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_00.svg"
+alt="Spawn 00" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_02.svg"
+alt="Spawn 02" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Launch 04 &amp; 05 (ROM $3DC8 &amp; $3DCA)</th>
+<th>Launch 06 &amp; 07 (ROM $3DCC &amp; $3DCE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_04.svg"
+alt="Spawn 04" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_06.svg"
+alt="Spawn 06" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Launch 08 &amp; 09 (ROM $3DD0 &amp; $3DD2)</th>
+<th>Launch 10 &amp; 11 (ROM $3DD4 &amp; $3DD6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_08.svg"
+alt="Spawn 08" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_10.svg"
+alt="Spawn 10" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Launch 12 &amp; 13 (ROM $3DD8 &amp; $3DDA)</th>
+<th>Launch 14 &amp; 15 (ROM $3DDC &amp; $3DDE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_12.svg"
+alt="Spawn 12" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_14.svg"
+alt="Spawn 14" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-mothership--attract-mode-movement-paths">7. Mothership &amp;
+Attract Mode Movement Paths</h2>
+<h3 id="1-phoenix_mothership_tile_page-rom-1d001dff"><strong>1.
+<code>phoenix_mothership_tile_page</code> (ROM
+<code>$1D00–$1DFF</code>)</strong></h3>
+<ul>
+<li><strong>Description:</strong> Prescribed 26x9 tile matrix and
+descent speed table for the steady downward movement of the mothership
+in <a href="../../mothership_impl.c"><code>mothership_impl.c</code></a>
+and <a
+href="../../mothership_logic.c"><code>mothership_logic.c</code></a>.</li>
+</ul>
+<p><img src="../09_mothership_descent_trajectory.svg"
+alt="Mothership Descent Trajectory" /></p>
+<hr />
+<h3 id="2-phoenix_intro_bird_anim_frames-rom-233a2359"><strong>2.
+<code>phoenix_intro_bird_anim_frames</code> (ROM
+<code>$233A–$2359</code>)</strong></h3>
+<ul>
+<li><strong>Description:</strong> Prescribed 32-step frame and movement
+sequence for the bird gliding across the title screen in Attract Mode
+(<a
+href="../../c-annotated/en/attract-mode.html"><code>attract-mode.md</code></a>).</li>
+<li><strong>Invocation:</strong> <a
+href="../../c-annotated/en/attract-mode.html#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
+in <code>attract_mode.c</code>.</li>
+</ul>
+<p><img src="../06_intro_splash_bird.svg"
+alt="Intro Splash Bird Trajectory" /></p>
+<hr />
+<h2 id="8-execution-loop--mermaid-diagram">8. Execution Loop &amp;
+Mermaid Diagram</h2>
+<pre class="mermaid"><code>graph TD
   A[&quot;Level Dispatcher (state_play.c)&quot;] --&gt; B[&quot;Select Flight Pattern Pointer&quot;]
   B --&gt; C{&quot;Entity Type&quot;}
 
@@ -333,5 +883,5 @@ graph TD
   G --&gt; J
 
   J --&gt; K[&quot;Sprite Rendering Engine (sprite_rendering.c)&quot;]
-  K --&gt; L[&quot;Screen VRAM Update (0x4000-0x433F)&quot;]
-```</pre></body></html>
+  K --&gt; L[&quot;Screen VRAM Update (0x4000-0x433F)&quot;]</code></pre>
+</body></html>

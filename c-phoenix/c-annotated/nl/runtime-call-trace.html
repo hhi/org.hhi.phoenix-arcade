@@ -1,17 +1,41 @@
-<!doctype html><html><head><meta charset="utf-8"><title>runtime-call-trace</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>runtime-call-trace</h1><pre># Runtime Call Tracer (`runtime_call_trace.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`runtime_call_trace.c`](../../runtime_call_trace.c). Deze module bevat de compiler-level profileringshooks (`__cyg_profile_func_enter`) voor het automatisch genereren van binaire call-graphs en dynamic trace logs van de C-code execution.
-
----
-
-## 1. Dynamic Profiling &amp; Callgraph Tracer
-
-### `runtime_call_trace_start`, `runtime_call_trace_stop` &amp; `__cyg_profile_func_enter`
-#### **Beschrijving**
-- `runtime_call_trace_start(const char *path)`: Initialiseert de hash-tabel voor call-edges en opent het binaire trace-bestand (`.cg`).
-- `runtime_call_trace_stop()`: Schrijft de callgraph-header (`CPHXCG01`) en alle verzamelde caller/callee paren met hun aanroepaantallen naar het trace-bestand.
-- `__cyg_profile_func_enter(void *callee, void *caller)`: Wordt door de GCC/Clang compiler-vlag `-finstrument-functions` automatisch aangeroepen bij ELKE functie-invoer om het precieze verloop van de executie-graaf vast te leggen.
-
-#### **Knowledge Graph Koppelingen**
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - Compiler instrumentation entrypoints bij het draaien van profiling-runs.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>runtime-call-trace</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="runtime-call-tracer-runtime_call_tracec---c-annotated-knowledge-graph-documentatie">Runtime
+Call Tracer (<code>runtime_call_trace.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../runtime_call_trace.c"><code>runtime_call_trace.c</code></a>.
+Deze module bevat de compiler-level profileringshooks
+(<code>__cyg_profile_func_enter</code>) voor het automatisch genereren
+van binaire call-graphs en dynamic trace logs van de C-code
+execution.</p>
+<hr />
+<h2 id="1-dynamic-profiling--callgraph-tracer">1. Dynamic Profiling
+&amp; Callgraph Tracer</h2>
+<h3
+id="runtime_call_trace_start-runtime_call_trace_stop--__cyg_profile_func_enter"><code>runtime_call_trace_start</code>,
+<code>runtime_call_trace_stop</code> &amp;
+<code>__cyg_profile_func_enter</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<ul>
+<li><code>runtime_call_trace_start(const char *path)</code>:
+Initialiseert de hash-tabel voor call-edges en opent het binaire
+trace-bestand (<code>.cg</code>).</li>
+<li><code>runtime_call_trace_stop()</code>: Schrijft de callgraph-header
+(<code>CPHXCG01</code>) en alle verzamelde caller/callee paren met hun
+aanroepaantallen naar het trace-bestand.</li>
+<li><code>__cyg_profile_func_enter(void *callee, void *caller)</code>:
+Wordt door de GCC/Clang compiler-vlag
+<code>-finstrument-functions</code> automatisch aangeroepen bij ELKE
+functie-invoer om het precieze verloop van de executie-graaf vast te
+leggen.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li>Compiler instrumentation entrypoints bij het draaien van
+profiling-runs.</li>
+</ul></li>
+</ul>
+</body></html>

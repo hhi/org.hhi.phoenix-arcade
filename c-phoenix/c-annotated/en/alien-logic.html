@@ -1,116 +1,226 @@
-<!doctype html><html><head><meta charset="utf-8"><title>alien-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>alien-logic</h1><pre># Alien Logic (`alien_logic.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an in-depth annotated analysis of all functions in [`alien_logic.c`](../../alien_logic.c) and [`alien_logic.h`](../../alien_logic.h). Each function is documented following a **Knowledge Graph approach** with outgoing calls (`Calls`) and incoming links (`Called By / Backlinks`).
-
----
-
-## Table of Contents
-1. [Initialization &amp; Positions](#1-initialization--positions)
-2. [Explosions &amp; Animations for Shot Aliens](#2-explosions--animations-for-shot-aliens)
-3. [Screen &amp; RAM Updates](#3-screen--ram-updates)
-4. [Movement &amp; Frame Animations](#4-movement--frame-animations)
-5. [Breakout, Bomb-drop &amp; Pattern Schedulers](#5-breakout-bomb-drop--pattern-schedulers)
-6. [Attack Logic &amp; Dive-bomb Triggers](#6-attack-logic--dive-bomb-triggers)
-
----
-
-## 1. Initialization &amp; Positions
-
-### `init_alien_control_states`
-#### **Description**
-The function [`init_alien_control_states`](../../alien_logic.c#L19-L25) (Z80 ROM: `$05EC–$05F9`) sets the initial flight and control parameters for aliens at the start of a new round or level.
-
-#### **Context &amp; Invocation**
-Called during level initialization from the game state machine:
-```c
-init_alien_control_states();
-```
-
-#### **Knowledge Graph Links**
-* **Calls (Outgoing Calls):**
-  - [`init_alien_control_states_05fa`](#init_alien_control_states_05fa) — [`alien_logic.c:L24`](../../alien_logic.c#L24)
-  - `phoenix_alien_control_init_values` — [`phoenix_tables.c:L265`](../../phoenix_tables.c#L265)
-* **Called By (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
-
-#### **Step-by-Step Functionality**
-1. **Determine Index:** Calculates the lookup index via `state.LevelAndRound &amp; 0x0F`.
-2. **Retrieve Init Values:** Fetches two initial control bytes from table `phoenix_alien_control_init_values`:
-   - `d`: Value for Control State A (status and animation bits).
-   - `e`: Value for Control State B (sprite/shape index).
-3. **Transfer to RAM:** Calls [`init_alien_control_states_05fa(d, e)`](#init_alien_control_states_05fa) to assign these values to the RAM memory block of all aliens.
-
----
-
-### `init_alien_control_states_05fa`
-#### **Description**
-The function [`init_alien_control_states_05fa`](../../alien_logic.c#L207-L217) (Z80 ROM: `$05FA–$060D`) populates the control memory slots of all living aliens with the selected control states `d` and `e`.
-
-#### **Context &amp; Invocation**
-Called by `init_alien_control_states`:
-```c
-init_alien_control_states_05fa(d, e);
-```
-
-#### **Knowledge Graph Links**
-* **Calls (Outgoing Calls):**
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Called By (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](#init_alien_control_states) — [`alien_logic.c:L24`](../../alien_logic.c#L24)
-
-#### **Memory &amp; Structure Context**
-The RAM table for alien control begins at address `0x4B70`. Each alien record occupies 4 bytes:
-- **Byte 0 (`HL`):** Control State A (`d`)
-- **Byte 1 (`HL+1`):** Control State B (`e`)
-- **Byte 2 (`HL+2`):** X coordinate on screen
-- **Byte 3 (`HL+3`):** Y coordinate on screen
-
-#### **Step-by-Step Functionality**
-1. **Status Check:** Checks whether `state.AliensLeft == 0`. If so, aborts execution immediately.
-2. **Fill RAM:** Loops over up to 16 aliens. Writes `d` to Control A (`0x4B70 + i*4`) and `e` to Control B (`0x4B71 + i*4`).
-3. **Increment Pointer:** Advances memory address by 4 bytes per iteration (`hl += 4`).
-
----
-
-### `init_alien_positions`
-#### **Description**
-The function [`init_alien_positions`](../../alien_logic.c#L224-L242) (Z80 ROM: `$0610–$0638`) initializes X and Y starting coordinates on the screen grid for the formation of up to 16 aliens.
-
-#### **Context &amp; Invocation**
-Called during level initialization:
-```c
-init_alien_positions();
-```
-
-#### **Knowledge Graph Links**
-* **Calls (Outgoing Calls):**
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-  - `phoenix_alien_position_pointer_table` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_alien_position_layout_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
-* **Called By (Incoming Calls / Backlinks):**
-  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
-
-#### **Step-by-Step Functionality**
-1. **Determine Layout Page:** Calculates index `(state.LevelAndRound &gt;&gt; 1) &amp; 0x0F` and looks up starting address/offset in `phoenix_alien_position_pointer_table` within page `phoenix_alien_position_layout_page`.
-2. **Write Coordinates:** Loops through all living aliens (max 16) and writes sequential X and Y coordinates to RAM address `0x4B72` (offset `+2` and `+3` within 4-byte record).
-3. **Increment Pointer:** Advances 3 bytes per alien written (`de += 3`), ensuring next alien coordinates land exactly at `0x4B76`, `0x4B7A`, etc.
-
----
-
-## 2. Explosions &amp; Animations for Shot Aliens
-
-### `handle_animations_for_killed_aliens`
-#### **Description**
-The function [`handle_animations_for_killed_aliens`](../../alien_logic.c#L260-L315) (Z80 ROM: `$0FC0–$0FFF`) updates active explosion slots and bonus score animations for aliens destroyed by player fire.
-
-#### **Knowledge Graph Links**
-* **Calls (Outgoing Calls):**
-  - [`draw_explosion_particles`](#draw_explosion_particles) — [`alien_logic.c:L310`](../../alien_logic.c#L310)
-  - [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) — [`alien_logic.c:L295`](../../alien_logic.c#L295)
-* **Called By (Incoming Calls / Backlinks):**
-  - [`l2000_alien_wave_main_loop`](alien-wave.md#l2000_alien_wave_main_loop) — [`alien_wave.c#L220`](../../alien_wave.c#L220)
-
-#### **Step-by-Step Functionality**
-1. **Iterate Explosion Slots:** Scans the active explosion slot array in RAM (`0x4370–$437F`).
-2. **Animate Particle Grid:** Reads frame counter and calls [`draw_explosion_particles`](#draw_explosion_particles) to render 4x4 expanding particle patterns.
-3. **Render Bonus Score:** When particle explosion ends, triggers [`l3758_bonus_explosion_animation`](#l3758_bonus_explosion_animation) to display score digits (100, 200, 500) over destroyed alien location.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>alien-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="alien-logic-alien_logicc---c-annotated-knowledge-graph-documentation">Alien
+Logic (<code>alien_logic.c</code>) - C-Annotated Knowledge Graph
+Documentation</h1>
+<p>This document contains an in-depth annotated analysis of all
+functions in <a
+href="../../alien_logic.c"><code>alien_logic.c</code></a> and <a
+href="../../alien_logic.h"><code>alien_logic.h</code></a>. Each function
+is documented following a <strong>Knowledge Graph approach</strong> with
+outgoing calls (<code>Calls</code>) and incoming links
+(<code>Called By / Backlinks</code>).</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-initialization--positions">Initialization &amp;
+Positions</a></li>
+<li><a href="#2-explosions--animations-for-shot-aliens">Explosions &amp;
+Animations for Shot Aliens</a></li>
+<li><a href="#3-screen--ram-updates">Screen &amp; RAM Updates</a></li>
+<li><a href="#4-movement--frame-animations">Movement &amp; Frame
+Animations</a></li>
+<li><a href="#5-breakout-bomb-drop--pattern-schedulers">Breakout,
+Bomb-drop &amp; Pattern Schedulers</a></li>
+<li><a href="#6-attack-logic--dive-bomb-triggers">Attack Logic &amp;
+Dive-bomb Triggers</a></li>
+</ol>
+<hr />
+<h2 id="1-initialization--positions">1. Initialization &amp;
+Positions</h2>
+<h3
+id="init_alien_control_states"><code>init_alien_control_states</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../alien_logic.c#L19-L25"><code>init_alien_control_states</code></a>
+(Z80 ROM: <code>$05EC–$05F9</code>) sets the initial flight and control
+parameters for aliens at the start of a new round or level.</p>
+<h4 id="context--invocation"><strong>Context &amp;
+Invocation</strong></h4>
+<p>Called during level initialization from the game state machine:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>init_alien_control_states<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Calls (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></a>
+— <a
+href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+<li><code>phoenix_alien_control_init_values</code> — <a
+href="../../phoenix_tables.c#L265"><code>phoenix_tables.c:L265</code></a></li>
+</ul></li>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+</ul></li>
+</ul>
+<h4 id="step-by-step-functionality"><strong>Step-by-Step
+Functionality</strong></h4>
+<ol type="1">
+<li><strong>Determine Index:</strong> Calculates the lookup index via
+<code>state.LevelAndRound &amp; 0x0F</code>.</li>
+<li><strong>Retrieve Init Values:</strong> Fetches two initial control
+bytes from table <code>phoenix_alien_control_init_values</code>:
+<ul>
+<li><code>d</code>: Value for Control State A (status and animation
+bits).</li>
+<li><code>e</code>: Value for Control State B (sprite/shape index).</li>
+</ul></li>
+<li><strong>Transfer to RAM:</strong> Calls <a
+href="#init_alien_control_states_05fa"><code>init_alien_control_states_05fa(d, e)</code></a>
+to assign these values to the RAM memory block of all aliens.</li>
+</ol>
+<hr />
+<h3
+id="init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></h3>
+<h4 id="description-1"><strong>Description</strong></h4>
+<p>The function <a
+href="../../alien_logic.c#L207-L217"><code>init_alien_control_states_05fa</code></a>
+(Z80 ROM: <code>$05FA–$060D</code>) populates the control memory slots
+of all living aliens with the selected control states <code>d</code> and
+<code>e</code>.</p>
+<h4 id="context--invocation-1"><strong>Context &amp;
+Invocation</strong></h4>
+<p>Called by <code>init_alien_control_states</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>init_alien_control_states_05fa<span class="op">(</span>d<span class="op">,</span> e<span class="op">);</span></span></code></pre></div>
+<h4 id="knowledge-graph-links-1"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Calls (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+</ul></li>
+</ul>
+<h4 id="memory--structure-context"><strong>Memory &amp; Structure
+Context</strong></h4>
+<p>The RAM table for alien control begins at address
+<code>0x4B70</code>. Each alien record occupies 4 bytes:</p>
+<ul>
+<li><strong>Byte 0 (<code>HL</code>):</strong> Control State A
+(<code>d</code>)</li>
+<li><strong>Byte 1 (<code>HL+1</code>):</strong> Control State B
+(<code>e</code>)</li>
+<li><strong>Byte 2 (<code>HL+2</code>):</strong> X coordinate on
+screen</li>
+<li><strong>Byte 3 (<code>HL+3</code>):</strong> Y coordinate on
+screen</li>
+</ul>
+<h4 id="step-by-step-functionality-1"><strong>Step-by-Step
+Functionality</strong></h4>
+<ol type="1">
+<li><strong>Status Check:</strong> Checks whether
+<code>state.AliensLeft == 0</code>. If so, aborts execution
+immediately.</li>
+<li><strong>Fill RAM:</strong> Loops over up to 16 aliens. Writes
+<code>d</code> to Control A (<code>0x4B70 + i*4</code>) and
+<code>e</code> to Control B (<code>0x4B71 + i*4</code>).</li>
+<li><strong>Increment Pointer:</strong> Advances memory address by 4
+bytes per iteration (<code>hl += 4</code>).</li>
+</ol>
+<hr />
+<h3 id="init_alien_positions"><code>init_alien_positions</code></h3>
+<h4 id="description-2"><strong>Description</strong></h4>
+<p>The function <a
+href="../../alien_logic.c#L224-L242"><code>init_alien_positions</code></a>
+(Z80 ROM: <code>$0610–$0638</code>) initializes X and Y starting
+coordinates on the screen grid for the formation of up to 16 aliens.</p>
+<h4 id="context--invocation-2"><strong>Context &amp;
+Invocation</strong></h4>
+<p>Called during level initialization:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>init_alien_positions<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-links-2"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Calls (Outgoing Calls):</strong>
+<ul>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+<li><code>phoenix_alien_position_pointer_table</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_alien_position_layout_page</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+</ul></li>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+</ul></li>
+</ul>
+<h4 id="step-by-step-functionality-2"><strong>Step-by-Step
+Functionality</strong></h4>
+<ol type="1">
+<li><strong>Determine Layout Page:</strong> Calculates index
+<code>(state.LevelAndRound &gt;&gt; 1) &amp; 0x0F</code> and looks up
+starting address/offset in
+<code>phoenix_alien_position_pointer_table</code> within page
+<code>phoenix_alien_position_layout_page</code>.</li>
+<li><strong>Write Coordinates:</strong> Loops through all living aliens
+(max 16) and writes sequential X and Y coordinates to RAM address
+<code>0x4B72</code> (offset <code>+2</code> and <code>+3</code> within
+4-byte record).</li>
+<li><strong>Increment Pointer:</strong> Advances 3 bytes per alien
+written (<code>de += 3</code>), ensuring next alien coordinates land
+exactly at <code>0x4B76</code>, <code>0x4B7A</code>, etc.</li>
+</ol>
+<hr />
+<h2 id="2-explosions--animations-for-shot-aliens">2. Explosions &amp;
+Animations for Shot Aliens</h2>
+<h3
+id="handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></h3>
+<h4 id="description-3"><strong>Description</strong></h4>
+<p>The function <a
+href="../../alien_logic.c#L260-L315"><code>handle_animations_for_killed_aliens</code></a>
+(Z80 ROM: <code>$0FC0–$0FFF</code>) updates active explosion slots and
+bonus score animations for aliens destroyed by player fire.</p>
+<h4 id="knowledge-graph-links-3"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Calls (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#draw_explosion_particles"><code>draw_explosion_particles</code></a>
+— <a
+href="../../alien_logic.c#L310"><code>alien_logic.c:L310</code></a></li>
+<li><a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+— <a
+href="../../alien_logic.c#L295"><code>alien_logic.c:L295</code></a></li>
+</ul></li>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="alien-wave.html#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
+— <a
+href="../../alien_wave.c#L220"><code>alien_wave.c#L220</code></a></li>
+</ul></li>
+</ul>
+<h4 id="step-by-step-functionality-3"><strong>Step-by-Step
+Functionality</strong></h4>
+<ol type="1">
+<li><strong>Iterate Explosion Slots:</strong> Scans the active explosion
+slot array in RAM (<code>0x4370–$437F</code>).</li>
+<li><strong>Animate Particle Grid:</strong> Reads frame counter and
+calls <a
+href="#draw_explosion_particles"><code>draw_explosion_particles</code></a>
+to render 4x4 expanding particle patterns.</li>
+<li><strong>Render Bonus Score:</strong> When particle explosion ends,
+triggers <a
+href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
+to display score digits (100, 200, 500) over destroyed alien
+location.</li>
+</ol>
+</body></html>

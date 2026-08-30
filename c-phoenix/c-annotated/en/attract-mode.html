@@ -1,41 +1,70 @@
-<!doctype html><html><head><meta charset="utf-8"><title>attract-mode</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>attract-mode</h1><pre># Attract Mode &amp; Title Screen (`attract_mode.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`attract_mode.c`](../../attract_mode.c). This module controls title splash sequencing, credit counter, coin insertion, high score display, and demonstration gameplay.
-
----
-
-## Table of Contents
-1. [Attract Mode Sequencer](#1-attract-mode-sequencer)
-2. [Coin &amp; Credit Management](#2-coin--credit-management)
-3. [Intro Bird Animation](#3-intro-bird-animation)
-
----
-
-## 1. Attract Mode Sequencer
-
-### `splash_and_demo`
-#### **Description**
-The function [`splash_and_demo`](../../attract_mode.c#L32-L107) (Z80 ROM: `$00E3–$0145`) manages the frame sequence for title screen displays, copyright text, high score tables, and automated demonstration gameplay.
-
-#### **Knowledge Graph Links**
-* **Calls (Outgoing Calls):**
-  - [`draw_intro_bird_animation_frame`](#draw_intro_bird_animation_frame) — [`attract_mode.c:L85`](../../attract_mode.c#L85)
-  - `draw_high_score_table` — [`scoring.c`](../../scoring.c)
-* **Called By (Incoming Calls / Backlinks):**
-  - [`game_state_machine`](game-state-machine.md#game_state_machine) — [`game_state_machine.c:L30`](../../game_state_machine.c#L30)
-
----
-
-## 2. Coin &amp; Credit Management
-
-### `prompt_for_start_game` &amp; `decrement_coins`
-#### **Description**
-The function [`prompt_for_start_game`](../../attract_mode.c#L293) (Z80 ROM: `$0288–$02EE`) shows the start prompt once credits are present, and [`decrement_coins`](../../attract_mode.c#L366) (Z80 ROM: `$02CB–$02EF`) deducts the credits when a game begins. Coin chute input itself is read by [`check_coin_event`](scoring.md#check_coin_event) in `scoring.c`.
-
----
-
-## 3. Intro Bird Animation
-
-### `draw_intro_bird_animation_frame`
-#### **Description**
-The function [`draw_intro_bird_animation_frame`](../../attract_mode.c#L170-L210) (Z80 ROM: `$21DC–$2210`) renders the 32-step intro bird animation gliding across the top title screen.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>attract-mode</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="attract-mode--title-screen-attract_modec---c-annotated-knowledge-graph-documentation">Attract
+Mode &amp; Title Screen (<code>attract_mode.c</code>) - C-Annotated
+Knowledge Graph Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../attract_mode.c"><code>attract_mode.c</code></a>. This module
+controls title splash sequencing, credit counter, coin insertion, high
+score display, and demonstration gameplay.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-attract-mode-sequencer">Attract Mode Sequencer</a></li>
+<li><a href="#2-coin--credit-management">Coin &amp; Credit
+Management</a></li>
+<li><a href="#3-intro-bird-animation">Intro Bird Animation</a></li>
+</ol>
+<hr />
+<h2 id="1-attract-mode-sequencer">1. Attract Mode Sequencer</h2>
+<h3 id="splash_and_demo"><code>splash_and_demo</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../attract_mode.c#L32-L107"><code>splash_and_demo</code></a>
+(Z80 ROM: <code>$00E3–$0145</code>) manages the frame sequence for title
+screen displays, copyright text, high score tables, and automated
+demonstration gameplay.</p>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Calls (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
+— <a
+href="../../attract_mode.c#L85"><code>attract_mode.c:L85</code></a></li>
+<li><code>draw_high_score_table</code> — <a
+href="../../scoring.c"><code>scoring.c</code></a></li>
+</ul></li>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
+— <a
+href="../../game_state_machine.c#L30"><code>game_state_machine.c:L30</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-coin--credit-management">2. Coin &amp; Credit Management</h2>
+<h3
+id="prompt_for_start_game--decrement_coins"><code>prompt_for_start_game</code>
+&amp; <code>decrement_coins</code></h3>
+<h4 id="description-1"><strong>Description</strong></h4>
+<p>The function <a
+href="../../attract_mode.c#L293"><code>prompt_for_start_game</code></a>
+(Z80 ROM: <code>$0288–$02EE</code>) shows the start prompt once credits
+are present, and <a
+href="../../attract_mode.c#L366"><code>decrement_coins</code></a> (Z80
+ROM: <code>$02CB–$02EF</code>) deducts the credits when a game begins.
+Coin chute input itself is read by <a
+href="scoring.html#check_coin_event"><code>check_coin_event</code></a> in
+<code>scoring.c</code>.</p>
+<hr />
+<h2 id="3-intro-bird-animation">3. Intro Bird Animation</h2>
+<h3
+id="draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></h3>
+<h4 id="description-2"><strong>Description</strong></h4>
+<p>The function <a
+href="../../attract_mode.c#L170-L210"><code>draw_intro_bird_animation_frame</code></a>
+(Z80 ROM: <code>$21DC–$2210</code>) renders the 32-step intro bird
+animation gliding across the top title screen.</p>
+</body></html>

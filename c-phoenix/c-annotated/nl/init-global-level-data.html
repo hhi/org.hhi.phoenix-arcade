@@ -1,29 +1,55 @@
-<!doctype html><html><head><meta charset="utf-8"><title>init-global-level-data</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>init-global-level-data</h1><pre># Global Level Data Init (`init_global_level_data.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van de functie in [`init_global_level_data.c`](../../init_global_level_data.c). Deze module initialiseert de globale niveaudata voor elke ronde en level.
-
----
-
-## 1. Globale Niveau Initialisatie
-
-### `init_global_level_data`
-#### **Beschrijving**
-De functie [`init_global_level_data`](../../init_global_level_data.c#L7-L17) (Z80 ROM: `$0580–$0595`) haalt 12 configuratiebytes op uit `phoenix_level_data_page` en kopieert deze naar de interne spelstatus `state.M43AB`.
-
-#### **Context &amp; Aanroep**
-Aangeroepen bij level-initialisatie in GameState 2 en attract mode:
-```c
-init_global_level_data();
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `phoenix_level_data_pointer_table` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `phoenix_level_data_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_2_init_game_and_level_data`](state-init.md#state_2_init_game_and_level_data) — [`state_init.c#L75`](../../state_init.c#L75)
-  - [`splash_and_demo`](attract-mode.md#splash_and_demo) — [`attract_mode.c#L76`](../../attract_mode.c#L76)
-
-#### **Stap-voor-stap werking**
-1. **Pointer opzoeken:** Berekent de index `state.LevelAndRound &amp; 0x0F` en zoekt de tabel-offset op in `phoenix_level_data_pointer_table`.
-2. **Data kopiëren:** Kopieert 12 opeenvolgende bytes vanaf de opgehaalde ROM-pagina naar de geheugengebieden vanaf `state.M43AB`.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>init-global-level-data</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="global-level-data-init-init_global_level_datac---c-annotated-knowledge-graph-documentatie">Global
+Level Data Init (<code>init_global_level_data.c</code>) - C-Annotated
+Knowledge Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van de functie in <a
+href="../../init_global_level_data.c"><code>init_global_level_data.c</code></a>.
+Deze module initialiseert de globale niveaudata voor elke ronde en
+level.</p>
+<hr />
+<h2 id="1-globale-niveau-initialisatie">1. Globale Niveau
+Initialisatie</h2>
+<h3 id="init_global_level_data"><code>init_global_level_data</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../init_global_level_data.c#L7-L17"><code>init_global_level_data</code></a>
+(Z80 ROM: <code>$0580–$0595</code>) haalt 12 configuratiebytes op uit
+<code>phoenix_level_data_page</code> en kopieert deze naar de interne
+spelstatus <code>state.M43AB</code>.</p>
+<h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen bij level-initialisatie in GameState 2 en attract
+mode:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>init_global_level_data<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>phoenix_level_data_pointer_table</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>phoenix_level_data_page</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-init.html#state_2_init_game_and_level_data"><code>state_2_init_game_and_level_data</code></a>
+— <a
+href="../../state_init.c#L75"><code>state_init.c#L75</code></a></li>
+<li><a
+href="attract-mode.html#splash_and_demo"><code>splash_and_demo</code></a>
+— <a
+href="../../attract_mode.c#L76"><code>attract_mode.c#L76</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Pointer opzoeken:</strong> Berekent de index
+<code>state.LevelAndRound &amp; 0x0F</code> en zoekt de tabel-offset op
+in <code>phoenix_level_data_pointer_table</code>.</li>
+<li><strong>Data kopiëren:</strong> Kopieert 12 opeenvolgende bytes
+vanaf de opgehaalde ROM-pagina naar de geheugengebieden vanaf
+<code>state.M43AB</code>.</li>
+</ol>
+</body></html>

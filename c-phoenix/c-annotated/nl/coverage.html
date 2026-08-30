@@ -1,17 +1,39 @@
-<!doctype html><html><head><meta charset="utf-8"><title>coverage</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>coverage</h1><pre># Test Coverage &amp; Verification (`coverage.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van de functies in [`coverage.c`](../../coverage.c). Deze module verzorgt de runtime-instrumentatie, lockstep-verificatie en dekkingsstatistieken voor de geporteerde C-codebases.
-
----
-
-## 1. Instrumentatie &amp; Dekking System
-
-### `coverage_hit` &amp; `coverage_observe_frame`
-#### **Beschrijving**
-- [`coverage_hit`](../../coverage.c#L67-L84): Wordt aangeroepen op kritieke logische locaties in de code (bijv. kogeltreffers, speler dood, schildgebruik) om de uitvoering te tellen en op te slaan per frame.
-- [`coverage_observe_frame`](../../coverage.c#L92-L100): Analyseert per frame de Phoenix-status (`state.GameState`, `state.LevelAndRound`, spelerlevens) ten behoeve van geautomatiseerde lockstep-testen tegen de Java- en Z80-emulatoren.
-- `coverage_dump_json`: Schrijft een JSON-rapport met de behaalde dekkings-statistieken naar schijf bij het afsluiten van de game.
-
-#### **Knowledge Graph Koppelingen**
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - Vrijwel alle C-bestanden in `c-phoenix` (`alien_logic.c`, `player_logic.c`, `weapon_collision.c`, etc.).</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>coverage</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="test-coverage--verification-coveragec---c-annotated-knowledge-graph-documentatie">Test
+Coverage &amp; Verification (<code>coverage.c</code>) - C-Annotated
+Knowledge Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van de functies in <a
+href="../../coverage.c"><code>coverage.c</code></a>. Deze module
+verzorgt de runtime-instrumentatie, lockstep-verificatie en
+dekkingsstatistieken voor de geporteerde C-codebases.</p>
+<hr />
+<h2 id="1-instrumentatie--dekking-system">1. Instrumentatie &amp;
+Dekking System</h2>
+<h3 id="coverage_hit--coverage_observe_frame"><code>coverage_hit</code>
+&amp; <code>coverage_observe_frame</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a href="../../coverage.c#L67-L84"><code>coverage_hit</code></a>:
+Wordt aangeroepen op kritieke logische locaties in de code (bijv.
+kogeltreffers, speler dood, schildgebruik) om de uitvoering te tellen en
+op te slaan per frame.</li>
+<li><a
+href="../../coverage.c#L92-L100"><code>coverage_observe_frame</code></a>:
+Analyseert per frame de Phoenix-status (<code>state.GameState</code>,
+<code>state.LevelAndRound</code>, spelerlevens) ten behoeve van
+geautomatiseerde lockstep-testen tegen de Java- en Z80-emulatoren.</li>
+<li><code>coverage_dump_json</code>: Schrijft een JSON-rapport met de
+behaalde dekkings-statistieken naar schijf bij het afsluiten van de
+game.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li>Vrijwel alle C-bestanden in <code>c-phoenix</code>
+(<code>alien_logic.c</code>, <code>player_logic.c</code>,
+<code>weapon_collision.c</code>, etc.).</li>
+</ul></li>
+</ul>
+</body></html>

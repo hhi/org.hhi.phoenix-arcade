@@ -1,56 +1,100 @@
-<!doctype html><html><head><meta charset="utf-8"><title>utilities</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>utilities</h1><pre># Utility Subroutines (`utilities.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`utilities.c`](../../utilities.c). Deze module bevat de kern-hulpprogramma&#x27;s van de game, waaronder geheugen-lees/schrijf abstracties (`mem_read`/`mem_write`), BCD-cijferweergave, tekst-rendering op het geroteerde scherm en de random number generator.
-
----
-
-## Inhoudsopgave
-1. [Geheugen &amp; Input Utility](#1-geheugen--input-utility)
-2. [Scherm- &amp; Tekst-rendering](#2-scherm--tekst-rendering)
-3. [VRAM Coördinaat-calculatie](#3-vram-coördinaat-calculatie)
-
----
-
-## 1. Geheugen &amp; Input Utility
-
-### `mem_read` &amp; `mem_write`
-#### **Beschrijving**
-- `mem_read(uint16_t addr)`: Leest een byte uit RAM (`$4000–$4FFF`). Retourneert 0 bij adresseringen buiten het RAM-bereik.
-- `mem_write(uint16_t addr, uint8_t val)`: Schrijft een byte naar RAM/VRAM met beveiliging tegen ROM-overschrijvingen.
-
-#### **Knowledge Graph Koppelingen**
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - Vrijwel alle spelmodules (`alien_logic.c`, `bird_logic.c`, `player_logic.c`, etc.).
-
----
-
-### `check_input_bits`
-#### **Beschrijving**
-De functie [`check_input_bits`](../../utilities.c#L16-L22) (Z80 ROM: `$00BB–$00C3`) voert een flankdetectie uit (1 -&gt; 0 overgang van een knop) door `state.IN0Current` te vergelijken met `state.IN0Previous`.
-
-#### **Knowledge Graph Koppelingen**
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`move_player`](player-logic.md#move_player) — [`player_logic.c#L131`](../../player_logic.c#L131)
-  - [`get_assigned_player_bullet_tile`](player-logic.md#get_assigned_player_bullet_tile) — [`player_logic.c#L177`](../../player_logic.c#L177)
-
----
-
-## 2. Scherm- &amp; Tekst-rendering
-
-### `print_number`
-#### **Beschrijving**
-De functie [`print_number`](../../utilities.c#L30-L55) (Z80 ROM: `$00C4–$00E1`) drukt een BCD-getal af op de opgegeven VRAM-positie.
-
-#### **Knowledge Graph Koppelingen**
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`mothership_core_hit_check`](mothership-logic.md#mothership_core_hit_check) — [`mothership_logic.c#L75`](../../mothership_logic.c#L75)
-  - [`state_1_flashing_score`](game-state-machine.md#state_1_flashing_score) — [`game_state_machine.c#L175`](../../game_state_machine.c#L175)
-  - [`update_scores_and_sound`](scoring.md#update_scores_and_sound) — [`scoring.c#L130`](../../scoring.c#L130)
-
----
-
-## 3. VRAM Coördinaat-calculatie
-
-### `right_one_column` &amp; `left_one_column`
-#### **Beschrijving**
-Omdat het scherm van de *Phoenix* arcadekast 90 graden gedraaid opgesteld staat, komt 1 schermkolom naar rechts of links overeen met `DE += 0x20` of `DE -= 0x20` in VRAM.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>utilities</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="utility-subroutines-utilitiesc---c-annotated-knowledge-graph-documentatie">Utility
+Subroutines (<code>utilities.c</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../utilities.c"><code>utilities.c</code></a>. Deze module bevat
+de kern-hulpprogramma's van de game, waaronder geheugen-lees/schrijf
+abstracties (<code>mem_read</code>/<code>mem_write</code>),
+BCD-cijferweergave, tekst-rendering op het geroteerde scherm en de
+random number generator.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-geheugen--input-utility">Geheugen &amp; Input
+Utility</a></li>
+<li><a href="#2-scherm--tekst-rendering">Scherm- &amp;
+Tekst-rendering</a></li>
+<li><a href="#3-vram-coördinaat-calculatie">VRAM
+Coördinaat-calculatie</a></li>
+</ol>
+<hr />
+<h2 id="1-geheugen--input-utility">1. Geheugen &amp; Input Utility</h2>
+<h3 id="mem_read--mem_write"><code>mem_read</code> &amp;
+<code>mem_write</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<ul>
+<li><code>mem_read(uint16_t addr)</code>: Leest een byte uit RAM
+(<code>$4000–$4FFF</code>). Retourneert 0 bij adresseringen buiten het
+RAM-bereik.</li>
+<li><code>mem_write(uint16_t addr, uint8_t val)</code>: Schrijft een
+byte naar RAM/VRAM met beveiliging tegen ROM-overschrijvingen.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li>Vrijwel alle spelmodules (<code>alien_logic.c</code>,
+<code>bird_logic.c</code>, <code>player_logic.c</code>, etc.).</li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="check_input_bits"><code>check_input_bits</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../utilities.c#L16-L22"><code>check_input_bits</code></a> (Z80
+ROM: <code>$00BB–$00C3</code>) voert een flankdetectie uit (1 -&gt; 0
+overgang van een knop) door <code>state.IN0Current</code> te vergelijken
+met <code>state.IN0Previous</code>.</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="player-logic.html#move_player"><code>move_player</code></a> —
+<a
+href="../../player_logic.c#L131"><code>player_logic.c#L131</code></a></li>
+<li><a
+href="player-logic.html#get_assigned_player_bullet_tile"><code>get_assigned_player_bullet_tile</code></a>
+— <a
+href="../../player_logic.c#L177"><code>player_logic.c#L177</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-scherm---tekst-rendering">2. Scherm- &amp;
+Tekst-rendering</h2>
+<h3 id="print_number"><code>print_number</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../utilities.c#L30-L55"><code>print_number</code></a> (Z80 ROM:
+<code>$00C4–$00E1</code>) drukt een BCD-getal af op de opgegeven
+VRAM-positie.</p>
+<h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="mothership-logic.html#mothership_core_hit_check"><code>mothership_core_hit_check</code></a>
+— <a
+href="../../mothership_logic.c#L75"><code>mothership_logic.c#L75</code></a></li>
+<li><a
+href="game-state-machine.html#state_1_flashing_score"><code>state_1_flashing_score</code></a>
+— <a
+href="../../game_state_machine.c#L175"><code>game_state_machine.c#L175</code></a></li>
+<li><a
+href="scoring.html#update_scores_and_sound"><code>update_scores_and_sound</code></a>
+— <a href="../../scoring.c#L130"><code>scoring.c#L130</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="3-vram-coördinaat-calculatie">3. VRAM Coördinaat-calculatie</h2>
+<h3 id="right_one_column--left_one_column"><code>right_one_column</code>
+&amp; <code>left_one_column</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>Omdat het scherm van de <em>Phoenix</em> arcadekast 90 graden
+gedraaid opgesteld staat, komt 1 schermkolom naar rechts of links
+overeen met <code>DE += 0x20</code> of <code>DE -= 0x20</code> in
+VRAM.</p>
+</body></html>

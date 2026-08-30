@@ -1,41 +1,77 @@
-<!doctype html><html><head><meta charset="utf-8"><title>tms36xx</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>tms36xx</h1><pre># TMS3615 / MM6221AA Synthesizer (`tms36xx.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`tms36xx.c`](../../tms36xx.c). Deze module emuleert de Texas Instruments TMS3615 / MM6221AA custom orgelsynthesizer-chip die de achtergrondmelodieën van *Phoenix* afspeelt.
-
----
-
-## Inhoudsopgave
-1. [TMS36XX Chip Initialisatie](#1-tms36xx-chip-initialisatie)
-2. [Melodie Selectie &amp; Rendering](#2-melodie-selectie--rendering)
-
----
-
-## 1. TMS36XX Chip Initialisatie
-
-### `tms36xx_init`
-#### **Beschrijving**
-De functie [`tms36xx_init`](../../tms36xx.c#L200-L240) stelt de 12 stemmen (6 actieve stemmen + 6 afvallende stemmen), basisfrequentie (372Hz), samplefrequentie (23.808kHz) en decay-tijden in voor het orgel-circuit.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - geen
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`sound_init`](sound.md#sound_init) — [`sound.c#L59`](../../sound.c#L59)
-
----
-
-## 2. Melodie Selectie &amp; Rendering
-
-### `tms36xx_mm6221aa_tune_w` &amp; `tms36xx_render_internal_sample`
-#### **Beschrijving**
-- [`tms36xx_mm6221aa_tune_w`](../../tms36xx.c#L247-L253) selecteert de actieve ingebouwde ROM-melodie (`g_tune1`, `g_tune2` of `g_tune3`).
-- [`tms36xx_render_internal_sample`](../../tms36xx.c#L260-L287) rendert per sample de blokgolf-frequenties en uitdovings-enveloppen over de 12 stemmen.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `tune_table` — [`tms36xx.c#L127`](../../tms36xx.c#L127)
-  - `tms36xx_decay` — [`tms36xx.c#L141`](../../tms36xx.c#L141)
-  - `tms36xx_restart` — [`tms36xx.c#L160`](../../tms36xx.c#L160)
-  - `tms36xx_tone` — [`tms36xx.c#L181`](../../tms36xx.c#L181)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`sound_render_frame`](sound.md#sound_render_frame) — [`sound.c#L176`](../../sound.c#L176)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>tms36xx</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="tms3615--mm6221aa-synthesizer-tms36xxc---c-annotated-knowledge-graph-documentatie">TMS3615
+/ MM6221AA Synthesizer (<code>tms36xx.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../tms36xx.c"><code>tms36xx.c</code></a>. Deze module emuleert
+de Texas Instruments TMS3615 / MM6221AA custom orgelsynthesizer-chip die
+de achtergrondmelodieën van <em>Phoenix</em> afspeelt.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-tms36xx-chip-initialisatie">TMS36XX Chip
+Initialisatie</a></li>
+<li><a href="#2-melodie-selectie--rendering">Melodie Selectie &amp;
+Rendering</a></li>
+</ol>
+<hr />
+<h2 id="1-tms36xx-chip-initialisatie">1. TMS36XX Chip Initialisatie</h2>
+<h3 id="tms36xx_init"><code>tms36xx_init</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../tms36xx.c#L200-L240"><code>tms36xx_init</code></a> stelt de
+12 stemmen (6 actieve stemmen + 6 afvallende stemmen), basisfrequentie
+(372Hz), samplefrequentie (23.808kHz) en decay-tijden in voor het
+orgel-circuit.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li>geen</li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
+href="../../sound.c#L59"><code>sound.c#L59</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-melodie-selectie--rendering">2. Melodie Selectie &amp;
+Rendering</h2>
+<h3
+id="tms36xx_mm6221aa_tune_w--tms36xx_render_internal_sample"><code>tms36xx_mm6221aa_tune_w</code>
+&amp; <code>tms36xx_render_internal_sample</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a
+href="../../tms36xx.c#L247-L253"><code>tms36xx_mm6221aa_tune_w</code></a>
+selecteert de actieve ingebouwde ROM-melodie (<code>g_tune1</code>,
+<code>g_tune2</code> of <code>g_tune3</code>).</li>
+<li><a
+href="../../tms36xx.c#L260-L287"><code>tms36xx_render_internal_sample</code></a>
+rendert per sample de blokgolf-frequenties en uitdovings-enveloppen over
+de 12 stemmen.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>tune_table</code> — <a
+href="../../tms36xx.c#L127"><code>tms36xx.c#L127</code></a></li>
+<li><code>tms36xx_decay</code> — <a
+href="../../tms36xx.c#L141"><code>tms36xx.c#L141</code></a></li>
+<li><code>tms36xx_restart</code> — <a
+href="../../tms36xx.c#L160"><code>tms36xx.c#L160</code></a></li>
+<li><code>tms36xx_tone</code> — <a
+href="../../tms36xx.c#L181"><code>tms36xx.c#L181</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="sound.html#sound_render_frame"><code>sound_render_frame</code></a> —
+<a href="../../sound.c#L176"><code>sound.c#L176</code></a></li>
+</ul></li>
+</ul>
+</body></html>

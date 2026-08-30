@@ -1,72 +1,146 @@
-<!doctype html><html><head><meta charset="utf-8"><title>attract-mode</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>attract-mode</h1><pre># Attract Mode &amp; Demo (`attract_mode.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`attract_mode.c`](../../attract_mode.c). Deze module beheert het attract-scherm, de intro-splash, de automatisch spelende demo, munttellers, startknop-detectie en de speciale tegel-rendering voor de intro.
-
----
-
-## Inhoudsopgave
-1. [Attract Mode &amp; Splash Sequencer](#1-attract-mode--splash-sequencer)
-2. [Munten &amp; Startknop Afhandeling](#2-munten--startknop-afhandeling)
-3. [Tekst- &amp; Tabel-rendering](#3-tekst--tabel-rendering)
-4. [Attract Mode Sprite- &amp; Intro-rendering](#4-attract-mode-sprite--intro-rendering)
-
----
-
-## 1. Attract Mode &amp; Splash Sequencer
-
-### `splash_and_demo`
-#### **Beschrijving**
-De functie [`splash_and_demo`](../../attract_mode.c#L32-L107) (Z80 ROM: `$00E3–$0172`) is de hoofdteller-gebaseerde sequencer die in attract mode wisselt tussen het copyright-scherm, de score-gemiddelde tabel, de intro-vogelanimatie en de demo-gameplay.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `print_copyright_lines` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - [`slow_print_score_average_table`](#slow_print_score_average_table) — [`attract_mode.c#L51`](../../attract_mode.c#L51)
-  - [`draw_score_average_table_tiles`](#draw_score_average_table_tiles) — [`attract_mode.c#L59`](../../attract_mode.c#L59)
-  - [`init_global_level_data`](init-global-level-data.md#init_global_level_data) — [`init_global_level_data.c`](../../init_global_level_data.c)
-  - [`slow_print_scroll_register_update`](#slow_print_scroll_register_update) — [`attract_mode.c#L84`](../../attract_mode.c#L84)
-  - [`draw_intro_bird_animation_frame`](#draw_intro_bird_animation_frame) — [`attract_mode.c#L92`](../../attract_mode.c#L92)
-  - [`check_demo_mode_player_and_alien`](#check_demo_mode_player_and_alien) — [`attract_mode.c#L101`](../../attract_mode.c#L101)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - `attract_mode_update` — [`state_init.c`](../../state_init.c)
-
----
-
-### `get_player_inputs_for_demo`
-#### **Beschrijving**
-De functie [`get_player_inputs_for_demo`](../../attract_mode.c#L169-L192) (Z80 ROM: `$0173–$0195`) genereert vooraf ingestelde joystickinvoer (naar links, naar rechts, vuren, schild) om een speelbare demonstratie na te bootsen.
-
----
-
-## 2. Munten &amp; Startknop Afhandeling
-
-### `prompt_for_start_game` &amp; `decrement_coins`
-#### **Beschrijving**
-- [`prompt_for_start_game`](../../attract_mode.c#L293-L359) (Z80 ROM: `$0288–$02EE`) toont &quot;PRESS START 1 OR 2 PLAYERS&quot;, leest de startknoppen in, decrement de credits en initialiseert beide spelersbuffers (bank 0 en bank 1).
-- [`decrement_coins`](../../attract_mode.c#L366-L390) (Z80 ROM: `$02CB–$02EF`) verwerkt het muntenverbruik (1 of 2 munten per spel, afhankelijk van DIP-switches) en verlaat de attract mode (`state.GameOrAttract = 1` of `2`).
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`clear_fore_and_background`](#clear_fore_and_background) — [`attract_mode.c#L302`](../../attract_mode.c#L302)
-  - `print_text_lines` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - [`coin_checking`](#coin_checking) — [`attract_mode.c#L309`](../../attract_mode.c#L309)
-  - [`update_hi_score`](scoring.md#update_hi_score) — [`scoring.c#L39`](../../scoring.c#L39)
-  - `hw_write_video_register` — [`hw_video_audio.c`](../../hw_video_audio.c)
-
----
-
-## 3. Tekst- &amp; Tabel-rendering
-
-### `slow_print_score_average_table`
-#### **Beschrijving**
-De functie [`slow_print_score_average_table`](../../attract_mode.c#L198-L235) (Z80 ROM: `$0196–$01CD`) schrijft langzaam karakter voor karakter de gemiddelde scoretabel naar het voorgrondscherm.
-
----
-
-## 4. Attract Mode Sprite- &amp; Intro-rendering
-
-### `drawbirdobject` &amp; `drawNx2`
-#### **Beschrijving**
-- [`drawbirdobject`](../../attract_mode.c#L472-L512) (Z80 ROM: `$34C0–$355D`) rendert een vogel-object uit RAM, inclusief automatische afkapping (clipping) aan de randen van het speelveld.
-- [`drawNx2`](../../attract_mode.c#L449-L461) (Z80 ROM: `$3520–$355D`) is de algemene 2-koloms tegel-renderer die door explosies en vogelsprites gebruikt wordt.
-- [`l1ee0`](../../attract_mode.c#L583-L603) (Z80 ROM: `$1EE0–$1EFA`) voert een checksum-berekening uit over de copyrighttekst als anti-piraterij controle.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>attract-mode</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="attract-mode--demo-attract_modec---c-annotated-knowledge-graph-documentatie">Attract
+Mode &amp; Demo (<code>attract_mode.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../attract_mode.c"><code>attract_mode.c</code></a>. Deze module
+beheert het attract-scherm, de intro-splash, de automatisch spelende
+demo, munttellers, startknop-detectie en de speciale tegel-rendering
+voor de intro.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-attract-mode--splash-sequencer">Attract Mode &amp;
+Splash Sequencer</a></li>
+<li><a href="#2-munten--startknop-afhandeling">Munten &amp; Startknop
+Afhandeling</a></li>
+<li><a href="#3-tekst--tabel-rendering">Tekst- &amp;
+Tabel-rendering</a></li>
+<li><a href="#4-attract-mode-sprite--intro-rendering">Attract Mode
+Sprite- &amp; Intro-rendering</a></li>
+</ol>
+<hr />
+<h2 id="1-attract-mode--splash-sequencer">1. Attract Mode &amp; Splash
+Sequencer</h2>
+<h3 id="splash_and_demo"><code>splash_and_demo</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../attract_mode.c#L32-L107"><code>splash_and_demo</code></a>
+(Z80 ROM: <code>$00E3–$0172</code>) is de hoofdteller-gebaseerde
+sequencer die in attract mode wisselt tussen het copyright-scherm, de
+score-gemiddelde tabel, de intro-vogelanimatie en de demo-gameplay.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>print_copyright_lines</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><a
+href="#slow_print_score_average_table"><code>slow_print_score_average_table</code></a>
+— <a
+href="../../attract_mode.c#L51"><code>attract_mode.c#L51</code></a></li>
+<li><a
+href="#draw_score_average_table_tiles"><code>draw_score_average_table_tiles</code></a>
+— <a
+href="../../attract_mode.c#L59"><code>attract_mode.c#L59</code></a></li>
+<li><a
+href="init-global-level-data.html#init_global_level_data"><code>init_global_level_data</code></a>
+— <a
+href="../../init_global_level_data.c"><code>init_global_level_data.c</code></a></li>
+<li><a
+href="#slow_print_scroll_register_update"><code>slow_print_scroll_register_update</code></a>
+— <a
+href="../../attract_mode.c#L84"><code>attract_mode.c#L84</code></a></li>
+<li><a
+href="#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
+— <a
+href="../../attract_mode.c#L92"><code>attract_mode.c#L92</code></a></li>
+<li><a
+href="#check_demo_mode_player_and_alien"><code>check_demo_mode_player_and_alien</code></a>
+— <a
+href="../../attract_mode.c#L101"><code>attract_mode.c#L101</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><code>attract_mode_update</code> — <a
+href="../../state_init.c"><code>state_init.c</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h3
+id="get_player_inputs_for_demo"><code>get_player_inputs_for_demo</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../attract_mode.c#L169-L192"><code>get_player_inputs_for_demo</code></a>
+(Z80 ROM: <code>$0173–$0195</code>) genereert vooraf ingestelde
+joystickinvoer (naar links, naar rechts, vuren, schild) om een speelbare
+demonstratie na te bootsen.</p>
+<hr />
+<h2 id="2-munten--startknop-afhandeling">2. Munten &amp; Startknop
+Afhandeling</h2>
+<h3
+id="prompt_for_start_game--decrement_coins"><code>prompt_for_start_game</code>
+&amp; <code>decrement_coins</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a
+href="../../attract_mode.c#L293-L359"><code>prompt_for_start_game</code></a>
+(Z80 ROM: <code>$0288–$02EE</code>) toont "PRESS START 1 OR 2 PLAYERS",
+leest de startknoppen in, decrement de credits en initialiseert beide
+spelersbuffers (bank 0 en bank 1).</li>
+<li><a
+href="../../attract_mode.c#L366-L390"><code>decrement_coins</code></a>
+(Z80 ROM: <code>$02CB–$02EF</code>) verwerkt het muntenverbruik (1 of 2
+munten per spel, afhankelijk van DIP-switches) en verlaat de attract
+mode (<code>state.GameOrAttract = 1</code> of <code>2</code>).</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#clear_fore_and_background"><code>clear_fore_and_background</code></a>
+— <a
+href="../../attract_mode.c#L302"><code>attract_mode.c#L302</code></a></li>
+<li><code>print_text_lines</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><a href="#coin_checking"><code>coin_checking</code></a> — <a
+href="../../attract_mode.c#L309"><code>attract_mode.c#L309</code></a></li>
+<li><a
+href="scoring.html#update_hi_score"><code>update_hi_score</code></a> — <a
+href="../../scoring.c#L39"><code>scoring.c#L39</code></a></li>
+<li><code>hw_write_video_register</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="3-tekst---tabel-rendering">3. Tekst- &amp; Tabel-rendering</h2>
+<h3
+id="slow_print_score_average_table"><code>slow_print_score_average_table</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../attract_mode.c#L198-L235"><code>slow_print_score_average_table</code></a>
+(Z80 ROM: <code>$0196–$01CD</code>) schrijft langzaam karakter voor
+karakter de gemiddelde scoretabel naar het voorgrondscherm.</p>
+<hr />
+<h2 id="4-attract-mode-sprite---intro-rendering">4. Attract Mode Sprite-
+&amp; Intro-rendering</h2>
+<h3 id="drawbirdobject--drawnx2"><code>drawbirdobject</code> &amp;
+<code>drawNx2</code></h3>
+<h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a
+href="../../attract_mode.c#L472-L512"><code>drawbirdobject</code></a>
+(Z80 ROM: <code>$34C0–$355D</code>) rendert een vogel-object uit RAM,
+inclusief automatische afkapping (clipping) aan de randen van het
+speelveld.</li>
+<li><a href="../../attract_mode.c#L449-L461"><code>drawNx2</code></a>
+(Z80 ROM: <code>$3520–$355D</code>) is de algemene 2-koloms
+tegel-renderer die door explosies en vogelsprites gebruikt wordt.</li>
+<li><a href="../../attract_mode.c#L583-L603"><code>l1ee0</code></a> (Z80
+ROM: <code>$1EE0–$1EFA</code>) voert een checksum-berekening uit over de
+copyrighttekst als anti-piraterij controle.</li>
+</ul>
+</body></html>

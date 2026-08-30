@@ -1,67 +1,129 @@
-<!doctype html><html><head><meta charset="utf-8"><title>scoring</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>scoring</h1><pre># Scoring &amp; Sound Service (`scoring.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`scoring.c`](../../scoring.c). Deze module beheert de BCD-scoretelling, High Score vergelijkingen, bonusleven-drempelcontroles, attract-mode muntsymbolen en de per-frame geluidssynchronisatie.
-
----
-
-## Inhoudsopgave
-1. [BCD Score-berekeningen &amp; High Score](#1-bcd-score-berekeningen--high-score)
-2. [Per-frame Score &amp; Geluid Service](#2-per-frame-score--geluid-service)
-3. [Attract Mode Muntcontroles](#3-attract-mode-muntcontroles)
-
----
-
-## 1. BCD Score-berekeningen &amp; High Score
-
-### `add_score` &amp; `bcd_add`
-#### **Beschrijving**
-De functie [`add_score`](../../scoring.c#L66-L81) telt een BCD-gecodeerde score toe aan de actieve speler (Player 1 of Player 2, afhankelijk van bit 0 in `state.GameAndDemoOrSplash`). Hulpfunctie `bcd_add` verzorgt de BCD-optelling met half-carry en upper-carry correcties.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`update_hi_score`](#update_hi_score) — [`scoring.c#L80`](../../scoring.c#L80)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`update_scores_and_sound`](#update_scores_and_sound) — [`scoring.c#L109`](../../scoring.c#L109), [`L124`](../../scoring.c#L124)
-
----
-
-### `update_hi_score`
-#### **Beschrijving**
-De functie [`update_hi_score`](../../scoring.c#L39-L59) (Z80 ROM: `$02F0–$02F5`) vergelijkt de 3-byte BCD scores van Player 1 en Player 2 en werkt de globale High Score (`HiScorehigh`, `HiScoremid`, `HiScorelow`) bij indien een nieuw record is bereikt.
-
----
-
-## 2. Per-frame Score &amp; Geluid Service
-
-### `update_scores_and_sound`
-#### **Beschrijving**
-De functie [`update_scores_and_sound`](../../scoring.c#L93-L195) (Z80 ROM: `$2700–$27A8`, `$3A10`) is de per-frame servicemodule voor scoretoekenning, bonusleven-controle en geluidssynchronisatie.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`coverage_hit`](coverage.md#coverage_hit) — [`coverage.c:L12`](../../coverage.c#L12)
-  - [`add_score`](#add_score) — [`scoring.c#L109`](../../scoring.c#L109), [`L124`](../../scoring.c#L124)
-  - [`print_number`](utilities.md#print_number) — [`utilities.c:L80`](../../utilities.c#L80)
-  - `update_lives_screen` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - `hw_write_sound_a` / `hw_write_sound_b` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - `sound_set_frame_sample_index` — [`sound.c`](../../sound.c)
-  - `l3a10` — [`sound_dispatcher.c`](../../sound_dispatcher.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
-#### **Stap-voor-stap werking**
-1. **Queued Scores toekennen:** Scant de score-buffers `state.M4370..M437F` (4 slots van 4 bytes) en roept [`add_score`](#add_score) aan voor verwerkte punten.
-2. **Moederschip-explosie bonus:** Als `GameState == GAME_STATE_MOTHERSHIP_EXPLODING`, voegt hij de moederschip-bonusscore toe.
-3. **Bonusleven drempelcontrole:** Voert een multi-byte BCD aftrekking uit (`Threshold - Score`). Bij een borrow (score hoger dan drempel):
-   - Ophogen aantal levens (`Player1Lives++` of `Player2Lives++`).
-   - Scherm verversen via `update_lives_screen()`.
-   - Volgende bonusleven-drempel instellen.
-4. **Hardware Audio Latching:** Schrijft de actuele geluidswaarden via `hw_write_sound_a` en `hw_write_sound_b` en roept de geluidsdispatcher `l3a10` aan.
-
----
-
-## 3. Attract Mode Muntcontroles
-
-### `check_coin_event`
-#### **Beschrijving**
-De functie [`check_coin_event`](../../scoring.c#L202-L218) verwerkt muntsymbolen in het VRAM tijdens de attract mode op basis van de DIP-switch instellingen (`hw_read_dsw()`).</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>scoring</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="scoring--sound-service-scoringc---c-annotated-knowledge-graph-documentatie">Scoring
+&amp; Sound Service (<code>scoring.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../scoring.c"><code>scoring.c</code></a>. Deze module beheert
+de BCD-scoretelling, High Score vergelijkingen,
+bonusleven-drempelcontroles, attract-mode muntsymbolen en de per-frame
+geluidssynchronisatie.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-bcd-score-berekeningen--high-score">BCD
+Score-berekeningen &amp; High Score</a></li>
+<li><a href="#2-per-frame-score--geluid-service">Per-frame Score &amp;
+Geluid Service</a></li>
+<li><a href="#3-attract-mode-muntcontroles">Attract Mode
+Muntcontroles</a></li>
+</ol>
+<hr />
+<h2 id="1-bcd-score-berekeningen--high-score">1. BCD Score-berekeningen
+&amp; High Score</h2>
+<h3 id="add_score--bcd_add"><code>add_score</code> &amp;
+<code>bcd_add</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../scoring.c#L66-L81"><code>add_score</code></a> telt een
+BCD-gecodeerde score toe aan de actieve speler (Player 1 of Player 2,
+afhankelijk van bit 0 in <code>state.GameAndDemoOrSplash</code>).
+Hulpfunctie <code>bcd_add</code> verzorgt de BCD-optelling met
+half-carry en upper-carry correcties.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="#update_hi_score"><code>update_hi_score</code></a> — <a
+href="../../scoring.c#L80"><code>scoring.c#L80</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#update_scores_and_sound"><code>update_scores_and_sound</code></a>
+— <a href="../../scoring.c#L109"><code>scoring.c#L109</code></a>, <a
+href="../../scoring.c#L124"><code>L124</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="update_hi_score"><code>update_hi_score</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../scoring.c#L39-L59"><code>update_hi_score</code></a> (Z80
+ROM: <code>$02F0–$02F5</code>) vergelijkt de 3-byte BCD scores van
+Player 1 en Player 2 en werkt de globale High Score
+(<code>HiScorehigh</code>, <code>HiScoremid</code>,
+<code>HiScorelow</code>) bij indien een nieuw record is bereikt.</p>
+<hr />
+<h2 id="2-per-frame-score--geluid-service">2. Per-frame Score &amp;
+Geluid Service</h2>
+<h3
+id="update_scores_and_sound"><code>update_scores_and_sound</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../scoring.c#L93-L195"><code>update_scores_and_sound</code></a>
+(Z80 ROM: <code>$2700–$27A8</code>, <code>$3A10</code>) is de per-frame
+servicemodule voor scoretoekenning, bonusleven-controle en
+geluidssynchronisatie.</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
+<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<li><a href="#add_score"><code>add_score</code></a> — <a
+href="../../scoring.c#L109"><code>scoring.c#L109</code></a>, <a
+href="../../scoring.c#L124"><code>L124</code></a></li>
+<li><a href="utilities.html#print_number"><code>print_number</code></a> —
+<a href="../../utilities.c#L80"><code>utilities.c:L80</code></a></li>
+<li><code>update_lives_screen</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><code>hw_write_sound_a</code> / <code>hw_write_sound_b</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><code>sound_set_frame_sample_index</code> — <a
+href="../../sound.c"><code>sound.c</code></a></li>
+<li><code>l3a10</code> — <a
+href="../../sound_dispatcher.c"><code>sound_dispatcher.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Queued Scores toekennen:</strong> Scant de score-buffers
+<code>state.M4370..M437F</code> (4 slots van 4 bytes) en roept <a
+href="#add_score"><code>add_score</code></a> aan voor verwerkte
+punten.</li>
+<li><strong>Moederschip-explosie bonus:</strong> Als
+<code>GameState == GAME_STATE_MOTHERSHIP_EXPLODING</code>, voegt hij de
+moederschip-bonusscore toe.</li>
+<li><strong>Bonusleven drempelcontrole:</strong> Voert een multi-byte
+BCD aftrekking uit (<code>Threshold - Score</code>). Bij een borrow
+(score hoger dan drempel):
+<ul>
+<li>Ophogen aantal levens (<code>Player1Lives++</code> of
+<code>Player2Lives++</code>).</li>
+<li>Scherm verversen via <code>update_lives_screen()</code>.</li>
+<li>Volgende bonusleven-drempel instellen.</li>
+</ul></li>
+<li><strong>Hardware Audio Latching:</strong> Schrijft de actuele
+geluidswaarden via <code>hw_write_sound_a</code> en
+<code>hw_write_sound_b</code> en roept de geluidsdispatcher
+<code>l3a10</code> aan.</li>
+</ol>
+<hr />
+<h2 id="3-attract-mode-muntcontroles">3. Attract Mode Muntcontroles</h2>
+<h3 id="check_coin_event"><code>check_coin_event</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../scoring.c#L202-L218"><code>check_coin_event</code></a>
+verwerkt muntsymbolen in het VRAM tijdens de attract mode op basis van
+de DIP-switch instellingen (<code>hw_read_dsw()</code>).</p>
+</body></html>

@@ -1,61 +1,127 @@
-<!doctype html><html><head><meta charset="utf-8"><title>mothership-impl</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>mothership-impl</h1><pre># Mothership Implementation (`mothership_impl.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van de functies in [`mothership_impl.c`](../../mothership_impl.c). Deze module behandelt de tegel-inslag detectie, het doorboren van het moederschip-schild en de activatie van de moederschip-explosie.
-
----
-
-## Inhoudsopgave
-1. [Tegel-inslagen &amp; Kern-activatie](#1-tegel-inslagen--kern-activatie)
-2. [Explosietellers &amp; Scroll-sync](#2-explosietellers--scroll-sync)
-
----
-
-## 1. Tegel-inslagen &amp; Kern-activatie
-
-### `l2351_mothership_animation`
-#### **Beschrijving**
-De functie [`l2351_mothership_animation`](../../mothership_impl.c#L12-L123) (Z80 ROM: `$2351–$23C7`) verwerkt kogel-inslagen op de schildtegels van het moederschip en detecteert voltreffers in de moederschipkern.
-
-#### **Context &amp; Aanroep**
-Aangeroepen bij kogeltreffers op het moederschip in level 5.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`coverage_hit`](coverage.md#coverage_hit) — [`coverage.c:L12`](../../coverage.c#L12)
-  - `phoenix_mothership_explosion_pointers` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - [`mem_read`](utilities.md#mem_read) / [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - `process_player_bullet_vs_mothership` — [`weapon_collision.c`](../../weapon_collision.c)
-
-#### **Geheugen- &amp; Structuur-context**
-- `state.M4366`: Vlag ingesteld op `0xFF` bij schade aan het moederschip.
-- `state.GameState`: Wordt gezet op `GAME_STATE_MOTHERSHIP_EXPLODING` bij een dodelijke treffer op de kern.
-- `state.CounterA5`: Explosieduur-teller (ingesteld op `0x60`).
-- `state.ParticleExplosion`: Deeltjesexplosie-vlag (ingesteld op `0xFF`).
-
-#### **Stap-voor-stap werking**
-1. **Statuscontrole:** Breek af als de kogel/object-status bit 3 inactief is (`(a &amp; 0x08) == 0`).
-2. **Tegeladres berekenen:** Houdt rekening met de horizontale scrollpositie (`state.CounterB9 &gt;&gt; 3`) om de getroffen tegel in het VRAM te lokaliseren.
-3. **Schild-schade (`tile == 0x4C`):** De kogel stuit af op de buitenste schildlaag; wist bit 3 van de kogelstatus en verlaagt de tegelwaarde in RAM naar `0x4B` of wis naar `0x00`.
-4. **Kern-treffer (`tile == 0x60`):** Controleert of de kogel door de schildopening het zwakke punt van de moederschipkern raakt:
-   - Als het hekwerk geopend is (`gate == 0x70`): Activeert de fatale explosie `state.GameState = GAME_STATE_MOTHERSHIP_EXPLODING`, zet de teller `state.CounterA5 = 0x60` en start de deeltjesexplosie `state.ParticleExplosion = 0xFF`.
-   - Anders: Verwerkt gewone beschadiging en vervangt de tegel via `phoenix_mothership_explosion_pointers`.
-
----
-
-## 2. Explosietellers &amp; Scroll-sync
-
-### `update_counters_for_mothership_explosion`
-#### **Beschrijving**
-De functie [`update_counters_for_mothership_explosion`](../../mothership_impl.c#L134-L156) (Z80 ROM: `$242C–$2442`) update de scrollregisters en telt de explosieteller `state.CounterA5` af tijdens de moederschip-explosie.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `hw_write_scroll_register` — [`hw_video_audio.c`](../../hw_video_audio.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
-#### **Stap-voor-stap werking**
-1. **Scroll-uitlijning:** Lijnt `state.CounterB9` uit op 8-pixel grenzen (`&amp; 0xF8`) en roept `hw_write_scroll_register` aan.
-2. **Scherm-pointer:** Berekent het aangepaste schermadres `de = 0x41C6` gecorrigeerd voor de scroll-offset.
-3. **Teller aftellen:** Verlaagt `state.CounterA5--` en retourneert de resterende explosietijd.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>mothership-impl</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="mothership-implementation-mothership_implc---c-annotated-knowledge-graph-documentatie">Mothership
+Implementation (<code>mothership_impl.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van de functies in <a
+href="../../mothership_impl.c"><code>mothership_impl.c</code></a>. Deze
+module behandelt de tegel-inslag detectie, het doorboren van het
+moederschip-schild en de activatie van de moederschip-explosie.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-tegel-inslagen--kern-activatie">Tegel-inslagen &amp;
+Kern-activatie</a></li>
+<li><a href="#2-explosietellers--scroll-sync">Explosietellers &amp;
+Scroll-sync</a></li>
+</ol>
+<hr />
+<h2 id="1-tegel-inslagen--kern-activatie">1. Tegel-inslagen &amp;
+Kern-activatie</h2>
+<h3
+id="l2351_mothership_animation"><code>l2351_mothership_animation</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../mothership_impl.c#L12-L123"><code>l2351_mothership_animation</code></a>
+(Z80 ROM: <code>$2351–$23C7</code>) verwerkt kogel-inslagen op de
+schildtegels van het moederschip en detecteert voltreffers in de
+moederschipkern.</p>
+<h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
+<p>Aangeroepen bij kogeltreffers op het moederschip in level 5.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
+<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<li><code>phoenix_mothership_explosion_pointers</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
+href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><code>process_player_bullet_vs_mothership</code> — <a
+href="../../weapon_collision.c"><code>weapon_collision.c</code></a></li>
+</ul></li>
+</ul>
+<h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
+Structuur-context</strong></h4>
+<ul>
+<li><code>state.M4366</code>: Vlag ingesteld op <code>0xFF</code> bij
+schade aan het moederschip.</li>
+<li><code>state.GameState</code>: Wordt gezet op
+<code>GAME_STATE_MOTHERSHIP_EXPLODING</code> bij een dodelijke treffer
+op de kern.</li>
+<li><code>state.CounterA5</code>: Explosieduur-teller (ingesteld op
+<code>0x60</code>).</li>
+<li><code>state.ParticleExplosion</code>: Deeltjesexplosie-vlag
+(ingesteld op <code>0xFF</code>).</li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Statuscontrole:</strong> Breek af als de kogel/object-status
+bit 3 inactief is (<code>(a &amp; 0x08) == 0</code>).</li>
+<li><strong>Tegeladres berekenen:</strong> Houdt rekening met de
+horizontale scrollpositie (<code>state.CounterB9 &gt;&gt; 3</code>) om
+de getroffen tegel in het VRAM te lokaliseren.</li>
+<li><strong>Schild-schade (<code>tile == 0x4C</code>):</strong> De kogel
+stuit af op de buitenste schildlaag; wist bit 3 van de kogelstatus en
+verlaagt de tegelwaarde in RAM naar <code>0x4B</code> of wis naar
+<code>0x00</code>.</li>
+<li><strong>Kern-treffer (<code>tile == 0x60</code>):</strong>
+Controleert of de kogel door de schildopening het zwakke punt van de
+moederschipkern raakt:
+<ul>
+<li>Als het hekwerk geopend is (<code>gate == 0x70</code>): Activeert de
+fatale explosie
+<code>state.GameState = GAME_STATE_MOTHERSHIP_EXPLODING</code>, zet de
+teller <code>state.CounterA5 = 0x60</code> en start de deeltjesexplosie
+<code>state.ParticleExplosion = 0xFF</code>.</li>
+<li>Anders: Verwerkt gewone beschadiging en vervangt de tegel via
+<code>phoenix_mothership_explosion_pointers</code>.</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="2-explosietellers--scroll-sync">2. Explosietellers &amp;
+Scroll-sync</h2>
+<h3
+id="update_counters_for_mothership_explosion"><code>update_counters_for_mothership_explosion</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../mothership_impl.c#L134-L156"><code>update_counters_for_mothership_explosion</code></a>
+(Z80 ROM: <code>$242C–$2442</code>) update de scrollregisters en telt de
+explosieteller <code>state.CounterA5</code> af tijdens de
+moederschip-explosie.</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>hw_write_scroll_register</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Scroll-uitlijning:</strong> Lijnt
+<code>state.CounterB9</code> uit op 8-pixel grenzen
+(<code>&amp; 0xF8</code>) en roept <code>hw_write_scroll_register</code>
+aan.</li>
+<li><strong>Scherm-pointer:</strong> Berekent het aangepaste schermadres
+<code>de = 0x41C6</code> gecorrigeerd voor de scroll-offset.</li>
+<li><strong>Teller aftellen:</strong> Verlaagt
+<code>state.CounterA5--</code> en retourneert de resterende
+explosietijd.</li>
+</ol>
+</body></html>

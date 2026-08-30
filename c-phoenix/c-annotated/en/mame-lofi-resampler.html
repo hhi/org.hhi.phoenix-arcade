@@ -1,16 +1,23 @@
-<!doctype html><html><head><meta charset="utf-8"><title>mame-lofi-resampler</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>mame-lofi-resampler</h1><pre># MAME Lo-Fi Resampler (`mame_lofi_resampler.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c). This module implements a 4-point cubic polynomial resampler for arcade audio sample conversion.
-
----
-
-## Table of Contents
-1. [Cubic Resampler Logic](#1-cubic-resampler-logic)
-
----
-
-## 1. Cubic Resampler Logic
-
-### `mame_lofi_resampler_next`
-#### **Description**
-The function [`mame_lofi_resampler_next`](../../mame_lofi_resampler.c#L66) interpolates raw audio streams to match target platform sample rates.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>mame-lofi-resampler</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="mame-lo-fi-resampler-mame_lofi_resamplerc---c-annotated-knowledge-graph-documentation">MAME
+Lo-Fi Resampler (<code>mame_lofi_resampler.c</code>) - C-Annotated
+Knowledge Graph Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../mame_lofi_resampler.c"><code>mame_lofi_resampler.c</code></a>.
+This module implements a 4-point cubic polynomial resampler for arcade
+audio sample conversion.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-cubic-resampler-logic">Cubic Resampler Logic</a></li>
+</ol>
+<hr />
+<h2 id="1-cubic-resampler-logic">1. Cubic Resampler Logic</h2>
+<h3
+id="mame_lofi_resampler_next"><code>mame_lofi_resampler_next</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../mame_lofi_resampler.c#L66"><code>mame_lofi_resampler_next</code></a>
+interpolates raw audio streams to match target platform sample
+rates.</p>
+</body></html>

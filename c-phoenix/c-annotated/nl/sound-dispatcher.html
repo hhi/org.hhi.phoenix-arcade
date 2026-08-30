@@ -1,43 +1,83 @@
-<!doctype html><html><head><meta charset="utf-8"><title>sound-dispatcher</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>sound-dispatcher</h1><pre># Per-Frame Sound Dispatcher (`sound_dispatcher.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`sound_dispatcher.c`](../../sound_dispatcher.c). Deze module implementeert de originele Z80 Z80-routine `$3A10–$3B5B`, die in elk frame de juiste geluidseffecten (sirenes, schoten, speler-explosies, vogelkweel en moederschip-brom) berekent en opslaat in de hardware-latches `SoundControlA` en `SoundControlB`.
-
----
-
-## Inhoudsopgave
-1. [Master Sound Dispatcher](#1-master-sound-dispatcher)
-2. [Level-Geconcentreerde Geluidseffecten](#2-level-geconcentreerde-geluidseffecten)
-3. [Speler- &amp; Explosie-effecten](#3-speler--explosie-effecten)
-
----
-
-## 1. Master Sound Dispatcher
-
-### `l3a10` &amp; `l3b43`
-#### **Beschrijving**
-- [`l3a10`](../../sound_dispatcher.c#L265-L271) (Z80 ROM: `$3A10–$3A1C`) is het startpunt dat aan de start van een game (`LevelAndRound == 0`) de beroemde intro-melodie *Romance de Amor / Estudio* triggert (`SoundControlB = 0xCF`), of per frame `l3b43` aanroept.
-- [`l3b43`](../../sound_dispatcher.c#L247-L257) (Z80 ROM: `$3B43–$3B5B`) doorloopt in vastgestelde volgorde alle vervaltellers en effect-stappen voor de huidige frame-update.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l23d6`](#l23d6) — [`sound_dispatcher.c#L249`](../../sound_dispatcher.c#L249)
-  - [`l27bd`](#l27bd) — [`sound_dispatcher.c#L254`](../../sound_dispatcher.c#L254)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`update_scores_and_sound`](scoring.md#update_scores_and_sound) — [`scoring.c#L194`](../../scoring.c#L194)
-
----
-
-## 2. Level-Geconcentreerde Geluidseffecten
-
-### `l23d6` &amp; `l3a98_scan`
-#### **Beschrijving**
-- [`l23d6`](../../sound_dispatcher.c#L21-L29) (Z80 ROM: `$23D6–$23FB`) schakelt afhankelijk van het levelpatroon naar de specifieke geluidsroutines: alien-sirene scan ([`l3a98_scan`](#l3a98_scan)), vogel-kadans ([`l3ad0`](#l3ad0)) of moederschip-brom ([`l3b02`](#l3b02)).
-- [`l3a98_scan`](../../sound_dispatcher.c#L154-L170) (Z80 ROM: `$3A98–$3ACA`) telt de actieve aliens en stelt de dynamische toonhoogte van de alien-sirene in.
-
----
-
-## 3. Speler- &amp; Explosie-effecten
-
-### `l27bd`
-#### **Beschrijving**
-De functie [`l27bd`](../../sound_dispatcher.c#L35-L53) (Z80 ROM: `$27BD–$27EE`) beheert de ruis- en toonafval van het schotgeluid (`BulletTriggered`) en de spelersexplosie (`ParticleExplosion`).</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>sound-dispatcher</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="per-frame-sound-dispatcher-sound_dispatcherc---c-annotated-knowledge-graph-documentatie">Per-Frame
+Sound Dispatcher (<code>sound_dispatcher.c</code>) - C-Annotated
+Knowledge Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../sound_dispatcher.c"><code>sound_dispatcher.c</code></a>.
+Deze module implementeert de originele Z80 Z80-routine
+<code>$3A10–$3B5B</code>, die in elk frame de juiste geluidseffecten
+(sirenes, schoten, speler-explosies, vogelkweel en moederschip-brom)
+berekent en opslaat in de hardware-latches <code>SoundControlA</code> en
+<code>SoundControlB</code>.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-master-sound-dispatcher">Master Sound
+Dispatcher</a></li>
+<li><a
+href="#2-level-geconcentreerde-geluidseffecten">Level-Geconcentreerde
+Geluidseffecten</a></li>
+<li><a href="#3-speler--explosie-effecten">Speler- &amp;
+Explosie-effecten</a></li>
+</ol>
+<hr />
+<h2 id="1-master-sound-dispatcher">1. Master Sound Dispatcher</h2>
+<h3 id="l3a10--l3b43"><code>l3a10</code> &amp; <code>l3b43</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a href="../../sound_dispatcher.c#L265-L271"><code>l3a10</code></a>
+(Z80 ROM: <code>$3A10–$3A1C</code>) is het startpunt dat aan de start
+van een game (<code>LevelAndRound == 0</code>) de beroemde intro-melodie
+<em>Romance de Amor / Estudio</em> triggert
+(<code>SoundControlB = 0xCF</code>), of per frame <code>l3b43</code>
+aanroept.</li>
+<li><a href="../../sound_dispatcher.c#L247-L257"><code>l3b43</code></a>
+(Z80 ROM: <code>$3B43–$3B5B</code>) doorloopt in vastgestelde volgorde
+alle vervaltellers en effect-stappen voor de huidige frame-update.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="#l23d6"><code>l23d6</code></a> — <a
+href="../../sound_dispatcher.c#L249"><code>sound_dispatcher.c#L249</code></a></li>
+<li><a href="#l27bd"><code>l27bd</code></a> — <a
+href="../../sound_dispatcher.c#L254"><code>sound_dispatcher.c#L254</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="scoring.html#update_scores_and_sound"><code>update_scores_and_sound</code></a>
+— <a href="../../scoring.c#L194"><code>scoring.c#L194</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-level-geconcentreerde-geluidseffecten">2.
+Level-Geconcentreerde Geluidseffecten</h2>
+<h3 id="l23d6--l3a98_scan"><code>l23d6</code> &amp;
+<code>l3a98_scan</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a href="../../sound_dispatcher.c#L21-L29"><code>l23d6</code></a>
+(Z80 ROM: <code>$23D6–$23FB</code>) schakelt afhankelijk van het
+levelpatroon naar de specifieke geluidsroutines: alien-sirene scan (<a
+href="#l3a98_scan"><code>l3a98_scan</code></a>), vogel-kadans (<a
+href="#l3ad0"><code>l3ad0</code></a>) of moederschip-brom (<a
+href="#l3b02"><code>l3b02</code></a>).</li>
+<li><a
+href="../../sound_dispatcher.c#L154-L170"><code>l3a98_scan</code></a>
+(Z80 ROM: <code>$3A98–$3ACA</code>) telt de actieve aliens en stelt de
+dynamische toonhoogte van de alien-sirene in.</li>
+</ul>
+<hr />
+<h2 id="3-speler---explosie-effecten">3. Speler- &amp;
+Explosie-effecten</h2>
+<h3 id="l27bd"><code>l27bd</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../sound_dispatcher.c#L35-L53"><code>l27bd</code></a> (Z80 ROM:
+<code>$27BD–$27EE</code>) beheert de ruis- en toonafval van het
+schotgeluid (<code>BulletTriggered</code>) en de spelersexplosie
+(<code>ParticleExplosion</code>).</p>
+</body></html>

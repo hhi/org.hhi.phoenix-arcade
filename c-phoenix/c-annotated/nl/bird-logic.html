@@ -1,103 +1,220 @@
-<!doctype html><html><head><meta charset="utf-8"><title>bird-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>bird-logic</h1><pre># Bird Logic (`bird_logic.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`bird_logic.c`](../../bird_logic.c). Deze module regelt het hoofd-updateproces van de vogelgolven: de spelfasen 4–8, met de actieve vogel-fade-in-fasen 5 en 7. De module omvat eieren uitbroeden, vluchtpaden en het tekenen van de vogel-objecten.
-
----
-
-## Inhoudsopgave
-1. [Hoofdlus van de Vogel-golf](#1-hoofdlus-van-de-vogel-golf)
-2. [Vluchtpad &amp; Botsingsafhandeling](#2-vluchtpad--botsingsafhandeling)
-3. [Vogel Rendering Routines](#3-vogel-rendering-routines)
-
----
-
-## 1. Hoofdlus van de Vogel-golf
-
-### `process_birds`
-#### **Beschrijving**
-De functie [`process_birds`](../../bird_logic.c#L27-L66) (Z80 ROM: `$3400–$344D`) is de hoofd-updatelus voor de vogelgolven (spelfasen 4–8; actieve vogel-fade-in-fasen 5 en 7).
-
-#### **Context &amp; Aanroep**
-Wordt vanuit de hoofdgame-state machine aangeroepen tijdens vogel-levels:
-```c
-process_birds();
-```
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`coverage_hit`](coverage.md#coverage_hit) — [`coverage.c:L12`](../../coverage.c#L12)
-  - [`player_update`](player-logic.md#player_update) — [`player_logic.c#L10`](../../player_logic.c#L10)
-  - [`collision_detection_for_birds`](collision-detection.md#collision_detection_for_birds) — [`collision_detection.c`](../../collision_detection.c)
-  - [`birds_vertical_movement_update`](birds-vertical-movement.md#birds_vertical_movement_update) — [`birds_vertical_movement.c`](../../birds_vertical_movement.c)
-  - [`check_bird_formation_player_collision`](collision-detection.md#check_bird_formation_player_collision) — [`collision_detection.c`](../../collision_detection.c)
-  - [`l3462_no_birds_left`](bird-wave-behavior.md#l3462_no_birds_left) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-  - [`update_second_bird_bank`](bird-wave-behavior.md#update_second_bird_bank) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-  - [`draw_first_4_bird_objects`](#draw_first_4_bird_objects) — [`bird_logic.c#L81`](../../bird_logic.c#L81)
-  - [`draw_second_4_bird_objects`](#draw_second_4_bird_objects) — [`bird_logic.c#L93`](../../bird_logic.c#L93)
-  - [`refresh_bird_flight_parameters`](bird-wave-behavior.md#refresh_bird_flight_parameters) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-  - [`update_first_four_birds`](bird-wave-behavior.md#update_first_four_birds) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-  - [`update_second_four_birds`](bird-wave-behavior.md#update_second_four_birds) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-  - `try_spawn_bird_dive_bomb` — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-  - `process_enemy_bombs` — [`weapon_collision.c#L17`](../../weapon_collision.c#L17)
-  - [`handle_animations_for_killed_aliens`](alien-logic.md#handle_animations_for_killed_aliens) — [`alien_logic.c#L195`](../../alien_logic.c#L195)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
-#### **Geheugen- &amp; Structuur-context**
-- `state.BirdsLeft`: Aantal resterende levende vogels.
-- `state.Counter9B`: Frame-teller gebruikt om de updates van de eerste bank (vogels 0-3) en tweede bank (vogels 4-7) af te wisselen.
-
-#### **Stap-voor-stap werking**
-1. **Speler &amp; Verticale beweging:** Update de speler (`player_update`), verwerkt vogelbotsingen en voert de verticale bewegingsupdate van de vogels uit.
-2. **Geen vogels meer (`BirdsLeft == 0`):** Schakelt over naar de ronde-afronding via [`l3462_no_birds_left`](bird-wave-behavior.md#l3462_no_birds_left).
-3. **Formatie van 4 of meer vogels (`BirdsLeft &gt;= 4`):** Wisselt op basis van `state.Counter9B &amp; 0x01` af tussen het updaten van de tweede vogelbank (`update_second_bird_bank`) of de eerste vogelbank (`draw_first_4_bird_objects`, `refresh_bird_flight_parameters`, etc.).
-4. **Formatie van minder dan 4 vogels:** Tekent en update beide banken direct in hetzelfde frame.
-
----
-
-## 2. Vluchtpad &amp; Botsingsafhandeling
-
-### `bird_flight_path`
-#### **Beschrijving**
-De functie [`bird_flight_path`](../../bird_logic.c#L69-L73) verwerkt de geometrische duikvluchtpaden en voert de botsingsdetectie voor vogels uit.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`coverage_hit`](coverage.md#coverage_hit) — [`coverage.c:L12`](../../coverage.c#L12)
-  - [`collision_detection_for_birds`](collision-detection.md#collision_detection_for_birds) — [`collision_detection.c`](../../collision_detection.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
----
-
-## 3. Vogel Rendering Routines
-
-### `draw_first_4_bird_objects`
-#### **Beschrijving**
-De functie [`draw_first_4_bird_objects`](../../bird_logic.c#L81-L87) (Z80 ROM: `$3474–$3485`) tekent de sprite-objecten voor vogels 0 tot en met 3.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `drawbirdobject` — [`sprite_rendering.c`](../../sprite_rendering.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`process_birds`](#process_birds) — [`bird_logic.c#L44`](../../bird_logic.c#L44), [`L53`](../../bird_logic.c#L53)
-  - [`update_second_bird_bank`](bird-wave-behavior.md#update_second_bird_bank) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-
-#### **Stap-voor-stap werking**
-Doorloopt de RAM-structuren van adres `0x4B70` tot `0x4B90` in stappen van 8 bytes (`addr += 0x08`) en roept `drawbirdobject(addr)` aan voor elk van de eerste 4 vogel-records.
-
----
-
-### `draw_second_4_bird_objects`
-#### **Beschrijving**
-De functie [`draw_second_4_bird_objects`](../../bird_logic.c#L93-L99) (Z80 ROM: `$3486–$3497`) tekent de sprite-objecten voor vogels 4 tot en met 7.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `drawbirdobject` — [`sprite_rendering.c`](../../sprite_rendering.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`process_birds`](#process_birds) — [`bird_logic.c#L54`](../../bird_logic.c#L54)
-  - [`update_second_bird_bank`](bird-wave-behavior.md#update_second_bird_bank) — [`bird_wave_behavior.c`](../../bird_wave_behavior.c)
-
-#### **Stap-voor-stap werking**
-Doorloopt de RAM-structuren van adres `0x4B90` tot `0x4BB0` in stappen van 8 bytes (`addr += 0x08`) en roept `drawbirdobject(addr)` aan voor elk van de laatste 4 vogel-records.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>bird-logic</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="bird-logic-bird_logicc---c-annotated-knowledge-graph-documentatie">Bird
+Logic (<code>bird_logic.c</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../bird_logic.c"><code>bird_logic.c</code></a>. Deze module
+regelt het hoofd-updateproces van de vogelgolven: de spelfasen 4–8, met
+de actieve vogel-fade-in-fasen 5 en 7. De module omvat eieren
+uitbroeden, vluchtpaden en het tekenen van de vogel-objecten.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-hoofdlus-van-de-vogel-golf">Hoofdlus van de
+Vogel-golf</a></li>
+<li><a href="#2-vluchtpad--botsingsafhandeling">Vluchtpad &amp;
+Botsingsafhandeling</a></li>
+<li><a href="#3-vogel-rendering-routines">Vogel Rendering
+Routines</a></li>
+</ol>
+<hr />
+<h2 id="1-hoofdlus-van-de-vogel-golf">1. Hoofdlus van de Vogel-golf</h2>
+<h3 id="process_birds"><code>process_birds</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../bird_logic.c#L27-L66"><code>process_birds</code></a> (Z80
+ROM: <code>$3400–$344D</code>) is de hoofd-updatelus voor de vogelgolven
+(spelfasen 4–8; actieve vogel-fade-in-fasen 5 en 7).</p>
+<h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
+<p>Wordt vanuit de hoofdgame-state machine aangeroepen tijdens
+vogel-levels:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>process_birds<span class="op">();</span></span></code></pre></div>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
+<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<li><a
+href="player-logic.html#player_update"><code>player_update</code></a> — <a
+href="../../player_logic.c#L10"><code>player_logic.c#L10</code></a></li>
+<li><a
+href="collision-detection.html#collision_detection_for_birds"><code>collision_detection_for_birds</code></a>
+— <a
+href="../../collision_detection.c"><code>collision_detection.c</code></a></li>
+<li><a
+href="birds-vertical-movement.html#birds_vertical_movement_update"><code>birds_vertical_movement_update</code></a>
+— <a
+href="../../birds_vertical_movement.c"><code>birds_vertical_movement.c</code></a></li>
+<li><a
+href="collision-detection.html#check_bird_formation_player_collision"><code>check_bird_formation_player_collision</code></a>
+— <a
+href="../../collision_detection.c"><code>collision_detection.c</code></a></li>
+<li><a
+href="bird-wave-behavior.html#l3462_no_birds_left"><code>l3462_no_birds_left</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+<li><a
+href="bird-wave-behavior.html#update_second_bird_bank"><code>update_second_bird_bank</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+<li><a
+href="#draw_first_4_bird_objects"><code>draw_first_4_bird_objects</code></a>
+— <a
+href="../../bird_logic.c#L81"><code>bird_logic.c#L81</code></a></li>
+<li><a
+href="#draw_second_4_bird_objects"><code>draw_second_4_bird_objects</code></a>
+— <a
+href="../../bird_logic.c#L93"><code>bird_logic.c#L93</code></a></li>
+<li><a
+href="bird-wave-behavior.html#refresh_bird_flight_parameters"><code>refresh_bird_flight_parameters</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+<li><a
+href="bird-wave-behavior.html#update_first_four_birds"><code>update_first_four_birds</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+<li><a
+href="bird-wave-behavior.html#update_second_four_birds"><code>update_second_four_birds</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+<li><code>try_spawn_bird_dive_bomb</code> — <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+<li><code>process_enemy_bombs</code> — <a
+href="../../weapon_collision.c#L17"><code>weapon_collision.c#L17</code></a></li>
+<li><a
+href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
+— <a
+href="../../alien_logic.c#L195"><code>alien_logic.c#L195</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
+Structuur-context</strong></h4>
+<ul>
+<li><code>state.BirdsLeft</code>: Aantal resterende levende vogels.</li>
+<li><code>state.Counter9B</code>: Frame-teller gebruikt om de updates
+van de eerste bank (vogels 0-3) en tweede bank (vogels 4-7) af te
+wisselen.</li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Speler &amp; Verticale beweging:</strong> Update de speler
+(<code>player_update</code>), verwerkt vogelbotsingen en voert de
+verticale bewegingsupdate van de vogels uit.</li>
+<li><strong>Geen vogels meer (<code>BirdsLeft == 0</code>):</strong>
+Schakelt over naar de ronde-afronding via <a
+href="bird-wave-behavior.html#l3462_no_birds_left"><code>l3462_no_birds_left</code></a>.</li>
+<li><strong>Formatie van 4 of meer vogels
+(<code>BirdsLeft &gt;= 4</code>):</strong> Wisselt op basis van
+<code>state.Counter9B &amp; 0x01</code> af tussen het updaten van de
+tweede vogelbank (<code>update_second_bird_bank</code>) of de eerste
+vogelbank (<code>draw_first_4_bird_objects</code>,
+<code>refresh_bird_flight_parameters</code>, etc.).</li>
+<li><strong>Formatie van minder dan 4 vogels:</strong> Tekent en update
+beide banken direct in hetzelfde frame.</li>
+</ol>
+<hr />
+<h2 id="2-vluchtpad--botsingsafhandeling">2. Vluchtpad &amp;
+Botsingsafhandeling</h2>
+<h3 id="bird_flight_path"><code>bird_flight_path</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../bird_logic.c#L69-L73"><code>bird_flight_path</code></a>
+verwerkt de geometrische duikvluchtpaden en voert de botsingsdetectie
+voor vogels uit.</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
+<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<li><a
+href="collision-detection.html#collision_detection_for_birds"><code>collision_detection_for_birds</code></a>
+— <a
+href="../../collision_detection.c"><code>collision_detection.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="3-vogel-rendering-routines">3. Vogel Rendering Routines</h2>
+<h3
+id="draw_first_4_bird_objects"><code>draw_first_4_bird_objects</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../bird_logic.c#L81-L87"><code>draw_first_4_bird_objects</code></a>
+(Z80 ROM: <code>$3474–$3485</code>) tekent de sprite-objecten voor
+vogels 0 tot en met 3.</p>
+<h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>drawbirdobject</code> — <a
+href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="#process_birds"><code>process_birds</code></a> — <a
+href="../../bird_logic.c#L44"><code>bird_logic.c#L44</code></a>, <a
+href="../../bird_logic.c#L53"><code>L53</code></a></li>
+<li><a
+href="bird-wave-behavior.html#update_second_bird_bank"><code>update_second_bird_bank</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Doorloopt de RAM-structuren van adres <code>0x4B70</code> tot
+<code>0x4B90</code> in stappen van 8 bytes (<code>addr += 0x08</code>)
+en roept <code>drawbirdobject(addr)</code> aan voor elk van de eerste 4
+vogel-records.</p>
+<hr />
+<h3
+id="draw_second_4_bird_objects"><code>draw_second_4_bird_objects</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../bird_logic.c#L93-L99"><code>draw_second_4_bird_objects</code></a>
+(Z80 ROM: <code>$3486–$3497</code>) tekent de sprite-objecten voor
+vogels 4 tot en met 7.</p>
+<h4 id="knowledge-graph-koppelingen-3"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>drawbirdobject</code> — <a
+href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="#process_birds"><code>process_birds</code></a> — <a
+href="../../bird_logic.c#L54"><code>bird_logic.c#L54</code></a></li>
+<li><a
+href="bird-wave-behavior.html#update_second_bird_bank"><code>update_second_bird_bank</code></a>
+— <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-2"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Doorloopt de RAM-structuren van adres <code>0x4B90</code> tot
+<code>0x4BB0</code> in stappen van 8 bytes (<code>addr += 0x08</code>)
+en roept <code>drawbirdobject(addr)</code> aan voor elk van de laatste 4
+vogel-records.</p>
+</body></html>

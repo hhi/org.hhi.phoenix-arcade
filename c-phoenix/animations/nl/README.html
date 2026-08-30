@@ -1,79 +1,140 @@
-<!doctype html><html><head><meta charset="utf-8"><title>README</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>README</h1><pre># Phoenix Animaties &amp; Trajecten Gids (`c-phoenix/animations`)
-
-Welkom in het centrale visuele archief van de *Phoenix* Arcade Game (`c-phoenix`). Deze map beantwoordt twee verschillende vragen: **waaruit** elk object bestaat, en **waarheen** het beweegt.
-
-## Bronstatus
-
-De bron van waarheid is, in deze volgorde: **Z80 ASM/ROM → C-port → geannoteerde analyse → deze visualisaties**. De SVG&#x27;s maken ROM- en C-data inzichtelijk, maar vervangen die bron niet. Een conclusie zonder koppeling naar ASM, ROM of C-code is een interpretatie die nog gecontroleerd moet worden.
-
----
-
-## 🗂️ Op deze pagina
-
-- [Overkoepelende hoofd-animatie](#-overkoepelende-hoofd-animatie) — drie bewegingssoorten tegelijk
-- [De vogel, fase voor fase](#-de-vogel-fase-voor-fase) — van ei tot volgroeide vogel
-- [Waar alles uit bestaat](#-waar-alles-uit-bestaat) — karakters, kleurgroepen, spritesequenties
-- [Vliegpatronen &amp; trajecten](#-vliegpatronen--trajecten) — de banen die objecten volgen
-
----
-
-## 🎬 Overkoepelende Hoofd-Animatie
-
-Drie bewegingssoorten uit het spel tegelijk — een alien-zwenking, een vogel-duikbom en de daling van het moederschip — allemaal getekend uit de vectoren die in de ROM staan:
-
-![Hoofd-animatie: een alien-zwenking, een vogel-duikbom met bom, en de gestage daling van het moederschip, gegenereerd uit de originele ROM-bewegingsvectoren](../00_overview_flight_patterns.svg)
-
-Bronbestand: [`00_overview_flight_patterns.svg`](../00_overview_flight_patterns.svg).
-
----
-
-## 🦅 De vogel, fase voor fase
-
-Een Phoenix-vogel is niet één sprite. Hij komt uit het ei, groeit, valt aan en explodeert — zes onderscheiden animatiefases, elk gereconstrueerd uit de graphics-ROM:
-
-| Ei komt uit | Kleine vogel wiekt | Volgroeide spanwijdte |
-| --- | --- | --- |
-| &lt;img src=&quot;../01_egg_hatching.svg&quot; width=&quot;230&quot; alt=&quot;Een ei dat uitkomt tot een vogel&quot;&gt; | &lt;img src=&quot;../02_small_bird_flapping.svg&quot; width=&quot;230&quot; alt=&quot;Een kleine vogel die met de vleugels wiekt, frame A en B&quot;&gt; | &lt;img src=&quot;../03_grown_bird_matrix.svg&quot; width=&quot;230&quot; alt=&quot;De 4x4-matrix van vleugelstanden van een volgroeide vogel&quot;&gt; |
-| **Duikaanval** | **Explosie en bonus** | **Daling moederschip** |
-| &lt;img src=&quot;../04_dive_bombing_attack.svg&quot; width=&quot;230&quot; alt=&quot;Een vogel die op de speler duikt en een bom laat vallen&quot;&gt; | &lt;img src=&quot;../05_bird_explosion_bonus.svg&quot; width=&quot;230&quot; alt=&quot;Een vogel die uiteenspat in deeltjes met 500 punten bonus&quot;&gt; | &lt;img src=&quot;../09_mothership_descent_trajectory.svg&quot; width=&quot;230&quot; alt=&quot;Het moederschip dat langs zijn vaste traject daalt&quot;&gt; |
-
-📄 **[`bird-animations.md`](bird-animations.md)** — alle zes fases in detail, met de RAM-slots en ROM-routines erachter.
-
----
-
-## 🔡 Waar alles uit bestaat
-
-Phoenix heeft geen sprite-engine. Elk object op het scherm is een handvol **8×8-karakters** die naar het schermgeheugen worden geschreven, en het karakternummer bepaalt zélf de kleur — bit 5-7 kiezen een van de acht kleurgroepen in de PROM-tabel. Daarom lijkt elk blok van 32 karakters op één familie: letters, cijfers, het spelerschip, de vogels, explosies, het schild.
-
-Er zijn twee onafhankelijke sets van 256 karakters. De voorgrondset bevat de speler, de aliens, de explosies en het schild; de achtergrondset bevat het sterrenveld, de planeet, de vogels en het moederschip.
-
-Objectmaten liggen niet vast. Een kleine familie **drawNxN-routines** schrijft twee karakters onder elkaar in een kolom en stapt dan zijwaarts, en voor sommige objecten kiest `sprite_rendering.c` tijdens runtime `1x1`, `2x1`, `1x2` of `2x2` op basis van het control-byte — dezelfde tabel kan dus verschillende vormen opleveren, afhankelijk van wat het object doet.
-
-📄 **[`animation-sequences.md`](animation-sequences.md)** — de volledige karakterset, elke spritesequentie frame voor frame met de karaktercodes, de bewegende versies, en de C-routine die elk daarvan tekent.
-
----
-
-## 🎨 Vliegpatronen &amp; Trajecten
-
-Elke alienformatie en vogelduik volgt een vast pad, in de ROM opgeslagen als een korte lijst bewegingsvectoren. Deze map telt 130 SVG-bestanden; de 78 patroonanimaties hieronder zijn er één per ROM-gedefinieerd patroon, gegroepeerd naar het subsysteem dat ze gebruikt:
-
-- **Cluster A** (ROM `$1000–$13FF`) — patronen 01–18, geordende formatiegolven in alienwave 1 &amp; 3
-- **Cluster B** (ROM `$2C00–$2FFF`) — patronen 19–36, breakout-aliens en moederschip-escorts
-- **Vogel-AI-scripts** (ROM `$3F00–$3F7F`) — 16 gedragsscripts
-- **Vogelduik- en spawn-posities** (ROM `$3DC0–$3DDF`) — 16 start- en duikcoördinaten
-
-📄 **[`animation-trajectory.md`](animation-trajectory.md)** — elk patroon getoond en toegelicht, met de ROM-clusterindeling, de RAM-datastructuren (`$4000-$4BFF`) en de vectorengine erachter.
-
-📐 **[`animation-trajectory-detailed.md`](animation-trajectory-detailed.md)** — stap-voor-stap coördinatentabellen per patroon: stapnummer, vectorindex, dX, dY, cumulatief X/Y.
-
----
-
-## 🔗 Knowledge Graph Koppelingen
-
-Elk C-bronbestand in dit subsysteem heeft een geannoteerde tegenhanger in `../../c-annotated/nl/`:
-
-* [`phoenix_tables.c`](../../phoenix_tables.c) → [`phoenix-tables.md`](../../c-annotated/nl/phoenix-tables.md)
-* [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](../../c-annotated/nl/alien-logic.md)
-* [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
-* [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
-* [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>README</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1 id="phoenix-animaties--trajecten-gids-c-phoenixanimations">Phoenix
+Animaties &amp; Trajecten Gids (<code>c-phoenix/animations</code>)</h1>
+<p>Welkom in het centrale visuele archief van de <em>Phoenix</em> Arcade
+Game (<code>c-phoenix</code>). Deze map beantwoordt twee verschillende
+vragen: <strong>waaruit</strong> elk object bestaat, en
+<strong>waarheen</strong> het beweegt.</p>
+<h2 id="bronstatus">Bronstatus</h2>
+<p>De bron van waarheid is, in deze volgorde: <strong>Z80 ASM/ROM →
+C-port → geannoteerde analyse → deze visualisaties</strong>. De SVG's
+maken ROM- en C-data inzichtelijk, maar vervangen die bron niet. Een
+conclusie zonder koppeling naar ASM, ROM of C-code is een interpretatie
+die nog gecontroleerd moet worden.</p>
+<hr />
+<h2 id="card_index_dividers-op-deze-pagina">🗂️ Op deze pagina</h2>
+<ul>
+<li><a href="#-overkoepelende-hoofd-animatie">Overkoepelende
+hoofd-animatie</a> — drie bewegingssoorten tegelijk</li>
+<li><a href="#-de-vogel-fase-voor-fase">De vogel, fase voor fase</a> —
+van ei tot volgroeide vogel</li>
+<li><a href="#-waar-alles-uit-bestaat">Waar alles uit bestaat</a> —
+karakters, kleurgroepen, spritesequenties</li>
+<li><a href="#-vliegpatronen--trajecten">Vliegpatronen &amp;
+trajecten</a> — de banen die objecten volgen</li>
+</ul>
+<hr />
+<h2 id="clapper-overkoepelende-hoofd-animatie">🎬 Overkoepelende
+Hoofd-Animatie</h2>
+<p>Drie bewegingssoorten uit het spel tegelijk — een alien-zwenking, een
+vogel-duikbom en de daling van het moederschip — allemaal getekend uit
+de vectoren die in de ROM staan:</p>
+<p><img src="../00_overview_flight_patterns.svg"
+alt="Hoofd-animatie: een alien-zwenking, een vogel-duikbom met bom, en de gestage daling van het moederschip, gegenereerd uit de originele ROM-bewegingsvectoren" /></p>
+<p>Bronbestand: <a
+href="../00_overview_flight_patterns.svg"><code>00_overview_flight_patterns.svg</code></a>.</p>
+<hr />
+<h2 id="eagle-de-vogel-fase-voor-fase">🦅 De vogel, fase voor fase</h2>
+<p>Een Phoenix-vogel is niet één sprite. Hij komt uit het ei, groeit,
+valt aan en explodeert — zes onderscheiden animatiefases, elk
+gereconstrueerd uit de graphics-ROM:</p>
+<table>
+<thead>
+<tr>
+<th>Ei komt uit</th>
+<th>Kleine vogel wiekt</th>
+<th>Volgroeide spanwijdte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../01_egg_hatching.svg" width="230" alt="Een ei dat uitkomt tot een vogel"></td>
+<td><img src="../02_small_bird_flapping.svg" width="230" alt="Een kleine vogel die met de vleugels wiekt, frame A en B"></td>
+<td><img src="../03_grown_bird_matrix.svg" width="230" alt="De 4x4-matrix van vleugelstanden van een volgroeide vogel"></td>
+</tr>
+<tr>
+<td><strong>Duikaanval</strong></td>
+<td><strong>Explosie en bonus</strong></td>
+<td><strong>Daling moederschip</strong></td>
+</tr>
+<tr>
+<td><img src="../04_dive_bombing_attack.svg" width="230" alt="Een vogel die op de speler duikt en een bom laat vallen"></td>
+<td><img src="../05_bird_explosion_bonus.svg" width="230" alt="Een vogel die uiteenspat in deeltjes met 500 punten bonus"></td>
+<td><img src="../09_mothership_descent_trajectory.svg" width="230" alt="Het moederschip dat langs zijn vaste traject daalt"></td>
+</tr>
+</tbody>
+</table>
+<p>📄 <strong><a
+href="bird-animations.html"><code>bird-animations.md</code></a></strong> —
+alle zes fases in detail, met de RAM-slots en ROM-routines erachter.</p>
+<hr />
+<h2 id="abcd-waar-alles-uit-bestaat">🔡 Waar alles uit bestaat</h2>
+<p>Phoenix heeft geen sprite-engine. Elk object op het scherm is een
+handvol <strong>8×8-karakters</strong> die naar het schermgeheugen
+worden geschreven, en het karakternummer bepaalt zélf de kleur — bit 5-7
+kiezen een van de acht kleurgroepen in de PROM-tabel. Daarom lijkt elk
+blok van 32 karakters op één familie: letters, cijfers, het spelerschip,
+de vogels, explosies, het schild.</p>
+<p>Er zijn twee onafhankelijke sets van 256 karakters. De voorgrondset
+bevat de speler, de aliens, de explosies en het schild; de
+achtergrondset bevat het sterrenveld, de planeet, de vogels en het
+moederschip.</p>
+<p>Objectmaten liggen niet vast. Een kleine familie
+<strong>drawNxN-routines</strong> schrijft twee karakters onder elkaar
+in een kolom en stapt dan zijwaarts, en voor sommige objecten kiest
+<code>sprite_rendering.c</code> tijdens runtime <code>1x1</code>,
+<code>2x1</code>, <code>1x2</code> of <code>2x2</code> op basis van het
+control-byte — dezelfde tabel kan dus verschillende vormen opleveren,
+afhankelijk van wat het object doet.</p>
+<p>📄 <strong><a
+href="animation-sequences.html"><code>animation-sequences.md</code></a></strong>
+— de volledige karakterset, elke spritesequentie frame voor frame met de
+karaktercodes, de bewegende versies, en de C-routine die elk daarvan
+tekent.</p>
+<hr />
+<h2 id="art-vliegpatronen--trajecten">🎨 Vliegpatronen &amp;
+Trajecten</h2>
+<p>Elke alienformatie en vogelduik volgt een vast pad, in de ROM
+opgeslagen als een korte lijst bewegingsvectoren. Deze map telt 130
+SVG-bestanden; de 78 patroonanimaties hieronder zijn er één per
+ROM-gedefinieerd patroon, gegroepeerd naar het subsysteem dat ze
+gebruikt:</p>
+<ul>
+<li><strong>Cluster A</strong> (ROM <code>$1000–$13FF</code>) — patronen
+01–18, geordende formatiegolven in alienwave 1 &amp; 3</li>
+<li><strong>Cluster B</strong> (ROM <code>$2C00–$2FFF</code>) — patronen
+19–36, breakout-aliens en moederschip-escorts</li>
+<li><strong>Vogel-AI-scripts</strong> (ROM <code>$3F00–$3F7F</code>) —
+16 gedragsscripts</li>
+<li><strong>Vogelduik- en spawn-posities</strong> (ROM
+<code>$3DC0–$3DDF</code>) — 16 start- en duikcoördinaten</li>
+</ul>
+<p>📄 <strong><a
+href="animation-trajectory.html"><code>animation-trajectory.md</code></a></strong>
+— elk patroon getoond en toegelicht, met de ROM-clusterindeling, de
+RAM-datastructuren (<code>$4000-$4BFF</code>) en de vectorengine
+erachter.</p>
+<p>📐 <strong><a
+href="animation-trajectory-detailed.html"><code>animation-trajectory-detailed.md</code></a></strong>
+— stap-voor-stap coördinatentabellen per patroon: stapnummer,
+vectorindex, dX, dY, cumulatief X/Y.</p>
+<hr />
+<h2 id="link-knowledge-graph-koppelingen">🔗 Knowledge Graph
+Koppelingen</h2>
+<p>Elk C-bronbestand in dit subsysteem heeft een geannoteerde
+tegenhanger in <code>../../c-annotated/nl/</code>:</p>
+<ul>
+<li><a href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> →
+<a
+href="../../c-annotated/nl/phoenix-tables.html"><code>phoenix-tables.md</code></a></li>
+<li><a href="../../alien_logic.c"><code>alien_logic.c</code></a> → <a
+href="../../c-annotated/nl/alien-logic.html"><code>alien-logic.md</code></a></li>
+<li><a href="../../bird_logic.c"><code>bird_logic.c</code></a> → <a
+href="../../c-annotated/nl/bird-logic.html"><code>bird-logic.md</code></a></li>
+<li><a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+→ <a
+href="../../c-annotated/nl/bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a></li>
+<li><a href="../../attract_mode.c"><code>attract_mode.c</code></a> → <a
+href="../../c-annotated/nl/attract-mode.html"><code>attract-mode.md</code></a></li>
+</ul>
+</body></html>

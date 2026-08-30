@@ -1,76 +1,154 @@
-<!doctype html><html><head><meta charset="utf-8"><title>state-endings</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>state-endings</h1><pre># Game Endings &amp; Explosions (`state_endings.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`state_endings.c`](../../state_endings.c). Deze module beheert de eindtoestanden van *Phoenix*: spelersexplosie (GameState 4), Game Over (GameState 5), moederschip-explosie (GameState 6) en de moederschip-scoreweergave (GameState 7).
-
----
-
-## Inhoudsopgave
-1. [GameState 4: Spelersexplosie](#1-gamestate-4-spelersexplosie)
-2. [GameState 5: Game Over](#2-gamestate-5-game-over)
-3. [GameState 6 &amp; 7: Moederschip Explosie &amp; Score](#3-gamestate-6--7-moederschip-explosie--score)
-4. [Levensbeheer &amp; Aftrek](#4-levensbeheer--aftrek)
-
----
-
-## 1. GameState 4: Spelersexplosie
-
-### `state_4_player_ship_explosion`
-#### **Beschrijving**
-De functie [`state_4_player_ship_explosion`](../../state_endings.c#L33-L59) (Z80 ROM: `$0AEA–$0B0F`) regelt de stapsgewijze animatie en deeltjesfases wanneer het spelerschip vernietigd is.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `hw_write_scroll_register` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - [`l0b15`](#l0b15) — [`state_endings.c#L44`](../../state_endings.c#L44)
-  - [`l0ba0`](#l0ba0) — [`state_endings.c#L49`](../../state_endings.c#L49)
-  - `clear_foreground` — [`hw_video_audio.c`](../../hw_video_audio.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`game_state_machine`](game-state-machine.md#game_state_machine) — [`game_state_machine.c#L39`](../../game_state_machine.c#L39)
-
----
-
-## 2. GameState 5: Game Over
-
-### `state_5_game_over_text`
-#### **Beschrijving**
-De functie [`state_5_game_over_text`](../../state_endings.c#L67-L94) (Z80 ROM: `$0B60–$0B9D`) toont de &quot;GAME OVER&quot; tekst, controleert de copyright-checksum en verwerkt de overgang terug naar attract mode of de andere speler.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `clear_background` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - `print_text_lines` — [`hw_video_audio.c`](../../hw_video_audio.c)
-  - `copy_memory_bank` — [`state_init.c`](../../state_init.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`game_state_machine`](game-state-machine.md#game_state_machine) — [`game_state_machine.c#L40`](../../game_state_machine.c#L40)
-
----
-
-## 3. GameState 6 &amp; 7: Moederschip Explosie &amp; Score
-
-### `state_6_mother_ship_explosion` &amp; `state_7_mother_ship_score_display`
-#### **Beschrijving**
-- [`state_6_mother_ship_explosion`](../../state_endings.c#L126-L171) (Z80 ROM: `$2400–$244B`) voert de spectaculaire deeltjes- en tegelexplosie van het moederschip uit.
-- [`state_7_mother_ship_score_display`](../../state_endings.c#L179-L201) (Z80 ROM: `$244C–$2469`) toont de behaalde bonusscore en verhoogt de ronde (`LevelAndRound += 0x10`) voor het volgende level.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`update_counters_for_mothership_explosion`](mothership-impl.md#update_counters_for_mothership_explosion) — [`mothership_impl.c#L134`](../../mothership_impl.c#L134)
-  - [`erase_mothership`](mothership-logic.md#erase_mothership) — [`mothership_logic.c#L22`](../../mothership_logic.c#L22)
-  - [`mothership_core_hit_check`](mothership-logic.md#mothership_core_hit_check) — [`mothership_logic.c#L48`](../../mothership_logic.c#L48)
-  - [`l2085_particles`](player-explosion.md#l2085_particles) — [`player_explosion.c#L154`](../../player_explosion.c#L154)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`game_state_machine`](game-state-machine.md#game_state_machine) — [`game_state_machine.c#L41-L42`](../../game_state_machine.c#L41-L42)
-
----
-
-## 4. Levensbeheer &amp; Aftrek
-
-### `l0b15`
-#### **Beschrijving**
-De functie [`l0b15`](../../state_endings.c#L208-L231) (Z80 ROM: `$0B15–$0B2D`) verlaagt het aantal spelerlevens van de actieve speler, ververst het scherm en bepaalt of het spel overgaat naar &quot;GAME OVER&quot; of dat een nieuwe beurt start.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `update_lives_screen` — [`hw_video_audio.c`](../../hw_video_audio.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`state_4_player_ship_explosion`](#state_4_player_ship_explosion) — [`state_endings.c#L44`](../../state_endings.c#L44)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>state-endings</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="game-endings--explosions-state_endingsc---c-annotated-knowledge-graph-documentatie">Game
+Endings &amp; Explosions (<code>state_endings.c</code>) - C-Annotated
+Knowledge Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../state_endings.c"><code>state_endings.c</code></a>. Deze
+module beheert de eindtoestanden van <em>Phoenix</em>: spelersexplosie
+(GameState 4), Game Over (GameState 5), moederschip-explosie (GameState
+6) en de moederschip-scoreweergave (GameState 7).</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-gamestate-4-spelersexplosie">GameState 4:
+Spelersexplosie</a></li>
+<li><a href="#2-gamestate-5-game-over">GameState 5: Game Over</a></li>
+<li><a href="#3-gamestate-6--7-moederschip-explosie--score">GameState 6
+&amp; 7: Moederschip Explosie &amp; Score</a></li>
+<li><a href="#4-levensbeheer--aftrek">Levensbeheer &amp; Aftrek</a></li>
+</ol>
+<hr />
+<h2 id="1-gamestate-4-spelersexplosie">1. GameState 4:
+Spelersexplosie</h2>
+<h3
+id="state_4_player_ship_explosion"><code>state_4_player_ship_explosion</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../state_endings.c#L33-L59"><code>state_4_player_ship_explosion</code></a>
+(Z80 ROM: <code>$0AEA–$0B0F</code>) regelt de stapsgewijze animatie en
+deeltjesfases wanneer het spelerschip vernietigd is.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>hw_write_scroll_register</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><a href="#l0b15"><code>l0b15</code></a> — <a
+href="../../state_endings.c#L44"><code>state_endings.c#L44</code></a></li>
+<li><a href="#l0ba0"><code>l0ba0</code></a> — <a
+href="../../state_endings.c#L49"><code>state_endings.c#L49</code></a></li>
+<li><code>clear_foreground</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
+— <a
+href="../../game_state_machine.c#L39"><code>game_state_machine.c#L39</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-gamestate-5-game-over">2. GameState 5: Game Over</h2>
+<h3 id="state_5_game_over_text"><code>state_5_game_over_text</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../state_endings.c#L67-L94"><code>state_5_game_over_text</code></a>
+(Z80 ROM: <code>$0B60–$0B9D</code>) toont de "GAME OVER" tekst,
+controleert de copyright-checksum en verwerkt de overgang terug naar
+attract mode of de andere speler.</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>clear_background</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><code>print_text_lines</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+<li><code>copy_memory_bank</code> — <a
+href="../../state_init.c"><code>state_init.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
+— <a
+href="../../game_state_machine.c#L40"><code>game_state_machine.c#L40</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="3-gamestate-6--7-moederschip-explosie--score">3. GameState 6
+&amp; 7: Moederschip Explosie &amp; Score</h2>
+<h3
+id="state_6_mother_ship_explosion--state_7_mother_ship_score_display"><code>state_6_mother_ship_explosion</code>
+&amp; <code>state_7_mother_ship_score_display</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a
+href="../../state_endings.c#L126-L171"><code>state_6_mother_ship_explosion</code></a>
+(Z80 ROM: <code>$2400–$244B</code>) voert de spectaculaire deeltjes- en
+tegelexplosie van het moederschip uit.</li>
+<li><a
+href="../../state_endings.c#L179-L201"><code>state_7_mother_ship_score_display</code></a>
+(Z80 ROM: <code>$244C–$2469</code>) toont de behaalde bonusscore en
+verhoogt de ronde (<code>LevelAndRound += 0x10</code>) voor het volgende
+level.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="mothership-impl.html#update_counters_for_mothership_explosion"><code>update_counters_for_mothership_explosion</code></a>
+— <a
+href="../../mothership_impl.c#L134"><code>mothership_impl.c#L134</code></a></li>
+<li><a
+href="mothership-logic.html#erase_mothership"><code>erase_mothership</code></a>
+— <a
+href="../../mothership_logic.c#L22"><code>mothership_logic.c#L22</code></a></li>
+<li><a
+href="mothership-logic.html#mothership_core_hit_check"><code>mothership_core_hit_check</code></a>
+— <a
+href="../../mothership_logic.c#L48"><code>mothership_logic.c#L48</code></a></li>
+<li><a
+href="player-explosion.html#l2085_particles"><code>l2085_particles</code></a>
+— <a
+href="../../player_explosion.c#L154"><code>player_explosion.c#L154</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
+— <a
+href="../../game_state_machine.c#L41-L42"><code>game_state_machine.c#L41-L42</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="4-levensbeheer--aftrek">4. Levensbeheer &amp; Aftrek</h2>
+<h3 id="l0b15"><code>l0b15</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../state_endings.c#L208-L231"><code>l0b15</code></a> (Z80 ROM:
+<code>$0B15–$0B2D</code>) verlaagt het aantal spelerlevens van de
+actieve speler, ververst het scherm en bepaalt of het spel overgaat naar
+"GAME OVER" of dat een nieuwe beurt start.</p>
+<h4 id="knowledge-graph-koppelingen-3"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>update_lives_screen</code> — <a
+href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="#state_4_player_ship_explosion"><code>state_4_player_ship_explosion</code></a>
+— <a
+href="../../state_endings.c#L44"><code>state_endings.c#L44</code></a></li>
+</ul></li>
+</ul>
+</body></html>

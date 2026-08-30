@@ -1,321 +1,877 @@
-<!doctype html><html><head><meta charset="utf-8"><title>animation-trajectory</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>animation-trajectory</h1><pre># Phoenix Animation Trajectories &amp; Prescribed Movement Patterns (`animation-trajectory.md`)
-
-Dit document bevat een diepgaande Knowledge Graph-analyse van **voorgeschreven bewegingspatronen, vector-tabellen, Z80 ROM-clusters, ROM-adressen, RAM-datastructuren en AI-vliegscripten** in de *Phoenix* Arcade-codebase. De classificatie als **gesloten lus** of **open traject** is afgeleid uit de ROM-vectoren; de directory bevat 78 SVG-bestanden, waaronder patroonweergaven en overzichtsanimaties.
-
----
-
-## Inhoudsopgave
-1. [Overzicht Vliegpatroon-architectuur &amp; Z80 Geheugen-lus](#1-overzicht-vliegpatroon-architectuur--z80-geheugen-lus)
-2. [Verschil tussen Gesloten Lus en Open Traject Patronen](#2-verschil-tussen-gesloten-lus-en-open-traject-patronen)
-3. [Waarom Verschillende Clusters &amp; Hoofdstukindeling?](#3-waarom-verschillende-clusters--hoofdstukindeling)
-4. [Alien Cluster A Patterns — Wave 1 &amp; 3 Formaties (Patronen 01 t/m 18)](#4-alien-cluster-a-patterns--wave-1--3-formaties-patronen-01-tm-18)
-5. [Alien Cluster B Patterns — Breakout &amp; Escorts (Patronen 19 t/m 36)](#5-alien-cluster-b-patterns--breakout--escorts-patronen-19-tm-36)
-6. [Vogel Vliegtrajecten &amp; AI Behavior Scripts](#6-vogel-vliegtrajecten--ai-behavior-scripts)
-7. [Moederschip &amp; Attract Mode Bewegingspaden](#7-moederschip--attract-mode-bewegingspaden)
-8. [Uitvoerings-lus &amp; Mermaid Diagram](#8-uitvoerings-lus--mermaid-diagram)
-
----
-
-## 1. Overzicht Vliegpatroon-architectuur &amp; Z80 Geheugen-lus
-
-In de *Phoenix* arcadehardware worden bewegingen van vijanden (aliens, vogels en het moederschip) niet willekeurig berekend via dynamische natuurkunde, maar aangestuurd via **statische vectoriële opzoektabellen** uit het Z80 ROM opgeslagen in [`phoenix_tables.c`](../../phoenix_tables.c) / [`phoenix_tables.h`](../../phoenix_tables.h).
-
-### **Geheugenkaart &amp; RAM-Datastructuren**
-Elke actieve entiteit op het scherm gebruikt een specifieke geheugenstructuur in het Arcade RAM (`$4000–$4BFF`):
-
-| RAM Adres / Offset | Variabele / Register | Functionele Omschrijving |
-|---|---|---|
-| `$43C0–$43DF` | `PlayerShipX` / Bullet Grid | Spelerschip coördinaten en actieve spelerkogels |
-| `$4360–$437F` | `M436D`, `M436E`, `M436F` | Vogel AI-fase registers, afdaaldoelen en willekeurige duik-drempels |
-| `$4B50–$4B6F` | `AlienPointerTable` | 16-bit RAM pointers die wijzen naar de actieve stap in een vliegpatroon |
-| `$4800–$4B3F` | `BackgroundScreen` / VRAM | 90° geroteerde 32x32 tegelmatrix videobuffer (832 bytes per pagina) |
-
-### **Vector-transformatie &amp; Indexering**
-Een RAM-pointer (bijv. op offset `$4B50`) leest per frame één stap-byte uit het ROM. Die byte is al een richtingvectornummer in het bereik `0x00–0x1F`; hij wordt hier **niet** gemaskeerd. De Z80 voert één `RLCA` uit. Omdat de waarde al begrensd is, is dat hetzelfde als vermenigvuldigen met twee en kiest het één paar uit [`phoenix_alien_direction_vectors`](../../phoenix_tables.h#L162) (ROM `$1700–$173F`):
-
-1. `vector_offset = step_byte × 2`
-2. `delta_x = phoenix_alien_direction_vectors[vector_offset]`
-3. `delta_y = phoenix_alien_direction_vectors[vector_offset + 1]`
-4. `x = x + delta_x`; `y = y + delta_y`
-
-Met andere woorden: iedere patroon-byte kiest één `(delta_x, delta_y)`-paar, en dat paar verplaatst de alien één vectorstap.
-
----
-
-### **Bovenliggende Hoofd-Animatie van alle Vliegtrajecten**
-Onderstaande geanimeerde SVG toont de gelijktijdige werking van het hele Arcade vector-systeem: de alien duiklus (cyan), de vogel sinus-duik met bommenwerpen (roze/geel) en het gestage moederschip daal-traject (groen):
-
-![Phoenix Master Flight Path Overview](../00_overview_flight_patterns.svg)
-
-#### **Knowledge Graph Koppelingen**
-* **Relevante C-bestanden:**
-  - [`phoenix_tables.c`](../../phoenix_tables.c) → [`phoenix-tables.md`](../../c-annotated/nl/phoenix-tables.md)
-  - [`alien_logic.c`](../../alien_logic.c) → [`alien-logic.md`](../../c-annotated/nl/alien-logic.md)
-  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
-  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)
-
----
-
-## 2. Verschil tussen Gesloten Lus en Open Traject Patronen
-
-De vector-integratie van de hieronder behandelde ROM-patronen onderscheidt **twee typen bewegingspatronen** in de *Phoenix*-engine:
-
-| Eigenschap | 🔄 Gesloten Lus Patronen (Closed Loops) | ↗️ Open Traject Patronen (Open Trajectories) |
-|---|---|---|
-| **Netto Verplaatsing** | ΣΔX = 0 en ΣΔY = 0 | ΣΔX ≠ 0 of ΣΔY ≠ 0 |
-| **Vorm &amp; Traject** | De entiteit verlaat zijn formatiepositie (X0, Y0), maakt een cirkel-, ovaal- of 8-vormige lus, en **keert exact terug op (X0, Y0)**. | De entiteit voert een verplaatsing of breakout-sprint uit over het scherm (bijv. naar beneden of schuin zijwaarts). |
-| **Typische Patronen** | Cluster A Patronen `01`, `02`, `07`, `10`, `11`, `12` &amp; Cluster B Patroon `23`. | Cluster A Patronen `03`, `04`, `05`, `06`, `08`, `09`, `13–18` &amp; Cluster B Patronen `19–22`, `24–36`. |
-| **Einde-Lus Verwerking** | Bij de `0x00` terminator start het patroon naadloos opnieuw vanaf het begin op hetzelfde ankeradres. | Bij de `0x00` terminator of schermrand activeert de game-engine een breakout-herpositionering ([`l3028`](../../c-annotated/nl/alien-logic.md#l3028)) of her-oriëntatie ([`l3672_aim`](../../c-annotated/nl/bird-wave-behavior.md#l3672_aim)). |
-
----
-
-## 3. Waarom Verschillende Clusters &amp; Hoofdstukindeling?
-
-### **1. Waarom gescheiden ROM &quot;Clusters&quot;?**
-De C-port modelleert de bewegingsdata als twee afzonderlijke ROM-bereiken (&quot;clusters&quot;). De hieronder beschreven indeling is afgeleid uit die tabellen en hun ASM-adresranges:
-
-1. **Cluster A (ROM `$1000–$13FF` / 1024 bytes):**
-   - **Locatie:** ROM-chip 1 op `$1000`.
-   - **Functie:** Bevat **Patronen 01 t/m 18** (`phoenix_alien_movement_cluster_a`). Dit zijn voornamelijk gesloten formatielussen die gebruikt worden tijdens **Alien Wave 1 en Wave 3** (de synchrone zwermformaties met kleine en middelgrote aliens).
-   - **Initialisatie:** De tabel [`phoenix_alien_layout_pointers`](../../phoenix_tables.h#L139) initialiseert de alien-pointers standaard naar het begin van deze pagina op `$1000`.
-
-2. **Cluster B (ROM `$2C00–$2FFF` / 1024 bytes):**
-   - **Locatie:** ROM-chip 3 op `$2C00`.
-   - **Functie:** Bevat **Patronen 19 t/m 36** (`phoenix_alien_movement_cluster_b`). Dit zijn voornamelijk open breakout-patronen die gebruikt worden door **Breakout-aliens** (aliens die uit de formatie losbreken) en de **Moederschip-escortgolven** (Levels 9, 10 en 11).
-   - **Breakout-mechanisme:** De breakout-scheduler [`l3028`](../../c-annotated/nl/alien-logic.md#l3028) in `alien_logic.c` springt bij een aanval direct naar de ingangsadressen `$2E00` en `$2E40` in Cluster B.
-
----
-
-### **2. Waarom deze Hoofdstukindeling? (Game Engine Subsystemen)**
-De indeling in dit document volgt exact de 4 fysieke game-entiteit subsystemen van de Arcade Z80 engine:
-
-- **Hoofdstuk 4 (Alien Cluster A):** Formatie-aliens in Waves 1 &amp; 3.
-- **Hoofdstuk 5 (Alien Cluster B):** Losbrekende aanvals-aliens &amp; moederschip-escorts.
-- **Hoofdstuk 6 (Vogel AI Scripts &amp; Duik-spawns):** De vogelzwermen in Waves 5 &amp; 7, inclusief ei-uitbroeden, klimmen, vleugelwieken en sinus-duikbommenwerpers.
-- **Hoofdstuk 7 (Moederschip &amp; Attract Mode):** De 26x9 moederschip-tegelmatrix, Attract Mode intro-vogel en achtergronddecoraties.
-
----
-
-## 4. Alien Cluster A Patterns — Wave 1 &amp; 3 Formaties (Patronen 01 t/m 18)
-
-### **Gedetailleerde Analyse Cluster A**
-- **ROM Adresbereik:** `$1000–$13FF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L73).
-- **Structurele Opbouw:** 18 gesloten-lus &amp; open traject patronen (`T1020` t/m `T13D0`), elk bestaand uit een reeks van vector-indices afgesloten met `0x00` en opgevuld met `0xFF`.
-- **Gesloten vs Open:** Patronen `01`, `02`, `07`, `10`, `11`, `12` zijn **Gesloten Lussen** (ΣΔ = (0,0)). Patronen `03`, `04`, `05`, `06`, `08`, `09`, `13–18` zijn **Open Trajecten**.
-
-### **Overzichts-animatie Cluster A**
-![Alien Cluster A Overzichts-Animatie](../07_alien_closed_loop_cluster_a.svg)
-
----
-
-### **Gedetailleerde Onderverdeling per Patroon (01 t/m 18)**
-
-#### Patronen 01 t/m 06
-| Patroon 01 (ROM $1020, 64b — Gesloten) | Patroon 02 (ROM $1064, 64b — Gesloten) |
-|---|---|
-| ![Alien Cluster A Patroon 01](../cluster_a/pattern_01.svg) | ![Alien Cluster A Patroon 02](../cluster_a/pattern_02.svg) |
-
-| Patroon 03 (ROM $10A8, 40b — Open) | Patroon 04 (ROM $10D4, 40b — Open) |
-|---|---|
-| ![Alien Cluster A Patroon 03](../cluster_a/pattern_03.svg) | ![Alien Cluster A Patroon 04](../cluster_a/pattern_04.svg) |
-
-| Patroon 05 (ROM $1100, 43b — Open) | Patroon 06 (ROM $1130, 43b — Open) |
-|---|---|
-| ![Alien Cluster A Patroon 05](../cluster_a/pattern_05.svg) | ![Alien Cluster A Patroon 06](../cluster_a/pattern_06.svg) |
-
----
-
-#### Patronen 07 t/m 12
-| Patroon 07 (ROM $1160, 64b — Gesloten) | Patroon 08 (ROM $11A4, 40b — Open) |
-|---|---|
-| ![Alien Cluster A Patroon 07](../cluster_a/pattern_07.svg) | ![Alien Cluster A Patroon 08](../cluster_a/pattern_08.svg) |
-
-| Patroon 09 (ROM $11D0, 45b — Open) | Patroon 10 (ROM $1200, 64b — Gesloten) |
-|---|---|
-| ![Alien Cluster A Patroon 09](../cluster_a/pattern_09.svg) | ![Alien Cluster A Patroon 10](../cluster_a/pattern_10.svg) |
-
-| Patroon 11 (ROM $1244, 64b — Gesloten) | Patroon 12 (ROM $1288, 64b — Gesloten) |
-|---|---|
-| ![Alien Cluster A Patroon 11](../cluster_a/pattern_11.svg) | ![Alien Cluster A Patroon 12](../cluster_a/pattern_12.svg) |
-
----
-
-#### Patronen 13 t/m 18
-| Patroon 13 (ROM $12CA, 53b — Open) | Patroon 14 (ROM $1300, 36b — Open) |
-|---|---|
-| ![Alien Cluster A Patroon 13](../cluster_a/pattern_13.svg) | ![Alien Cluster A Patroon 14](../cluster_a/pattern_14.svg) |
-
-| Patroon 15 (ROM $1328, 38b — Open) | Patroon 16 (ROM $1354, 69b — Open) |
-|---|---|
-| ![Alien Cluster A Patroon 15](../cluster_a/pattern_15.svg) | ![Alien Cluster A Patroon 16](../cluster_a/pattern_16.svg) |
-
-| Patroon 17 (ROM $139C, 49b — Open) | Patroon 18 (ROM $13D0, 43b — Open) |
-|---|---|
-| ![Alien Cluster A Patroon 17](../cluster_a/pattern_17.svg) | ![Alien Cluster A Patroon 18](../cluster_a/pattern_18.svg) |
-
----
-
-## 5. Alien Cluster B Patterns — Breakout &amp; Escorts (Patronen 19 t/m 36)
-
-### **Gedetailleerde Analyse Cluster B**
-- **ROM Adresbereik:** `$2C00–$2FFF` (1024 bytes) in [`phoenix_tables.c`](../../phoenix_tables.c#L423).
-- **Structurele Opbouw:** 18 patronen (patronen 19 t/m 36) voornamelijk bestaand uit open breakout-trajecten voor losbrekende aliens en moederschip-escortwaves.
-- **Gesloten vs Open:** Patroon `23` is een **Gesloten Lus** (ΣΔ = (0,0)). Patronen `19–22`, `24–36` zijn **Open Trajecten** met netto verplaatsingen over het scherm.
-
-### **Overzichts-animatie Cluster B**
-![Alien Cluster B Overzichts-Animatie](../08_alien_breakout_cluster_b.svg)
-
----
-
-### **Gedetailleerde Onderverdeling per Patroon (19 t/m 36)**
-
-#### Patronen 19 t/m 24
-| Patroon 19 (ROM $2C00, 48b — Open) | Patroon 20 (ROM $2C34, 86b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 19](../cluster_b/pattern_19.svg) | ![Alien Cluster B Patroon 20](../cluster_b/pattern_20.svg) |
-
-| Patroon 21 (ROM $2C90, 53b — Open) | Patroon 22 (ROM $2CC8, 54b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 21](../cluster_b/pattern_21.svg) | ![Alien Cluster B Patroon 22](../cluster_b/pattern_22.svg) |
-
-| Patroon 23 (ROM $2D00, 64b — Gesloten) | Patroon 24 (ROM $2D44, 64b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 23](../cluster_b/pattern_23.svg) | ![Alien Cluster B Patroon 24](../cluster_b/pattern_24.svg) |
-
----
-
-#### Patronen 25 t/m 30
-| Patroon 25 (ROM $2D88, 52b — Open) | Patroon 26 (ROM $2DC0, 50b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 25](../cluster_b/pattern_25.svg) | ![Alien Cluster B Patroon 26](../cluster_b/pattern_26.svg) |
-
-| Patroon 27 (ROM $2E00, 28b — Breakout) | Patroon 28 (ROM $2E20, 28b — Breakout) |
-|---|---|
-| ![Alien Cluster B Patroon 27](../cluster_b/pattern_27.svg) | ![Alien Cluster B Patroon 28](../cluster_b/pattern_28.svg) |
-
-| Patroon 29 (ROM $2E40, 40b — Open) | Patroon 30 (ROM $2E6C, 32b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 29](../cluster_b/pattern_29.svg) | ![Alien Cluster B Patroon 30](../cluster_b/pattern_30.svg) |
-
----
-
-#### Patronen 31 t/m 36
-| Patroon 31 (ROM $2E90, 49b — Open) | Patroon 32 (ROM $2EC4, 48b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 31](../cluster_b/pattern_31.svg) | ![Alien Cluster B Patroon 32](../cluster_b/pattern_32.svg) |
-
-| Patroon 33 (ROM $2F00, 48b — Open) | Patroon 34 (ROM $2F34, 46b — Open) |
-|---|---|
-| ![Alien Cluster B Patroon 33](../cluster_b/pattern_33.svg) | ![Alien Cluster B Patroon 34](../cluster_b/pattern_34.svg) |
-
-| Patroon 35 (ROM $2F64, 50b — Escort) | Patroon 36 (ROM $2FA0, 94b — Escort) |
-|---|---|
-| ![Alien Cluster B Patroon 35](../cluster_b/pattern_35.svg) | ![Alien Cluster B Patroon 36](../cluster_b/pattern_36.svg) |
-
----
-
-## 6. Vogel Vliegtrajecten &amp; AI Behavior Scripts
-
-### **Gedetailleerde Analyse Vogel AI Subsysteem**
-Het vogel-AI subsysteem in [`bird_wave_behavior.c`](../../bird_wave_behavior.c) en [`bird_logic.c`](../../bird_logic.c) wordt aangestuurd door 4 gekoppelde ROM-geheugentabellen:
-
-1. **`phoenix_bird_behaviour_scripts` (ROM `$3F00–$3F7F` / 128 bytes):**
-   - 16 AI-patroonscripts van elk 8 bytes (twee datawoorden + twee vervolg-routine adressen).
-   - Aangeroepen door [`update_bird_behavior`](../../c-annotated/nl/bird-wave-behavior.md#update_bird_behavior).
-   - **Functies in C:**
-     - `l35e0_descend()`: Afdaalfase waarbij de vogel naar beneden versnelt en op de speler richt.
-     - `l3628_climb()`: Klimfase waarbij de vogel in trappen naar boven stijgt.
-     - `l36c0_animate()`: Vleugelwieken animatie-timer.
-     - `l36d2_grow()` / `l36ea_grow()` / `l370a_grow_or_dive()`: Ei-uitbroeden, transformatie naar 4x4 matrix-vogel en activatie van duikbommenwerpers.
-
-2. **`phoenix_bird_dive_spawn_positions` (ROM `$3DC0–$3DDF` / 32 bytes):**
-   - 32 voorgeschreven start- en aanvalsposities (`(sp_x, sp_y)` paarsgewijs opgeslagen).
-   - Aangeroepen door [`try_spawn_bird_dive_bomb`](../../c-annotated/nl/bird-wave-behavior.md#try_spawn_bird_dive_bomb).
-
----
-
-### **1. Vogel AI Behavior Scripts (ROM `$3F00–$3F7F`) — 16 Gedetailleerde AI-Scripts**
-
-#### Scripts 00 t/m 07
-| Script 00 (ROM $3F00 — Formatie Idle) | Script 01 (ROM $3F08 — Broed/Wieken) |
-|---|---|
-| ![Bird Script 00](../bird_scripts/bird_script_00.svg) | ![Bird Script 01](../bird_scripts/bird_script_01.svg) |
-
-| Script 02 (ROM $3F10 — Steile Duik) | Script 03 (ROM $3F18 — Sluitvlucht) |
-|---|---|
-| ![Bird Script 02](../bird_scripts/bird_script_02.svg) | ![Bird Script 03](../bird_scripts/bird_script_03.svg) |
-
-| Script 04 (ROM $3F20 — Groeiscript Init) | Script 05 (ROM $3F28 — Wieg/Klim) |
-|---|---|
-| ![Bird Script 04](../bird_scripts/bird_script_04.svg) | ![Bird Script 05](../bird_scripts/bird_script_05.svg) |
-
-| Script 06 (ROM $3F30 — Duikbommenwerper) | Script 07 (ROM $3F38 — Diepe Aanvalslus) |
-|---|---|
-| ![Bird Script 06](../bird_scripts/bird_script_06.svg) | ![Bird Script 07](../bird_scripts/bird_script_07.svg) |
-
----
-
-#### Scripts 08 t/m 15
-| Script 08 (ROM $3F40 — Grote Vogel Matrix) | Script 09 (ROM $3F48 — Zware Afdaling) |
-|---|---|
-| ![Bird Script 08](../bird_scripts/bird_script_08.svg) | ![Bird Script 09](../bird_scripts/bird_script_09.svg) |
-
-| Script 10 (ROM $3F50 — Aanvals-Sinus) | Script 11 (ROM $3F58 — Escort Bommen) |
-|---|---|
-| ![Bird Script 10](../bird_scripts/bird_script_10.svg) | ![Bird Script 11](../bird_scripts/bird_script_11.svg) |
-
-| Script 12 (ROM $3F60 — Moederschip Escort 1) | Script 13 (ROM $3F68 — Moederschip Escort 2) |
-|---|---|
-| ![Bird Script 12](../bird_scripts/bird_script_12.svg) | ![Bird Script 13](../bird_scripts/bird_script_13.svg) |
-
-| Script 14 (ROM $3F70 — Sluit-Escort) | Script 15 (ROM $3F78 — Terminal Duik) |
-|---|---|
-| ![Bird Script 14](../bird_scripts/bird_script_14.svg) | ![Bird Script 15](../bird_scripts/bird_script_15.svg) |
-
----
-
-### **2. Vogel Duik- &amp; Launch-posities (ROM `$3DC0–$3DDF`) — 16 Scherm-Coördinaten**
-
-| Launch 00 &amp; 01 (ROM $3DC0 &amp; $3DC2) | Launch 02 &amp; 03 (ROM $3DC4 &amp; $3DC6) |
-|---|---|
-| ![Spawn 00](../bird_dive_spawns/dive_spawn_00.svg) | ![Spawn 02](../bird_dive_spawns/dive_spawn_02.svg) |
-
-| Launch 04 &amp; 05 (ROM $3DC8 &amp; $3DCA) | Launch 06 &amp; 07 (ROM $3DCC &amp; $3DCE) |
-|---|---|
-| ![Spawn 04](../bird_dive_spawns/dive_spawn_04.svg) | ![Spawn 06](../bird_dive_spawns/dive_spawn_06.svg) |
-
-| Launch 08 &amp; 09 (ROM $3DD0 &amp; $3DD2) | Launch 10 &amp; 11 (ROM $3DD4 &amp; $3DD6) |
-|---|---|
-| ![Spawn 08](../bird_dive_spawns/dive_spawn_08.svg) | ![Spawn 10](../bird_dive_spawns/dive_spawn_10.svg) |
-
-| Launch 12 &amp; 13 (ROM $3DD8 &amp; $3DDA) | Launch 14 &amp; 15 (ROM $3DDC &amp; $3DDE) |
-|---|---|
-| ![Spawn 12](../bird_dive_spawns/dive_spawn_12.svg) | ![Spawn 14](../bird_dive_spawns/dive_spawn_14.svg) |
-
----
-
-## 7. Moederschip &amp; Attract Mode Bewegingspaden
-
-### **1. `phoenix_mothership_tile_page` (ROM `$1D00–$1DFF`)**
-- **Beschrijving:** De voorgeschreven 26x9 tegel-matrix en daalsnelheids-tabel voor de gestage neerwaartse beweging van het moederschip in [`mothership_impl.c`](../../mothership_impl.c) en [`mothership_logic.c`](../../mothership_logic.c).
-
-![Moederschip Daal-Traject](../09_mothership_descent_trajectory.svg)
-
----
-
-### **2. `phoenix_intro_bird_anim_frames` (ROM `$233A–$2359`)**
-- **Beschrijving:** Voorgeschreven frame- en bewegingsreeks van 32 stappen voor de vogel die over het titel-scherm zweeft in Attract Mode ([`attract-mode.md`](../../c-annotated/nl/attract-mode.md)).
-- **Aanroep:** [`draw_intro_bird_animation_frame`](../../c-annotated/nl/attract-mode.md#draw_intro_bird_animation_frame) in `attract_mode.c`.
-
-![Intro Splash Vogel Traject](../06_intro_splash_bird.svg)
-
----
-
-## 8. Uitvoerings-lus &amp; Mermaid Diagram
-
-```mermaid
-graph TD
+<!doctype html><html><head><meta charset="utf-8"><title>animation-trajectory</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="phoenix-animation-trajectories--prescribed-movement-patterns-animation-trajectorymd">Phoenix
+Animation Trajectories &amp; Prescribed Movement Patterns
+(<code>animation-trajectory.md</code>)</h1>
+<p>Dit document bevat een diepgaande Knowledge Graph-analyse van
+<strong>voorgeschreven bewegingspatronen, vector-tabellen, Z80
+ROM-clusters, ROM-adressen, RAM-datastructuren en
+AI-vliegscripten</strong> in de <em>Phoenix</em> Arcade-codebase. De
+classificatie als <strong>gesloten lus</strong> of <strong>open
+traject</strong> is afgeleid uit de ROM-vectoren; de directory bevat 78
+SVG-bestanden, waaronder patroonweergaven en overzichtsanimaties.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a
+href="#1-overzicht-vliegpatroon-architectuur--z80-geheugen-lus">Overzicht
+Vliegpatroon-architectuur &amp; Z80 Geheugen-lus</a></li>
+<li><a
+href="#2-verschil-tussen-gesloten-lus-en-open-traject-patronen">Verschil
+tussen Gesloten Lus en Open Traject Patronen</a></li>
+<li><a href="#3-waarom-verschillende-clusters--hoofdstukindeling">Waarom
+Verschillende Clusters &amp; Hoofdstukindeling?</a></li>
+<li><a
+href="#4-alien-cluster-a-patterns--wave-1--3-formaties-patronen-01-tm-18">Alien
+Cluster A Patterns — Wave 1 &amp; 3 Formaties (Patronen 01 t/m
+18)</a></li>
+<li><a
+href="#5-alien-cluster-b-patterns--breakout--escorts-patronen-19-tm-36">Alien
+Cluster B Patterns — Breakout &amp; Escorts (Patronen 19 t/m
+36)</a></li>
+<li><a href="#6-vogel-vliegtrajecten--ai-behavior-scripts">Vogel
+Vliegtrajecten &amp; AI Behavior Scripts</a></li>
+<li><a href="#7-moederschip--attract-mode-bewegingspaden">Moederschip
+&amp; Attract Mode Bewegingspaden</a></li>
+<li><a href="#8-uitvoerings-lus--mermaid-diagram">Uitvoerings-lus &amp;
+Mermaid Diagram</a></li>
+</ol>
+<hr />
+<h2 id="1-overzicht-vliegpatroon-architectuur--z80-geheugen-lus">1.
+Overzicht Vliegpatroon-architectuur &amp; Z80 Geheugen-lus</h2>
+<p>In de <em>Phoenix</em> arcadehardware worden bewegingen van vijanden
+(aliens, vogels en het moederschip) niet willekeurig berekend via
+dynamische natuurkunde, maar aangestuurd via <strong>statische
+vectoriële opzoektabellen</strong> uit het Z80 ROM opgeslagen in <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> / <a
+href="../../phoenix_tables.h"><code>phoenix_tables.h</code></a>.</p>
+<h3 id="geheugenkaart--ram-datastructuren"><strong>Geheugenkaart &amp;
+RAM-Datastructuren</strong></h3>
+<p>Elke actieve entiteit op het scherm gebruikt een specifieke
+geheugenstructuur in het Arcade RAM (<code>$4000–$4BFF</code>):</p>
+<table>
+<thead>
+<tr>
+<th>RAM Adres / Offset</th>
+<th>Variabele / Register</th>
+<th>Functionele Omschrijving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$43C0–$43DF</code></td>
+<td><code>PlayerShipX</code> / Bullet Grid</td>
+<td>Spelerschip coördinaten en actieve spelerkogels</td>
+</tr>
+<tr>
+<td><code>$4360–$437F</code></td>
+<td><code>M436D</code>, <code>M436E</code>, <code>M436F</code></td>
+<td>Vogel AI-fase registers, afdaaldoelen en willekeurige
+duik-drempels</td>
+</tr>
+<tr>
+<td><code>$4B50–$4B6F</code></td>
+<td><code>AlienPointerTable</code></td>
+<td>16-bit RAM pointers die wijzen naar de actieve stap in een
+vliegpatroon</td>
+</tr>
+<tr>
+<td><code>$4800–$4B3F</code></td>
+<td><code>BackgroundScreen</code> / VRAM</td>
+<td>90° geroteerde 32x32 tegelmatrix videobuffer (832 bytes per
+pagina)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vector-transformatie--indexering"><strong>Vector-transformatie
+&amp; Indexering</strong></h3>
+<p>Een RAM-pointer (bijv. op offset <code>$4B50</code>) leest per frame
+één stap-byte uit het ROM. Die byte is al een richtingvectornummer in
+het bereik <code>0x00–0x1F</code>; hij wordt hier <strong>niet</strong>
+gemaskeerd. De Z80 voert één <code>RLCA</code> uit. Omdat de waarde al
+begrensd is, is dat hetzelfde als vermenigvuldigen met twee en kiest het
+één paar uit <a
+href="../../phoenix_tables.h#L162"><code>phoenix_alien_direction_vectors</code></a>
+(ROM <code>$1700–$173F</code>):</p>
+<ol type="1">
+<li><code>vector_offset = step_byte × 2</code></li>
+<li><code>delta_x = phoenix_alien_direction_vectors[vector_offset]</code></li>
+<li><code>delta_y = phoenix_alien_direction_vectors[vector_offset + 1]</code></li>
+<li><code>x = x + delta_x</code>; <code>y = y + delta_y</code></li>
+</ol>
+<p>Met andere woorden: iedere patroon-byte kiest één
+<code>(delta_x, delta_y)</code>-paar, en dat paar verplaatst de alien
+één vectorstap.</p>
+<hr />
+<h3
+id="bovenliggende-hoofd-animatie-van-alle-vliegtrajecten"><strong>Bovenliggende
+Hoofd-Animatie van alle Vliegtrajecten</strong></h3>
+<p>Onderstaande geanimeerde SVG toont de gelijktijdige werking van het
+hele Arcade vector-systeem: de alien duiklus (cyan), de vogel sinus-duik
+met bommenwerpen (roze/geel) en het gestage moederschip daal-traject
+(groen):</p>
+<p><img src="../00_overview_flight_patterns.svg"
+alt="Phoenix Master Flight Path Overview" /></p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Relevante C-bestanden:</strong>
+<ul>
+<li><a href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> →
+<a
+href="../../c-annotated/nl/phoenix-tables.html"><code>phoenix-tables.md</code></a></li>
+<li><a href="../../alien_logic.c"><code>alien_logic.c</code></a> → <a
+href="../../c-annotated/nl/alien-logic.html"><code>alien-logic.md</code></a></li>
+<li><a href="../../bird_logic.c"><code>bird_logic.c</code></a> → <a
+href="../../c-annotated/nl/bird-logic.html"><code>bird-logic.md</code></a></li>
+<li><a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+→ <a
+href="../../c-annotated/nl/bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a></li>
+<li><a href="../../attract_mode.c"><code>attract_mode.c</code></a> → <a
+href="../../c-annotated/nl/attract-mode.html"><code>attract-mode.md</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-verschil-tussen-gesloten-lus-en-open-traject-patronen">2.
+Verschil tussen Gesloten Lus en Open Traject Patronen</h2>
+<p>De vector-integratie van de hieronder behandelde ROM-patronen
+onderscheidt <strong>twee typen bewegingspatronen</strong> in de
+<em>Phoenix</em>-engine:</p>
+<table>
+<thead>
+<tr>
+<th>Eigenschap</th>
+<th>🔄 Gesloten Lus Patronen (Closed Loops)</th>
+<th>↗️ Open Traject Patronen (Open Trajectories)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Netto Verplaatsing</strong></td>
+<td>ΣΔX = 0 en ΣΔY = 0</td>
+<td>ΣΔX ≠ 0 of ΣΔY ≠ 0</td>
+</tr>
+<tr>
+<td><strong>Vorm &amp; Traject</strong></td>
+<td>De entiteit verlaat zijn formatiepositie (X0, Y0), maakt een
+cirkel-, ovaal- of 8-vormige lus, en <strong>keert exact terug op (X0,
+Y0)</strong>.</td>
+<td>De entiteit voert een verplaatsing of breakout-sprint uit over het
+scherm (bijv. naar beneden of schuin zijwaarts).</td>
+</tr>
+<tr>
+<td><strong>Typische Patronen</strong></td>
+<td>Cluster A Patronen <code>01</code>, <code>02</code>,
+<code>07</code>, <code>10</code>, <code>11</code>, <code>12</code> &amp;
+Cluster B Patroon <code>23</code>.</td>
+<td>Cluster A Patronen <code>03</code>, <code>04</code>,
+<code>05</code>, <code>06</code>, <code>08</code>, <code>09</code>,
+<code>13–18</code> &amp; Cluster B Patronen <code>19–22</code>,
+<code>24–36</code>.</td>
+</tr>
+<tr>
+<td><strong>Einde-Lus Verwerking</strong></td>
+<td>Bij de <code>0x00</code> terminator start het patroon naadloos
+opnieuw vanaf het begin op hetzelfde ankeradres.</td>
+<td>Bij de <code>0x00</code> terminator of schermrand activeert de
+game-engine een breakout-herpositionering (<a
+href="../../c-annotated/nl/alien-logic.html#l3028"><code>l3028</code></a>)
+of her-oriëntatie (<a
+href="../../c-annotated/nl/bird-wave-behavior.html#l3672_aim"><code>l3672_aim</code></a>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-waarom-verschillende-clusters--hoofdstukindeling">3. Waarom
+Verschillende Clusters &amp; Hoofdstukindeling?</h2>
+<h3 id="1-waarom-gescheiden-rom-clusters"><strong>1. Waarom gescheiden
+ROM "Clusters"?</strong></h3>
+<p>De C-port modelleert de bewegingsdata als twee afzonderlijke
+ROM-bereiken ("clusters"). De hieronder beschreven indeling is afgeleid
+uit die tabellen en hun ASM-adresranges:</p>
+<ol type="1">
+<li><p><strong>Cluster A (ROM <code>$1000–$13FF</code> / 1024
+bytes):</strong></p>
+<ul>
+<li><strong>Locatie:</strong> ROM-chip 1 op <code>$1000</code>.</li>
+<li><strong>Functie:</strong> Bevat <strong>Patronen 01 t/m 18</strong>
+(<code>phoenix_alien_movement_cluster_a</code>). Dit zijn voornamelijk
+gesloten formatielussen die gebruikt worden tijdens <strong>Alien Wave 1
+en Wave 3</strong> (de synchrone zwermformaties met kleine en
+middelgrote aliens).</li>
+<li><strong>Initialisatie:</strong> De tabel <a
+href="../../phoenix_tables.h#L139"><code>phoenix_alien_layout_pointers</code></a>
+initialiseert de alien-pointers standaard naar het begin van deze pagina
+op <code>$1000</code>.</li>
+</ul></li>
+<li><p><strong>Cluster B (ROM <code>$2C00–$2FFF</code> / 1024
+bytes):</strong></p>
+<ul>
+<li><strong>Locatie:</strong> ROM-chip 3 op <code>$2C00</code>.</li>
+<li><strong>Functie:</strong> Bevat <strong>Patronen 19 t/m 36</strong>
+(<code>phoenix_alien_movement_cluster_b</code>). Dit zijn voornamelijk
+open breakout-patronen die gebruikt worden door
+<strong>Breakout-aliens</strong> (aliens die uit de formatie losbreken)
+en de <strong>Moederschip-escortgolven</strong> (Levels 9, 10 en
+11).</li>
+<li><strong>Breakout-mechanisme:</strong> De breakout-scheduler <a
+href="../../c-annotated/nl/alien-logic.html#l3028"><code>l3028</code></a>
+in <code>alien_logic.c</code> springt bij een aanval direct naar de
+ingangsadressen <code>$2E00</code> en <code>$2E40</code> in Cluster
+B.</li>
+</ul></li>
+</ol>
+<hr />
+<h3
+id="2-waarom-deze-hoofdstukindeling-game-engine-subsystemen"><strong>2.
+Waarom deze Hoofdstukindeling? (Game Engine Subsystemen)</strong></h3>
+<p>De indeling in dit document volgt exact de 4 fysieke game-entiteit
+subsystemen van de Arcade Z80 engine:</p>
+<ul>
+<li><strong>Hoofdstuk 4 (Alien Cluster A):</strong> Formatie-aliens in
+Waves 1 &amp; 3.</li>
+<li><strong>Hoofdstuk 5 (Alien Cluster B):</strong> Losbrekende
+aanvals-aliens &amp; moederschip-escorts.</li>
+<li><strong>Hoofdstuk 6 (Vogel AI Scripts &amp; Duik-spawns):</strong>
+De vogelzwermen in Waves 5 &amp; 7, inclusief ei-uitbroeden, klimmen,
+vleugelwieken en sinus-duikbommenwerpers.</li>
+<li><strong>Hoofdstuk 7 (Moederschip &amp; Attract Mode):</strong> De
+26x9 moederschip-tegelmatrix, Attract Mode intro-vogel en
+achtergronddecoraties.</li>
+</ul>
+<hr />
+<h2
+id="4-alien-cluster-a-patterns--wave-1--3-formaties-patronen-01-tm-18">4.
+Alien Cluster A Patterns — Wave 1 &amp; 3 Formaties (Patronen 01 t/m
+18)</h2>
+<h3 id="gedetailleerde-analyse-cluster-a"><strong>Gedetailleerde Analyse
+Cluster A</strong></h3>
+<ul>
+<li><strong>ROM Adresbereik:</strong> <code>$1000–$13FF</code> (1024
+bytes) in <a
+href="../../phoenix_tables.c#L73"><code>phoenix_tables.c</code></a>.</li>
+<li><strong>Structurele Opbouw:</strong> 18 gesloten-lus &amp; open
+traject patronen (<code>T1020</code> t/m <code>T13D0</code>), elk
+bestaand uit een reeks van vector-indices afgesloten met
+<code>0x00</code> en opgevuld met <code>0xFF</code>.</li>
+<li><strong>Gesloten vs Open:</strong> Patronen <code>01</code>,
+<code>02</code>, <code>07</code>, <code>10</code>, <code>11</code>,
+<code>12</code> zijn <strong>Gesloten Lussen</strong> (ΣΔ = (0,0)).
+Patronen <code>03</code>, <code>04</code>, <code>05</code>,
+<code>06</code>, <code>08</code>, <code>09</code>, <code>13–18</code>
+zijn <strong>Open Trajecten</strong>.</li>
+</ul>
+<h3 id="overzichts-animatie-cluster-a"><strong>Overzichts-animatie
+Cluster A</strong></h3>
+<p><img src="../07_alien_closed_loop_cluster_a.svg"
+alt="Alien Cluster A Overzichts-Animatie" /></p>
+<hr />
+<h3
+id="gedetailleerde-onderverdeling-per-patroon-01-tm-18"><strong>Gedetailleerde
+Onderverdeling per Patroon (01 t/m 18)</strong></h3>
+<h4 id="patronen-01-tm-06">Patronen 01 t/m 06</h4>
+<table>
+<thead>
+<tr>
+<th>Patroon 01 (ROM $1020, 64b — Gesloten)</th>
+<th>Patroon 02 (ROM $1064, 64b — Gesloten)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_01.svg"
+alt="Alien Cluster A Patroon 01" /></td>
+<td><img src="../cluster_a/pattern_02.svg"
+alt="Alien Cluster A Patroon 02" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 03 (ROM $10A8, 40b — Open)</th>
+<th>Patroon 04 (ROM $10D4, 40b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_03.svg"
+alt="Alien Cluster A Patroon 03" /></td>
+<td><img src="../cluster_a/pattern_04.svg"
+alt="Alien Cluster A Patroon 04" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 05 (ROM $1100, 43b — Open)</th>
+<th>Patroon 06 (ROM $1130, 43b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_05.svg"
+alt="Alien Cluster A Patroon 05" /></td>
+<td><img src="../cluster_a/pattern_06.svg"
+alt="Alien Cluster A Patroon 06" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patronen-07-tm-12">Patronen 07 t/m 12</h4>
+<table>
+<thead>
+<tr>
+<th>Patroon 07 (ROM $1160, 64b — Gesloten)</th>
+<th>Patroon 08 (ROM $11A4, 40b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_07.svg"
+alt="Alien Cluster A Patroon 07" /></td>
+<td><img src="../cluster_a/pattern_08.svg"
+alt="Alien Cluster A Patroon 08" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 09 (ROM $11D0, 45b — Open)</th>
+<th>Patroon 10 (ROM $1200, 64b — Gesloten)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_09.svg"
+alt="Alien Cluster A Patroon 09" /></td>
+<td><img src="../cluster_a/pattern_10.svg"
+alt="Alien Cluster A Patroon 10" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 11 (ROM $1244, 64b — Gesloten)</th>
+<th>Patroon 12 (ROM $1288, 64b — Gesloten)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_11.svg"
+alt="Alien Cluster A Patroon 11" /></td>
+<td><img src="../cluster_a/pattern_12.svg"
+alt="Alien Cluster A Patroon 12" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patronen-13-tm-18">Patronen 13 t/m 18</h4>
+<table>
+<thead>
+<tr>
+<th>Patroon 13 (ROM $12CA, 53b — Open)</th>
+<th>Patroon 14 (ROM $1300, 36b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_13.svg"
+alt="Alien Cluster A Patroon 13" /></td>
+<td><img src="../cluster_a/pattern_14.svg"
+alt="Alien Cluster A Patroon 14" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 15 (ROM $1328, 38b — Open)</th>
+<th>Patroon 16 (ROM $1354, 69b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_15.svg"
+alt="Alien Cluster A Patroon 15" /></td>
+<td><img src="../cluster_a/pattern_16.svg"
+alt="Alien Cluster A Patroon 16" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 17 (ROM $139C, 49b — Open)</th>
+<th>Patroon 18 (ROM $13D0, 43b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_a/pattern_17.svg"
+alt="Alien Cluster A Patroon 17" /></td>
+<td><img src="../cluster_a/pattern_18.svg"
+alt="Alien Cluster A Patroon 18" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2
+id="5-alien-cluster-b-patterns--breakout--escorts-patronen-19-tm-36">5.
+Alien Cluster B Patterns — Breakout &amp; Escorts (Patronen 19 t/m
+36)</h2>
+<h3 id="gedetailleerde-analyse-cluster-b"><strong>Gedetailleerde Analyse
+Cluster B</strong></h3>
+<ul>
+<li><strong>ROM Adresbereik:</strong> <code>$2C00–$2FFF</code> (1024
+bytes) in <a
+href="../../phoenix_tables.c#L423"><code>phoenix_tables.c</code></a>.</li>
+<li><strong>Structurele Opbouw:</strong> 18 patronen (patronen 19 t/m
+36) voornamelijk bestaand uit open breakout-trajecten voor losbrekende
+aliens en moederschip-escortwaves.</li>
+<li><strong>Gesloten vs Open:</strong> Patroon <code>23</code> is een
+<strong>Gesloten Lus</strong> (ΣΔ = (0,0)). Patronen <code>19–22</code>,
+<code>24–36</code> zijn <strong>Open Trajecten</strong> met netto
+verplaatsingen over het scherm.</li>
+</ul>
+<h3 id="overzichts-animatie-cluster-b"><strong>Overzichts-animatie
+Cluster B</strong></h3>
+<p><img src="../08_alien_breakout_cluster_b.svg"
+alt="Alien Cluster B Overzichts-Animatie" /></p>
+<hr />
+<h3
+id="gedetailleerde-onderverdeling-per-patroon-19-tm-36"><strong>Gedetailleerde
+Onderverdeling per Patroon (19 t/m 36)</strong></h3>
+<h4 id="patronen-19-tm-24">Patronen 19 t/m 24</h4>
+<table>
+<thead>
+<tr>
+<th>Patroon 19 (ROM $2C00, 48b — Open)</th>
+<th>Patroon 20 (ROM $2C34, 86b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_19.svg"
+alt="Alien Cluster B Patroon 19" /></td>
+<td><img src="../cluster_b/pattern_20.svg"
+alt="Alien Cluster B Patroon 20" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 21 (ROM $2C90, 53b — Open)</th>
+<th>Patroon 22 (ROM $2CC8, 54b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_21.svg"
+alt="Alien Cluster B Patroon 21" /></td>
+<td><img src="../cluster_b/pattern_22.svg"
+alt="Alien Cluster B Patroon 22" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 23 (ROM $2D00, 64b — Gesloten)</th>
+<th>Patroon 24 (ROM $2D44, 64b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_23.svg"
+alt="Alien Cluster B Patroon 23" /></td>
+<td><img src="../cluster_b/pattern_24.svg"
+alt="Alien Cluster B Patroon 24" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patronen-25-tm-30">Patronen 25 t/m 30</h4>
+<table>
+<thead>
+<tr>
+<th>Patroon 25 (ROM $2D88, 52b — Open)</th>
+<th>Patroon 26 (ROM $2DC0, 50b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_25.svg"
+alt="Alien Cluster B Patroon 25" /></td>
+<td><img src="../cluster_b/pattern_26.svg"
+alt="Alien Cluster B Patroon 26" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 27 (ROM $2E00, 28b — Breakout)</th>
+<th>Patroon 28 (ROM $2E20, 28b — Breakout)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_27.svg"
+alt="Alien Cluster B Patroon 27" /></td>
+<td><img src="../cluster_b/pattern_28.svg"
+alt="Alien Cluster B Patroon 28" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 29 (ROM $2E40, 40b — Open)</th>
+<th>Patroon 30 (ROM $2E6C, 32b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_29.svg"
+alt="Alien Cluster B Patroon 29" /></td>
+<td><img src="../cluster_b/pattern_30.svg"
+alt="Alien Cluster B Patroon 30" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="patronen-31-tm-36">Patronen 31 t/m 36</h4>
+<table>
+<thead>
+<tr>
+<th>Patroon 31 (ROM $2E90, 49b — Open)</th>
+<th>Patroon 32 (ROM $2EC4, 48b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_31.svg"
+alt="Alien Cluster B Patroon 31" /></td>
+<td><img src="../cluster_b/pattern_32.svg"
+alt="Alien Cluster B Patroon 32" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 33 (ROM $2F00, 48b — Open)</th>
+<th>Patroon 34 (ROM $2F34, 46b — Open)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_33.svg"
+alt="Alien Cluster B Patroon 33" /></td>
+<td><img src="../cluster_b/pattern_34.svg"
+alt="Alien Cluster B Patroon 34" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Patroon 35 (ROM $2F64, 50b — Escort)</th>
+<th>Patroon 36 (ROM $2FA0, 94b — Escort)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../cluster_b/pattern_35.svg"
+alt="Alien Cluster B Patroon 35" /></td>
+<td><img src="../cluster_b/pattern_36.svg"
+alt="Alien Cluster B Patroon 36" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-vogel-vliegtrajecten--ai-behavior-scripts">6. Vogel
+Vliegtrajecten &amp; AI Behavior Scripts</h2>
+<h3
+id="gedetailleerde-analyse-vogel-ai-subsysteem"><strong>Gedetailleerde
+Analyse Vogel AI Subsysteem</strong></h3>
+<p>Het vogel-AI subsysteem in <a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+en <a href="../../bird_logic.c"><code>bird_logic.c</code></a> wordt
+aangestuurd door 4 gekoppelde ROM-geheugentabellen:</p>
+<ol type="1">
+<li><p><strong><code>phoenix_bird_behaviour_scripts</code> (ROM
+<code>$3F00–$3F7F</code> / 128 bytes):</strong></p>
+<ul>
+<li>16 AI-patroonscripts van elk 8 bytes (twee datawoorden + twee
+vervolg-routine adressen).</li>
+<li>Aangeroepen door <a
+href="../../c-annotated/nl/bird-wave-behavior.html#update_bird_behavior"><code>update_bird_behavior</code></a>.</li>
+<li><strong>Functies in C:</strong>
+<ul>
+<li><code>l35e0_descend()</code>: Afdaalfase waarbij de vogel naar
+beneden versnelt en op de speler richt.</li>
+<li><code>l3628_climb()</code>: Klimfase waarbij de vogel in trappen
+naar boven stijgt.</li>
+<li><code>l36c0_animate()</code>: Vleugelwieken animatie-timer.</li>
+<li><code>l36d2_grow()</code> / <code>l36ea_grow()</code> /
+<code>l370a_grow_or_dive()</code>: Ei-uitbroeden, transformatie naar 4x4
+matrix-vogel en activatie van duikbommenwerpers.</li>
+</ul></li>
+</ul></li>
+<li><p><strong><code>phoenix_bird_dive_spawn_positions</code> (ROM
+<code>$3DC0–$3DDF</code> / 32 bytes):</strong></p>
+<ul>
+<li>32 voorgeschreven start- en aanvalsposities
+(<code>(sp_x, sp_y)</code> paarsgewijs opgeslagen).</li>
+<li>Aangeroepen door <a
+href="../../c-annotated/nl/bird-wave-behavior.html#try_spawn_bird_dive_bomb"><code>try_spawn_bird_dive_bomb</code></a>.</li>
+</ul></li>
+</ol>
+<hr />
+<h3
+id="1-vogel-ai-behavior-scripts-rom-3f003f7f--16-gedetailleerde-ai-scripts"><strong>1.
+Vogel AI Behavior Scripts (ROM <code>$3F00–$3F7F</code>) — 16
+Gedetailleerde AI-Scripts</strong></h3>
+<h4 id="scripts-00-tm-07">Scripts 00 t/m 07</h4>
+<table>
+<thead>
+<tr>
+<th>Script 00 (ROM $3F00 — Formatie Idle)</th>
+<th>Script 01 (ROM $3F08 — Broed/Wieken)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_00.svg"
+alt="Bird Script 00" /></td>
+<td><img src="../bird_scripts/bird_script_01.svg"
+alt="Bird Script 01" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 02 (ROM $3F10 — Steile Duik)</th>
+<th>Script 03 (ROM $3F18 — Sluitvlucht)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_02.svg"
+alt="Bird Script 02" /></td>
+<td><img src="../bird_scripts/bird_script_03.svg"
+alt="Bird Script 03" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 04 (ROM $3F20 — Groeiscript Init)</th>
+<th>Script 05 (ROM $3F28 — Wieg/Klim)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_04.svg"
+alt="Bird Script 04" /></td>
+<td><img src="../bird_scripts/bird_script_05.svg"
+alt="Bird Script 05" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 06 (ROM $3F30 — Duikbommenwerper)</th>
+<th>Script 07 (ROM $3F38 — Diepe Aanvalslus)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_06.svg"
+alt="Bird Script 06" /></td>
+<td><img src="../bird_scripts/bird_script_07.svg"
+alt="Bird Script 07" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="scripts-08-tm-15">Scripts 08 t/m 15</h4>
+<table>
+<thead>
+<tr>
+<th>Script 08 (ROM $3F40 — Grote Vogel Matrix)</th>
+<th>Script 09 (ROM $3F48 — Zware Afdaling)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_08.svg"
+alt="Bird Script 08" /></td>
+<td><img src="../bird_scripts/bird_script_09.svg"
+alt="Bird Script 09" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 10 (ROM $3F50 — Aanvals-Sinus)</th>
+<th>Script 11 (ROM $3F58 — Escort Bommen)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_10.svg"
+alt="Bird Script 10" /></td>
+<td><img src="../bird_scripts/bird_script_11.svg"
+alt="Bird Script 11" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 12 (ROM $3F60 — Moederschip Escort 1)</th>
+<th>Script 13 (ROM $3F68 — Moederschip Escort 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_12.svg"
+alt="Bird Script 12" /></td>
+<td><img src="../bird_scripts/bird_script_13.svg"
+alt="Bird Script 13" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Script 14 (ROM $3F70 — Sluit-Escort)</th>
+<th>Script 15 (ROM $3F78 — Terminal Duik)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_scripts/bird_script_14.svg"
+alt="Bird Script 14" /></td>
+<td><img src="../bird_scripts/bird_script_15.svg"
+alt="Bird Script 15" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3
+id="2-vogel-duik---launch-posities-rom-3dc03ddf--16-scherm-coördinaten"><strong>2.
+Vogel Duik- &amp; Launch-posities (ROM <code>$3DC0–$3DDF</code>) — 16
+Scherm-Coördinaten</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Launch 00 &amp; 01 (ROM $3DC0 &amp; $3DC2)</th>
+<th>Launch 02 &amp; 03 (ROM $3DC4 &amp; $3DC6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_00.svg"
+alt="Spawn 00" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_02.svg"
+alt="Spawn 02" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Launch 04 &amp; 05 (ROM $3DC8 &amp; $3DCA)</th>
+<th>Launch 06 &amp; 07 (ROM $3DCC &amp; $3DCE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_04.svg"
+alt="Spawn 04" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_06.svg"
+alt="Spawn 06" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Launch 08 &amp; 09 (ROM $3DD0 &amp; $3DD2)</th>
+<th>Launch 10 &amp; 11 (ROM $3DD4 &amp; $3DD6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_08.svg"
+alt="Spawn 08" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_10.svg"
+alt="Spawn 10" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Launch 12 &amp; 13 (ROM $3DD8 &amp; $3DDA)</th>
+<th>Launch 14 &amp; 15 (ROM $3DDC &amp; $3DDE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../bird_dive_spawns/dive_spawn_12.svg"
+alt="Spawn 12" /></td>
+<td><img src="../bird_dive_spawns/dive_spawn_14.svg"
+alt="Spawn 14" /></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-moederschip--attract-mode-bewegingspaden">7. Moederschip &amp;
+Attract Mode Bewegingspaden</h2>
+<h3 id="1-phoenix_mothership_tile_page-rom-1d001dff"><strong>1.
+<code>phoenix_mothership_tile_page</code> (ROM
+<code>$1D00–$1DFF</code>)</strong></h3>
+<ul>
+<li><strong>Beschrijving:</strong> De voorgeschreven 26x9 tegel-matrix
+en daalsnelheids-tabel voor de gestage neerwaartse beweging van het
+moederschip in <a
+href="../../mothership_impl.c"><code>mothership_impl.c</code></a> en <a
+href="../../mothership_logic.c"><code>mothership_logic.c</code></a>.</li>
+</ul>
+<p><img src="../09_mothership_descent_trajectory.svg"
+alt="Moederschip Daal-Traject" /></p>
+<hr />
+<h3 id="2-phoenix_intro_bird_anim_frames-rom-233a2359"><strong>2.
+<code>phoenix_intro_bird_anim_frames</code> (ROM
+<code>$233A–$2359</code>)</strong></h3>
+<ul>
+<li><strong>Beschrijving:</strong> Voorgeschreven frame- en
+bewegingsreeks van 32 stappen voor de vogel die over het titel-scherm
+zweeft in Attract Mode (<a
+href="../../c-annotated/nl/attract-mode.html"><code>attract-mode.md</code></a>).</li>
+<li><strong>Aanroep:</strong> <a
+href="../../c-annotated/nl/attract-mode.html#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
+in <code>attract_mode.c</code>.</li>
+</ul>
+<p><img src="../06_intro_splash_bird.svg"
+alt="Intro Splash Vogel Traject" /></p>
+<hr />
+<h2 id="8-uitvoerings-lus--mermaid-diagram">8. Uitvoerings-lus &amp;
+Mermaid Diagram</h2>
+<pre class="mermaid"><code>graph TD
   A[&quot;Level Dispatcher (state_play.c)&quot;] --&gt; B[&quot;Selecteer Vliegpatroon Pointer&quot;]
   B --&gt; C{&quot;Entiteit Type&quot;}
   
@@ -333,5 +889,5 @@ graph TD
   G --&gt; J
   
   J --&gt; K[&quot;Sprite Rendering Engine (sprite_rendering.c)&quot;]
-  K --&gt; L[&quot;Scherm VRAM Update (0x4000-0x433F)&quot;]
-```</pre></body></html>
+  K --&gt; L[&quot;Scherm VRAM Update (0x4000-0x433F)&quot;]</code></pre>
+</body></html>

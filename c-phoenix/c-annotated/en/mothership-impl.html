@@ -1,29 +1,50 @@
-<!doctype html><html><head><meta charset="utf-8"><title>mothership-impl</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>mothership-impl</h1><pre># Mothership Implementation (`mothership_impl.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`mothership_impl.c`](../../mothership_impl.c). This module manages the 26x9 tile matrix of the alien mothership, shield tile destruction, central core penetration, and core explosion routines.
-
----
-
-## Table of Contents
-1. [Mothership Tile Matrix &amp; Hit Scanning](#1-mothership-tile-matrix--hit-scanning)
-2. [Shield Destruction &amp; Core Explosion](#2-shield-destruction--core-explosion)
-
----
-
-## 1. Mothership Tile Matrix &amp; Hit Scanning
-
-### `l2351_mothership_animation`
-#### **Description**
-The function [`l2351_mothership_animation`](../../mothership_impl.c#L12) (Z80 ROM: `$2351–$23C7`) drives the mothership animation and handles bullet impacts against its shield and core tiles, replacing hit tiles with destroyed tile graphics.
-
-#### **Knowledge Graph Links**
-* **Called By (Incoming Calls / Backlinks):**
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-
----
-
-## 2. Shield Destruction &amp; Core Explosion
-
-### `mothership_core_hit_check`
-#### **Description**
-The function [`mothership_core_hit_check`](../../mothership_impl.c#L110-L160) (Z80 ROM: `$2520–$254F`) checks whether a player bullet penetrates the central core window, triggering mothership destruction and level victory.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>mothership-impl</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="mothership-implementation-mothership_implc---c-annotated-knowledge-graph-documentation">Mothership
+Implementation (<code>mothership_impl.c</code>) - C-Annotated Knowledge
+Graph Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../mothership_impl.c"><code>mothership_impl.c</code></a>. This
+module manages the 26x9 tile matrix of the alien mothership, shield tile
+destruction, central core penetration, and core explosion routines.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-mothership-tile-matrix--hit-scanning">Mothership Tile
+Matrix &amp; Hit Scanning</a></li>
+<li><a href="#2-shield-destruction--core-explosion">Shield Destruction
+&amp; Core Explosion</a></li>
+</ol>
+<hr />
+<h2 id="1-mothership-tile-matrix--hit-scanning">1. Mothership Tile
+Matrix &amp; Hit Scanning</h2>
+<h3
+id="l2351_mothership_animation"><code>l2351_mothership_animation</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../mothership_impl.c#L12"><code>l2351_mothership_animation</code></a>
+(Z80 ROM: <code>$2351–$23C7</code>) drives the mothership animation and
+handles bullet impacts against its shield and core tiles, replacing hit
+tiles with destroyed tile graphics.</p>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-shield-destruction--core-explosion">2. Shield Destruction
+&amp; Core Explosion</h2>
+<h3
+id="mothership_core_hit_check"><code>mothership_core_hit_check</code></h3>
+<h4 id="description-1"><strong>Description</strong></h4>
+<p>The function <a
+href="../../mothership_impl.c#L110-L160"><code>mothership_core_hit_check</code></a>
+(Z80 ROM: <code>$2520–$254F</code>) checks whether a player bullet
+penetrates the central core window, triggering mothership destruction
+and level victory.</p>
+</body></html>

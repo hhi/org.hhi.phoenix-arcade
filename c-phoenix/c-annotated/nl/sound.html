@@ -1,43 +1,74 @@
-<!doctype html><html><head><meta charset="utf-8"><title>sound</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>sound</h1><pre># Sound Core &amp; Mixer (`sound.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`sound.c`](../../sound.c). Deze module regelt het synchroniseren, de events-queueing en het mixen van 44.1kHz audio (TMS3615 muziek, analoge discrete geluidseffecten en ruis).
-
----
-
-## Inhoudsopgave
-1. [Audio Initialisatie &amp; Timing](#1-audio-initialisatie--timing)
-2. [Hardware Latch Events](#2-hardware-latch-events)
-3. [Per-frame Audio Renderer &amp; Mixer](#3-per-frame-audio-renderer--mixer)
-
----
-
-## 1. Audio Initialisatie &amp; Timing
-
-### `sound_init` &amp; `sound_set_frame_sample_index`
-#### **Beschrijving**
-- [`sound_init`](../../sound.c#L58-L70): Initialiseert de TMS3615 muzieksynthesizer, analoge discreet-circuits en MAME lo-fi resamplers.
-- [`sound_set_frame_sample_index`](../../sound.c#L77-L82): Bepaalt het exacte sample-tijdstip binnen een 60Hz videovraagframe waarin geluidscontroles veranderen.
-
----
-
-## 2. Hardware Latch Events
-
-### `sound_write_control_a` &amp; `sound_write_control_b`
-#### **Beschrijving**
-Vangen schrijf-opdrachten op naar hardware-adressen `$6000` (Control A) en `$6800` (Control B) en plaatsen deze in een chronologische event-queue. Control B selecteert tevens de actieve melodie in de MM6221AA TMS3615 chip.
-
----
-
-## 3. Per-frame Audio Renderer &amp; Mixer
-
-### `sound_render_frame`
-#### **Beschrijving**
-De functie [`sound_render_frame`](../../sound.c#L161-L190) genereert de PCM16 stereo/mono audio-buffer per videovraagframe (ca. 735 samples bij 44.1kHz) door de TMS-muziek, discrete effecten en custom ruissignalen in de juiste verhoudingen te mixen en te clippen (`clamp_pcm16`).
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `tms36xx_render_internal_sample` — [`tms36xx.c`](../../tms36xx.c)
-  - `sound_discrete_step` / `sound_discrete_noise` — [`sound_discrete.c`](../../sound_discrete.c)
-  - `mame_lofi_resampler_next` — [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - `platform_audio_frame_hook` — [`platform_sdl.c`](../../platform_sdl.c)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>sound</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="sound-core--mixer-soundc---c-annotated-knowledge-graph-documentatie">Sound
+Core &amp; Mixer (<code>sound.c</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../sound.c"><code>sound.c</code></a>. Deze module regelt het
+synchroniseren, de events-queueing en het mixen van 44.1kHz audio
+(TMS3615 muziek, analoge discrete geluidseffecten en ruis).</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-audio-initialisatie--timing">Audio Initialisatie &amp;
+Timing</a></li>
+<li><a href="#2-hardware-latch-events">Hardware Latch Events</a></li>
+<li><a href="#3-per-frame-audio-renderer--mixer">Per-frame Audio
+Renderer &amp; Mixer</a></li>
+</ol>
+<hr />
+<h2 id="1-audio-initialisatie--timing">1. Audio Initialisatie &amp;
+Timing</h2>
+<h3
+id="sound_init--sound_set_frame_sample_index"><code>sound_init</code>
+&amp; <code>sound_set_frame_sample_index</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a href="../../sound.c#L58-L70"><code>sound_init</code></a>:
+Initialiseert de TMS3615 muzieksynthesizer, analoge discreet-circuits en
+MAME lo-fi resamplers.</li>
+<li><a
+href="../../sound.c#L77-L82"><code>sound_set_frame_sample_index</code></a>:
+Bepaalt het exacte sample-tijdstip binnen een 60Hz videovraagframe
+waarin geluidscontroles veranderen.</li>
+</ul>
+<hr />
+<h2 id="2-hardware-latch-events">2. Hardware Latch Events</h2>
+<h3
+id="sound_write_control_a--sound_write_control_b"><code>sound_write_control_a</code>
+&amp; <code>sound_write_control_b</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>Vangen schrijf-opdrachten op naar hardware-adressen
+<code>$6000</code> (Control A) en <code>$6800</code> (Control B) en
+plaatsen deze in een chronologische event-queue. Control B selecteert
+tevens de actieve melodie in de MM6221AA TMS3615 chip.</p>
+<hr />
+<h2 id="3-per-frame-audio-renderer--mixer">3. Per-frame Audio Renderer
+&amp; Mixer</h2>
+<h3 id="sound_render_frame"><code>sound_render_frame</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../sound.c#L161-L190"><code>sound_render_frame</code></a>
+genereert de PCM16 stereo/mono audio-buffer per videovraagframe (ca. 735
+samples bij 44.1kHz) door de TMS-muziek, discrete effecten en custom
+ruissignalen in de juiste verhoudingen te mixen en te clippen
+(<code>clamp_pcm16</code>).</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>tms36xx_render_internal_sample</code> — <a
+href="../../tms36xx.c"><code>tms36xx.c</code></a></li>
+<li><code>sound_discrete_step</code> / <code>sound_discrete_noise</code>
+— <a
+href="../../sound_discrete.c"><code>sound_discrete.c</code></a></li>
+<li><code>mame_lofi_resampler_next</code> — <a
+href="../../mame_lofi_resampler.c"><code>mame_lofi_resampler.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><code>platform_audio_frame_hook</code> — <a
+href="../../platform_sdl.c"><code>platform_sdl.c</code></a></li>
+</ul></li>
+</ul>
+</body></html>

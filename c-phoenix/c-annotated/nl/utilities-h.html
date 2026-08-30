@@ -1,15 +1,30 @@
-<!doctype html><html><head><meta charset="utf-8"><title>utilities-h</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>utilities-h</h1><pre># Utility Declarations (`utilities.h`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat de geannoteerde header-declaraties voor [`utilities.h`](../../utilities.h).
-
----
-
-## Declaraties &amp; Koppelingen
-- `check_input_bits(uint8_t mask)`: Flankdetectie voor drukknopen.
-- `print_number(uint16_t screen_addr, uint16_t data_addr, uint8_t digits)`: BCD-cijfers afdrukken.
-- `print_text_lines(uint16_t addr, uint8_t count)`: Tekstregels afdrukken.
-- `right_one_column(uint16_t de)` / `left_one_column(uint16_t de)`: VRAM 1 kolom opschuiven (`+0x20` / `-0x20`).
-- `mem_read(uint16_t addr)` / `mem_write(uint16_t addr, uint8_t val)`: RAM lees-/schrijfbeveiliging.
-
-#### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`utilities.c`](../../utilities.c) → [`utilities.md`](utilities.md)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>utilities-h</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="utility-declarations-utilitiesh---c-annotated-knowledge-graph-documentatie">Utility
+Declarations (<code>utilities.h</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat de geannoteerde header-declaraties voor <a
+href="../../utilities.h"><code>utilities.h</code></a>.</p>
+<hr />
+<h2 id="declaraties--koppelingen">Declaraties &amp; Koppelingen</h2>
+<ul>
+<li><code>check_input_bits(uint8_t mask)</code>: Flankdetectie voor
+drukknopen.</li>
+<li><code>print_number(uint16_t screen_addr, uint16_t data_addr, uint8_t digits)</code>:
+BCD-cijfers afdrukken.</li>
+<li><code>print_text_lines(uint16_t addr, uint8_t count)</code>:
+Tekstregels afdrukken.</li>
+<li><code>right_one_column(uint16_t de)</code> /
+<code>left_one_column(uint16_t de)</code>: VRAM 1 kolom opschuiven
+(<code>+0x20</code> / <code>-0x20</code>).</li>
+<li><code>mem_read(uint16_t addr)</code> /
+<code>mem_write(uint16_t addr, uint8_t val)</code>: RAM
+lees-/schrijfbeveiliging.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Overeenkomstige C-implementatie:</strong> <a
+href="../../utilities.c"><code>utilities.c</code></a> → <a
+href="utilities.html"><code>utilities.md</code></a></li>
+</ul>
+</body></html>

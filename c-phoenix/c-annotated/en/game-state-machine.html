@@ -1,23 +1,46 @@
-<!doctype html><html><head><meta charset="utf-8"><title>game-state-machine</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>game-state-machine</h1><pre># Game State Machine (`game_state_machine.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`game_state_machine.c`](../../game_state_machine.c). This module implements the central game state machine loop (States 0 through 7) controlling game lifecycle transitions.
-
----
-
-## Table of Contents
-1. [Central State Machine Loop](#1-central-state-machine-loop)
-
----
-
-## 1. Central State Machine Loop
-
-### `game_state_machine`
-#### **Description**
-The function [`game_state_machine`](../../game_state_machine.c#L35-L95) (Z80 ROM: `$0400–$041D`) evaluates current state enum `GameState` and dispatches execution to active state handlers.
-
-#### **Knowledge Graph Links**
-* **Calls (Outgoing Calls):**
-  - [`splash_and_demo`](attract-mode.md#splash_and_demo) — [`attract_mode.c`](../../attract_mode.c)
-  - [`init_alien_control_states`](alien-logic.md#init_alien_control_states) — [`alien_logic.c#L19`](../../alien_logic.c#L19)
-  - [`level_1_3_B_player_alive_aliens`](state-play.md#level_1_3_b_player_alive_aliens) — [`state_play.c#L16`](../../state_play.c#L16)
-  - [`state_4_player_ship_explosion`](state-endings.md#state_4_player_ship_explosion) — [`state_endings.c#L33`](../../state_endings.c#L33)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>game-state-machine</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="game-state-machine-game_state_machinec---c-annotated-knowledge-graph-documentation">Game
+State Machine (<code>game_state_machine.c</code>) - C-Annotated
+Knowledge Graph Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../game_state_machine.c"><code>game_state_machine.c</code></a>.
+This module implements the central game state machine loop (States 0
+through 7) controlling game lifecycle transitions.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-central-state-machine-loop">Central State Machine
+Loop</a></li>
+</ol>
+<hr />
+<h2 id="1-central-state-machine-loop">1. Central State Machine Loop</h2>
+<h3 id="game_state_machine"><code>game_state_machine</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../game_state_machine.c#L35-L95"><code>game_state_machine</code></a>
+(Z80 ROM: <code>$0400–$041D</code>) evaluates current state enum
+<code>GameState</code> and dispatches execution to active state
+handlers.</p>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Calls (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="attract-mode.html#splash_and_demo"><code>splash_and_demo</code></a>
+— <a href="../../attract_mode.c"><code>attract_mode.c</code></a></li>
+<li><a
+href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
+— <a
+href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+<li><a
+href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
+— <a
+href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+<li><a
+href="state-endings.html#state_4_player_ship_explosion"><code>state_4_player_ship_explosion</code></a>
+— <a
+href="../../state_endings.c#L33"><code>state_endings.c#L33</code></a></li>
+</ul></li>
+</ul>
+</body></html>

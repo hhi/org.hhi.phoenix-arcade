@@ -1,91 +1,155 @@
-<!doctype html><html><head><meta charset="utf-8"><title>bird-animations</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>bird-animations</h1><pre># Vogel Animaties &amp; Visuele Analyse (`bird-animations.md`)
-
-Dit document biedt een functionele en visuele analyse van alle vogel-gerelateerde animaties in *Phoenix* (levels 5 &amp; 7), inclusief de exacte C-routines, Z80 ROM-adresbereiken, RAM-datastructuren en **losse geanimeerde SVG-bestanden**.
-
----
-
-## Inhoudsopgave
-1. [Overzicht Vogel-fases](#1-overzicht-vogel-fases)
-2. [1. Ei &amp; Broed-transformatie](#1-ei--broed-transformatie)
-3. [2. Kleine Vogel Wieken &amp; Flappen](#2-kleine-vogel-wieken--zweven)
-4. [3. Grote / Volgroeide Vogel](#3-grote--volgroeide-vogel)
-5. [4. Duikvlucht &amp; Aanvalstraject](#4-duikvlucht--aanvalstraject)
-6. [5. Vogel-Explosie &amp; Bonus Score](#5-vogel-explosie--bonus-score)
-7. [6. Attract Mode Intro-Vogel](#6-attract-mode-intro-vogel)
-
----
-
-## 1. Overzicht Vogel-fases
-
-In levels 5 en 7 van *Phoenix* worden de vogels aangestuurd via een dynamische toestandsmachine. De vogel-animatielus doorloopt verschillende fases: van ei tot kleine vogel, volgroeide vogel en duikvlucht.
-
-#### **Knowledge Graph Koppelingen**
-* **Relevante C-bestanden:**
-  - [`bird_logic.c`](../../bird_logic.c) → [`bird-logic.md`](../../c-annotated/nl/bird-logic.md)
-  - [`bird_wave_behavior.c`](../../bird_wave_behavior.c) → [`bird-wave-behavior.md`](../../c-annotated/nl/bird-wave-behavior.md)
-  - [`birds_vertical_movement.c`](../../birds_vertical_movement.c) → [`birds-vertical-movement.md`](../../c-annotated/nl/birds-vertical-movement.md)
-  - [`collision_detection.c`](../../collision_detection.c) → [`collision-detection.md`](../../c-annotated/nl/collision-detection.md)
-  - [`attract_mode.c`](../../attract_mode.c) → [`attract-mode.md`](../../c-annotated/nl/attract-mode.md)
-
----
-
-## 1. Ei &amp; Broed-transformatie
-
-### **Beschrijving &amp; Code**
-* **Routines:** [`l38bc_large_hit`](../../c-annotated/nl/collision-detection.md#l38bc_large_hit) (Z80 ROM: `$38BC–$38F1`) &amp; [`l3250_egg_hatching`](../../c-annotated/nl/bird-wave-behavior.md#l3250_egg_hatching)
-* **RAM-slots:** `bird_struct + 0` (type `0x0B` of `0x0C`), `bird_struct + 5` (broed-drempel).
-* **Werking:** Eieren zweven in de formatie. Bij een schot (of zodra de broed-timer de drempelwaarde bereikt) transformeert het ei direct in een vogel via de tabel `phoenix_egg_transformation_types`.
-
-![Ei &amp; Broed-transformatie Animatie](../01_egg_hatching.svg)
-
----
-
-## 2. Kleine Vogel (Wieken &amp; Zweven)
-
-### **Beschrijving &amp; Code**
-* **Routines:** [`drawbirdobject`](../../c-annotated/nl/attract-mode.md#drawbirdobject) (Z80 ROM: `$34C0–$355D`)
-* **Tegelpointers:** `phoenix_bird_draw_entries` &amp; `phoenix_bird_shape_pointers`
-* **Werking:** Na het uitkomen wiekt de kleine vogel met 2 afwisselende vleugelframes (vleugels omhoog in frame A, vleugels omlaag in frame B) tijdens het vliegen in formatie.
-
-![Kleine Vogel Wieken Animatie](../02_small_bird_flapping.svg)
-
----
-
-## 3. Grote / Volgroeide Vogel
-
-### **Beschrijving &amp; Code**
-* **Routines:** [`l327c_grown_bird_behavior`](../../c-annotated/nl/bird-wave-behavior.md#l327c_grown_bird_behavior) (Z80 ROM: `$327C–$32A0`)
-* **Werking:** Als een kleine vogel voldoende tijd overleeft in het speelveld, groeit deze via `bird_struct + 4` uit tot een grote vogel met een brede 4x4 tegelmatrix spanwijdte.
-
-![Volgroeide Vogel Matrix Animatie](../03_grown_bird_matrix.svg)
-
----
-
-## 4. Duikvlucht &amp; Aanvalstraject
-
-### **Beschrijving &amp; Code**
-* **Routines:** [`bird_flight_path`](../../c-annotated/nl/bird-logic.md#bird_flight_path) (Z80 ROM: `$3160`) &amp; [`l3210_bird_dive_bomb`](../../c-annotated/nl/bird-wave-behavior.md#l3210_bird_dive_bomb)
-* **Werking:** Bepaalde vogels verbreken de formatie en maken een versnelde duikvlucht in een sinus-traject naar het spelerschip, terwijl ze bommen laten vallen.
-
-![Duikvlucht en Bommenwerpen Animatie](../04_dive_bombing_attack.svg)
-
----
-
-## 5. Vogel-Explosie &amp; Bonus Score
-
-### **Beschrijving &amp; Code**
-* **Routines:** [`bird_explosion_slot`](../../c-annotated/nl/collision-detection.md#bird_explosion_slot) &amp; [`l3758_bonus_explosion_animation`](../../c-annotated/nl/alien-logic.md#l3758_bonus_explosion_animation)
-* **RAM-slot:** `0x4378` / `0x437C` (bonus-explosie array).
-* **Werking:** Bij een voltreffer spat de vogel uiteen in een 4x4 deeltjesraster (`phoenix_explosion_particle_page`). Vervolgens verschijnt een bonusscore (bijv. **100**, **200** of **500** punten) op de plek van de treffer.
-
-![Deeltjes Explosie &amp; Score Animatie](../05_bird_explosion_bonus.svg)
-
----
-
-## 6. Attract Mode Intro-Vogel
-
-### **Beschrijving &amp; Code**
-* **Routines:** [`draw_intro_bird_animation_frame`](../../c-annotated/nl/attract-mode.md#draw_intro_bird_animation_frame) (Z80 ROM: `$21DC`)
-* **Werking:** Tijdens het attract-scherm (titel-demo) zweeft een speciale geanimeerde vogel bovenaan het scherm ter demonstratie.
-
-![Intro Splash Vogel Animatie](../06_intro_splash_bird.svg)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>bird-animations</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../../c-annotated/knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1 id="vogel-animaties--visuele-analyse-bird-animationsmd">Vogel
+Animaties &amp; Visuele Analyse (<code>bird-animations.md</code>)</h1>
+<p>Dit document biedt een functionele en visuele analyse van alle
+vogel-gerelateerde animaties in <em>Phoenix</em> (levels 5 &amp; 7),
+inclusief de exacte C-routines, Z80 ROM-adresbereiken,
+RAM-datastructuren en <strong>losse geanimeerde
+SVG-bestanden</strong>.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-overzicht-vogel-fases">Overzicht Vogel-fases</a></li>
+<li><a href="#1-ei--broed-transformatie">1. Ei &amp;
+Broed-transformatie</a></li>
+<li><a href="#2-kleine-vogel-wieken--zweven">2. Kleine Vogel Wieken
+&amp; Flappen</a></li>
+<li><a href="#3-grote--volgroeide-vogel">3. Grote / Volgroeide
+Vogel</a></li>
+<li><a href="#4-duikvlucht--aanvalstraject">4. Duikvlucht &amp;
+Aanvalstraject</a></li>
+<li><a href="#5-vogel-explosie--bonus-score">5. Vogel-Explosie &amp;
+Bonus Score</a></li>
+<li><a href="#6-attract-mode-intro-vogel">6. Attract Mode
+Intro-Vogel</a></li>
+</ol>
+<hr />
+<h2 id="1-overzicht-vogel-fases">1. Overzicht Vogel-fases</h2>
+<p>In levels 5 en 7 van <em>Phoenix</em> worden de vogels aangestuurd
+via een dynamische toestandsmachine. De vogel-animatielus doorloopt
+verschillende fases: van ei tot kleine vogel, volgroeide vogel en
+duikvlucht.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Relevante C-bestanden:</strong>
+<ul>
+<li><a href="../../bird_logic.c"><code>bird_logic.c</code></a> → <a
+href="../../c-annotated/nl/bird-logic.html"><code>bird-logic.md</code></a></li>
+<li><a
+href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+→ <a
+href="../../c-annotated/nl/bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a></li>
+<li><a
+href="../../birds_vertical_movement.c"><code>birds_vertical_movement.c</code></a>
+→ <a
+href="../../c-annotated/nl/birds-vertical-movement.html"><code>birds-vertical-movement.md</code></a></li>
+<li><a
+href="../../collision_detection.c"><code>collision_detection.c</code></a>
+→ <a
+href="../../c-annotated/nl/collision-detection.html"><code>collision-detection.md</code></a></li>
+<li><a href="../../attract_mode.c"><code>attract_mode.c</code></a> → <a
+href="../../c-annotated/nl/attract-mode.html"><code>attract-mode.md</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="1-ei--broed-transformatie">1. Ei &amp; Broed-transformatie</h2>
+<h3 id="beschrijving--code"><strong>Beschrijving &amp;
+Code</strong></h3>
+<ul>
+<li><strong>Routines:</strong> <a
+href="../../c-annotated/nl/collision-detection.html#l38bc_large_hit"><code>l38bc_large_hit</code></a>
+(Z80 ROM: <code>$38BC–$38F1</code>) &amp; <a
+href="../../c-annotated/nl/bird-wave-behavior.html#l3250_egg_hatching"><code>l3250_egg_hatching</code></a></li>
+<li><strong>RAM-slots:</strong> <code>bird_struct + 0</code> (type
+<code>0x0B</code> of <code>0x0C</code>), <code>bird_struct + 5</code>
+(broed-drempel).</li>
+<li><strong>Werking:</strong> Eieren zweven in de formatie. Bij een
+schot (of zodra de broed-timer de drempelwaarde bereikt) transformeert
+het ei direct in een vogel via de tabel
+<code>phoenix_egg_transformation_types</code>.</li>
+</ul>
+<p><img src="../01_egg_hatching.svg"
+alt="Ei &amp; Broed-transformatie Animatie" /></p>
+<hr />
+<h2 id="2-kleine-vogel-wieken--zweven">2. Kleine Vogel (Wieken &amp;
+Zweven)</h2>
+<h3 id="beschrijving--code-1"><strong>Beschrijving &amp;
+Code</strong></h3>
+<ul>
+<li><strong>Routines:</strong> <a
+href="../../c-annotated/nl/attract-mode.html#drawbirdobject"><code>drawbirdobject</code></a>
+(Z80 ROM: <code>$34C0–$355D</code>)</li>
+<li><strong>Tegelpointers:</strong>
+<code>phoenix_bird_draw_entries</code> &amp;
+<code>phoenix_bird_shape_pointers</code></li>
+<li><strong>Werking:</strong> Na het uitkomen wiekt de kleine vogel met
+2 afwisselende vleugelframes (vleugels omhoog in frame A, vleugels
+omlaag in frame B) tijdens het vliegen in formatie.</li>
+</ul>
+<p><img src="../02_small_bird_flapping.svg"
+alt="Kleine Vogel Wieken Animatie" /></p>
+<hr />
+<h2 id="3-grote--volgroeide-vogel">3. Grote / Volgroeide Vogel</h2>
+<h3 id="beschrijving--code-2"><strong>Beschrijving &amp;
+Code</strong></h3>
+<ul>
+<li><strong>Routines:</strong> <a
+href="../../c-annotated/nl/bird-wave-behavior.html#l327c_grown_bird_behavior"><code>l327c_grown_bird_behavior</code></a>
+(Z80 ROM: <code>$327C–$32A0</code>)</li>
+<li><strong>Werking:</strong> Als een kleine vogel voldoende tijd
+overleeft in het speelveld, groeit deze via <code>bird_struct + 4</code>
+uit tot een grote vogel met een brede 4x4 tegelmatrix spanwijdte.</li>
+</ul>
+<p><img src="../03_grown_bird_matrix.svg"
+alt="Volgroeide Vogel Matrix Animatie" /></p>
+<hr />
+<h2 id="4-duikvlucht--aanvalstraject">4. Duikvlucht &amp;
+Aanvalstraject</h2>
+<h3 id="beschrijving--code-3"><strong>Beschrijving &amp;
+Code</strong></h3>
+<ul>
+<li><strong>Routines:</strong> <a
+href="../../c-annotated/nl/bird-logic.html#bird_flight_path"><code>bird_flight_path</code></a>
+(Z80 ROM: <code>$3160</code>) &amp; <a
+href="../../c-annotated/nl/bird-wave-behavior.html#l3210_bird_dive_bomb"><code>l3210_bird_dive_bomb</code></a></li>
+<li><strong>Werking:</strong> Bepaalde vogels verbreken de formatie en
+maken een versnelde duikvlucht in een sinus-traject naar het
+spelerschip, terwijl ze bommen laten vallen.</li>
+</ul>
+<p><img src="../04_dive_bombing_attack.svg"
+alt="Duikvlucht en Bommenwerpen Animatie" /></p>
+<hr />
+<h2 id="5-vogel-explosie--bonus-score">5. Vogel-Explosie &amp; Bonus
+Score</h2>
+<h3 id="beschrijving--code-4"><strong>Beschrijving &amp;
+Code</strong></h3>
+<ul>
+<li><strong>Routines:</strong> <a
+href="../../c-annotated/nl/collision-detection.html#bird_explosion_slot"><code>bird_explosion_slot</code></a>
+&amp; <a
+href="../../c-annotated/nl/alien-logic.html#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a></li>
+<li><strong>RAM-slot:</strong> <code>0x4378</code> / <code>0x437C</code>
+(bonus-explosie array).</li>
+<li><strong>Werking:</strong> Bij een voltreffer spat de vogel uiteen in
+een 4x4 deeltjesraster (<code>phoenix_explosion_particle_page</code>).
+Vervolgens verschijnt een bonusscore (bijv. <strong>100</strong>,
+<strong>200</strong> of <strong>500</strong> punten) op de plek van de
+treffer.</li>
+</ul>
+<p><img src="../05_bird_explosion_bonus.svg"
+alt="Deeltjes Explosie &amp; Score Animatie" /></p>
+<hr />
+<h2 id="6-attract-mode-intro-vogel">6. Attract Mode Intro-Vogel</h2>
+<h3 id="beschrijving--code-5"><strong>Beschrijving &amp;
+Code</strong></h3>
+<ul>
+<li><strong>Routines:</strong> <a
+href="../../c-annotated/nl/attract-mode.html#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
+(Z80 ROM: <code>$21DC</code>)</li>
+<li><strong>Werking:</strong> Tijdens het attract-scherm (titel-demo)
+zweeft een speciale geanimeerde vogel bovenaan het scherm ter
+demonstratie.</li>
+</ul>
+<p><img src="../06_intro_splash_bird.svg"
+alt="Intro Splash Vogel Animatie" /></p>
+</body></html>

@@ -1,14 +1,27 @@
-<!doctype html><html><head><meta charset="utf-8"><title>sound-h</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>sound-h</h1><pre># Sound Engine Declarations (`sound.h`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat de geannoteerde header-declaraties voor [`sound.h`](../../sound.h).
-
----
-
-## Declaraties &amp; Koppelingen
-- `sound_init(void)`: Initialiseert alle audio-generatoren en resamplers.
-- `sound_set_frame_sample_index(uint16_t sample_index)`: Stelt de sample-index offset in voor latch-updates.
-- `sound_write_control_a(uint8_t val)` / `sound_write_control_b(uint8_t val)`: Registreert poort $6000/$6800 latch updates.
-- `sound_render_frame(int16_t* out)`: Rendert 1 frame audio (ca. 735 samples bij 44.1kHz).
-
-#### **Knowledge Graph Koppelingen**
-* **Overeenkomstige C-implementatie:** [`sound.c`](../../sound.c) → [`sound.md`](sound.md)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>sound-h</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="sound-engine-declarations-soundh---c-annotated-knowledge-graph-documentatie">Sound
+Engine Declarations (<code>sound.h</code>) - C-Annotated Knowledge Graph
+Documentatie</h1>
+<p>Dit document bevat de geannoteerde header-declaraties voor <a
+href="../../sound.h"><code>sound.h</code></a>.</p>
+<hr />
+<h2 id="declaraties--koppelingen">Declaraties &amp; Koppelingen</h2>
+<ul>
+<li><code>sound_init(void)</code>: Initialiseert alle audio-generatoren
+en resamplers.</li>
+<li><code>sound_set_frame_sample_index(uint16_t sample_index)</code>:
+Stelt de sample-index offset in voor latch-updates.</li>
+<li><code>sound_write_control_a(uint8_t val)</code> /
+<code>sound_write_control_b(uint8_t val)</code>: Registreert poort
+$6000/$6800 latch updates.</li>
+<li><code>sound_render_frame(int16_t* out)</code>: Rendert 1 frame audio
+(ca. 735 samples bij 44.1kHz).</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Overeenkomstige C-implementatie:</strong> <a
+href="../../sound.c"><code>sound.c</code></a> → <a
+href="sound.html"><code>sound.md</code></a></li>
+</ul>
+</body></html>

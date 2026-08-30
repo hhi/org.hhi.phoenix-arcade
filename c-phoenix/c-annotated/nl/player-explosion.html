@@ -1,67 +1,130 @@
-<!doctype html><html><head><meta charset="utf-8"><title>player-explosion</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>player-explosion</h1><pre># Player Explosion (`player_explosion.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van alle functies in [`player_explosion.c`](../../player_explosion.c). Deze module beheert het visuele ontploffingsproces van het spelerschip, inclusief fragment-rendering, scrolling-klemmen en deeltjes-animaties.
-
----
-
-## Inhoudsopgave
-1. [Scroll-klemmen &amp; Fragment Rendering](#1-scroll-klemmen--fragment-rendering)
-2. [Deeltjesexplosie (Particles) System](#2-deeltjesexplosie-particles-system)
-
----
-
-## 1. Scroll-klemmen &amp; Fragment Rendering
-
-### `l211c`
-#### **Beschrijving**
-De functie [`l211c`](../../player_explosion.c#L16-L24) (Z80 ROM: `$211C–$212C`) klemt de achtergrond-scrollsnelheid `state.CounterB9` op `0x10` tijdens de speler-explosieanimatie en bijwerkt het hardware-register via `hw_write_scroll_register`.
-
----
-
-### `l20e8`
-#### **Beschrijving**
-De functie [`l20e8`](../../player_explosion.c#L32-L69) (Z80 ROM: `$20E8–$210D`) rendert de losse fragmenten van het ontploffende spelerschip.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l211c`](#l211c) — [`player_explosion.c#L38`](../../player_explosion.c#L38)
-  - `phoenix_mothership_explosion_pointers` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - `draw_image_c_by_b` — [`sprite_rendering.c`](../../sprite_rendering.c)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l0cc4_player_killed`](state-endings.md#l0cc4_player_killed) — [`state_endings.c`](../../state_endings.c)
-
-#### **Stap-voor-stap werking**
-1. **Scroll-update:** Roept [`l211c`](#l211c) aan om de scrollwaarde op te halen en de achtergrond stil te zetten.
-2. **Schermcoördinaten:** Berekent de VRAM-kolom en -rij offset.
-3. **Fragment tegel-pointer:** Berekent de index in `phoenix_mothership_explosion_pointers` en haalt de 16-bits image pointer op.
-4. **Tekenfragment:** Roept `draw_image_c_by_b(image_ptr, screen_addr, 4, 4)` aan om de 4x4 tegelmatrix van het explosiefragment te tekenen.
-
----
-
-## 2. Deeltjesexplosie (Particles) System
-
-### `l2070` &amp; `l2085_particles`
-#### **Beschrijving**
-De functies [`l2070`](../../player_explosion.c#L118-L140) (Z80 ROM: `$2070–$2084`) en [`l2085_particles`](../../player_explosion.c#L154-L187) (Z80 ROM: `$2085–$20AA`) verzorgen het opzetten en berekenen van de rondspattende deeltjes (particles) bij het vernietigen van de speler (en shared met het moederschip).
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - [`l20b0_player_ship_particles_explosion`](#l20b0_player_ship_particles_explosion) — [`player_explosion.c#L169`](../../player_explosion.c#L169)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l0cc4_player_killed`](state-endings.md#l0cc4_player_killed) — [`state_endings.c`](../../state_endings.c)
-
----
-
-### `l20b0_player_ship_particles_explosion`
-#### **Beschrijving**
-De functie [`l20b0_player_ship_particles_explosion`](../../player_explosion.c#L76-L107) (Z80 ROM: `$20B0–$20E2`) voert de eigenlijke kopieerlus uit van het deeltjes-raster naar VRAM.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `phoenix_explosion_particle_page` — [`phoenix_tables.c`](../../phoenix_tables.c)
-  - [`mem_write`](utilities.md#mem_write) — [`utilities.c:L22`](../../utilities.c#L22)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`l2085_particles`](#l2085_particles) — [`player_explosion.c#L169`](../../player_explosion.c#L169)
-
-#### **Stap-voor-stap werking**
-Leest 32-byte controleblokken uit `phoenix_explosion_particle_page`. Elk actief bit plaatst een particle-tegel op het scherm. Verschuift na elke rij de schermpositie 0x30 bytes terug tot het volledige deeltjesraster getekend is.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>player-explosion</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="player-explosion-player_explosionc---c-annotated-knowledge-graph-documentatie">Player
+Explosion (<code>player_explosion.c</code>) - C-Annotated Knowledge
+Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van alle functies in <a
+href="../../player_explosion.c"><code>player_explosion.c</code></a>.
+Deze module beheert het visuele ontploffingsproces van het spelerschip,
+inclusief fragment-rendering, scrolling-klemmen en
+deeltjes-animaties.</p>
+<hr />
+<h2 id="inhoudsopgave">Inhoudsopgave</h2>
+<ol type="1">
+<li><a href="#1-scroll-klemmen--fragment-rendering">Scroll-klemmen &amp;
+Fragment Rendering</a></li>
+<li><a href="#2-deeltjesexplosie-particles-system">Deeltjesexplosie
+(Particles) System</a></li>
+</ol>
+<hr />
+<h2 id="1-scroll-klemmen--fragment-rendering">1. Scroll-klemmen &amp;
+Fragment Rendering</h2>
+<h3 id="l211c"><code>l211c</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../player_explosion.c#L16-L24"><code>l211c</code></a> (Z80 ROM:
+<code>$211C–$212C</code>) klemt de achtergrond-scrollsnelheid
+<code>state.CounterB9</code> op <code>0x10</code> tijdens de
+speler-explosieanimatie en bijwerkt het hardware-register via
+<code>hw_write_scroll_register</code>.</p>
+<hr />
+<h3 id="l20e8"><code>l20e8</code></h3>
+<h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../player_explosion.c#L32-L69"><code>l20e8</code></a> (Z80 ROM:
+<code>$20E8–$210D</code>) rendert de losse fragmenten van het
+ontploffende spelerschip.</p>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a href="#l211c"><code>l211c</code></a> — <a
+href="../../player_explosion.c#L38"><code>player_explosion.c#L38</code></a></li>
+<li><code>phoenix_mothership_explosion_pointers</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><code>draw_image_c_by_b</code> — <a
+href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-endings.html#l0cc4_player_killed"><code>l0cc4_player_killed</code></a>
+— <a href="../../state_endings.c"><code>state_endings.c</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
+werking</strong></h4>
+<ol type="1">
+<li><strong>Scroll-update:</strong> Roept <a
+href="#l211c"><code>l211c</code></a> aan om de scrollwaarde op te halen
+en de achtergrond stil te zetten.</li>
+<li><strong>Schermcoördinaten:</strong> Berekent de VRAM-kolom en -rij
+offset.</li>
+<li><strong>Fragment tegel-pointer:</strong> Berekent de index in
+<code>phoenix_mothership_explosion_pointers</code> en haalt de 16-bits
+image pointer op.</li>
+<li><strong>Tekenfragment:</strong> Roept
+<code>draw_image_c_by_b(image_ptr, screen_addr, 4, 4)</code> aan om de
+4x4 tegelmatrix van het explosiefragment te tekenen.</li>
+</ol>
+<hr />
+<h2 id="2-deeltjesexplosie-particles-system">2. Deeltjesexplosie
+(Particles) System</h2>
+<h3 id="l2070--l2085_particles"><code>l2070</code> &amp;
+<code>l2085_particles</code></h3>
+<h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
+<p>De functies <a
+href="../../player_explosion.c#L118-L140"><code>l2070</code></a> (Z80
+ROM: <code>$2070–$2084</code>) en <a
+href="../../player_explosion.c#L154-L187"><code>l2085_particles</code></a>
+(Z80 ROM: <code>$2085–$20AA</code>) verzorgen het opzetten en berekenen
+van de rondspattende deeltjes (particles) bij het vernietigen van de
+speler (en shared met het moederschip).</p>
+<h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><a
+href="#l20b0_player_ship_particles_explosion"><code>l20b0_player_ship_particles_explosion</code></a>
+— <a
+href="../../player_explosion.c#L169"><code>player_explosion.c#L169</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a
+href="state-endings.html#l0cc4_player_killed"><code>l0cc4_player_killed</code></a>
+— <a href="../../state_endings.c"><code>state_endings.c</code></a></li>
+</ul></li>
+</ul>
+<hr />
+<h3
+id="l20b0_player_ship_particles_explosion"><code>l20b0_player_ship_particles_explosion</code></h3>
+<h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
+<p>De functie <a
+href="../../player_explosion.c#L76-L107"><code>l20b0_player_ship_particles_explosion</code></a>
+(Z80 ROM: <code>$20B0–$20E2</code>) voert de eigenlijke kopieerlus uit
+van het deeltjes-raster naar VRAM.</p>
+<h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>phoenix_explosion_particle_page</code> — <a
+href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+<li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
+href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="#l2085_particles"><code>l2085_particles</code></a> — <a
+href="../../player_explosion.c#L169"><code>player_explosion.c#L169</code></a></li>
+</ul></li>
+</ul>
+<h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
+werking</strong></h4>
+<p>Leest 32-byte controleblokken uit
+<code>phoenix_explosion_particle_page</code>. Elk actief bit plaatst een
+particle-tegel op het scherm. Verschuift na elke rij de schermpositie
+0x30 bytes terug tot het volledige deeltjesraster getekend is.</p>
+</body></html>

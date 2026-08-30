@@ -1,16 +1,26 @@
-<!doctype html><html><head><meta charset="utf-8"><title>utilities</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>utilities</h1><pre># Utility Helpers (`utilities.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`utilities.c`](../../utilities.c) and [`utilities.h`](../../utilities.h). This module provides RAM memory access wrappers (`mem_read`, `mem_write`) and BCD arithmetic helpers.
-
----
-
-## Table of Contents
-1. [Memory Read/Write Wrappers](#1-memory-readwrite-wrappers)
-
----
-
-## 1. Memory Read/Write Wrappers
-
-### `mem_read` &amp; `mem_write`
-#### **Description**
-The functions [`mem_read`](../../utilities.c#L22) and [`mem_write`](../../utilities.c#L35) provide bounds-checked memory access across Arcade RAM (`$4000–$4BFF`) and VRAM pages.</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>utilities</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="utility-helpers-utilitiesc---c-annotated-knowledge-graph-documentation">Utility
+Helpers (<code>utilities.c</code>) - C-Annotated Knowledge Graph
+Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../utilities.c"><code>utilities.c</code></a> and <a
+href="../../utilities.h"><code>utilities.h</code></a>. This module
+provides RAM memory access wrappers (<code>mem_read</code>,
+<code>mem_write</code>) and BCD arithmetic helpers.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-memory-readwrite-wrappers">Memory Read/Write
+Wrappers</a></li>
+</ol>
+<hr />
+<h2 id="1-memory-readwrite-wrappers">1. Memory Read/Write Wrappers</h2>
+<h3 id="mem_read--mem_write"><code>mem_read</code> &amp;
+<code>mem_write</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The functions <a
+href="../../utilities.c#L22"><code>mem_read</code></a> and <a
+href="../../utilities.c#L35"><code>mem_write</code></a> provide
+bounds-checked memory access across Arcade RAM
+(<code>$4000–$4BFF</code>) and VRAM pages.</p>
+</body></html>

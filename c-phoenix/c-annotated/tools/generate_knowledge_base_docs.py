@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate HTML pages for Markdown documents referenced by the knowledge graph."""
-import argparse, html, json, os, re, sys
+import argparse, html, json, os, re, subprocess, sys
 from pathlib import Path
 LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 def paths(graph):
@@ -10,10 +10,14 @@ def paths(graph):
         out.update(([docs] if isinstance(docs,str) else docs) if docs else [])
     return sorted(p for p in out if isinstance(p,str) and p.endswith(".md"))
 def render(source,destination,explorer):
-    lines=source.read_text(encoding="utf-8").splitlines()
-    body="<pre>" + html.escape("\n".join(lines)) + "</pre>"
+    converted=subprocess.run(
+        ["pandoc", "--from=gfm", "--to=html"],
+        input=source.read_text(encoding="utf-8"), text=True, capture_output=True, check=True,
+    ).stdout
+    # Documentation links are published alongside their Markdown source.
+    body=re.sub(r'(?<=href=")([^"#]+)\.md(?=[#" ])', r'\1.html', converted)
     back=Path(os.path.relpath(explorer,destination.parent)).as_posix()
-    return '<!doctype html><html><head><meta charset="utf-8"><title>'+html.escape(source.stem)+'</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="'+back+'">← Back to knowledge base</a></p><h1>'+html.escape(source.stem)+'</h1>'+body+'</body></html>'
+    return '<!doctype html><html><head><meta charset="utf-8"><title>'+html.escape(source.stem)+'</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="'+back+'">← Back to knowledge base</a></p>'+body+'</body></html>'
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("--graph",type=Path,required=True);parser.add_argument("--root",type=Path,default=Path("c-phoenix"));parser.add_argument("--check",action="store_true");args=parser.parse_args()
     explorer=args.root/"c-annotated/knowledge-base-explorer/index.html";stale=[]

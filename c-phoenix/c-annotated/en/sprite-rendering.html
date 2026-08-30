@@ -1,16 +1,25 @@
-<!doctype html><html><head><meta charset="utf-8"><title>sprite-rendering</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>sprite-rendering</h1><pre># Sprite Rendering Engine (`sprite_rendering.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`sprite_rendering.c`](../../sprite_rendering.c). This module handles sprite drawing for 1x1, 2x1, 1x2, and 2x2 tile matrices into rotated 32x32 VRAM pages (`$4000–$433F`).
-
----
-
-## Table of Contents
-1. [Sprite Matrix Rendering](#1-sprite-matrix-rendering)
-
----
-
-## 1. Sprite Matrix Rendering
-
-### `update_screen_objects`
-#### **Description**
-The function [`update_screen_objects`](../../sprite_rendering.c#L215) (Z80 ROM: `$0718–$071F`) writes an object&#x27;s tile data into the VRAM cells addressed by its screen-RAM record, dispatching through [`bit4_controller`](#bit4_controller) and [`bit3_controller`](#bit3_controller).</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>sprite-rendering</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="sprite-rendering-engine-sprite_renderingc---c-annotated-knowledge-graph-documentation">Sprite
+Rendering Engine (<code>sprite_rendering.c</code>) - C-Annotated
+Knowledge Graph Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a>.
+This module handles sprite drawing for 1x1, 2x1, 1x2, and 2x2 tile
+matrices into rotated 32x32 VRAM pages (<code>$4000–$433F</code>).</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-sprite-matrix-rendering">Sprite Matrix
+Rendering</a></li>
+</ol>
+<hr />
+<h2 id="1-sprite-matrix-rendering">1. Sprite Matrix Rendering</h2>
+<h3 id="update_screen_objects"><code>update_screen_objects</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../sprite_rendering.c#L215"><code>update_screen_objects</code></a>
+(Z80 ROM: <code>$0718–$071F</code>) writes an object's tile data into
+the VRAM cells addressed by its screen-RAM record, dispatching through
+<a href="#bit4_controller"><code>bit4_controller</code></a> and <a
+href="#bit3_controller"><code>bit3_controller</code></a>.</p>
+</body></html>

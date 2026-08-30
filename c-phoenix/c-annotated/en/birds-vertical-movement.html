@@ -1,20 +1,34 @@
-<!doctype html><html><head><meta charset="utf-8"><title>birds-vertical-movement</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>birds-vertical-movement</h1><pre># Birds Vertical Movement (`birds_vertical_movement.c`) - C-Annotated Knowledge Graph Documentation
-
-This document contains an annotated analysis of all functions in [`birds_vertical_movement.c`](../../birds_vertical_movement.c). This module manages vertical scrolling speed registers and formation descent routines for bird waves.
-
----
-
-## Table of Contents
-1. [Vertical Scroll Registers &amp; Formation Descent](#1-vertical-scroll-registers--formation-descent)
-
----
-
-## 1. Vertical Scroll Registers &amp; Formation Descent
-
-### `birds_vertical_movement_update`
-#### **Description**
-The function [`birds_vertical_movement_update`](../../birds_vertical_movement.c#L112) (Z80 ROM: `$2600–$2664`) updates vertical scroll registers (`B4BD2`) and shifts bird formation rows downward.
-
-#### **Knowledge Graph Links**
-* **Called By (Incoming Calls / Backlinks):**
-  - [`process_birds`](bird-logic.md#process_birds) — [`bird_logic.c`](../../bird_logic.c)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>birds-vertical-movement</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="birds-vertical-movement-birds_vertical_movementc---c-annotated-knowledge-graph-documentation">Birds
+Vertical Movement (<code>birds_vertical_movement.c</code>) - C-Annotated
+Knowledge Graph Documentation</h1>
+<p>This document contains an annotated analysis of all functions in <a
+href="../../birds_vertical_movement.c"><code>birds_vertical_movement.c</code></a>.
+This module manages vertical scrolling speed registers and formation
+descent routines for bird waves.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-vertical-scroll-registers--formation-descent">Vertical
+Scroll Registers &amp; Formation Descent</a></li>
+</ol>
+<hr />
+<h2 id="1-vertical-scroll-registers--formation-descent">1. Vertical
+Scroll Registers &amp; Formation Descent</h2>
+<h3
+id="birds_vertical_movement_update"><code>birds_vertical_movement_update</code></h3>
+<h4 id="description"><strong>Description</strong></h4>
+<p>The function <a
+href="../../birds_vertical_movement.c#L112"><code>birds_vertical_movement_update</code></a>
+(Z80 ROM: <code>$2600–$2664</code>) updates vertical scroll registers
+(<code>B4BD2</code>) and shifts bird formation rows downward.</p>
+<h4 id="knowledge-graph-links"><strong>Knowledge Graph
+Links</strong></h4>
+<ul>
+<li><strong>Called By (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
+— <a href="../../bird_logic.c"><code>bird_logic.c</code></a></li>
+</ul></li>
+</ul>
+</body></html>

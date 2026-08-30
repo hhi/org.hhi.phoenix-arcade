@@ -1,20 +1,51 @@
-<!doctype html><html><head><meta charset="utf-8"><title>mame-lofi-resampler</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{white-space:pre-wrap;overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1>mame-lofi-resampler</h1><pre># MAME Lo-Fi Stream Resampler (`mame_lofi_resampler.c`) - C-Annotated Knowledge Graph Documentatie
-
-Dit document bevat een geannoteerde analyse van de functies in [`mame_lofi_resampler.c`](../../mame_lofi_resampler.c). Deze module implementeert MAME&#x27;s 4-punts kubische interpolatie (cubic interpolation) resampler om bron-audio (zoals 23.8kHz TMS-muziek of 96kHz discreet-audio) om te zetten naar de 44.1kHz SDL2-afspeelfrequentie.
-
----
-
-## 1. Resampler Initialisatie &amp; Sampling
-
-### `mame_lofi_resampler_init` &amp; `mame_lofi_resampler_next`
-#### **Beschrijving**
-- [`mame_lofi_resampler_init`](../../mame_lofi_resampler.c#L40-L46): Genereert de process-globale interpolatie-tabel `g_interp` en berekent de vaste-kommaberekening stapgrootte (`r-&gt;step`).
-- [`mame_lofi_resampler_next`](../../mame_lofi_resampler.c#L66-L82): Berekent de gewogen 4-punts kubische interpolatie over de sample-window `s0..s3` en schuift de bron-samples op bij phase-overflow.
-
-#### **Knowledge Graph Koppelingen**
-* **Aanroepen (Outgoing Calls):**
-  - `build_interpolation` — [`mame_lofi_resampler.c#L15`](../../mame_lofi_resampler.c#L15)
-  - `read_source` — [`mame_lofi_resampler.c#L53`](../../mame_lofi_resampler.c#L53)
-* **Aangeroepen door (Incoming Calls / Backlinks):**
-  - [`sound_init`](sound.md#sound_init) — [`sound.c#L60`](../../sound.c#L60), [`L62`](../../sound.c#L62)
-  - [`sound_render_frame`](sound.md#sound_render_frame) — [`sound.c#L176`](../../sound.c#L176), [`L177`](../../sound.c#L177)</pre></body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>mame-lofi-resampler</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="../knowledge-base-explorer/index.html">← Back to knowledge base</a></p><h1
+id="mame-lo-fi-stream-resampler-mame_lofi_resamplerc---c-annotated-knowledge-graph-documentatie">MAME
+Lo-Fi Stream Resampler (<code>mame_lofi_resampler.c</code>) -
+C-Annotated Knowledge Graph Documentatie</h1>
+<p>Dit document bevat een geannoteerde analyse van de functies in <a
+href="../../mame_lofi_resampler.c"><code>mame_lofi_resampler.c</code></a>.
+Deze module implementeert MAME's 4-punts kubische interpolatie (cubic
+interpolation) resampler om bron-audio (zoals 23.8kHz TMS-muziek of
+96kHz discreet-audio) om te zetten naar de 44.1kHz
+SDL2-afspeelfrequentie.</p>
+<hr />
+<h2 id="1-resampler-initialisatie--sampling">1. Resampler Initialisatie
+&amp; Sampling</h2>
+<h3
+id="mame_lofi_resampler_init--mame_lofi_resampler_next"><code>mame_lofi_resampler_init</code>
+&amp; <code>mame_lofi_resampler_next</code></h3>
+<h4 id="beschrijving"><strong>Beschrijving</strong></h4>
+<ul>
+<li><a
+href="../../mame_lofi_resampler.c#L40-L46"><code>mame_lofi_resampler_init</code></a>:
+Genereert de process-globale interpolatie-tabel <code>g_interp</code> en
+berekent de vaste-kommaberekening stapgrootte
+(<code>r-&gt;step</code>).</li>
+<li><a
+href="../../mame_lofi_resampler.c#L66-L82"><code>mame_lofi_resampler_next</code></a>:
+Berekent de gewogen 4-punts kubische interpolatie over de sample-window
+<code>s0..s3</code> en schuift de bron-samples op bij
+phase-overflow.</li>
+</ul>
+<h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
+Koppelingen</strong></h4>
+<ul>
+<li><strong>Aanroepen (Outgoing Calls):</strong>
+<ul>
+<li><code>build_interpolation</code> — <a
+href="../../mame_lofi_resampler.c#L15"><code>mame_lofi_resampler.c#L15</code></a></li>
+<li><code>read_source</code> — <a
+href="../../mame_lofi_resampler.c#L53"><code>mame_lofi_resampler.c#L53</code></a></li>
+</ul></li>
+<li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
+<ul>
+<li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
+href="../../sound.c#L60"><code>sound.c#L60</code></a>, <a
+href="../../sound.c#L62"><code>L62</code></a></li>
+<li><a
+href="sound.html#sound_render_frame"><code>sound_render_frame</code></a> —
+<a href="../../sound.c#L176"><code>sound.c#L176</code></a>, <a
+href="../../sound.c#L177"><code>L177</code></a></li>
+</ul></li>
+</ul>
+</body></html>
