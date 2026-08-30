@@ -29,7 +29,10 @@ def highlight(line: str) -> str:
 
 def render(source: Path) -> str:
     lines = source.read_text(encoding="utf-8").splitlines()
-    body = "\n".join(
+    # <pre> preserves text-node newlines.  The spans are already block-level,
+    # so joining them with newlines would render an empty row between every
+    # source line.
+    body = "".join(
         f'<span class="line" id="L{number}" data-line="{number}">{highlight(line) or " "}</span>'
         for number, line in enumerate(lines, 1)
     )
