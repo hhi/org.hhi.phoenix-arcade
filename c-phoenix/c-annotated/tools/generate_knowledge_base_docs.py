@@ -16,6 +16,15 @@ def render(source,destination,explorer):
     ).stdout
     # Documentation links are published alongside their Markdown source.
     body=re.sub(r'(?<=href=")([^"#]+)\.md(?=[#" ])', r'\1.html', converted)
+    # C references must use the standalone source viewer, never the raw .c
+    # file.  Preserve an existing line fragment as its stable page anchor.
+    def source_page(match):
+        c_path, fragment = match.groups()
+        name = Path(c_path).stem + ".html"
+        viewer = source.parents[2] / "context" / "source" / name
+        relative = Path(os.path.relpath(viewer, destination.parent)).as_posix()
+        return 'href="' + relative + (fragment or "") + '"'
+    body=re.sub(r'href="([^"#]+\.c)(#[^"]*)?"', source_page, body)
     back=Path(os.path.relpath(explorer,destination.parent)).as_posix()
     return '<!doctype html><html><head><meta charset="utf-8"><title>'+html.escape(source.stem)+'</title><style>:root{color-scheme:dark}body{max-width:1000px;margin:auto;padding:2rem;background:#09111a;color:#e8f0f7;font:16px/1.6 system-ui}a{color:#82cdf6}pre{overflow:auto;padding:1rem;background:#071018;border:1px solid #29455d;font:.9rem/1.5 ui-monospace,monospace}code{font-family:ui-monospace,monospace}h1,h2,h3{scroll-margin-top:1rem}</style></head><body><p><a href="'+back+'">← Back to knowledge base</a></p>'+body+'</body></html>'
 def main():

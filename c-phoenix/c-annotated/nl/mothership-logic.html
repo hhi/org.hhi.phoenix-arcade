@@ -3,7 +3,7 @@ id="mothership-logic-mothership_logicc---c-annotated-knowledge-graph-documentati
 Logic (<code>mothership_logic.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../mothership_logic.c"><code>mothership_logic.c</code></a>.
+href="../../context/source/mothership_logic.html"><code>mothership_logic.c</code></a>.
 Deze module behandelt de logica voor het moederschip (level 5),
 inclusief het wissen van het moederschip en de bonusscore-berekening bij
 het vernietigen van de kern.</p>
@@ -22,7 +22,7 @@ Wissen</h2>
 id="mothership_descent_logic"><code>mothership_descent_logic</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../mothership_logic.c#L12-L15"><code>mothership_descent_logic</code></a>
+href="../../context/source/mothership_logic.html#L12-L15"><code>mothership_descent_logic</code></a>
 roept de animatieroutine op vaste RAM-slots aan.</p>
 <h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
 Koppelingen</strong></h4>
@@ -32,21 +32,21 @@ Koppelingen</strong></h4>
 <li><a
 href="mothership-impl.html#l2351_mothership_animation"><code>l2351_mothership_animation</code></a>
 — <a
-href="../../mothership_impl.c#L12"><code>mothership_impl.c#L12</code></a></li>
+href="../../context/source/mothership_impl.html#L12"><code>mothership_impl.c#L12</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="erase_mothership"><code>erase_mothership</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../mothership_logic.c#L22-L30"><code>erase_mothership</code></a>
+href="../../context/source/mothership_logic.html#L22-L30"><code>erase_mothership</code></a>
 (Z80 ROM: <code>$246A–$2475</code>) wist de weergave van het moederschip
 van het voorgrondscherm.</p>
 <h4 id="knowledge-graph-koppelingen-1"><strong>Knowledge Graph
@@ -55,14 +55,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>draw_image_c_by_b</code> — <a
-href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a></li>
+href="../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -79,7 +79,7 @@ Bonusscore</h2>
 id="mothership_core_hit_check"><code>mothership_core_hit_check</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../mothership_logic.c#L48-L76"><code>mothership_core_hit_check</code></a>
+href="../../context/source/mothership_logic.html#L48-L76"><code>mothership_core_hit_check</code></a>
 (Z80 ROM: <code>$2520–$254F</code>) berekenen de bonusscore bij een
 voltreffer op de kern van het moederschip, slaat deze op in BCD-formaat
 en toont de score op het scherm.</p>
@@ -89,14 +89,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>clear_foreground</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a href="utilities.html#print_number"><code>print_number</code></a> —
-<a href="../../utilities.c#L80"><code>utilities.c:L80</code></a></li>
+<a href="../../context/source/utilities.html#L80"><code>utilities.c:L80</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><code>process_player_bullet_vs_mothership</code> — <a
-href="../../weapon_collision.c"><code>weapon_collision.c</code></a></li>
+href="../../context/source/weapon_collision.html"><code>weapon_collision.c</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap

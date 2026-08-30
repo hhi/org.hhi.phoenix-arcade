@@ -3,7 +3,7 @@ id="attract-mode--title-screen-attract_modec---c-annotated-knowledge-graph-docum
 Mode &amp; Title Screen (<code>attract_mode.c</code>) - C-Annotated
 Knowledge Graph Documentation</h1>
 <p>This document contains an annotated analysis of all functions in <a
-href="../../attract_mode.c"><code>attract_mode.c</code></a>. This module
+href="../../context/source/attract_mode.html"><code>attract_mode.c</code></a>. This module
 controls title splash sequencing, credit counter, coin insertion, high
 score display, and demonstration gameplay.</p>
 <hr />
@@ -19,7 +19,7 @@ Management</a></li>
 <h3 id="splash_and_demo"><code>splash_and_demo</code></h3>
 <h4 id="description"><strong>Description</strong></h4>
 <p>The function <a
-href="../../attract_mode.c#L32-L107"><code>splash_and_demo</code></a>
+href="../../context/source/attract_mode.html#L32-L107"><code>splash_and_demo</code></a>
 (Z80 ROM: <code>$00E3–$0145</code>) manages the frame sequence for title
 screen displays, copyright text, high score tables, and automated
 demonstration gameplay.</p>
@@ -31,16 +31,16 @@ Links</strong></h4>
 <li><a
 href="#draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></a>
 — <a
-href="../../attract_mode.c#L85"><code>attract_mode.c:L85</code></a></li>
+href="../../context/source/attract_mode.html#L85"><code>attract_mode.c:L85</code></a></li>
 <li><code>draw_high_score_table</code> — <a
-href="../../scoring.c"><code>scoring.c</code></a></li>
+href="../../context/source/scoring.html"><code>scoring.c</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L30"><code>game_state_machine.c:L30</code></a></li>
+href="../../context/source/game_state_machine.html#L30"><code>game_state_machine.c:L30</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -50,10 +50,10 @@ id="prompt_for_start_game--decrement_coins"><code>prompt_for_start_game</code>
 &amp; <code>decrement_coins</code></h3>
 <h4 id="description-1"><strong>Description</strong></h4>
 <p>The function <a
-href="../../attract_mode.c#L293"><code>prompt_for_start_game</code></a>
+href="../../context/source/attract_mode.html#L293"><code>prompt_for_start_game</code></a>
 (Z80 ROM: <code>$0288–$02EE</code>) shows the start prompt once credits
 are present, and <a
-href="../../attract_mode.c#L366"><code>decrement_coins</code></a> (Z80
+href="../../context/source/attract_mode.html#L366"><code>decrement_coins</code></a> (Z80
 ROM: <code>$02CB–$02EF</code>) deducts the credits when a game begins.
 Coin chute input itself is read by <a
 href="scoring.html#check_coin_event"><code>check_coin_event</code></a> in
@@ -64,7 +64,7 @@ href="scoring.html#check_coin_event"><code>check_coin_event</code></a> in
 id="draw_intro_bird_animation_frame"><code>draw_intro_bird_animation_frame</code></h3>
 <h4 id="description-2"><strong>Description</strong></h4>
 <p>The function <a
-href="../../attract_mode.c#L170-L210"><code>draw_intro_bird_animation_frame</code></a>
+href="../../context/source/attract_mode.html#L170-L210"><code>draw_intro_bird_animation_frame</code></a>
 (Z80 ROM: <code>$21DC–$2210</code>) renders the 32-step intro bird
 animation gliding across the top title screen.</p>
 </body></html>

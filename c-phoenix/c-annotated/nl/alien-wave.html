@@ -3,7 +3,7 @@ id="alien-wave-alien_wavec---c-annotated-knowledge-graph-documentatie">Alien
 Wave (<code>alien_wave.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een diepgaande geannoteerde analyse van alle
-functies in <a href="../../alien_wave.c"><code>alien_wave.c</code></a>.
+functies in <a href="../../context/source/alien_wave.html"><code>alien_wave.c</code></a>.
 Deze module bevat de hoofd-lussen en dispatch-routines voor de
 alien-golven (levels 1, 3 en B).</p>
 <hr />
@@ -26,7 +26,7 @@ Dispatcher</a></li>
 id="l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L220-L248"><code>l2000_alien_wave_main_loop</code></a>
+href="../../context/source/alien_wave.html#L220-L248"><code>l2000_alien_wave_main_loop</code></a>
 (Z80 ROM: <code>$2000–$202A</code>) is de centrale update-lus voor de
 alien-golven (levels 1, 3 en B) zolang de speler in leven is.</p>
 <h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
@@ -39,29 +39,29 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="player-logic.html#player_update"><code>player_update</code></a> — <a
-href="../../player_logic.c#L10"><code>player_logic.c#L10</code></a></li>
+href="../../context/source/player_logic.html#L10"><code>player_logic.c#L10</code></a></li>
 <li><a
 href="weapon-collision.html#check_enemy_bullet_to_player_collision"><code>check_enemy_bullet_to_player_collision</code></a>
 — <a
-href="../../weapon_collision.c#L12"><code>weapon_collision.c#L12</code></a></li>
+href="../../context/source/weapon_collision.html#L12"><code>weapon_collision.c#L12</code></a></li>
 <li><code>l24a0</code> — <a
-href="../../sound_dispatcher.c#L15"><code>sound_dispatcher.c#L15</code></a></li>
+href="../../context/source/sound_dispatcher.html#L15"><code>sound_dispatcher.c#L15</code></a></li>
 <li><a href="#l21ba"><code>l21ba</code></a> — <a
-href="../../alien_wave.c#L230"><code>alien_wave.c:L230</code></a></li>
+href="../../context/source/alien_wave.html#L230"><code>alien_wave.c:L230</code></a></li>
 <li><a href="#l2130"><code>l2130</code></a> — <a
-href="../../alien_wave.c#L235"><code>alien_wave.c:L235</code></a></li>
+href="../../context/source/alien_wave.html#L235"><code>alien_wave.c:L235</code></a></li>
 <li><a href="#l2146"><code>l2146</code></a> — <a
-href="../../alien_wave.c#L246"><code>alien_wave.c:L246</code></a></li>
+href="../../context/source/alien_wave.html#L246"><code>alien_wave.c:L246</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
@@ -102,7 +102,7 @@ Interleaving</h2>
 <h3 id="l2130"><code>l2130</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L205-L212"><code>l2130</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L205-L212"><code>l2130</code></a> (Z80 ROM:
 <code>$2130–$2145</code>) verdeelt de zware reken- en render-taken van
 de alien-formatie over 4 opeenvolgende sub-frames (interleaving modulo
 4).</p>
@@ -115,20 +115,20 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l2150"><code>l2150</code></a> — <a
-href="../../alien_wave.c#L207"><code>alien_wave.c:L207</code></a></li>
+href="../../context/source/alien_wave.html#L207"><code>alien_wave.c:L207</code></a></li>
 <li><a href="#l2160"><code>l2160</code></a> — <a
-href="../../alien_wave.c#L208"><code>alien_wave.c:L208</code></a></li>
+href="../../context/source/alien_wave.html#L208"><code>alien_wave.c:L208</code></a></li>
 <li><a href="#l2170"><code>l2170</code></a> — <a
-href="../../alien_wave.c#L209"><code>alien_wave.c:L209</code></a></li>
+href="../../context/source/alien_wave.html#L209"><code>alien_wave.c:L209</code></a></li>
 <li><a href="#l2180"><code>l2180</code></a> — <a
-href="../../alien_wave.c#L210"><code>alien_wave.c:L210</code></a></li>
+href="../../context/source/alien_wave.html#L210"><code>alien_wave.c:L210</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
 — <a
-href="../../alien_wave.c#L235"><code>alien_wave.c:L235</code></a></li>
+href="../../context/source/alien_wave.html#L235"><code>alien_wave.c:L235</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
@@ -149,7 +149,7 @@ aan (VRAM-berekeningen &amp; explosies).</li>
 <h3 id="l2150"><code>l2150</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L134-L138"><code>l2150</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L134-L138"><code>l2150</code></a> (Z80 ROM:
 <code>$2150–$215F</code>) voert de eerste sub-frametaak uit van de
 interleaved cyclus.</p>
 <h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
@@ -160,23 +160,23 @@ Koppelingen</strong></h4>
 <li><a
 href="alien-logic.html#alien_data_controller"><code>alien_data_controller</code></a>
 — <a
-href="../../alien_logic.c#L274"><code>alien_logic.c#L274</code></a></li>
+href="../../context/source/alien_logic.html#L274"><code>alien_logic.c#L274</code></a></li>
 <li><a href="#l3000"><code>l3000</code></a> — <a
-href="../../alien_wave.c#L255"><code>alien_wave.c:L255</code></a></li>
+href="../../context/source/alien_wave.html#L255"><code>alien_wave.c:L255</code></a></li>
 <li><code>l0f00_check_alien_with_player_collision</code> — <a
-href="../../collision_detection.c#L10"><code>collision_detection.c#L10</code></a></li>
+href="../../context/source/collision_detection.html#L10"><code>collision_detection.c#L10</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2130"><code>l2130</code></a> — <a
-href="../../alien_wave.c#L207"><code>alien_wave.c:L207</code></a></li>
+href="../../context/source/alien_wave.html#L207"><code>alien_wave.c:L207</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l2160"><code>l2160</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L143-L148"><code>l2160</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L143-L148"><code>l2160</code></a> (Z80 ROM:
 <code>$2160–$216F</code>) voert de tweede sub-frametaak uit van de
 interleaved cyclus.</p>
 <h4 id="knowledge-graph-koppelingen-3"><strong>Knowledge Graph
@@ -185,29 +185,29 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l24c4"><code>l24c4</code></a> — <a
-href="../../alien_wave.c#L29"><code>alien_wave.c:L29</code></a></li>
+href="../../context/source/alien_wave.html#L29"><code>alien_wave.c:L29</code></a></li>
 <li><code>process_enemy_bombs</code> — <a
-href="../../weapon_collision.c#L17"><code>weapon_collision.c#L17</code></a></li>
+href="../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
 <li><a
 href="alien-logic.html#alien_movement_update"><code>alien_movement_update</code></a>
 — <a
-href="../../alien_logic.c#L335"><code>alien_logic.c#L335</code></a></li>
+href="../../context/source/alien_logic.html#L335"><code>alien_logic.c#L335</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../alien_logic.c#L195"><code>alien_logic.c#L195</code></a></li>
+href="../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2130"><code>l2130</code></a> — <a
-href="../../alien_wave.c#L208"><code>alien_wave.c:L208</code></a></li>
+href="../../context/source/alien_wave.html#L208"><code>alien_wave.c:L208</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l2170"><code>l2170</code></h3>
 <h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L153-L156"><code>l2170</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L153-L156"><code>l2170</code></a> (Z80 ROM:
 <code>$2170–$217F</code>) voert de derde sub-frametaak uit van de
 interleaved cyclus.</p>
 <h4 id="knowledge-graph-koppelingen-4"><strong>Knowledge Graph
@@ -218,21 +218,21 @@ Koppelingen</strong></h4>
 <li><a
 href="alien-logic.html#alien_animation_update"><code>alien_animation_update</code></a>
 — <a
-href="../../alien_logic.c#L382"><code>alien_logic.c#L382</code></a></li>
+href="../../context/source/alien_logic.html#L382"><code>alien_logic.c#L382</code></a></li>
 <li><a href="alien-logic.html#l2560"><code>l2560</code></a> — <a
-href="../../alien_logic.c#L778"><code>alien_logic.c#L778</code></a></li>
+href="../../context/source/alien_logic.html#L778"><code>alien_logic.c#L778</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2130"><code>l2130</code></a> — <a
-href="../../alien_wave.c#L209"><code>alien_wave.c:L209</code></a></li>
+href="../../context/source/alien_wave.html#L209"><code>alien_wave.c:L209</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l2180"><code>l2180</code></h3>
 <h4 id="beschrijving-5"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L161-L166"><code>l2180</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L161-L166"><code>l2180</code></a> (Z80 ROM:
 <code>$2180–$218F</code>) voert de vierde sub-frametaak uit van de
 interleaved cyclus.</p>
 <h4 id="knowledge-graph-koppelingen-5"><strong>Knowledge Graph
@@ -241,22 +241,22 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l24c4"><code>l24c4</code></a> — <a
-href="../../alien_wave.c#L29"><code>alien_wave.c:L29</code></a></li>
+href="../../context/source/alien_wave.html#L29"><code>alien_wave.c:L29</code></a></li>
 <li><code>process_enemy_bombs</code> — <a
-href="../../weapon_collision.c#L17"><code>weapon_collision.c#L17</code></a></li>
+href="../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
 <li><a
 href="alien-logic.html#get_screen_ram_address_for_all_aliens"><code>get_screen_ram_address_for_all_aliens</code></a>
 — <a
-href="../../alien_logic.c#L290"><code>alien_logic.c#L290</code></a></li>
+href="../../context/source/alien_logic.html#L290"><code>alien_logic.c#L290</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../alien_logic.c#L195"><code>alien_logic.c#L195</code></a></li>
+href="../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2130"><code>l2130</code></a> — <a
-href="../../alien_wave.c#L210"><code>alien_wave.c:L210</code></a></li>
+href="../../context/source/alien_wave.html#L210"><code>alien_wave.c:L210</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -264,9 +264,9 @@ href="../../alien_wave.c#L210"><code>alien_wave.c:L210</code></a></li>
 &amp; <code>l2146</code></h3>
 <h4 id="beschrijving-6"><strong>Beschrijving</strong></h4>
 <p>De functies <a
-href="../../alien_wave.c#L171-L177"><code>l2190</code></a>, <a
-href="../../alien_wave.c#L182-L188"><code>l21a5</code></a> en <a
-href="../../alien_wave.c#L193-L199"><code>l2146</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L171-L177"><code>l2190</code></a>, <a
+href="../../context/source/alien_wave.html#L182-L188"><code>l21a5</code></a> en <a
+href="../../context/source/alien_wave.html#L193-L199"><code>l2146</code></a> (Z80 ROM:
 <code>$2146–$21B9</code>) vormen de gecondenseerde 2-frame updatecyclus
 wanneer er minder dan 5 aliens over zijn op het scherm.</p>
 <h4 id="knowledge-graph-koppelingen-6"><strong>Knowledge Graph
@@ -288,7 +288,7 @@ href="alien-logic.html#get_screen_ram_address_for_all_aliens"><code>get_screen_r
 <li><a
 href="#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
 — <a
-href="../../alien_wave.c#L246"><code>alien_wave.c:L246</code></a></li>
+href="../../context/source/alien_wave.html#L246"><code>alien_wave.c:L246</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -297,7 +297,7 @@ Wave Completion</h2>
 <h3 id="l21ba"><code>l21ba</code></h3>
 <h4 id="beschrijving-7"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L104-L129"><code>l21ba</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L104-L129"><code>l21ba</code></a> (Z80 ROM:
 <code>$21BA–$21CF</code>) verzorgt het afronden van de huidige
 alien-golf zodra alle aliens vernietigd zijn
 (<code>AliensLeft == 0</code>).</p>
@@ -309,22 +309,22 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l2204"><code>l2204</code></a> — <a
-href="../../alien_wave.c#L109"><code>alien_wave.c:L109</code></a></li>
+href="../../context/source/alien_wave.html#L109"><code>alien_wave.c:L109</code></a></li>
 <li><code>process_enemy_bombs</code> — <a
-href="../../weapon_collision.c#L17"><code>weapon_collision.c#L17</code></a></li>
+href="../../context/source/weapon_collision.html#L17"><code>weapon_collision.c#L17</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../alien_logic.c#L195"><code>alien_logic.c#L195</code></a></li>
+href="../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
 <li><a href="#l24c4"><code>l24c4</code></a> — <a
-href="../../alien_wave.c#L115"><code>alien_wave.c:L115</code></a></li>
+href="../../context/source/alien_wave.html#L115"><code>alien_wave.c:L115</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
 — <a
-href="../../alien_wave.c#L230"><code>alien_wave.c:L230</code></a></li>
+href="../../context/source/alien_wave.html#L230"><code>alien_wave.c:L230</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-2"><strong>Stap-voor-stap
@@ -346,7 +346,7 @@ gedood zijn; deze functie respawnt dan direct 16 nieuwe aliens via
 <h3 id="l2204"><code>l2204</code></h3>
 <h4 id="beschrijving-8"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L80-L99"><code>l2204</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L80-L99"><code>l2204</code></a> (Z80 ROM:
 <code>$2204–$222B</code>) beheert de countdown en de overgang naar de
 volgende ronde.</p>
 <h4 id="context--aanroep-3"><strong>Context &amp; Aanroep</strong></h4>
@@ -357,14 +357,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>clear_foreground</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>phoenix_round_population</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l21ba"><code>l21ba</code></a> — <a
-href="../../alien_wave.c#L109"><code>alien_wave.c:L109</code></a></li>
+href="../../context/source/alien_wave.html#L109"><code>alien_wave.c:L109</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-3"><strong>Stap-voor-stap
@@ -390,7 +390,7 @@ Sterren-scrolling</h2>
 <h3 id="l24c4"><code>l24c4</code></h3>
 <h4 id="beschrijving-9"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L29-L72"><code>l24c4</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L29-L72"><code>l24c4</code></a> (Z80 ROM:
 <code>$24C4–$24DF</code>) verzorgt het bijwerken van de
 achtergrondweergave en sterren/planeet-scrolling voor de
 alien-levels.</p>
@@ -403,23 +403,23 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>update_scroll_register_and_fill_background</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>stars_scroll_down</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>draw_image_c_by_b</code> — <a
-href="../../sprite_rendering.c"><code>sprite_rendering.c</code></a></li>
+href="../../context/source/sprite_rendering.html"><code>sprite_rendering.c</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2160"><code>l2160</code></a> — <a
-href="../../alien_wave.c#L144"><code>alien_wave.c:L144</code></a></li>
+href="../../context/source/alien_wave.html#L144"><code>alien_wave.c:L144</code></a></li>
 <li><a href="#l2180"><code>l2180</code></a> — <a
-href="../../alien_wave.c#L162"><code>alien_wave.c:L162</code></a></li>
+href="../../context/source/alien_wave.html#L162"><code>alien_wave.c:L162</code></a></li>
 <li><a href="#l21ba"><code>l21ba</code></a> — <a
-href="../../alien_wave.c#L115"><code>alien_wave.c:L115</code></a></li>
+href="../../context/source/alien_wave.html#L115"><code>alien_wave.c:L115</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -428,7 +428,7 @@ Dispatcher</h2>
 <h3 id="l3000"><code>l3000</code></h3>
 <h4 id="beschrijving-10"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_wave.c#L255-L269"><code>l3000</code></a> (Z80 ROM:
+href="../../context/source/alien_wave.html#L255-L269"><code>l3000</code></a> (Z80 ROM:
 <code>$3000–$3012</code>) is de centrale jumptable-dispatcher voor de
 breakout-, bomb-drop- en pattern-retarget state machine van de
 alien-formatie.</p>
@@ -440,26 +440,26 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="alien-logic.html#l3264"><code>l3264</code></a> — <a
-href="../../alien_logic.c#L459"><code>alien_logic.c#L459</code></a></li>
+href="../../context/source/alien_logic.html#L459"><code>alien_logic.c#L459</code></a></li>
 <li><a href="alien-logic.html#l3028"><code>l3028</code></a> — <a
-href="../../alien_logic.c#L528"><code>alien_logic.c#L528</code></a></li>
+href="../../context/source/alien_logic.html#L528"><code>alien_logic.c#L528</code></a></li>
 <li><a href="alien-logic.html#l30ba"><code>l30ba</code></a> — <a
-href="../../alien_logic.c#L562"><code>alien_logic.c#L562</code></a></li>
+href="../../context/source/alien_logic.html#L562"><code>alien_logic.c#L562</code></a></li>
 <li><a href="alien-logic.html#l3124"><code>l3124</code></a> — <a
-href="../../alien_logic.c#L607"><code>alien_logic.c#L607</code></a></li>
+href="../../context/source/alien_logic.html#L607"><code>alien_logic.c#L607</code></a></li>
 <li><a href="alien-logic.html#l315a"><code>l315a</code></a> — <a
-href="../../alien_logic.c#L629"><code>alien_logic.c#L629</code></a></li>
+href="../../context/source/alien_logic.html#L629"><code>alien_logic.c#L629</code></a></li>
 <li><a href="alien-logic.html#l31b4"><code>l31b4</code></a> — <a
-href="../../alien_logic.c#L662"><code>alien_logic.c#L662</code></a></li>
+href="../../context/source/alien_logic.html#L662"><code>alien_logic.c#L662</code></a></li>
 <li><a href="alien-logic.html#l322c"><code>l322c</code></a> — <a
-href="../../alien_logic.c#L718"><code>alien_logic.c#L718</code></a></li>
+href="../../context/source/alien_logic.html#L718"><code>alien_logic.c#L718</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2150"><code>l2150</code></a> — <a
-href="../../alien_wave.c#L136"><code>alien_wave.c:L136</code></a></li>
+href="../../context/source/alien_wave.html#L136"><code>alien_wave.c:L136</code></a></li>
 <li><a href="#l2190"><code>l2190</code></a> — <a
-href="../../alien_wave.c#L173"><code>alien_wave.c:L173</code></a></li>
+href="../../context/source/alien_wave.html#L173"><code>alien_wave.c:L173</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-4"><strong>Stap-voor-stap

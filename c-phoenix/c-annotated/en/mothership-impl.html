@@ -3,7 +3,7 @@ id="mothership-implementation-mothership_implc---c-annotated-knowledge-graph-doc
 Implementation (<code>mothership_impl.c</code>) - C-Annotated Knowledge
 Graph Documentation</h1>
 <p>This document contains an annotated analysis of all functions in <a
-href="../../mothership_impl.c"><code>mothership_impl.c</code></a>. This
+href="../../context/source/mothership_impl.html"><code>mothership_impl.c</code></a>. This
 module manages the 26x9 tile matrix of the alien mothership, shield tile
 destruction, central core penetration, and core explosion routines.</p>
 <hr />
@@ -21,7 +21,7 @@ Matrix &amp; Hit Scanning</h2>
 id="l2351_mothership_animation"><code>l2351_mothership_animation</code></h3>
 <h4 id="description"><strong>Description</strong></h4>
 <p>The function <a
-href="../../mothership_impl.c#L12"><code>l2351_mothership_animation</code></a>
+href="../../context/source/mothership_impl.html#L12"><code>l2351_mothership_animation</code></a>
 (Z80 ROM: <code>$2351–$23C7</code>) drives the mothership animation and
 handles bullet impacts against its shield and core tiles, replacing hit
 tiles with destroyed tile graphics.</p>
@@ -33,7 +33,7 @@ Links</strong></h4>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -43,7 +43,7 @@ href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
 id="mothership_core_hit_check"><code>mothership_core_hit_check</code></h3>
 <h4 id="description-1"><strong>Description</strong></h4>
 <p>The function <a
-href="../../mothership_impl.c#L110-L160"><code>mothership_core_hit_check</code></a>
+href="../../context/source/mothership_impl.html#L110-L160"><code>mothership_core_hit_check</code></a>
 (Z80 ROM: <code>$2520–$254F</code>) checks whether a player bullet
 penetrates the central core window, triggering mothership destruction
 and level victory.</p>

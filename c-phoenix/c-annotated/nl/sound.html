@@ -3,7 +3,7 @@ id="sound-core--mixer-soundc---c-annotated-knowledge-graph-documentatie">Sound
 Core &amp; Mixer (<code>sound.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../sound.c"><code>sound.c</code></a>. Deze module regelt het
+href="../../context/source/sound.html"><code>sound.c</code></a>. Deze module regelt het
 synchroniseren, de events-queueing en het mixen van 44.1kHz audio
 (TMS3615 muziek, analoge discrete geluidseffecten en ruis).</p>
 <hr />
@@ -23,11 +23,11 @@ id="sound_init--sound_set_frame_sample_index"><code>sound_init</code>
 &amp; <code>sound_set_frame_sample_index</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <ul>
-<li><a href="../../sound.c#L58-L70"><code>sound_init</code></a>:
+<li><a href="../../context/source/sound.html#L58-L70"><code>sound_init</code></a>:
 Initialiseert de TMS3615 muzieksynthesizer, analoge discreet-circuits en
 MAME lo-fi resamplers.</li>
 <li><a
-href="../../sound.c#L77-L82"><code>sound_set_frame_sample_index</code></a>:
+href="../../context/source/sound.html#L77-L82"><code>sound_set_frame_sample_index</code></a>:
 Bepaalt het exacte sample-tijdstip binnen een 60Hz videovraagframe
 waarin geluidscontroles veranderen.</li>
 </ul>
@@ -47,7 +47,7 @@ tevens de actieve melodie in de MM6221AA TMS3615 chip.</p>
 <h3 id="sound_render_frame"><code>sound_render_frame</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../sound.c#L161-L190"><code>sound_render_frame</code></a>
+href="../../context/source/sound.html#L161-L190"><code>sound_render_frame</code></a>
 genereert de PCM16 stereo/mono audio-buffer per videovraagframe (ca. 735
 samples bij 44.1kHz) door de TMS-muziek, discrete effecten en custom
 ruissignalen in de juiste verhoudingen te mixen en te clippen
@@ -58,17 +58,17 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>tms36xx_render_internal_sample</code> — <a
-href="../../tms36xx.c"><code>tms36xx.c</code></a></li>
+href="../../context/source/tms36xx.html"><code>tms36xx.c</code></a></li>
 <li><code>sound_discrete_step</code> / <code>sound_discrete_noise</code>
 — <a
-href="../../sound_discrete.c"><code>sound_discrete.c</code></a></li>
+href="../../context/source/sound_discrete.html"><code>sound_discrete.c</code></a></li>
 <li><code>mame_lofi_resampler_next</code> — <a
-href="../../mame_lofi_resampler.c"><code>mame_lofi_resampler.c</code></a></li>
+href="../../context/source/mame_lofi_resampler.html"><code>mame_lofi_resampler.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><code>platform_audio_frame_hook</code> — <a
-href="../../platform_sdl.c"><code>platform_sdl.c</code></a></li>
+href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
 </ul></li>
 </ul>
 </body></html>

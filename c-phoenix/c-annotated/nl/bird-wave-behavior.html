@@ -3,7 +3,7 @@ id="bird-wave-behavior-bird_wave_behaviorc---c-annotated-knowledge-graph-documen
 Wave Behavior (<code>bird_wave_behavior.c</code>) - C-Annotated
 Knowledge Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>.
+href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>.
 Deze module implementeert de complexe vliegpatronen, de
 groeitransformaties (ei → kleine vogel → grote vogel),
 duikvluchtaanvallen en botsingen met de speler voor de vogel-levels.</p>
@@ -28,7 +28,7 @@ Botsingen</a></li>
 id="update_second_bird_bank"><code>update_second_bird_bank</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../bird_wave_behavior.c#L14-L19"><code>update_second_bird_bank</code></a>
+href="../../context/source/bird_wave_behavior.html#L14-L19"><code>update_second_bird_bank</code></a>
 (Z80 ROM: <code>$3452–$345B</code>) update en rendert de tweede bank met
 vogels (index 4 t/m 7).</p>
 <h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
@@ -39,25 +39,25 @@ Koppelingen</strong></h4>
 <li><a
 href="bird-logic.html#draw_second_4_bird_objects"><code>draw_second_4_bird_objects</code></a>
 — <a
-href="../../bird_logic.c#L93"><code>bird_logic.c#L93</code></a></li>
+href="../../context/source/bird_logic.html#L93"><code>bird_logic.c#L93</code></a></li>
 <li><a
 href="#refresh_bird_flight_parameters"><code>refresh_bird_flight_parameters</code></a>
 — <a
-href="../../bird_wave_behavior.c#L270"><code>bird_wave_behavior.c#L270</code></a></li>
+href="../../context/source/bird_wave_behavior.html#L270"><code>bird_wave_behavior.c#L270</code></a></li>
 <li><a
 href="#update_second_four_birds"><code>update_second_four_birds</code></a>
 — <a
-href="../../bird_wave_behavior.c#L261"><code>bird_wave_behavior.c#L261</code></a></li>
+href="../../context/source/bird_wave_behavior.html#L261"><code>bird_wave_behavior.c#L261</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../alien_logic.c#L195"><code>alien_logic.c#L195</code></a></li>
+href="../../context/source/alien_logic.html#L195"><code>alien_logic.c#L195</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../bird_logic.c#L42"><code>bird_logic.c#L42</code></a></li>
+href="../../context/source/bird_logic.html#L42"><code>bird_logic.c#L42</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -66,9 +66,9 @@ id="update_first_four_birds--update_second_four_birds"><code>update_first_four_b
 &amp; <code>update_second_four_birds</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functies <a
-href="../../bird_wave_behavior.c#L251-L255"><code>update_first_four_birds</code></a>
+href="../../context/source/bird_wave_behavior.html#L251-L255"><code>update_first_four_birds</code></a>
 (Z80 ROM: <code>$3498–$34A9</code>) en <a
-href="../../bird_wave_behavior.c#L261-L265"><code>update_second_four_birds</code></a>
+href="../../context/source/bird_wave_behavior.html#L261-L265"><code>update_second_four_birds</code></a>
 (Z80 ROM: <code>$34AA–$34BB</code>) lussen over de RAM-structuren van
 vogel 0-3 (adres <code>0x4B70–0x4B90</code>) respectievelijk vogel 4-7
 (adres <code>0x4B90–0x4BB0</code>) en roepen voor elke vogel <a
@@ -81,17 +81,17 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="#update_bird_behavior"><code>update_bird_behavior</code></a> — <a
-href="../../bird_wave_behavior.c#L218"><code>bird_wave_behavior.c#L218</code></a></li>
+href="../../context/source/bird_wave_behavior.html#L218"><code>bird_wave_behavior.c#L218</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
-— <a href="../../bird_logic.c#L46"><code>bird_logic.c#L46</code></a>, <a
-href="../../bird_logic.c#L56"><code>L56</code></a></li>
+— <a href="../../context/source/bird_logic.html#L46"><code>bird_logic.c#L46</code></a>, <a
+href="../../context/source/bird_logic.html#L56"><code>L56</code></a></li>
 <li><a
 href="#update_second_bird_bank"><code>update_second_bird_bank</code></a>
 — <a
-href="../../bird_wave_behavior.c#L17"><code>bird_wave_behavior.c#L17</code></a></li>
+href="../../context/source/bird_wave_behavior.html#L17"><code>bird_wave_behavior.c#L17</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -100,7 +100,7 @@ Vliegtraject State Machine</h2>
 <h3 id="update_bird_behavior"><code>update_bird_behavior</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../bird_wave_behavior.c#L218-L245"><code>update_bird_behavior</code></a>
+href="../../context/source/bird_wave_behavior.html#L218-L245"><code>update_bird_behavior</code></a>
 (Z80 ROM: <code>$35B0–$35DB</code>) verwerkt de per-vogel
 gedragsstap.</p>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -156,7 +156,7 @@ Formatieparameters</h2>
 id="refresh_bird_flight_parameters"><code>refresh_bird_flight_parameters</code></h3>
 <h4 id="beschrijving-5"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../bird_wave_behavior.c#L270-L309"><code>refresh_bird_flight_parameters</code></a>
+href="../../context/source/bird_wave_behavior.html#L270-L309"><code>refresh_bird_flight_parameters</code></a>
 (Z80 ROM: <code>$3560–$359F</code>) berekent per frame gedeelde
 formatie- en vluchtparameters (<code>state.M436E</code> en
 <code>state.M436D</code>) op basis van een willekeurig getal, de huidige
@@ -169,19 +169,19 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="utilities.html#get_random_number"><code>get_random_number</code></a>
-— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+— <a href="../../context/source/utilities.html#L15"><code>utilities.c:L15</code></a></li>
 <li><code>phoenix_bird_formation_params</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
-— <a href="../../bird_logic.c#L45"><code>bird_logic.c#L45</code></a>, <a
-href="../../bird_logic.c#L55"><code>L55</code></a></li>
+— <a href="../../context/source/bird_logic.html#L45"><code>bird_logic.c#L45</code></a>, <a
+href="../../context/source/bird_logic.html#L55"><code>L55</code></a></li>
 <li><a
 href="#update_second_bird_bank"><code>update_second_bird_bank</code></a>
 — <a
-href="../../bird_wave_behavior.c#L16"><code>bird_wave_behavior.c#L16</code></a></li>
+href="../../context/source/bird_wave_behavior.html#L16"><code>bird_wave_behavior.c#L16</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -192,10 +192,10 @@ id="try_spawn_bird_dive_bomb--l395c"><code>try_spawn_bird_dive_bomb</code>
 &amp; <code>l395c</code></h3>
 <h4 id="beschrijving-6"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../bird_wave_behavior.c#L364-L389"><code>try_spawn_bird_dive_bomb</code></a>
+href="../../context/source/bird_wave_behavior.html#L364-L389"><code>try_spawn_bird_dive_bomb</code></a>
 (Z80 ROM: <code>$3930–$395B</code>) selecteert een geschikte vogel en
 initialiseert een duikvluchtaanval. Hulpfunctie <a
-href="../../bird_wave_behavior.c#L337-L361"><code>l395c</code></a> test
+href="../../context/source/bird_wave_behavior.html#L337-L361"><code>l395c</code></a> test
 de individuele geschiktheid van een kandidaat en eist bij succes een
 kogel- / aanvalsslot op via <code>l25b7</code>.</p>
 <h4 id="knowledge-graph-koppelingen-3"><strong>Knowledge Graph
@@ -204,15 +204,15 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_bird_dive_spawn_positions</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>l25b7</code> — <a
-href="../../weapon_collision.c#L100"><code>weapon_collision.c#L100</code></a></li>
+href="../../context/source/weapon_collision.html#L100"><code>weapon_collision.c#L100</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
-— <a href="../../bird_logic.c#L47"><code>bird_logic.c#L47</code></a>, <a
-href="../../bird_logic.c#L62"><code>L62</code></a></li>
+— <a href="../../context/source/bird_logic.html#L47"><code>bird_logic.c#L47</code></a>, <a
+href="../../context/source/bird_logic.html#L62"><code>L62</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -221,7 +221,7 @@ href="../../bird_logic.c#L62"><code>L62</code></a></li>
 id="check_bird_formation_player_collision"><code>check_bird_formation_player_collision</code></h3>
 <h4 id="beschrijving-7"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../bird_wave_behavior.c#L399-L451"><code>check_bird_formation_player_collision</code></a>
+href="../../context/source/bird_wave_behavior.html#L399-L451"><code>check_bird_formation_player_collision</code></a>
 (Z80 ROM: <code>$3980–$39FD</code>) verwerkt botsingen tussen
 laagvliegende vogelformaties en het spelerschip.</p>
 <h4 id="knowledge-graph-koppelingen-4"><strong>Knowledge Graph
@@ -232,15 +232,15 @@ Koppelingen</strong></h4>
 <li><a
 href="collision-detection.html#collision_detection_for_birds"><code>collision_detection_for_birds</code></a>
 — <a
-href="../../collision_detection.c"><code>collision_detection.c</code></a></li>
+href="../../context/source/collision_detection.html"><code>collision_detection.c</code></a></li>
 <li><code>l0cc4_player_killed</code> — <a
-href="../../player_explosion.c"><code>player_explosion.c</code></a></li>
+href="../../context/source/player_explosion.html"><code>player_explosion.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
 — <a
-href="../../bird_logic.c#L33"><code>bird_logic.c#L33</code></a></li>
+href="../../context/source/bird_logic.html#L33"><code>bird_logic.c#L33</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap

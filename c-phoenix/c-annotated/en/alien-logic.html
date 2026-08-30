@@ -4,7 +4,7 @@ Logic (<code>alien_logic.c</code>) - C-Annotated Knowledge Graph
 Documentation</h1>
 <p>This document contains an in-depth annotated analysis of all
 functions in <a
-href="../../alien_logic.c"><code>alien_logic.c</code></a> and <a
+href="../../context/source/alien_logic.html"><code>alien_logic.c</code></a> and <a
 href="../../alien_logic.h"><code>alien_logic.h</code></a>. Each function
 is documented following a <strong>Knowledge Graph approach</strong> with
 outgoing calls (<code>Calls</code>) and incoming links
@@ -31,7 +31,7 @@ Positions</h2>
 id="init_alien_control_states"><code>init_alien_control_states</code></h3>
 <h4 id="description"><strong>Description</strong></h4>
 <p>The function <a
-href="../../alien_logic.c#L19-L25"><code>init_alien_control_states</code></a>
+href="../../context/source/alien_logic.html#L19-L25"><code>init_alien_control_states</code></a>
 (Z80 ROM: <code>$05EC–$05F9</code>) sets the initial flight and control
 parameters for aliens at the start of a new round or level.</p>
 <h4 id="context--invocation"><strong>Context &amp;
@@ -46,16 +46,16 @@ Links</strong></h4>
 <li><a
 href="#init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></a>
 — <a
-href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+href="../../context/source/alien_logic.html#L24"><code>alien_logic.c:L24</code></a></li>
 <li><code>phoenix_alien_control_init_values</code> — <a
-href="../../phoenix_tables.c#L265"><code>phoenix_tables.c:L265</code></a></li>
+href="../../context/source/phoenix_tables.html#L265"><code>phoenix_tables.c:L265</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+href="../../context/source/alien_logic.html#L19"><code>alien_logic.c#L19</code></a></li>
 </ul></li>
 </ul>
 <h4 id="step-by-step-functionality"><strong>Step-by-Step
@@ -79,7 +79,7 @@ to assign these values to the RAM memory block of all aliens.</li>
 id="init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></h3>
 <h4 id="description-1"><strong>Description</strong></h4>
 <p>The function <a
-href="../../alien_logic.c#L207-L217"><code>init_alien_control_states_05fa</code></a>
+href="../../context/source/alien_logic.html#L207-L217"><code>init_alien_control_states_05fa</code></a>
 (Z80 ROM: <code>$05FA–$060D</code>) populates the control memory slots
 of all living aliens with the selected control states <code>d</code> and
 <code>e</code>.</p>
@@ -93,14 +93,14 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+href="../../context/source/alien_logic.html#L24"><code>alien_logic.c:L24</code></a></li>
 </ul></li>
 </ul>
 <h4 id="memory--structure-context"><strong>Memory &amp; Structure
@@ -133,7 +133,7 @@ bytes per iteration (<code>hl += 4</code>).</li>
 <h3 id="init_alien_positions"><code>init_alien_positions</code></h3>
 <h4 id="description-2"><strong>Description</strong></h4>
 <p>The function <a
-href="../../alien_logic.c#L224-L242"><code>init_alien_positions</code></a>
+href="../../context/source/alien_logic.html#L224-L242"><code>init_alien_positions</code></a>
 (Z80 ROM: <code>$0610–$0638</code>) initializes X and Y starting
 coordinates on the screen grid for the formation of up to 16 aliens.</p>
 <h4 id="context--invocation-2"><strong>Context &amp;
@@ -146,18 +146,18 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 <li><code>phoenix_alien_position_pointer_table</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>phoenix_alien_position_layout_page</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+href="../../context/source/alien_logic.html#L19"><code>alien_logic.c#L19</code></a></li>
 </ul></li>
 </ul>
 <h4 id="step-by-step-functionality-2"><strong>Step-by-Step
@@ -183,7 +183,7 @@ Animations for Shot Aliens</h2>
 id="handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></h3>
 <h4 id="description-3"><strong>Description</strong></h4>
 <p>The function <a
-href="../../alien_logic.c#L260-L315"><code>handle_animations_for_killed_aliens</code></a>
+href="../../context/source/alien_logic.html#L260-L315"><code>handle_animations_for_killed_aliens</code></a>
 (Z80 ROM: <code>$0FC0–$0FFF</code>) updates active explosion slots and
 bonus score animations for aliens destroyed by player fire.</p>
 <h4 id="knowledge-graph-links-3"><strong>Knowledge Graph
@@ -194,18 +194,18 @@ Links</strong></h4>
 <li><a
 href="#draw_explosion_particles"><code>draw_explosion_particles</code></a>
 — <a
-href="../../alien_logic.c#L310"><code>alien_logic.c:L310</code></a></li>
+href="../../context/source/alien_logic.html#L310"><code>alien_logic.c:L310</code></a></li>
 <li><a
 href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
 — <a
-href="../../alien_logic.c#L295"><code>alien_logic.c:L295</code></a></li>
+href="../../context/source/alien_logic.html#L295"><code>alien_logic.c:L295</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-wave.html#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
 — <a
-href="../../alien_wave.c#L220"><code>alien_wave.c#L220</code></a></li>
+href="../../context/source/alien_wave.html#L220"><code>alien_wave.c#L220</code></a></li>
 </ul></li>
 </ul>
 <h4 id="step-by-step-functionality-3"><strong>Step-by-Step

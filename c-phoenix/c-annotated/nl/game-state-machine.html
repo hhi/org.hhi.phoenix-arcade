@@ -4,7 +4,7 @@ State Machine (<code>game_state_machine.c</code>) - C-Annotated
 Knowledge Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van de hoofdbesturing in
 <a
-href="../../game_state_machine.c"><code>game_state_machine.c</code></a>.
+href="../../context/source/game_state_machine.html"><code>game_state_machine.c</code></a>.
 Deze module implementeert de centrale toestandsmachine van
 <em>Phoenix</em> (GameState 0 t/m 7), inclusief spelerswisselingen
 (Player 1 / Player 2) en scoreknipper-animaties.</p>
@@ -23,7 +23,7 @@ Beurtwissel (State 0)</a></li>
 <h3 id="game_state_machine"><code>game_state_machine</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../game_state_machine.c#L31-L45"><code>game_state_machine</code></a>
+href="../../context/source/game_state_machine.html#L31-L45"><code>game_state_machine</code></a>
 (Z80 ROM: <code>$0400–$041D</code>) stuurt de globale uitvoering van het
 spel aan op basis van <code>state.GameState</code>.</p>
 <h4 id="context--aanroep"><strong>Context &amp; Aanroep</strong></h4>
@@ -36,38 +36,38 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="#state_0_new_game_start"><code>state_0_new_game_start</code></a> —
 <a
-href="../../game_state_machine.c#L35"><code>game_state_machine.c#L35</code></a></li>
+href="../../context/source/game_state_machine.html#L35"><code>game_state_machine.c#L35</code></a></li>
 <li><a
 href="#state_1_flashing_score"><code>state_1_flashing_score</code></a> —
 <a
-href="../../game_state_machine.c#L36"><code>game_state_machine.c#L36</code></a></li>
+href="../../context/source/game_state_machine.html#L36"><code>game_state_machine.c#L36</code></a></li>
 <li><a
 href="state-init.html#state_2_init_game_and_level_data"><code>state_2_init_game_and_level_data</code></a>
-— <a href="../../state_init.c"><code>state_init.c</code></a></li>
+— <a href="../../context/source/state_init.html"><code>state_init.c</code></a></li>
 <li><a
 href="state-play.html#state_3_normal_game_play"><code>state_3_normal_game_play</code></a>
-— <a href="../../state_play.c"><code>state_play.c</code></a></li>
+— <a href="../../context/source/state_play.html"><code>state_play.c</code></a></li>
 <li><a
 href="state-endings.html#state_4_player_ship_explosion"><code>state_4_player_ship_explosion</code></a>
-— <a href="../../state_endings.c"><code>state_endings.c</code></a></li>
+— <a href="../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
 <li><a
 href="state-endings.html#state_5_game_over_text"><code>state_5_game_over_text</code></a>
-— <a href="../../state_endings.c"><code>state_endings.c</code></a></li>
+— <a href="../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
 <li><a
 href="state-endings.html#state_6_mother_ship_explosion"><code>state_6_mother_ship_explosion</code></a>
-— <a href="../../state_endings.c"><code>state_endings.c</code></a></li>
+— <a href="../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
 <li><a
 href="state-endings.html#state_7_mother_ship_score_display"><code>state_7_mother_ship_score_display</code></a>
-— <a href="../../state_endings.c"><code>state_endings.c</code></a></li>
+— <a href="../../context/source/state_endings.html"><code>state_endings.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><code>main</code> / <code>platform_sdl_main</code> — <a
-href="../../platform_sdl.c"><code>platform_sdl.c</code></a></li>
+href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -76,7 +76,7 @@ href="../../platform_sdl.c"><code>platform_sdl.c</code></a></li>
 <h3 id="state_0_new_game_start"><code>state_0_new_game_start</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../game_state_machine.c#L54-L91"><code>state_0_new_game_start</code></a>
+href="../../context/source/game_state_machine.html#L54-L91"><code>state_0_new_game_start</code></a>
 (Z80 ROM: <code>$0430–$045B</code>) verwerkt het starten van een nieuw
 spel of het wisselen tussen Player 1 en Player 2 bij een
 multiplayer-spel.</p>
@@ -86,19 +86,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><a
 href="#l04a0_change_player_at_attract_mode"><code>l04a0_change_player_at_attract_mode</code></a>
 — <a
-href="../../game_state_machine.c#L77"><code>game_state_machine.c#L77</code></a></li>
+href="../../context/source/game_state_machine.html#L77"><code>game_state_machine.c#L77</code></a></li>
 <li><code>copy_memory_bank</code> — <a
-href="../../state_init.c"><code>state_init.c</code></a></li>
+href="../../context/source/state_init.html"><code>state_init.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#game_state_machine"><code>game_state_machine</code></a> —
 <a
-href="../../game_state_machine.c#L35"><code>game_state_machine.c#L35</code></a></li>
+href="../../context/source/game_state_machine.html#L35"><code>game_state_machine.c#L35</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -106,7 +106,7 @@ href="../../game_state_machine.c#L35"><code>game_state_machine.c#L35</code></a><
 <h3 id="state_1_flashing_score"><code>state_1_flashing_score</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../game_state_machine.c#L132-L180"><code>state_1_flashing_score</code></a>
+href="../../context/source/game_state_machine.html#L132-L180"><code>state_1_flashing_score</code></a>
 (Z80 ROM: <code>$04AC–$0505</code>) laat de score van de actieve speler
 gedurende 128 frames knipperen voor de start van hun beurt.</p>
 <h4 id="knowledge-graph-koppelingen-2"><strong>Knowledge Graph
@@ -115,19 +115,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l07f0"><code>l07f0</code></a> — <a
-href="../../game_state_machine.c#L147"><code>game_state_machine.c#L147</code></a></li>
+href="../../context/source/game_state_machine.html#L147"><code>game_state_machine.c#L147</code></a></li>
 <li><code>delete_digits</code> — <a
-href="../../utilities.c"><code>utilities.c</code></a></li>
+href="../../context/source/utilities.html"><code>utilities.c</code></a></li>
 <li><code>print_text_lines</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a href="utilities.html#print_number"><code>print_number</code></a> —
-<a href="../../utilities.c#L80"><code>utilities.c:L80</code></a></li>
+<a href="../../context/source/utilities.html#L80"><code>utilities.c:L80</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#game_state_machine"><code>game_state_machine</code></a> —
 <a
-href="../../game_state_machine.c#L36"><code>game_state_machine.c#L36</code></a></li>
+href="../../context/source/game_state_machine.html#L36"><code>game_state_machine.c#L36</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap

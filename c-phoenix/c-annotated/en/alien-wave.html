@@ -3,7 +3,7 @@ id="alien-wave-main-loop-alien_wavec---c-annotated-knowledge-graph-documentation
 Wave Main Loop (<code>alien_wave.c</code>) - C-Annotated Knowledge Graph
 Documentation</h1>
 <p>This document contains an annotated analysis of all functions in <a
-href="../../alien_wave.c"><code>alien_wave.c</code></a>. This module
+href="../../context/source/alien_wave.html"><code>alien_wave.c</code></a>. This module
 controls the main game loop, frame interleaving, player updates, and
 round progression for alien waves (levels 1, 3, and B).</p>
 <hr />
@@ -22,7 +22,7 @@ Wave</a></li>
 id="l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></h3>
 <h4 id="description"><strong>Description</strong></h4>
 <p>The function <a
-href="../../alien_wave.c#L35-L95"><code>l2000_alien_wave_main_loop</code></a>
+href="../../context/source/alien_wave.html#L35-L95"><code>l2000_alien_wave_main_loop</code></a>
 (Z80 ROM: <code>$2000–$2060</code>) executes the central game loop per
 VBlank frame for Waves 1, 3, and B.</p>
 <h4 id="context--invocation"><strong>Context &amp;
@@ -37,33 +37,33 @@ Links</strong></h4>
 <ul>
 <li><a
 href="player-logic.html#player_update"><code>player_update</code></a> — <a
-href="../../player_logic.c"><code>player_logic.c</code></a></li>
+href="../../context/source/player_logic.html"><code>player_logic.c</code></a></li>
 <li><a
 href="weapon-collision.html#process_enemy_bombs"><code>process_enemy_bombs</code></a>
 — <a
-href="../../weapon_collision.c"><code>weapon_collision.c</code></a></li>
+href="../../context/source/weapon_collision.html"><code>weapon_collision.c</code></a></li>
 <li><a
 href="alien-logic.html#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
-— <a href="../../alien_logic.c"><code>alien_logic.c</code></a></li>
+— <a href="../../context/source/alien_logic.html"><code>alien_logic.c</code></a></li>
 <li><a href="#l2130"><code>l2130</code></a> — <a
-href="../../alien_wave.c#L58"><code>alien_wave.c:L58</code></a></li>
+href="../../context/source/alien_wave.html#L58"><code>alien_wave.c:L58</code></a></li>
 <li><a href="#l2150"><code>l2150</code></a> — <a
-href="../../alien_wave.c#L65"><code>alien_wave.c:L65</code></a></li>
+href="../../context/source/alien_wave.html#L65"><code>alien_wave.c:L65</code></a></li>
 <li><a href="#l2160"><code>l2160</code></a> — <a
-href="../../alien_wave.c#L70"><code>alien_wave.c:L70</code></a></li>
+href="../../context/source/alien_wave.html#L70"><code>alien_wave.c:L70</code></a></li>
 <li><a href="#l2180"><code>l2180</code></a> — <a
-href="../../alien_wave.c#L75"><code>alien_wave.c:L75</code></a></li>
+href="../../context/source/alien_wave.html#L75"><code>alien_wave.c:L75</code></a></li>
 <li><a href="#l2190"><code>l2190</code></a> — <a
-href="../../alien_wave.c#L80"><code>alien_wave.c:L80</code></a></li>
+href="../../context/source/alien_wave.html#L80"><code>alien_wave.c:L80</code></a></li>
 <li><a href="#l21ba"><code>l21ba</code></a> — <a
-href="../../alien_wave.c#L85"><code>alien_wave.c:L85</code></a></li>
+href="../../context/source/alien_wave.html#L85"><code>alien_wave.c:L85</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="step-by-step-functionality"><strong>Step-by-Step

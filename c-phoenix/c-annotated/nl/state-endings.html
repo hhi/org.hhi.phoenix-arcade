@@ -3,7 +3,7 @@ id="game-endings--explosions-state_endingsc---c-annotated-knowledge-graph-docume
 Endings &amp; Explosions (<code>state_endings.c</code>) - C-Annotated
 Knowledge Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../state_endings.c"><code>state_endings.c</code></a>. Deze
+href="../../context/source/state_endings.html"><code>state_endings.c</code></a>. Deze
 module beheert de eindtoestanden van <em>Phoenix</em>: spelersexplosie
 (GameState 4), Game Over (GameState 5), moederschip-explosie (GameState
 6) en de moederschip-scoreweergave (GameState 7).</p>
@@ -24,7 +24,7 @@ Spelersexplosie</h2>
 id="state_4_player_ship_explosion"><code>state_4_player_ship_explosion</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_endings.c#L33-L59"><code>state_4_player_ship_explosion</code></a>
+href="../../context/source/state_endings.html#L33-L59"><code>state_4_player_ship_explosion</code></a>
 (Z80 ROM: <code>$0AEA–$0B0F</code>) regelt de stapsgewijze animatie en
 deeltjesfases wanneer het spelerschip vernietigd is.</p>
 <h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
@@ -33,20 +33,20 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>hw_write_scroll_register</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a href="#l0b15"><code>l0b15</code></a> — <a
-href="../../state_endings.c#L44"><code>state_endings.c#L44</code></a></li>
+href="../../context/source/state_endings.html#L44"><code>state_endings.c#L44</code></a></li>
 <li><a href="#l0ba0"><code>l0ba0</code></a> — <a
-href="../../state_endings.c#L49"><code>state_endings.c#L49</code></a></li>
+href="../../context/source/state_endings.html#L49"><code>state_endings.c#L49</code></a></li>
 <li><code>clear_foreground</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L39"><code>game_state_machine.c#L39</code></a></li>
+href="../../context/source/game_state_machine.html#L39"><code>game_state_machine.c#L39</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -54,7 +54,7 @@ href="../../game_state_machine.c#L39"><code>game_state_machine.c#L39</code></a><
 <h3 id="state_5_game_over_text"><code>state_5_game_over_text</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_endings.c#L67-L94"><code>state_5_game_over_text</code></a>
+href="../../context/source/state_endings.html#L67-L94"><code>state_5_game_over_text</code></a>
 (Z80 ROM: <code>$0B60–$0B9D</code>) toont de "GAME OVER" tekst,
 controleert de copyright-checksum en verwerkt de overgang terug naar
 attract mode of de andere speler.</p>
@@ -64,18 +64,18 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>clear_background</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>print_text_lines</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>copy_memory_bank</code> — <a
-href="../../state_init.c"><code>state_init.c</code></a></li>
+href="../../context/source/state_init.html"><code>state_init.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L40"><code>game_state_machine.c#L40</code></a></li>
+href="../../context/source/game_state_machine.html#L40"><code>game_state_machine.c#L40</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -87,11 +87,11 @@ id="state_6_mother_ship_explosion--state_7_mother_ship_score_display"><code>stat
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../state_endings.c#L126-L171"><code>state_6_mother_ship_explosion</code></a>
+href="../../context/source/state_endings.html#L126-L171"><code>state_6_mother_ship_explosion</code></a>
 (Z80 ROM: <code>$2400–$244B</code>) voert de spectaculaire deeltjes- en
 tegelexplosie van het moederschip uit.</li>
 <li><a
-href="../../state_endings.c#L179-L201"><code>state_7_mother_ship_score_display</code></a>
+href="../../context/source/state_endings.html#L179-L201"><code>state_7_mother_ship_score_display</code></a>
 (Z80 ROM: <code>$244C–$2469</code>) toont de behaalde bonusscore en
 verhoogt de ronde (<code>LevelAndRound += 0x10</code>) voor het volgende
 level.</li>
@@ -104,26 +104,26 @@ Koppelingen</strong></h4>
 <li><a
 href="mothership-impl.html#update_counters_for_mothership_explosion"><code>update_counters_for_mothership_explosion</code></a>
 — <a
-href="../../mothership_impl.c#L134"><code>mothership_impl.c#L134</code></a></li>
+href="../../context/source/mothership_impl.html#L134"><code>mothership_impl.c#L134</code></a></li>
 <li><a
 href="mothership-logic.html#erase_mothership"><code>erase_mothership</code></a>
 — <a
-href="../../mothership_logic.c#L22"><code>mothership_logic.c#L22</code></a></li>
+href="../../context/source/mothership_logic.html#L22"><code>mothership_logic.c#L22</code></a></li>
 <li><a
 href="mothership-logic.html#mothership_core_hit_check"><code>mothership_core_hit_check</code></a>
 — <a
-href="../../mothership_logic.c#L48"><code>mothership_logic.c#L48</code></a></li>
+href="../../context/source/mothership_logic.html#L48"><code>mothership_logic.c#L48</code></a></li>
 <li><a
 href="player-explosion.html#l2085_particles"><code>l2085_particles</code></a>
 — <a
-href="../../player_explosion.c#L154"><code>player_explosion.c#L154</code></a></li>
+href="../../context/source/player_explosion.html#L154"><code>player_explosion.c#L154</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L41-L42"><code>game_state_machine.c#L41-L42</code></a></li>
+href="../../context/source/game_state_machine.html#L41-L42"><code>game_state_machine.c#L41-L42</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -131,7 +131,7 @@ href="../../game_state_machine.c#L41-L42"><code>game_state_machine.c#L41-L42</co
 <h3 id="l0b15"><code>l0b15</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_endings.c#L208-L231"><code>l0b15</code></a> (Z80 ROM:
+href="../../context/source/state_endings.html#L208-L231"><code>l0b15</code></a> (Z80 ROM:
 <code>$0B15–$0B2D</code>) verlaagt het aantal spelerlevens van de
 actieve speler, ververst het scherm en bepaalt of het spel overgaat naar
 "GAME OVER" of dat een nieuwe beurt start.</p>
@@ -141,14 +141,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>update_lives_screen</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#state_4_player_ship_explosion"><code>state_4_player_ship_explosion</code></a>
 — <a
-href="../../state_endings.c#L44"><code>state_endings.c#L44</code></a></li>
+href="../../context/source/state_endings.html#L44"><code>state_endings.c#L44</code></a></li>
 </ul></li>
 </ul>
 </body></html>

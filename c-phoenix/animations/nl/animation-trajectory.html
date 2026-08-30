@@ -42,7 +42,7 @@ Overzicht Vliegpatroon-architectuur &amp; Z80 Geheugen-lus</h2>
 (aliens, vogels en het moederschip) niet willekeurig berekend via
 dynamische natuurkunde, maar aangestuurd via <strong>statische
 vectoriële opzoektabellen</strong> uit het Z80 ROM opgeslagen in <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> / <a
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a> / <a
 href="../../phoenix_tables.h"><code>phoenix_tables.h</code></a>.</p>
 <h3 id="geheugenkaart--ram-datastructuren"><strong>Geheugenkaart &amp;
 RAM-Datastructuren</strong></h3>
@@ -116,18 +116,18 @@ Koppelingen</strong></h4>
 <ul>
 <li><strong>Relevante C-bestanden:</strong>
 <ul>
-<li><a href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a> →
+<li><a href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a> →
 <a
 href="../../c-annotated/nl/phoenix-tables.html"><code>phoenix-tables.md</code></a></li>
-<li><a href="../../alien_logic.c"><code>alien_logic.c</code></a> → <a
+<li><a href="../../context/source/alien_logic.html"><code>alien_logic.c</code></a> → <a
 href="../../c-annotated/nl/alien-logic.html"><code>alien-logic.md</code></a></li>
-<li><a href="../../bird_logic.c"><code>bird_logic.c</code></a> → <a
+<li><a href="../../context/source/bird_logic.html"><code>bird_logic.c</code></a> → <a
 href="../../c-annotated/nl/bird-logic.html"><code>bird-logic.md</code></a></li>
 <li><a
-href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
+href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>
 → <a
 href="../../c-annotated/nl/bird-wave-behavior.html"><code>bird-wave-behavior.md</code></a></li>
-<li><a href="../../attract_mode.c"><code>attract_mode.c</code></a> → <a
+<li><a href="../../context/source/attract_mode.html"><code>attract_mode.c</code></a> → <a
 href="../../c-annotated/nl/attract-mode.html"><code>attract-mode.md</code></a></li>
 </ul></li>
 </ul>
@@ -249,7 +249,7 @@ Cluster A</strong></h3>
 <ul>
 <li><strong>ROM Adresbereik:</strong> <code>$1000–$13FF</code> (1024
 bytes) in <a
-href="../../phoenix_tables.c#L73"><code>phoenix_tables.c</code></a>.</li>
+href="../../context/source/phoenix_tables.html#L73"><code>phoenix_tables.c</code></a>.</li>
 <li><strong>Structurele Opbouw:</strong> 18 gesloten-lus &amp; open
 traject patronen (<code>T1020</code> t/m <code>T13D0</code>), elk
 bestaand uit een reeks van vector-indices afgesloten met
@@ -428,7 +428,7 @@ Cluster B</strong></h3>
 <ul>
 <li><strong>ROM Adresbereik:</strong> <code>$2C00–$2FFF</code> (1024
 bytes) in <a
-href="../../phoenix_tables.c#L423"><code>phoenix_tables.c</code></a>.</li>
+href="../../context/source/phoenix_tables.html#L423"><code>phoenix_tables.c</code></a>.</li>
 <li><strong>Structurele Opbouw:</strong> 18 patronen (patronen 19 t/m
 36) voornamelijk bestaand uit open breakout-trajecten voor losbrekende
 aliens en moederschip-escortwaves.</li>
@@ -601,8 +601,8 @@ Vliegtrajecten &amp; AI Behavior Scripts</h2>
 id="gedetailleerde-analyse-vogel-ai-subsysteem"><strong>Gedetailleerde
 Analyse Vogel AI Subsysteem</strong></h3>
 <p>Het vogel-AI subsysteem in <a
-href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>
-en <a href="../../bird_logic.c"><code>bird_logic.c</code></a> wordt
+href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>
+en <a href="../../context/source/bird_logic.html"><code>bird_logic.c</code></a> wordt
 aangestuurd door 4 gekoppelde ROM-geheugentabellen:</p>
 <ol type="1">
 <li><p><strong><code>phoenix_bird_behaviour_scripts</code> (ROM
@@ -848,8 +848,8 @@ Attract Mode Bewegingspaden</h2>
 <li><strong>Beschrijving:</strong> De voorgeschreven 26x9 tegel-matrix
 en daalsnelheids-tabel voor de gestage neerwaartse beweging van het
 moederschip in <a
-href="../../mothership_impl.c"><code>mothership_impl.c</code></a> en <a
-href="../../mothership_logic.c"><code>mothership_logic.c</code></a>.</li>
+href="../../context/source/mothership_impl.html"><code>mothership_impl.c</code></a> en <a
+href="../../context/source/mothership_logic.html"><code>mothership_logic.c</code></a>.</li>
 </ul>
 <p><img src="../09_mothership_descent_trajectory.svg"
 alt="Moederschip Daal-Traject" /></p>

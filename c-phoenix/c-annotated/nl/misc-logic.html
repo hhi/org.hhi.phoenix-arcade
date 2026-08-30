@@ -3,7 +3,7 @@ id="miscellaneous-logic-misc_logicc---c-annotated-knowledge-graph-documentatie">
 Logic (<code>misc_logic.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../misc_logic.c"><code>misc_logic.c</code></a>. Deze module
+href="../../context/source/misc_logic.html"><code>misc_logic.c</code></a>. Deze module
 bevat diverse hulplogica voor achtergrond-verversing, muntschermteksten,
 willekeurige bommen op het spelerschip en het initialiseren van de
 vogelgeheugenstructuren.</p>
@@ -23,7 +23,7 @@ Sterrenstelsels</h2>
 <h3 id="l06f0"><code>l06f0</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../misc_logic.c#L12-L19"><code>l06f0</code></a> (Z80 ROM:
+href="../../context/source/misc_logic.html#L12-L19"><code>l06f0</code></a> (Z80 ROM:
 <code>$06F0–$0701</code>) combineert de achtergrondverversing: sterren
 scrollen omlaag (<code>stars_scroll_down</code>), sterrenstelsels
 toevoegen (<code>add_galaxies_to_background</code>) en planeten
@@ -34,25 +34,25 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>stars_scroll_down</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>add_galaxies_to_background</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><code>add_planets_to_background</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="attract-mode.html#slow_print_scroll_register_update"><code>slow_print_scroll_register_update</code></a>
 — <a
-href="../../attract_mode.c#L244"><code>attract_mode.c#L244</code></a></li>
+href="../../context/source/attract_mode.html#L244"><code>attract_mode.c#L244</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l01e1"><code>l01e1</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../misc_logic.c#L24-L31"><code>l01e1</code></a> (Z80 ROM:
+href="../../context/source/misc_logic.html#L24-L31"><code>l01e1</code></a> (Z80 ROM:
 <code>$01E1–$01EB</code>) wist voor- en achtergrondscherm en drukt de
 copyright-regels af.</p>
 <hr />
@@ -61,12 +61,12 @@ Triggers</h2>
 <h3 id="l24a0--l24f2"><code>l24a0</code> &amp; <code>l24f2</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <ul>
-<li><a href="../../misc_logic.c#L37-L44"><code>l24a0</code></a> (Z80
+<li><a href="../../context/source/misc_logic.html#L37-L44"><code>l24a0</code></a> (Z80
 ROM: <code>$24A0–$24BB</code>) activeert bij moederschip-levels (level
 &gt;= 8) de moederschip-animatie en vuurt via <a
-href="../../misc_logic.c#L55-L68"><code>l24f2</code></a> willekeurige
+href="../../context/source/misc_logic.html#L55-L68"><code>l24f2</code></a> willekeurige
 bommen af op het spelerschip.</li>
-<li><a href="../../misc_logic.c#L55-L68"><code>l24f2</code></a> (Z80
+<li><a href="../../context/source/misc_logic.html#L55-L68"><code>l24f2</code></a> (Z80
 ROM: <code>$24F2–$251C</code>) genereert een willekeurige X-positie
 (<code>get_random_number + 0x60</code>) en vuurt via <code>l25b7</code>
 een kogel af zodra deze positie de speler kruist.</li>
@@ -79,19 +79,19 @@ Koppelingen</strong></h4>
 <li><a
 href="mothership-impl.html#l2351_mothership_animation"><code>l2351_mothership_animation</code></a>
 — <a
-href="../../mothership_impl.c#L12"><code>mothership_impl.c#L12</code></a></li>
+href="../../context/source/mothership_impl.html#L12"><code>mothership_impl.c#L12</code></a></li>
 <li><a
 href="utilities.html#get_random_number"><code>get_random_number</code></a>
-— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+— <a href="../../context/source/utilities.html#L15"><code>utilities.c:L15</code></a></li>
 <li><code>l25b7</code> — <a
-href="../../weapon_collision.c#L100"><code>weapon_collision.c#L100</code></a></li>
+href="../../context/source/weapon_collision.html#L100"><code>weapon_collision.c#L100</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-wave.html#l2000_alien_wave_main_loop"><code>l2000_alien_wave_main_loop</code></a>
 — <a
-href="../../alien_wave.c#L224"><code>alien_wave.c#L224</code></a></li>
+href="../../context/source/alien_wave.html#L224"><code>alien_wave.c#L224</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -100,7 +100,7 @@ Initialisatie</h2>
 <h3 id="l32b0"><code>l32b0</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../misc_logic.c#L73-L98"><code>l32b0</code></a> (Z80 ROM:
+href="../../context/source/misc_logic.html#L73-L98"><code>l32b0</code></a> (Z80 ROM:
 <code>$32B0–$32EB</code>) wist het RAM-bereik <code>$4350–$437F</code>
 en kopieert de initiële vogelgedragsstructuur uit ROM
 (<code>phoenix_bird_behaviour_scripts</code>) naar RAM-adres
@@ -111,14 +111,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_bird_behaviour_scripts</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="state-init.html#l0526"><code>l0526</code></a> — <a
-href="../../state_init.c#L61"><code>state_init.c#L61</code></a></li>
+href="../../context/source/state_init.html#L61"><code>state_init.c#L61</code></a></li>
 </ul></li>
 </ul>
 </body></html>

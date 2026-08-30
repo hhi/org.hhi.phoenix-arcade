@@ -3,7 +3,7 @@ id="normal-gameplay-state_playc---c-annotated-knowledge-graph-documentatie">Norm
 Gameplay (<code>state_play.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../state_play.c"><code>state_play.c</code></a>. Deze module
+href="../../context/source/state_play.html"><code>state_play.c</code></a>. Deze module
 regelt GameState 3 (normale gameplay) en stuurt via een level-jumptable
 de 12 verschillende levelfases aan (aliens fade-in, alien waves,
 spiraalfill, vogel-waves en moederschip-intro's).</p>
@@ -26,7 +26,7 @@ Dispatcher</h2>
 id="state_3_normal_game_play"><code>state_3_normal_game_play</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_play.c#L237-L260"><code>state_3_normal_game_play</code></a>
+href="../../context/source/state_play.html#L237-L260"><code>state_3_normal_game_play</code></a>
 (Z80 ROM: <code>$0800–$0833</code>) is het centrale verdeelstation voor
 actieve gameplay op basis van
 <code>state.LevelAndRound &amp; 0x0F</code>.</p>
@@ -41,34 +41,34 @@ Koppelingen</strong></h4>
 <li><a
 href="#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L242"><code>state_play.c#L242</code></a></li>
+href="../../context/source/state_play.html#L242"><code>state_play.c#L242</code></a></li>
 <li><a
 href="#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L243"><code>state_play.c#L243</code></a></li>
+href="../../context/source/state_play.html#L243"><code>state_play.c#L243</code></a></li>
 <li><a
 href="#level_4_6_8_spiral_fill"><code>level_4_6_8_spiral_fill</code></a>
 — <a
-href="../../state_play.c#L246"><code>state_play.c#L246</code></a></li>
+href="../../context/source/state_play.html#L246"><code>state_play.c#L246</code></a></li>
 <li><a
 href="#level_5_7_birds_fade_in"><code>level_5_7_birds_fade_in</code></a>
 — <a
-href="../../state_play.c#L247"><code>state_play.c#L247</code></a></li>
+href="../../context/source/state_play.html#L247"><code>state_play.c#L247</code></a></li>
 <li><a
 href="#level_9_mothership_fade_in"><code>level_9_mothership_fade_in</code></a>
 — <a
-href="../../state_play.c#L251"><code>state_play.c#L251</code></a></li>
+href="../../context/source/state_play.html#L251"><code>state_play.c#L251</code></a></li>
 <li><a
 href="#level_a_mothership_and_aliens_fade_in"><code>level_A_mothership_and_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L252"><code>state_play.c#L252</code></a></li>
+href="../../context/source/state_play.html#L252"><code>state_play.c#L252</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L38"><code>game_state_machine.c#L38</code></a></li>
+href="../../context/source/game_state_machine.html#L38"><code>game_state_machine.c#L38</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -78,7 +78,7 @@ Waves</h2>
 id="level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_play.c#L205-L229"><code>level_0_and_2_aliens_fade_in</code></a>
+href="../../context/source/state_play.html#L205-L229"><code>level_0_and_2_aliens_fade_in</code></a>
 (Z80 ROM: <code>$0834–$0859</code>) laat de aliens geleidelijk aan de
 bovenzijde van het scherm verschijnen bij het starten van levels 0 en
 2.</p>
@@ -88,21 +88,21 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><code>update_scroll_register_and_fill_background</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a
 href="alien-logic.html#get_animation_chrs_aliens_fade_in"><code>get_animation_chrs_aliens_fade_in</code></a>
 — <a
-href="../../alien_logic.c#L31"><code>alien_logic.c#L31</code></a></li>
+href="../../context/source/alien_logic.html#L31"><code>alien_logic.c#L31</code></a></li>
 <li><a
 href="alien-logic.html#init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></a>
 — <a
-href="../../alien_logic.c#L207"><code>alien_logic.c#L207</code></a></li>
+href="../../context/source/alien_logic.html#L207"><code>alien_logic.c#L207</code></a></li>
 <li><a
 href="alien-logic.html#alien_data_controller"><code>alien_data_controller</code></a>
 — <a
-href="../../alien_logic.c#L274"><code>alien_logic.c#L274</code></a></li>
+href="../../context/source/alien_logic.html#L274"><code>alien_logic.c#L274</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -119,10 +119,10 @@ id="level_4_6_8_spiral_fill--l2260_spiral_draw"><code>level_4_6_8_spiral_fill</c
 &amp; <code>l2260_spiral_draw</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_play.c#L119-L148"><code>level_4_6_8_spiral_fill</code></a>
+href="../../context/source/state_play.html#L119-L148"><code>level_4_6_8_spiral_fill</code></a>
 (Z80 ROM: <code>$2230–$225F</code>) animeert de spiraalvormige
 tegelinvulling op de overgang tussen alien- en vogel-levels. <a
-href="../../state_play.c#L26-L77"><code>l2260_spiral_draw</code></a>
+href="../../context/source/state_play.html#L26-L77"><code>l2260_spiral_draw</code></a>
 berekent de geometrische kolomcoördinaten en tekent de
 asterisks/spaties.</p>
 <hr />
@@ -135,16 +135,16 @@ id="level_5_7_birds_fade_in-level_9_mothership_fade_in--level_a_mothership_and_a
 <h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../state_play.c#L149-L153"><code>level_5_7_birds_fade_in</code></a>:
+href="../../context/source/state_play.html#L149-L153"><code>level_5_7_birds_fade_in</code></a>:
 Start de vogel-golf via <a
 href="bird-logic.html#process_birds"><code>process_birds</code></a>.</li>
 <li><a
-href="../../state_play.c#L163-L181"><code>level_9_mothership_fade_in</code></a>
+href="../../context/source/state_play.html#L163-L181"><code>level_9_mothership_fade_in</code></a>
 (Z80 ROM: <code>$22B4–$22C5</code>): Laat het moederschip in het
 achtergrond-VRAM verschijnen terwijl de sterren naar beneden
 scrollen.</li>
 <li><a
-href="../../state_play.c#L188-L198"><code>level_A_mothership_and_aliens_fade_in</code></a>
+href="../../context/source/state_play.html#L188-L198"><code>level_A_mothership_and_aliens_fade_in</code></a>
 (Z80 ROM: <code>$22CA–$22DD</code>): Combineert het verschijnen van het
 moederschip met de escort-aliens.</li>
 </ul>

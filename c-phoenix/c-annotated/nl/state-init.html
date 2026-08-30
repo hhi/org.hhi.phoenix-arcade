@@ -3,7 +3,7 @@ id="state-initialization-state_initc---c-annotated-knowledge-graph-documentatie"
 Initialization (<code>state_init.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../state_init.c"><code>state_init.c</code></a>. Deze module
+href="../../context/source/state_init.html"><code>state_init.c</code></a>. Deze module
 behandelt de initialisatie van spelbestanden, alien-formaties,
 speler-RAM en het instellen van levens op basis van DIP-switches
 (GameState 2).</p>
@@ -24,7 +24,7 @@ Datastructuren</a></li>
 id="state_2_init_game_and_level_data"><code>state_2_init_game_and_level_data</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_init.c#L70-L83"><code>state_2_init_game_and_level_data</code></a>
+href="../../context/source/state_init.html#L70-L83"><code>state_2_init_game_and_level_data</code></a>
 (Z80 ROM: <code>$0515–$0531</code>) is verantwoordelijk voor het
 klaarzetten van alle geheugengebieden bij de start van een nieuwe ronde
 of level.</p>
@@ -40,33 +40,33 @@ Koppelingen</strong></h4>
 <li><a
 href="game-state-machine.html#set_bits_video_register"><code>set_bits_video_register</code></a>
 — <a
-href="../../game_state_machine.c"><code>game_state_machine.c</code></a></li>
+href="../../context/source/game_state_machine.html"><code>game_state_machine.c</code></a></li>
 <li><a
 href="init-global-level-data.html#init_global_level_data"><code>init_global_level_data</code></a>
 — <a
-href="../../init_global_level_data.c"><code>init_global_level_data.c</code></a></li>
+href="../../context/source/init_global_level_data.html"><code>init_global_level_data.c</code></a></li>
 <li><a
 href="#init_player_data_structure"><code>init_player_data_structure</code></a>
 — <a
-href="../../state_init.c#L25"><code>state_init.c#L25</code></a></li>
+href="../../context/source/state_init.html#L25"><code>state_init.c#L25</code></a></li>
 <li><code>get_screen_ram_address_for_player_ship</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 <li><a href="#l0526"><code>l0526</code></a> — <a
-href="../../state_init.c#L56"><code>state_init.c#L56</code></a></li>
+href="../../context/source/state_init.html#L56"><code>state_init.c#L56</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L37"><code>game_state_machine.c#L37</code></a></li>
+href="../../context/source/game_state_machine.html#L37"><code>game_state_machine.c#L37</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l0526"><code>l0526</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_init.c#L56-L62"><code>l0526</code></a> (Z80 ROM:
+href="../../context/source/state_init.html#L56-L62"><code>l0526</code></a> (Z80 ROM:
 <code>$0526–$0531</code>) is de gedeelde initialisatieroutine die zowel
 door <code>state_2_init_game_and_level_data</code> als door de
 moederschip-escortgolf respawn (<code>alien_wave.c:l21ba</code>) wordt
@@ -79,24 +79,24 @@ Koppelingen</strong></h4>
 <li><a
 href="#init_alien_data_new_level"><code>init_alien_data_new_level</code></a>
 — <a
-href="../../state_init.c#L33"><code>state_init.c#L33</code></a></li>
+href="../../context/source/state_init.html#L33"><code>state_init.c#L33</code></a></li>
 <li><a
 href="alien-logic.html#get_screen_ram_address_for_all_aliens"><code>get_screen_ram_address_for_all_aliens</code></a>
 — <a
-href="../../alien_logic.c#L290"><code>alien_logic.c#L290</code></a></li>
+href="../../context/source/alien_logic.html#L290"><code>alien_logic.c#L290</code></a></li>
 <li><a
 href="#init_alien_movement_pointers"><code>init_alien_movement_pointers</code></a>
 — <a
-href="../../state_init.c#L46"><code>state_init.c#L46</code></a></li>
+href="../../context/source/state_init.html#L46"><code>state_init.c#L46</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#state_2_init_game_and_level_data"><code>state_2_init_game_and_level_data</code></a>
 — <a
-href="../../state_init.c#L82"><code>state_init.c#L82</code></a></li>
+href="../../context/source/state_init.html#L82"><code>state_init.c#L82</code></a></li>
 <li><a href="alien-wave.html#l21ba"><code>l21ba</code></a> — <a
-href="../../alien_wave.c#L127"><code>alien_wave.c#L127</code></a></li>
+href="../../context/source/alien_wave.html#L127"><code>alien_wave.c#L127</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -106,7 +106,7 @@ Datastructuren</h2>
 id="init_alien_data_new_level"><code>init_alien_data_new_level</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_init.c#L33-L38"><code>init_alien_data_new_level</code></a>
+href="../../context/source/state_init.html#L33-L38"><code>init_alien_data_new_level</code></a>
 (Z80 ROM: <code>$0532–$0543</code>) wist de alien-geheugenstructuren van
 <code>$4B50</code> tot <code>$4BEF</code> en roept de
 initialisatieroutines aan voor de besturingsbits, patroonpointers en
@@ -119,15 +119,15 @@ Koppelingen</strong></h4>
 <li><a
 href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+href="../../context/source/alien_logic.html#L19"><code>alien_logic.c#L19</code></a></li>
 <li><a
 href="alien-logic.html#copy_init_values_for_16_aliens"><code>copy_init_values_for_16_aliens</code></a>
 — <a
-href="../../alien_logic.c#L249"><code>alien_logic.c#L249</code></a></li>
+href="../../context/source/alien_logic.html#L249"><code>alien_logic.c#L249</code></a></li>
 <li><a
 href="alien-logic.html#init_alien_positions"><code>init_alien_positions</code></a>
 — <a
-href="../../alien_logic.c#L224"><code>alien_logic.c#L224</code></a></li>
+href="../../context/source/alien_logic.html#L224"><code>alien_logic.c#L224</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -137,7 +137,7 @@ href="../../alien_logic.c#L224"><code>alien_logic.c#L224</code></a></li>
 id="get_player_lives_from_dip"><code>get_player_lives_from_dip</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../state_init.c#L89-L113"><code>get_player_lives_from_dip</code></a>
+href="../../context/source/state_init.html#L89-L113"><code>get_player_lives_from_dip</code></a>
 (Z80 ROM: <code>$0350–$0366</code>) leest DIP-switch 0 in via
 <code>read_dsw0()</code> en stelt het aantal levens voor Player 1 en
 Player 2 in op 3, 4, 5 of 6.</p>
@@ -147,16 +147,16 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>read_dsw0</code> — <a
-href="../../platform_sdl.c"><code>platform_sdl.c</code></a></li>
+href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
 <li><code>update_lives_screen</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="attract-mode.html#prompt_for_start_game"><code>prompt_for_start_game</code></a>
 — <a
-href="../../attract_mode.c#L337"><code>attract_mode.c#L337</code></a></li>
+href="../../context/source/attract_mode.html#L337"><code>attract_mode.c#L337</code></a></li>
 </ul></li>
 </ul>
 </body></html>

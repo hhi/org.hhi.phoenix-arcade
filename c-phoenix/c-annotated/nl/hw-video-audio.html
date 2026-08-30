@@ -3,7 +3,7 @@ id="hardware-video--audio-hw_video_audioc---c-annotated-knowledge-graph-document
 Video &amp; Audio (<code>hw_video_audio.c</code>) - C-Annotated
 Knowledge Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a>. Deze
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a>. Deze
 module vormt de interface tussen de geporteerde game-logica, VBlank
 synchronisatie, SDL2 audio/video rendering en RAM-bank opschoning.</p>
 <hr />
@@ -22,7 +22,7 @@ VBlank Synchronisatie</h2>
 <h3 id="phoenix_main_loop"><code>phoenix_main_loop</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../hw_video_audio.c#L123-L148"><code>phoenix_main_loop</code></a>
+href="../../context/source/hw_video_audio.html#L123-L148"><code>phoenix_main_loop</code></a>
 (Z80 ROM: <code>$0000–$004F</code>) is de centrale hoofdlus en het
 startpunt van het <em>Phoenix</em> ROM-programma.</p>
 <h4 id="knowledge-graph-koppelingen"><strong>Knowledge Graph
@@ -31,41 +31,41 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#init_sound_screen"><code>init_sound_screen</code></a> — <a
-href="../../hw_video_audio.c#L124"><code>hw_video_audio.c#L124</code></a></li>
+href="../../context/source/hw_video_audio.html#L124"><code>hw_video_audio.c#L124</code></a></li>
 <li><code>print_text_lines</code> — <a
-href="../../hw_video_audio.c#L125"><code>hw_video_audio.c#L125</code></a></li>
+href="../../context/source/hw_video_audio.html#L125"><code>hw_video_audio.c#L125</code></a></li>
 <li><a href="#wait_vblank_coin"><code>wait_vblank_coin</code></a> — <a
-href="../../hw_video_audio.c#L128"><code>hw_video_audio.c#L128</code></a></li>
+href="../../context/source/hw_video_audio.html#L128"><code>hw_video_audio.c#L128</code></a></li>
 <li><a
 href="attract-mode.html#coin_checking"><code>coin_checking</code></a> — <a
-href="../../attract_mode.c#L281"><code>attract_mode.c#L281</code></a></li>
+href="../../context/source/attract_mode.html#L281"><code>attract_mode.c#L281</code></a></li>
 <li><a
 href="attract-mode.html#prompt_for_start_game"><code>prompt_for_start_game</code></a>
 — <a
-href="../../attract_mode.c#L293"><code>attract_mode.c#L293</code></a></li>
+href="../../context/source/attract_mode.html#L293"><code>attract_mode.c#L293</code></a></li>
 <li><a
 href="attract-mode.html#splash_and_demo"><code>splash_and_demo</code></a>
 — <a
-href="../../attract_mode.c#L32"><code>attract_mode.c#L32</code></a></li>
+href="../../context/source/attract_mode.html#L32"><code>attract_mode.c#L32</code></a></li>
 <li><a
 href="game-state-machine.html#game_state_machine"><code>game_state_machine</code></a>
 — <a
-href="../../game_state_machine.c#L31"><code>game_state_machine.c#L31</code></a></li>
+href="../../context/source/game_state_machine.html#L31"><code>game_state_machine.c#L31</code></a></li>
 <li><a
 href="scoring.html#update_scores_and_sound"><code>update_scores_and_sound</code></a>
-— <a href="../../scoring.c#L93"><code>scoring.c#L93</code></a></li>
+— <a href="../../context/source/scoring.html#L93"><code>scoring.c#L93</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><code>main</code> / <code>platform_sdl_main</code> — <a
-href="../../platform_sdl.c"><code>platform_sdl.c</code></a></li>
+href="../../context/source/platform_sdl.html"><code>platform_sdl.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="wait_vblank_coin"><code>wait_vblank_coin</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../hw_video_audio.c#L30-L71"><code>wait_vblank_coin</code></a>
+href="../../context/source/hw_video_audio.html#L30-L71"><code>wait_vblank_coin</code></a>
 (Z80 ROM: <code>$0080–$00B5</code>) wacht op de verticale blanking (60Hz
 VBlank), verwerkt munten-invoerflanken en verhoogt de frame-tellers
 <code>state.Counter9B</code> en <code>state.Counter9A</code>.</p>
@@ -77,11 +77,11 @@ id="clear_background--clear_foreground"><code>clear_background</code>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../hw_video_audio.c#L155-L161"><code>clear_background</code></a>
+href="../../context/source/hw_video_audio.html#L155-L161"><code>clear_background</code></a>
 (Z80 ROM: <code>$03A0–$03AF</code>) wist de 26 kolommen van het
 achtergrondscherm (<code>$4800–$4B3F</code>).</li>
 <li><a
-href="../../hw_video_audio.c#L237-L246"><code>clear_foreground</code></a>
+href="../../context/source/hw_video_audio.html#L237-L246"><code>clear_foreground</code></a>
 (Z80 ROM: <code>$0380–$039D</code>) wist de 26 kolommen van het
 voorgrondscherm (<code>$4000–$433F</code>), met uitzondering van de
 bovenste tekstbalk.</li>
@@ -94,11 +94,11 @@ id="clear_and_print_scores--update_lives_screen"><code>clear_and_print_scores</c
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../hw_video_audio.c#L196-L210"><code>clear_and_print_scores</code></a>
+href="../../context/source/hw_video_audio.html#L196-L210"><code>clear_and_print_scores</code></a>
 (Z80 ROM: <code>$032E–$034E</code>) reset de scoregeheugens van P1 en P2
 en drukt de 6-cijferige scores af op het scherm.</li>
 <li><a
-href="../../hw_video_audio.c#L216-L222"><code>update_lives_screen</code></a>
+href="../../context/source/hw_video_audio.html#L216-L222"><code>update_lives_screen</code></a>
 (Z80 ROM: <code>$0367–$0376</code>) stuurt de speler-levensweergave in
 VRAM aan.</li>
 </ul>

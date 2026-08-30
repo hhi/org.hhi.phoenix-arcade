@@ -3,7 +3,7 @@ id="tms3615--mm6221aa-synthesizer-tms36xxc---c-annotated-knowledge-graph-documen
 / MM6221AA Synthesizer (<code>tms36xx.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van alle functies in <a
-href="../../tms36xx.c"><code>tms36xx.c</code></a>. Deze module emuleert
+href="../../context/source/tms36xx.html"><code>tms36xx.c</code></a>. Deze module emuleert
 de Texas Instruments TMS3615 / MM6221AA custom orgelsynthesizer-chip die
 de achtergrondmelodieën van <em>Phoenix</em> afspeelt.</p>
 <hr />
@@ -19,7 +19,7 @@ Rendering</a></li>
 <h3 id="tms36xx_init"><code>tms36xx_init</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../tms36xx.c#L200-L240"><code>tms36xx_init</code></a> stelt de
+href="../../context/source/tms36xx.html#L200-L240"><code>tms36xx_init</code></a> stelt de
 12 stemmen (6 actieve stemmen + 6 afvallende stemmen), basisfrequentie
 (372Hz), samplefrequentie (23.808kHz) en decay-tijden in voor het
 orgel-circuit.</p>
@@ -33,7 +33,7 @@ Koppelingen</strong></h4>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="sound.html#sound_init"><code>sound_init</code></a> — <a
-href="../../sound.c#L59"><code>sound.c#L59</code></a></li>
+href="../../context/source/sound.html#L59"><code>sound.c#L59</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -45,11 +45,11 @@ id="tms36xx_mm6221aa_tune_w--tms36xx_render_internal_sample"><code>tms36xx_mm622
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <ul>
 <li><a
-href="../../tms36xx.c#L247-L253"><code>tms36xx_mm6221aa_tune_w</code></a>
+href="../../context/source/tms36xx.html#L247-L253"><code>tms36xx_mm6221aa_tune_w</code></a>
 selecteert de actieve ingebouwde ROM-melodie (<code>g_tune1</code>,
 <code>g_tune2</code> of <code>g_tune3</code>).</li>
 <li><a
-href="../../tms36xx.c#L260-L287"><code>tms36xx_render_internal_sample</code></a>
+href="../../context/source/tms36xx.html#L260-L287"><code>tms36xx_render_internal_sample</code></a>
 rendert per sample de blokgolf-frequenties en uitdovings-enveloppen over
 de 12 stemmen.</li>
 </ul>
@@ -59,19 +59,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>tune_table</code> — <a
-href="../../tms36xx.c#L127"><code>tms36xx.c#L127</code></a></li>
+href="../../context/source/tms36xx.html#L127"><code>tms36xx.c#L127</code></a></li>
 <li><code>tms36xx_decay</code> — <a
-href="../../tms36xx.c#L141"><code>tms36xx.c#L141</code></a></li>
+href="../../context/source/tms36xx.html#L141"><code>tms36xx.c#L141</code></a></li>
 <li><code>tms36xx_restart</code> — <a
-href="../../tms36xx.c#L160"><code>tms36xx.c#L160</code></a></li>
+href="../../context/source/tms36xx.html#L160"><code>tms36xx.c#L160</code></a></li>
 <li><code>tms36xx_tone</code> — <a
-href="../../tms36xx.c#L181"><code>tms36xx.c#L181</code></a></li>
+href="../../context/source/tms36xx.html#L181"><code>tms36xx.c#L181</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="sound.html#sound_render_frame"><code>sound_render_frame</code></a> —
-<a href="../../sound.c#L176"><code>sound.c#L176</code></a></li>
+<a href="../../context/source/sound.html#L176"><code>sound.c#L176</code></a></li>
 </ul></li>
 </ul>
 </body></html>

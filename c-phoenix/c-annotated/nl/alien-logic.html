@@ -3,7 +3,7 @@ id="alien-logic-alien_logicc---c-annotated-knowledge-graph-documentatie">Alien
 Logic (<code>alien_logic.c</code>) - C-Annotated Knowledge Graph
 Documentatie</h1>
 <p>Dit document bevat een diepgaande, geannoteerde analyse van alle
-functies in <a href="../../alien_logic.c"><code>alien_logic.c</code></a>
+functies in <a href="../../context/source/alien_logic.html"><code>alien_logic.c</code></a>
 en <a href="../../alien_logic.h"><code>alien_logic.h</code></a>. Elke
 functie is uitgewerkt volgens een <strong>Knowledge Graph
 benadering</strong> met uitgaande aanroepen (<code>Aanroepen</code>) en
@@ -30,7 +30,7 @@ Dive-bomb Triggers</a></li>
 id="init_alien_control_states"><code>init_alien_control_states</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L19-L25"><code>init_alien_control_states</code></a>
+href="../../context/source/alien_logic.html#L19-L25"><code>init_alien_control_states</code></a>
 (Z80 ROM: <code>$05EC–$05F9</code>) bepaalt de initiële vlieg- en
 besturingsparameters voor de aliens aan het begin van een nieuwe ronde
 of level.</p>
@@ -46,16 +46,16 @@ Koppelingen</strong></h4>
 <li><a
 href="#init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></a>
 — <a
-href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+href="../../context/source/alien_logic.html#L24"><code>alien_logic.c:L24</code></a></li>
 <li><code>phoenix_alien_control_init_values</code> — <a
-href="../../phoenix_tables.c#L265"><code>phoenix_tables.c:L265</code></a></li>
+href="../../context/source/phoenix_tables.html#L265"><code>phoenix_tables.c:L265</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+href="../../context/source/alien_logic.html#L19"><code>alien_logic.c#L19</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking"><strong>Stap-voor-stap
@@ -82,7 +82,7 @@ aliens.</li>
 id="init_alien_control_states_05fa"><code>init_alien_control_states_05fa</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L207-L217"><code>init_alien_control_states_05fa</code></a>
+href="../../context/source/alien_logic.html#L207-L217"><code>init_alien_control_states_05fa</code></a>
 (Z80 ROM: <code>$05FA–$060D</code>) vult het geheugenblok van alle
 levende aliens met de gekozen controlestates <code>d</code> en
 <code>e</code>.</p>
@@ -95,14 +95,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L24"><code>alien_logic.c:L24</code></a></li>
+href="../../context/source/alien_logic.html#L24"><code>alien_logic.c:L24</code></a></li>
 </ul></li>
 </ul>
 <h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
@@ -135,7 +135,7 @@ met 4 bytes (<code>hl += 4</code>).</li>
 <h3 id="init_alien_positions"><code>init_alien_positions</code></h3>
 <h4 id="beschrijving-2"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L224-L242"><code>init_alien_positions</code></a>
+href="../../context/source/alien_logic.html#L224-L242"><code>init_alien_positions</code></a>
 (Z80 ROM: <code>$0610–$0638</code>) initialiseert de X- en
 Y-startcoördinaten op het schermraster voor de formatie van maximaal 16
 aliens.</p>
@@ -148,18 +148,18 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 <li><code>phoenix_alien_position_pointer_table</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>phoenix_alien_position_layout_page</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+href="../../context/source/alien_logic.html#L19"><code>alien_logic.c#L19</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-2"><strong>Stap-voor-stap
@@ -184,7 +184,7 @@ terechtkomen.</li>
 id="copy_init_values_for_16_aliens"><code>copy_init_values_for_16_aliens</code></h3>
 <h4 id="beschrijving-3"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L249-L265"><code>copy_init_values_for_16_aliens</code></a>
+href="../../context/source/alien_logic.html#L249-L265"><code>copy_init_values_for_16_aliens</code></a>
 (Z80 ROM: <code>$0650–$0679</code>) initialiseert de pointers naar het
 bewegingspatroon voor de 16 aliens.</p>
 <h4 id="context--aanroep-3"><strong>Context &amp; Aanroep</strong></h4>
@@ -195,16 +195,16 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 <li><code>phoenix_alien_layout_pointers</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="alien-logic.html#init_alien_control_states"><code>init_alien_control_states</code></a>
 — <a
-href="../../alien_logic.c#L19"><code>alien_logic.c#L19</code></a></li>
+href="../../context/source/alien_logic.html#L19"><code>alien_logic.c#L19</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-3"><strong>Stap-voor-stap
@@ -224,7 +224,7 @@ aliens: <code>0x4B50–0x4B6F</code>).</li>
 id="get_animation_chrs_aliens_fade_in"><code>get_animation_chrs_aliens_fade_in</code></h3>
 <h4 id="beschrijving-4"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L31-L37"><code>get_animation_chrs_aliens_fade_in</code></a>
+href="../../context/source/alien_logic.html#L31-L37"><code>get_animation_chrs_aliens_fade_in</code></a>
 (Z80 ROM: <code>$085A–$0871</code>) bepaalt het tegel/karakter-ID van
 aliens tijdens hun verschijning (fade-in) aan de start van een golf.</p>
 <h4 id="context--aanroep-4"><strong>Context &amp; Aanroep</strong></h4>
@@ -242,7 +242,7 @@ Koppelingen</strong></h4>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-4"><strong>Stap-voor-stap
@@ -263,7 +263,7 @@ retourneert de sprite-tegel ID op basis van drempelwaarden:</p>
 id="handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></h3>
 <h4 id="beschrijving-5"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L195-L200"><code>handle_animations_for_killed_aliens</code></a>
+href="../../context/source/alien_logic.html#L195-L200"><code>handle_animations_for_killed_aliens</code></a>
 (Z80 ROM: <code>$0FC0–$0FFF</code>) is de centrale aanroeproutine die in
 elke frame-update alle actieve explosies en bonusscore-animaties op het
 scherm verwerkt.</p>
@@ -281,25 +281,25 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l0fd8"><code>l0fd8</code></a> — <a
-href="../../alien_logic.c#L196-L197"><code>alien_logic.c:L196-L197</code></a></li>
+href="../../context/source/alien_logic.html#L196-L197"><code>alien_logic.c:L196-L197</code></a></li>
 <li><a
 href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
 — <a
-href="../../alien_logic.c#L198-L199"><code>alien_logic.c:L198-L199</code></a></li>
+href="../../context/source/alien_logic.html#L198-L199"><code>alien_logic.c:L198-L199</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <hr />
 <h3 id="l0fd8"><code>l0fd8</code></h3>
 <h4 id="beschrijving-6"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L43-L74"><code>l0fd8</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L43-L74"><code>l0fd8</code></a> (Z80 ROM:
 <code>$0FD8–$0FEF</code>) is verantwoordelijk voor het bijwerken en
 tekenen van de explosie-animatie van een neergeschoten standaard alien
 op geheugenadres <code>hl</code> (<code>0x4370</code> of
@@ -317,18 +317,18 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="utilities.html#left_one_column"><code>left_one_column</code></a> —
-<a href="../../utilities.c#L45"><code>utilities.c:L45</code></a></li>
+<a href="../../context/source/utilities.html#L45"><code>utilities.c:L45</code></a></li>
 <li><code>phoenix_alien_explosion_frames</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="sprite-rendering.html#drawnx2"><code>drawNx2</code></a> — <a
-href="../../sprite_rendering.c#L30"><code>sprite_rendering.c:L30</code></a></li>
+href="../../context/source/sprite_rendering.html#L30"><code>sprite_rendering.c:L30</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../alien_logic.c#L196-L197"><code>alien_logic.c:L196-L197</code></a></li>
+href="../../context/source/alien_logic.html#L196-L197"><code>alien_logic.c:L196-L197</code></a></li>
 </ul></li>
 </ul>
 <h4 id="geheugen---structuur-context-1"><strong>Geheugen- &amp;
@@ -378,7 +378,7 @@ ROM-adres van het sprite-patroon (<code>0x1700 | img</code>).</li>
 id="l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></h3>
 <h4 id="beschrijving-7"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L166-L188"><code>l3758_bonus_explosion_animation</code></a>
+href="../../context/source/alien_logic.html#L166-L188"><code>l3758_bonus_explosion_animation</code></a>
 (Z80 ROM: <code>$3758–$37CC</code>) animeert de uitwaaierende
 bonusexplosie en scoreweergave van een gedode volgroeide vogel op adres
 <code>hl</code> (<code>0x4378</code> of <code>0x437C</code>).</p>
@@ -395,26 +395,26 @@ Koppelingen</strong></h4>
 <li><a
 href="#l37cc_erase_bonus_explosion"><code>l37cc_erase_bonus_explosion</code></a>
 — <a
-href="../../alien_logic.c#L172"><code>alien_logic.c:L172</code></a></li>
+href="../../context/source/alien_logic.html#L172"><code>alien_logic.c:L172</code></a></li>
 <li><a
 href="#l37b0_print_bonus_score"><code>l37b0_print_bonus_score</code></a>
 — <a
-href="../../alien_logic.c#L177"><code>alien_logic.c:L177</code></a></li>
+href="../../context/source/alien_logic.html#L177"><code>alien_logic.c:L177</code></a></li>
 <li><a
 href="#l3796_bonus_explosion_left"><code>l3796_bonus_explosion_left</code></a>
 — <a
-href="../../alien_logic.c#L186"><code>alien_logic.c:L186</code></a></li>
+href="../../context/source/alien_logic.html#L186"><code>alien_logic.c:L186</code></a></li>
 <li><a
 href="#l3758_bonus_explosion_right"><code>l3758_bonus_explosion_right</code></a>
 — <a
-href="../../alien_logic.c#L187"><code>alien_logic.c:L187</code></a></li>
+href="../../context/source/alien_logic.html#L187"><code>alien_logic.c:L187</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#handle_animations_for_killed_aliens"><code>handle_animations_for_killed_aliens</code></a>
 — <a
-href="../../alien_logic.c#L198-L199"><code>alien_logic.c:L198-L199</code></a></li>
+href="../../context/source/alien_logic.html#L198-L199"><code>alien_logic.c:L198-L199</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-5"><strong>Stap-voor-stap
@@ -443,7 +443,7 @@ href="#l3758_bonus_explosion_right"><code>l3758_bonus_explosion_right(a, de)</co
 id="l3796_bonus_explosion_left"><code>l3796_bonus_explosion_left</code></h3>
 <h4 id="beschrijving-8"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L100-L107"><code>l3796_bonus_explosion_left</code></a>
+href="../../context/source/alien_logic.html#L100-L107"><code>l3796_bonus_explosion_left</code></a>
 (Z80 ROM: <code>$3796–$37AA</code>) tekent het linkerdeel van de
 uitwaaierende bonusexplosie op het scherm.</p>
 <h4 id="context--aanroep-8"><strong>Context &amp; Aanroep</strong></h4>
@@ -455,14 +455,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="sprite-rendering.html#drawnx2"><code>drawNx2</code></a> — <a
-href="../../sprite_rendering.c#L30"><code>sprite_rendering.c:L30</code></a></li>
+href="../../context/source/sprite_rendering.html#L30"><code>sprite_rendering.c:L30</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
 — <a
-href="../../alien_logic.c#L186"><code>alien_logic.c:L186</code></a></li>
+href="../../context/source/alien_logic.html#L186"><code>alien_logic.c:L186</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-6"><strong>Stap-voor-stap
@@ -483,7 +483,7 @@ ROM-tegel <code>0x17D0</code> via
 id="l3758_bonus_explosion_right"><code>l3758_bonus_explosion_right</code></h3>
 <h4 id="beschrijving-9"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L114-L126"><code>l3758_bonus_explosion_right</code></a>
+href="../../context/source/alien_logic.html#L114-L126"><code>l3758_bonus_explosion_right</code></a>
 (Z80 ROM: <code>$3772–$3792</code>) tekent het rechterdeel van de
 uitwaaierende bonusexplosie op het scherm.</p>
 <h4 id="context--aanroep-9"><strong>Context &amp; Aanroep</strong></h4>
@@ -495,16 +495,16 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 <li><a href="sprite-rendering.html#drawnx2"><code>drawNx2</code></a> — <a
-href="../../sprite_rendering.c#L30"><code>sprite_rendering.c:L30</code></a></li>
+href="../../context/source/sprite_rendering.html#L30"><code>sprite_rendering.c:L30</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
 — <a
-href="../../alien_logic.c#L187"><code>alien_logic.c:L187</code></a></li>
+href="../../context/source/alien_logic.html#L187"><code>alien_logic.c:L187</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-7"><strong>Stap-voor-stap
@@ -525,7 +525,7 @@ vanaf ROM-tegel <code>0x17D6</code> via <code>drawNx2</code>.</li>
 id="l37b0_print_bonus_score"><code>l37b0_print_bonus_score</code></h3>
 <h4 id="beschrijving-10"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L135-L156"><code>l37b0_print_bonus_score</code></a>
+href="../../context/source/alien_logic.html#L135-L156"><code>l37b0_print_bonus_score</code></a>
 (Z80 ROM: <code>$37B0–$37C6</code>) drukt de behaalde bonusscorepunten
 af op de exacte positie van de explosie.</p>
 <h4 id="context--aanroep-10"><strong>Context &amp; Aanroep</strong></h4>
@@ -538,22 +538,22 @@ Koppelingen</strong></h4>
 <ul>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 <li><a
 href="utilities.html#left_one_column"><code>left_one_column</code></a> —
-<a href="../../utilities.c#L45"><code>utilities.c:L45</code></a></li>
+<a href="../../context/source/utilities.html#L45"><code>utilities.c:L45</code></a></li>
 <li><a
 href="utilities.html#right_one_column"><code>right_one_column</code></a> —
-<a href="../../utilities.c#L50"><code>utilities.c:L50</code></a></li>
+<a href="../../context/source/utilities.html#L50"><code>utilities.c:L50</code></a></li>
 <li><a href="utilities.html#print_number"><code>print_number</code></a> —
-<a href="../../utilities.c#L80"><code>utilities.c:L80</code></a></li>
+<a href="../../context/source/utilities.html#L80"><code>utilities.c:L80</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
 — <a
-href="../../alien_logic.c#L177"><code>alien_logic.c:L177</code></a></li>
+href="../../context/source/alien_logic.html#L177"><code>alien_logic.c:L177</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-8"><strong>Stap-voor-stap
@@ -580,7 +580,7 @@ BCD-scorecijfers af te drukken.</li>
 id="l37cc_erase_bonus_explosion"><code>l37cc_erase_bonus_explosion</code></h3>
 <h4 id="beschrijving-11"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L82-L93"><code>l37cc_erase_bonus_explosion</code></a>
+href="../../context/source/alien_logic.html#L82-L93"><code>l37cc_erase_bonus_explosion</code></a>
 (Z80 ROM: <code>$37CC–$37E5</code>) wist een complete schermkolom (26
 rijen) van het voorgrondscherm zodra de bonusexplosieteller 0
 bereikt.</p>
@@ -594,14 +594,14 @@ Koppelingen</strong></h4>
 <ul>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="#l3758_bonus_explosion_animation"><code>l3758_bonus_explosion_animation</code></a>
 — <a
-href="../../alien_logic.c#L172"><code>alien_logic.c:L172</code></a></li>
+href="../../context/source/alien_logic.html#L172"><code>alien_logic.c:L172</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-9"><strong>Stap-voor-stap
@@ -622,7 +622,7 @@ verticale kolom te wissen.</li>
 <h3 id="alien_data_controller"><code>alien_data_controller</code></h3>
 <h4 id="beschrijving-12"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L274-L283"><code>alien_data_controller</code></a>
+href="../../context/source/alien_logic.html#L274-L283"><code>alien_data_controller</code></a>
 (Z80 ROM: <code>$0A50–$0A6B</code>) stuurt het verversen van de
 grafische voorgrond- RAM voor alle aliens aan.</p>
 <h4 id="context--aanroep-12"><strong>Context &amp; Aanroep</strong></h4>
@@ -634,14 +634,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>update_screen_objects</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-10"><strong>Stap-voor-stap
@@ -659,7 +659,7 @@ pointers met 4 bytes (<code>bc += 4</code>, <code>de += 4</code>).</li>
 id="get_screen_ram_address_for_all_aliens"><code>get_screen_ram_address_for_all_aliens</code></h3>
 <h4 id="beschrijving-13"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L290-L320"><code>get_screen_ram_address_for_all_aliens</code></a>
+href="../../context/source/alien_logic.html#L290-L320"><code>get_screen_ram_address_for_all_aliens</code></a>
 (Z80 ROM: <code>$0A6C–$0A99</code>) berekent de video-RAM adressen voor
 alle actieve aliens en onderhoudt de positie-historie.</p>
 <h4 id="context--aanroep-13"><strong>Context &amp; Aanroep</strong></h4>
@@ -671,16 +671,16 @@ Koppelingen</strong></h4>
 <ul>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 <li><code>get_screen_ram_address</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-11"><strong>Stap-voor-stap
@@ -708,7 +708,7 @@ Frame-animaties</h2>
 <h3 id="alien_movement_update"><code>alien_movement_update</code></h3>
 <h4 id="beschrijving-14"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L335-L375"><code>alien_movement_update</code></a>
+href="../../context/source/alien_logic.html#L335-L375"><code>alien_movement_update</code></a>
 (Z80 ROM: <code>$0D1C–$0D67</code>) werkt de X/Y schermposities van alle
 vliegende aliens bij volgens hun toegewezen richtingsvectoren.</p>
 <h4 id="context--aanroep-14"><strong>Context &amp; Aanroep</strong></h4>
@@ -719,19 +719,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_alien_movement_byte</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>phoenix_alien_direction_vectors</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-12"><strong>Stap-voor-stap
@@ -762,7 +762,7 @@ overstapt naar het volgende route-segment.</li>
 <h3 id="alien_animation_update"><code>alien_animation_update</code></h3>
 <h4 id="beschrijving-15"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L382-L449"><code>alien_animation_update</code></a>
+href="../../context/source/alien_logic.html#L382-L449"><code>alien_animation_update</code></a>
 (Z80 ROM: <code>$0D70–$0DB5</code>, <code>$0DBB–$0DC6</code>,
 <code>$0DCC–$0DEE</code>) bepaalt de juiste sprite-animatieframe voor
 elke vliegende alien op basis van diens positie en vliegrichting.</p>
@@ -774,19 +774,19 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_alien_movement_byte</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>phoenix_alien_shape_offset_page</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-13"><strong>Stap-voor-stap
@@ -824,7 +824,7 @@ Controlstate B (<code>bc + 1</code>).</li>
 <h3 id="l3264"><code>l3264</code></h3>
 <h4 id="beschrijving-16"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L459-L493"><code>l3264</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L459-L493"><code>l3264</code></a> (Z80 ROM:
 <code>$3264–$32AF</code>) roteert de startwaarde-pointer voor
 alien-bewegingen en herricht vliegende aliens naar nieuwe
 bewegingsroutes.</p>
@@ -838,14 +838,14 @@ Koppelingen</strong></h4>
 <ul>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-14"><strong>Stap-voor-stap
@@ -868,7 +868,7 @@ het oude patroon <code>state.M4394:M4356</code> door het nieuwe patroon
 <h3 id="l3074_breakout_delay"><code>l3074_breakout_delay</code></h3>
 <h4 id="beschrijving-17"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L501-L518"><code>l3074_breakout_delay</code></a>
+href="../../context/source/alien_logic.html#L501-L518"><code>l3074_breakout_delay</code></a>
 (Z80 ROM: <code>$3074–$30A8</code>) berekent dynamisch de wachttijd
 (vertraging) voor de breakout- en bomb-drop schedulers.</p>
 <h4 id="context--aanroep-17"><strong>Context &amp; Aanroep</strong></h4>
@@ -882,14 +882,14 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="utilities.html#get_random_number"><code>get_random_number</code></a>
-— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+— <a href="../../context/source/utilities.html#L15"><code>utilities.c:L15</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l3028"><code>l3028</code></a> — <a
-href="../../alien_logic.c#L550"><code>alien_logic.c:L550</code></a></li>
+href="../../context/source/alien_logic.html#L550"><code>alien_logic.c:L550</code></a></li>
 <li><a href="#l30ba"><code>l30ba</code></a> — <a
-href="../../alien_logic.c#L580"><code>alien_logic.c:L580</code></a></li>
+href="../../context/source/alien_logic.html#L580"><code>alien_logic.c:L580</code></a></li>
 </ul></li>
 </ul>
 <h4 id="formule--werking"><strong>Formule &amp; Werking</strong></h4>
@@ -907,7 +907,7 @@ willekeurige ruis toe).</li>
 <h3 id="l3028"><code>l3028</code></h3>
 <h4 id="beschrijving-18"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L528-L554"><code>l3028</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L528-L554"><code>l3028</code></a> (Z80 ROM:
 <code>$3028–$3059</code>, <code>$305C–$306D</code>) is de
 <strong>Breakout Scheduler</strong>. Deze beheert wanneer en hoeveel
 aliens uit de formatie losbreken voor een aanvalsgolf.</p>
@@ -920,14 +920,14 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="#l3074_breakout_delay"><code>l3074_breakout_delay</code></a> — <a
-href="../../alien_logic.c#L550"><code>alien_logic.c:L550</code></a></li>
+href="../../context/source/alien_logic.html#L550"><code>alien_logic.c:L550</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-15"><strong>Stap-voor-stap
@@ -957,7 +957,7 @@ via <code>l3074_breakout_delay()</code>.</li>
 <h3 id="l30ba"><code>l30ba</code></h3>
 <h4 id="beschrijving-19"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L562-L599"><code>l30ba</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L562-L599"><code>l30ba</code></a> (Z80 ROM:
 <code>$30BA–$30D8</code>, <code>$30E4–$310F</code>,
 <code>$3112–$3121</code>) is de <strong>Bomb-drop Scheduler</strong>.
 Deze beheert de tijdsintervallen en slots voor het gooien van bommen
@@ -971,14 +971,14 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="#l3074_breakout_delay"><code>l3074_breakout_delay</code></a> — <a
-href="../../alien_logic.c#L580"><code>alien_logic.c:L580</code></a></li>
+href="../../context/source/alien_logic.html#L580"><code>alien_logic.c:L580</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-16"><strong>Stap-voor-stap
@@ -1003,7 +1003,7 @@ bom-slot en stelt <code>state.M4355</code> in.</li>
 <h3 id="l3124"><code>l3124</code></h3>
 <h4 id="beschrijving-20"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L607-L620"><code>l3124</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L607-L620"><code>l3124</code></a> (Z80 ROM:
 <code>$3124–$314E</code>) vormt <strong>Pattern Retarget Fase 1 -&gt;
 2</strong>.</p>
 <h4 id="context--aanroep-20"><strong>Context &amp; Aanroep</strong></h4>
@@ -1015,14 +1015,14 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="utilities.html#get_random_number"><code>get_random_number</code></a>
-— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+— <a href="../../context/source/utilities.html#L15"><code>utilities.c:L15</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-17"><strong>Stap-voor-stap
@@ -1037,7 +1037,7 @@ willekeurige waarde.</p>
 <h3 id="l315a"><code>l315a</code></h3>
 <h4 id="beschrijving-21"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L629-L653"><code>l315a</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L629-L653"><code>l315a</code></a> (Z80 ROM:
 <code>$315A–$318E</code>, <code>$3192–$31AD</code>) vormt
 <strong>Pattern Retarget Fase 2 -&gt; 3</strong>.</p>
 <h4 id="context--aanroep-21"><strong>Context &amp; Aanroep</strong></h4>
@@ -1049,16 +1049,16 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="utilities.html#get_random_number"><code>get_random_number</code></a>
-— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+— <a href="../../context/source/utilities.html#L15"><code>utilities.c:L15</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-18"><strong>Stap-voor-stap
@@ -1073,7 +1073,7 @@ waarvan het bewegingspatroon nog overeenkomt met het oude patroon
 <h3 id="l31b4"><code>l31b4</code></h3>
 <h4 id="beschrijving-22"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L662-L710"><code>l31b4</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L662-L710"><code>l31b4</code></a> (Z80 ROM:
 <code>$31B4–$320D</code>, <code>$3210–$3228</code>) vormt
 <strong>Pattern Retarget Fase 3 -&gt; 5</strong>. Deze selecteert een
 nieuw gesloten-lus bewegingspatroon voor de geselecteerde alien.</p>
@@ -1086,20 +1086,20 @@ Koppelingen</strong></h4>
 <ul>
 <li><a
 href="utilities.html#get_random_number"><code>get_random_number</code></a>
-— <a href="../../utilities.c#L15"><code>utilities.c:L15</code></a></li>
+— <a href="../../context/source/utilities.html#L15"><code>utilities.c:L15</code></a></li>
 <li><code>phoenix_alien_distance_bands</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>phoenix_alien_pattern_selectors</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><code>phoenix_alien_closed_loop_pointers</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-19"><strong>Stap-voor-stap
@@ -1123,7 +1123,7 @@ nieuwe patroonpointer op in <code>state.M4351</code> en
 <h3 id="l322c"><code>l322c</code></h3>
 <h4 id="beschrijving-23"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L718-L730"><code>l322c</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L718-L730"><code>l322c</code></a> (Z80 ROM:
 <code>$322C–$325E</code>) vormt <strong>Pattern Retarget Fase 4 -&gt;
 6</strong>. Deze voert een synchronisatiecontrole uit.</p>
 <h4 id="context--aanroep-23"><strong>Context &amp; Aanroep</strong></h4>
@@ -1134,14 +1134,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-20"><strong>Stap-voor-stap
@@ -1157,7 +1157,7 @@ Dive-bomb Triggers</h2>
 <h3 id="l2560"><code>l2560</code></h3>
 <h4 id="beschrijving-24"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L778-L794"><code>l2560</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L778-L794"><code>l2560</code></a> (Z80 ROM:
 <code>$2560–$2595</code>) scant 8 kandidaat-aliens om te bepalen of een
 alien een gerichte duikvluchtaanval mag inzetten.</p>
 <h4 id="context--aanroep-24"><strong>Context &amp; Aanroep</strong></h4>
@@ -1169,14 +1169,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="#l2596"><code>l2596</code></a> — <a
-href="../../alien_logic.c#L790"><code>alien_logic.c:L790</code></a></li>
+href="../../context/source/alien_logic.html#L790"><code>alien_logic.c:L790</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_0_and_2_aliens_fade_in"><code>level_0_and_2_aliens_fade_in</code></a>
 — <a
-href="../../state_play.c#L205"><code>state_play.c#L205</code></a></li>
+href="../../context/source/state_play.html#L205"><code>state_play.c#L205</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-21"><strong>Stap-voor-stap
@@ -1196,7 +1196,7 @@ bij de eerste geslaagde kandidaat.</li>
 <h3 id="l2596"><code>l2596</code></h3>
 <h4 id="beschrijving-25"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../alien_logic.c#L744-L769"><code>l2596</code></a> (Z80 ROM:
+href="../../context/source/alien_logic.html#L744-L769"><code>l2596</code></a> (Z80 ROM:
 <code>$2596–$25B6</code>) voert de individuele geschiktheidscontrole uit
 van één alien voor een duikvlucht.</p>
 <h4 id="context--aanroep-25"><strong>Context &amp; Aanroep</strong></h4>
@@ -1207,16 +1207,16 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>l25b7</code> — <a
-href="../../weapon_collision.c#L100"><code>weapon_collision.c:L100</code></a>
+href="../../context/source/weapon_collision.html#L100"><code>weapon_collision.c:L100</code></a>
 / <a
 href="weapon-collision.html#l25b7"><code>weapon-collision.md#l25b7</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="#l2560"><code>l2560</code></a> — <a
-href="../../alien_logic.c#L790"><code>alien_logic.c:L790</code></a></li>
+href="../../context/source/alien_logic.html#L790"><code>alien_logic.c:L790</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking--voorwaarden"><strong>Stap-voor-stap

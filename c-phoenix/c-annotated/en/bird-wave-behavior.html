@@ -3,7 +3,7 @@ id="bird-wave-behavior--ai-scripts-bird_wave_behaviorc---c-annotated-knowledge-g
 Wave Behavior &amp; AI Scripts (<code>bird_wave_behavior.c</code>) -
 C-Annotated Knowledge Graph Documentation</h1>
 <p>This document contains an annotated analysis of all functions in <a
-href="../../bird_wave_behavior.c"><code>bird_wave_behavior.c</code></a>.
+href="../../context/source/bird_wave_behavior.html"><code>bird_wave_behavior.c</code></a>.
 This module controls bird AI state machines, egg hatching, wing flapping
 cycles, and dive-bombing triggers.</p>
 <hr />
@@ -20,7 +20,7 @@ Attacks</a></li>
 <h3 id="update_bird_behavior"><code>update_bird_behavior</code></h3>
 <h4 id="description"><strong>Description</strong></h4>
 <p>The function <a
-href="../../bird_wave_behavior.c#L35-L95"><code>update_bird_behavior</code></a>
+href="../../context/source/bird_wave_behavior.html#L35-L95"><code>update_bird_behavior</code></a>
 (Z80 ROM: <code>$35B0–$35DB</code>) evaluates active bird AI scripts
 from table <code>phoenix_bird_behaviour_scripts</code> (ROM
 <code>$3F00–$3F7F</code>).</p>
@@ -30,12 +30,12 @@ Links</strong></h4>
 <li><strong>Calls (Outgoing Calls):</strong>
 <ul>
 <li><code>phoenix_bird_behaviour_scripts</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 </ul></li>
 <li><strong>Called By (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a href="bird-logic.html#process_birds"><code>process_birds</code></a>
-— <a href="../../bird_logic.c"><code>bird_logic.c</code></a></li>
+— <a href="../../context/source/bird_logic.html"><code>bird_logic.c</code></a></li>
 </ul></li>
 </ul>
 <hr />
@@ -44,7 +44,7 @@ Logic</h2>
 <h3 id="update_bird_behavior-1"><code>update_bird_behavior</code></h3>
 <h4 id="description-1"><strong>Description</strong></h4>
 <p>The function <a
-href="../../bird_wave_behavior.c#L218"><code>update_bird_behavior</code></a>
+href="../../context/source/bird_wave_behavior.html#L218"><code>update_bird_behavior</code></a>
 (Z80 ROM: <code>$35B0–$35DB</code>) advances one bird through its
 behaviour script, including the egg-to-bird transformation, by
 dispatching on the script entry held in the bird record.</p>
@@ -54,7 +54,7 @@ Attacks</h2>
 <h3 id="l370a_grow_or_dive"><code>l370a_grow_or_dive</code></h3>
 <h4 id="description-2"><strong>Description</strong></h4>
 <p>The function <a
-href="../../bird_wave_behavior.c#L195"><code>l370a_grow_or_dive</code></a>
+href="../../context/source/bird_wave_behavior.html#L195"><code>l370a_grow_or_dive</code></a>
 rolls the random gate (<code>M436F</code>) that turns a growing bird
 into a diving one; the spawn decision itself lives in <a
 href="bird-logic.html#try_spawn_bird_dive_bomb"><code>try_spawn_bird_dive_bomb</code></a>.</p>

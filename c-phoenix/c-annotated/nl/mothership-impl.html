@@ -3,7 +3,7 @@ id="mothership-implementation-mothership_implc---c-annotated-knowledge-graph-doc
 Implementation (<code>mothership_impl.c</code>) - C-Annotated Knowledge
 Graph Documentatie</h1>
 <p>Dit document bevat een geannoteerde analyse van de functies in <a
-href="../../mothership_impl.c"><code>mothership_impl.c</code></a>. Deze
+href="../../context/source/mothership_impl.html"><code>mothership_impl.c</code></a>. Deze
 module behandelt de tegel-inslag detectie, het doorboren van het
 moederschip-schild en de activatie van de moederschip-explosie.</p>
 <hr />
@@ -21,7 +21,7 @@ Kern-activatie</h2>
 id="l2351_mothership_animation"><code>l2351_mothership_animation</code></h3>
 <h4 id="beschrijving"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../mothership_impl.c#L12-L123"><code>l2351_mothership_animation</code></a>
+href="../../context/source/mothership_impl.html#L12-L123"><code>l2351_mothership_animation</code></a>
 (Z80 ROM: <code>$2351–$23C7</code>) verwerkt kogel-inslagen op de
 schildtegels van het moederschip en detecteert voltreffers in de
 moederschipkern.</p>
@@ -33,17 +33,17 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><a href="coverage.html#coverage_hit"><code>coverage_hit</code></a> —
-<a href="../../coverage.c#L12"><code>coverage.c:L12</code></a></li>
+<a href="../../context/source/coverage.html#L12"><code>coverage.c:L12</code></a></li>
 <li><code>phoenix_mothership_explosion_pointers</code> — <a
-href="../../phoenix_tables.c"><code>phoenix_tables.c</code></a></li>
+href="../../context/source/phoenix_tables.html"><code>phoenix_tables.c</code></a></li>
 <li><a href="utilities.html#mem_read"><code>mem_read</code></a> / <a
 href="utilities.html#mem_write"><code>mem_write</code></a> — <a
-href="../../utilities.c#L22"><code>utilities.c:L22</code></a></li>
+href="../../context/source/utilities.html#L22"><code>utilities.c:L22</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><code>process_player_bullet_vs_mothership</code> — <a
-href="../../weapon_collision.c"><code>weapon_collision.c</code></a></li>
+href="../../context/source/weapon_collision.html"><code>weapon_collision.c</code></a></li>
 </ul></li>
 </ul>
 <h4 id="geheugen---structuur-context"><strong>Geheugen- &amp;
@@ -91,7 +91,7 @@ Scroll-sync</h2>
 id="update_counters_for_mothership_explosion"><code>update_counters_for_mothership_explosion</code></h3>
 <h4 id="beschrijving-1"><strong>Beschrijving</strong></h4>
 <p>De functie <a
-href="../../mothership_impl.c#L134-L156"><code>update_counters_for_mothership_explosion</code></a>
+href="../../context/source/mothership_impl.html#L134-L156"><code>update_counters_for_mothership_explosion</code></a>
 (Z80 ROM: <code>$242C–$2442</code>) update de scrollregisters en telt de
 explosieteller <code>state.CounterA5</code> af tijdens de
 moederschip-explosie.</p>
@@ -101,14 +101,14 @@ Koppelingen</strong></h4>
 <li><strong>Aanroepen (Outgoing Calls):</strong>
 <ul>
 <li><code>hw_write_scroll_register</code> — <a
-href="../../hw_video_audio.c"><code>hw_video_audio.c</code></a></li>
+href="../../context/source/hw_video_audio.html"><code>hw_video_audio.c</code></a></li>
 </ul></li>
 <li><strong>Aangeroepen door (Incoming Calls / Backlinks):</strong>
 <ul>
 <li><a
 href="state-play.html#level_1_3_b_player_alive_aliens"><code>level_1_3_B_player_alive_aliens</code></a>
 — <a
-href="../../state_play.c#L16"><code>state_play.c#L16</code></a></li>
+href="../../context/source/state_play.html#L16"><code>state_play.c#L16</code></a></li>
 </ul></li>
 </ul>
 <h4 id="stap-voor-stap-werking-1"><strong>Stap-voor-stap
