@@ -1,5 +1,6 @@
 import importlib.util
 import pathlib
+import tempfile
 import unittest
 
 
@@ -39,6 +40,7 @@ class FunctionalRuntimeCallgraphTest(unittest.TestCase):
             "l2085_particles": "player_explosion.c",
             "astable_step": "sound_discrete.c",
             "mem_read": "z80_core.h",
+            "mem_write": "z80_core.h",
             "phoenix_image_byte": "phoenix_tables.h",
         }
         for function, expected_file in expected_files.items():
@@ -68,6 +70,24 @@ class FunctionalRuntimeCallgraphTest(unittest.TestCase):
         self.assertEqual(module["children"][0]["source_file"], "player_logic.c")
         self.assertIsInstance(module["children"][0]["source_line"], int)
         self.assertEqual(data["edges"][0]["count"], 7)
+
+    def test_explorer_links_known_functions_and_header_helpers_to_html_viewers(self):
+        locations = RUNTIME_CALLGRAPH.source_function_locations(ROOT)
+        counts = {
+            ("add_galaxies_to_background", "mem_write"): 47,
+            ("mem_write", "update_scroll_register_and_fill_background"): 47,
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            output = pathlib.Path(temporary) / "index.html"
+            RUNTIME_CALLGRAPH.write_runtime_explorer(
+                output, counts, self.function_files, locations
+            )
+            page = output.read_text(encoding="utf-8")
+        self.assertIn("const functionIds = new Map()", page)
+        self.assertIn("functionIds.get(name)||'context:'+name", page)
+        self.assertIn("function sourceViewerHref(file,line)", page)
+        self.assertIn("context/source", page)
+        self.assertNotIn("${node.source_file}#L${node.source_line}", page)
 
 
 if __name__ == "__main__":
